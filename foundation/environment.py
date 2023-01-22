@@ -1,3 +1,5 @@
+import agent
+
 class MDP:
     def _init_(self, state_state, action_space, reward_function, discount_factor):
         self.state_state = state_state
