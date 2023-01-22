@@ -1,4 +1,4 @@
-class agent():
+class Agent():
     def __init__(self, state, q_values, policy):
         """Initialise the agent superclass."""
         pass
