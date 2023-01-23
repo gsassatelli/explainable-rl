@@ -1,5 +1,5 @@
 class Engine:
-    def __init__(self, dataset, agent_type):
+    def __init__(self, dataset, agent_type, env_type):
         """Initialise the Engine superclass."""
         pass
 
