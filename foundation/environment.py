@@ -1,7 +1,7 @@
 import agent
 
 class MDP:
-    def _init_(self, state_state, action_space, reward_function, discount_factor):
+    def _init_(self, state_state, action_space, reward_feature, discount_factor):
         """Initialise the MDP superclass."""
     
     def create_env(self):
