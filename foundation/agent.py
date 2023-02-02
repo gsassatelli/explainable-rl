@@ -40,16 +40,4 @@ class Agent():
     def epsilon_greedy_policy(self, state):
         """Returns the epsilon greedy action."""
         pass
-
-    def get_action(self, state):
-        """Get the action that the agent will execute.
-
-        This can be from e.g. the q-values or from the algorithm.
-        """
-        pass
-
-    def update_learning(self, dataset):
-        """Fit a step of learning to the dataset."""
-        pass
-
     
