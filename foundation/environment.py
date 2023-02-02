@@ -3,13 +3,20 @@ import agent
 class MDP:
     def _init_(self, dataset, discount_factor):
         """Initialise the MDP superclass."""
-        self.initaliase_env()
+        self.average_rewards = None
+        self.dataset = dataset
+        self.initialise_env()
         pass
 
-    def initaliase_env(self):
+    def initialise_env(self):
         """Create the environment given the MDP information.
 
         TODO: tricky part"""
+        self.average_rewards = self.make_rewards_from_data()
+        pass
+
+    def make_rewards_from_data(self):
+        """Make the state-action reward table from dataset."""
         pass
 
     def reset_env(self):
