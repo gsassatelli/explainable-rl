@@ -23,6 +23,7 @@ class DataHandler:
                         reward_labels: List[str]) \
             -> Tuple[np.ndarray]:
         # TODO: Make output np.ndarray
+        # TODO: Extension - aggregate over a time period
         """Preprocess data into state, action and reward spaces.
         Parameters
         ----------
@@ -50,7 +51,8 @@ class DataHandler:
 if __name__ == "__main__":
     dh = DataHandler('../kaggle-dummy-dataset/train.csv')
     dh.load_data(delimiter='|')
-    state_labels = ['competitorPrice', 'click']
+    print(dh.dataset.columns)
+    state_labels = ['competitorPrice', 'adFlag', 'availability']
     action_labels = ['price']
     reward_labels = ['revenue']
     dh.filter_data()
