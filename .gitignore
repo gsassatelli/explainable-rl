@@ -2,3 +2,5 @@
 .idea/
 venv/
 .DS_Store
+
+kaggle-dummy-dataset/
