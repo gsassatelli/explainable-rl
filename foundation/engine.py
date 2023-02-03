@@ -20,6 +20,7 @@ class Engine:
         """Create the Agent and MDP instances for the given task.
 
         """
+        # TODO Giulia
         self.create_agent()
         self.create_env()
         pass
@@ -28,6 +29,7 @@ class Engine:
         """Create an agent and store it in Engine.
 
         """
+        # TODO Giulia
         # if self.agent_type == 'blah':
         #   self.agent = 'blah'
         pass
@@ -37,17 +39,19 @@ class Engine:
 
         Pass dataset to env.
         """
+        # TODO Giulia
         # self.env = Environment(dataset)
         pass
 
     def train_agent(self, n_episodes, n_steps):
         """Train the agent for a chosen number of steps and episodes."""
-
+        # TODO Giulia
         self.agent.fit(n_episodes, n_steps)
         pass
 
     def what_should_i_do_given_state(self):
         """Implement this."""
+        # TODO Giulia
         pass
 
     def get_results(self):
@@ -55,6 +59,7 @@ class Engine:
 
         This could be the average return after convergence.
         """
+        # TODO Giulia
         pass
 
     def save_parameters(self):
@@ -62,6 +67,7 @@ class Engine:
 
         This could be e.g. the q-values, the policy, or any other learned parameters.
         """
+        # TODO Giulia
         pass
 
     def evaluate(self, state):
@@ -69,4 +75,5 @@ class Engine:
 
         This method returns the action that should be taken given a state.
         """
+        # TODO Giulia
         pass
