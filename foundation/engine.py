@@ -3,27 +3,42 @@ import torch
 import numpy as np
 
 class Engine:
-    def __init__(self, dataset: np.array[np.array, np.array, np.array,
-                                         np.array],
-                 agent_type: str, env_type: str):
-        """Initialise the Engine superclass.
 
+    __slots__ = ["states", "actions", "rewards", "next_states", "agent_type", "env_type",
+                 "agent", "env"]
+
+    def __init__(self, 
+                 dataset: np.array[np.array, np.array, np.arraynp.array],
+                 agent_type: str, 
+                 env_type: str,
+                 episode_flag: bool = False):
+        """Initialise the Engine superclass.
         Dataset is a multi-type np.array [state, action, reward, next_state].
 
-        TODO: keep slots here
         TODO: add hyperparameters for training wherever they need to go.
         """
+        # Split dataset
+        self.states = dataset[0]
+        self.actions = dataset[1]
+        self.rewards = dataset[2]
+        # If episode is more than one step, save next states
+        if episode_flag:
+            self.next_states = dataset[3]
+        # Initialize agent
         self.agent_type = agent_type
-        pass
+        self.agent = None
+        # Initialize environment
+        self.env_type = env_type
+        self.env = None
 
     def create_world(self):
         """Create the Agent and MDP instances for the given task.
 
         """
-        # TODO Giulia
+        # Create chosen agent
         self.create_agent()
+        # Create chosen environment
         self.create_env()
-        pass
 
     def create_agent(self):
         """Create an agent and store it in Engine.
