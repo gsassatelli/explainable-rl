@@ -1,62 +1,148 @@
 import pandas as pd
 import numpy as np
-from typing import List, Tuple
+from sklearn.preprocessing import StandardScaler
+from typing import List, Tuple, Union
+
+import copy
 
 
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
     """
-    def __init__(self, data_path: str):
+
+    def __init__(self, data_path: str,
+                 state_labels: List[str],
+                 action_labels: List[str],
+                 reward_labels: List[str]):
+        """Initialise the DataHandler.
+
+        Args:
+            data_path: path to the dataset.
+            state_labels: list of dataset columns to be made into states.
+            action_labels: list of dataset columns to be made into actions.
+            reward_labels: list of dataset columns to be made into rewards.
+        """
         self.data_path = data_path
         self.dataset = None
+        self._normalised_cols = []
+        self._standard_scalars = {}
+        self._state_labels = state_labels
+        self._action_labels = action_labels
+        self._reward_labels = reward_labels
+        self.mdp = None
+
+    def prepare_data_for_engine(self, col_delimiter: str = ',',
+                                cols_to_normalise:
+                                Union[List[str] | None] = None):
+        """Prepare dataset for the Engine class."""
+        self.load_data(delimiter=col_delimiter)
+        self.preprocess_data(normalisation=True,
+                             columns_to_normalise=cols_to_normalise)
+
 
     def load_data(self, delimiter: str = ','):
         """Load and store a csv dataset."""
         self.dataset = pd.read_csv(self.data_path, sep=delimiter)
 
-    def filter_data(self):
-        """Filter the dataset."""
-        self.dataset = self.dataset.dropna()
-
-    def preprocess_data(self, state_labels: List[str],
-                        action_labels: List[str],
-                        reward_labels: List[str]) \
-            -> Tuple[np.ndarray]:
-        # TODO: Make output np.ndarray
+    def preprocess_data(self,
+                        normalisation: bool = True,
+                        columns_to_normalise: Union[List[str] | None] = None) \
+            -> pd.DataFrame:
         # TODO: Extension - aggregate over a time period
         """Preprocess data into state, action and reward spaces.
-        Parameters
-        ----------
-        state_labels
-            Dataset labels that make up the state space.
-        action_labels
-            Dataset labels from which the action space is derived.
-        reward_labels
-            Dataset labels from which the reward is derived.
 
-        Returns
-        -------
-        np.ndarray
-            np.ndarray of state, action, reward space.
+        Preprocessing applies shuffling, normalisation (if selected) and
+        splits the dataset into states, actions and rewards.
+
+        Args:
+            normalisation: True if normalisation is to be applied.
+            columns_to_normalise: Columns on which to apply normalisation.
+                if left empty all columns will be normalised.
         """
         np.random.seed = 1
+        self._filter_data()
         self.dataset = self.dataset.sample(frac=1)
-        states = np.array(self.dataset[state_labels])
-        actions = np.array(self.dataset[action_labels])
-        rewards = np.array(self.dataset[reward_labels])
-        mdp = (states, actions, rewards)
-        return mdp
+        if normalisation:
+            self.normalise_dataset(cols_to_norm=columns_to_normalise)
+
+        s = self.dataset[self._state_labels]
+        a = self.dataset[self._action_labels]
+        r = self.dataset[self._reward_labels]
+
+        self.mdp = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
+
+    def normalise_dataset(self, cols_to_norm: Union[List[str] | None] = None):
+        """Normalise the dataset to centre with mean zero and variance one.
+
+        Args:
+            cols_to_norm: the column names that need normalising
+        """
+        self._fit_standard_scalars()
+        if cols_to_norm is None:
+            cols_to_norm = self.dataset.columns
+        for col in cols_to_norm:
+            self._transform_col(col_name=col)
+            self._normalised_cols.append(col)
+
+    def reverse_norm(self):
+        """Reverse the normalising of the dataset.
+        """
+        for col in self._normalised_cols:
+            self._inverse_transform_col(col_name=col)
+
+    def get_actions(self):
+        """Get the actions taken in the dataset.
+
+        Returns:
+            pd.DataFrame of the actions.
+        """
+        return self.dataset['s']
+
+    def get_rewards(self):
+        """Get the rewards taken in the dataset.
+
+        Returns:
+            pd.DataFrame of the rewards.
+        """
+        return self.dataset['r']
+
+    def get_states(self):
+        """Get the states taken in the dataset.
+
+        Returns:
+            pd.DataFrame of the states.
+        """
+        return self.dataset['s']
+
+    def _filter_data(self):
+        """Filter the dataset.
+        """
+        self.dataset = self.dataset.dropna()
+
+    def _transform_col(self, col_name: str):
+        """Normalise one column of the dataset.
+        """
+        scalar = self._standard_scalars[col_name]
+        self.dataset[col_name] = \
+            scalar.transform(pd.DataFrame(self.dataset[col_name]))
+
+    def _inverse_transform_col(self, col_name: str):
+        """Reverse the normalisation of one column of the dataset."""
+        scalar = self._standard_scalars[col_name]
+        self.dataset[col_name] = scalar.inverse_transform(
+            pd.DataFrame(self.dataset[col_name]))
+
+    def _fit_standard_scalars(self):
+        """Train the sklearn StandardScaler and store one per column."""
+        for col in self.dataset:
+            scalar = StandardScaler()
+            scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
+            self._standard_scalars[col] = scalar
 
 
 if __name__ == "__main__":
-    dh = DataHandler('../kaggle-dummy-dataset/train.csv')
-    dh.load_data(delimiter='|')
-    print(dh.dataset.columns)
-    state_labels = ['competitorPrice', 'adFlag', 'availability']
-    action_labels = ['price']
-    reward_labels = ['revenue']
-    dh.filter_data()
-    out = dh.preprocess_data(state_labels=state_labels,
-                       action_labels=action_labels,
-                       reward_labels=reward_labels)
-    print(out[0].shape, out[1].shape, out[2].shape)
+    states = ['competitorPrice', 'adFlag', 'availability']
+    actions = ['price']
+    rewards = ['revenue']
+    dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions, rewards)
+    dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=actions)
