@@ -1,6 +1,11 @@
+# Import packages
 from typing import Tuple
 import torch
 import numpy as np
+
+# Import environment and agent
+from agent import Agent
+from environment import MDP
 
 class Engine:
 
@@ -44,18 +49,16 @@ class Engine:
         """Create an agent and store it in Engine.
 
         """
-        # TODO Giulia
-        # if self.agent_type == 'blah':
-        #   self.agent = 'blah'
+        if self.agent_type == "q-learner":
+            self.agent = Agent()
+            # TODO: change if different name
         pass
 
     def create_env(self):
         """Create an env and store it in Engine.
 
-        Pass dataset to env.
         """
-        # TODO Giulia
-        # self.env = Environment(dataset)
+        self.env = MDP(self.states, self.actions, self.rewards)
         pass
 
     def train_agent(self, n_episodes, n_steps):
