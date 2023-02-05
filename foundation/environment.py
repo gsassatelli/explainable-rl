@@ -9,15 +9,13 @@ class MDP:
         self.average_rewards = None
         self.dataset = dataset
         self.initialise_env()
-        pass
 
     def initialise_env(self):
         """Create the environment given the MDP information.
         """
         self.average_rewards = self.make_rewards_from_data()
-        pass
 
-    def make_rewards_from_data(self, num_bins=10):
+    def make_rewards_from_data(self, num_bins=9):
         """Make the state-action reward table from dataset."""
 
         # Group state and action from the dataset
@@ -25,35 +23,39 @@ class MDP:
         for i in range(len(self.dataset)):
             zipped.append(self.dataset[i, 0] + self.dataset[i, 1])
 
+        print(zipped)
+
         # Create the bins
         binned = np.digitize(zipped, np.arange(0, 1 + 1/num_bins, step=1/num_bins).tolist(), right=True)
 
+        print(binned)
+
         bins_dict = {}
+
         for ix, bin in enumerate(binned):
             reward = self.dataset[ix, 2]
-            bin = str(bin)
+
+            bin = str(bin).replace("[", "").replace("]", "")
+
             bins_dict[bin][0] = bins_dict.setdefault(bin, [0, 0])[0] + 1
-            bins_dict[bin][1] = bins_dict.setdefault(bin, [0, 0])[1] + reward
+            bins_dict[bin][1] += reward[0]
 
         coords = []
         data = []
 
         for key, value in bins_dict.items():
+            # print(key)
             d = []
-            for char in key:
-                if char.isdigit():
-                    d += [int(char)]
-
+            for i in key.split(" "):
+                # print(i)
+                d+= [eval(i)]
+            # d = [eval(i) for i in key]
             coords.append(d)
             data.extend([value[1] / value[0]])
 
         coords = np.array(coords).T.tolist()
 
-        print(coords)
-        print(data)
-
-
-        self.average_rewards = sparse.COO(coords, data)
+        return sparse.COO(coords, data)
 
 
     def reset_env(self):
@@ -73,16 +75,16 @@ class MDP:
         return state, state, reward, "done"
 
 
-# """Understanding sparse matrices"""
+# # """Understanding sparse matrices"""
+# #
+# #
 #
+# coords = [[0, 0, 0, 5, 5, 5],
+#           [0, 0, 0, 0, 0, 0]]
 #
-
-coords = [[0, 0, 0, 5, 5, 5],
-          [0, 0, 0, 0, 0, 0]]
-
-data = [10, 20, 30, 40, 50, 60]
-
-input_sparse_matrix = sparse.COO(coords, data, shape=(6, 6))
+# data = [10, 20, 30, 40, 50, 60]
+#
+# input_sparse_matrix = sparse.COO(coords, data, shape=(6, 6))
 
 #
 # def reset_env(input_sparse_matrix):
@@ -96,18 +98,21 @@ input_sparse_matrix = sparse.COO(coords, data, shape=(6, 6))
 # print(reset_env(input_sparse_matrix))
 #
 
-dummy_array = np.array([
-                       [[0.75, 0.25], [0.1], 0.1],
-                       [[0.25, 0.75], [0.3], 0.2],
-                       [[0.85, 0.1], [0.5], 0.6],
-                       [[0.26, 0.80], [1], 0.9]], dtype=object)
-
-env = MDP(dummy_array)
-
-env.initialise_env()
-
-print(env.average_rewards)
-
+# # RUN THE FOLLOWING:
+#
+# dummy_array = np.array([
+#                        [[0.75, 0.25], [0.1], [0.1]],
+#                        [[0.25, 0.75], [0.3], [0.2]],
+#                        [[0.85, 0.1], [0.5], [0.6]],
+#                        [[0.7, 1], [0.9], [1]],
+#                        [[0.5, 0.4], [0.8], [0.7]]
+#                         ], dtype=object)
+#
+# env = MDP(dummy_array)
+#
+# env.initialise_env()
+#
+# print(env.average_rewards.todense())
 
 
 # # print(s.todense())
