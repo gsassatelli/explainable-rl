@@ -12,7 +12,7 @@ class Agent():
         self.initialize_agent()
         #self.state = None
         #self.q = ...
-        # self.rewards_per_episode = []
+        self.rewards_per_episode = []
         # self.total_episode_reward = 0
         pass
 
@@ -23,8 +23,8 @@ class Agent():
         
         
         for _ in range(n_episodes):
-
             #self.state = self.env.reset()
+            # env reset is not working so implementing it here:
             self.state_str = random.choice(list(self.state_to_action.keys()))
             self.state = [int(s) for s in self.state_str.split(",")]
             for i in range(n_steps):
@@ -37,8 +37,8 @@ class Agent():
                 self.state = next_state
                 if done:
                     break
-
-        breakpoint()
+        print("Finished training :) !")
+        print(f"Example Q-table for state {[0,11,0]}: {self.Q[0,11,0].todense()}")
 
     def update_q_values(self, state, action, next_state, reward, lr):
         """Update the q table of the agent using Bellman.
@@ -46,7 +46,6 @@ class Agent():
         TODO: implement part related to gamma (not necessary for now
         because we have a myopic env)
         """
-        breakpoint()
         self.Q[state[0],state[1],state[2],action]  = \
             (1-lr)*self.Q[state[0],state[1],state[2],action] + lr*(reward)
 
@@ -65,7 +64,11 @@ class Agent():
         q_values = np.zeros(len(coords))
         coords = np.array(coords).T.tolist()
         
+        # create COO (read only) matrix
         self.Q = sparse.COO(coords, q_values)
+        
+        # convert to DOK
+        self.Q = sparse.DOK.from_numpy(self.Q.todense())
         
         # create state to action mapping
         self.state_to_action = self.env.state_to_action
