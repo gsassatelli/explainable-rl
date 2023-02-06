@@ -5,7 +5,8 @@ from typing import List, Tuple, Union
 
 import copy
 
-
+# TODO: change normalisation to [0, 1]
+# TODO: add flag for next states
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
     """
@@ -46,8 +47,7 @@ class DataHandler:
 
     def preprocess_data(self,
                         normalisation: bool = True,
-                        columns_to_normalise: Union[List[str] | None] = None) \
-            -> pd.DataFrame:
+                        columns_to_normalise: Union[List[str] | None] = None):
         # TODO: Extension - aggregate over a time period
         """Preprocess data into state, action and reward spaces.
 
@@ -144,5 +144,6 @@ if __name__ == "__main__":
     states = ['competitorPrice', 'adFlag', 'availability']
     actions = ['price']
     rewards = ['revenue']
-    dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions, rewards)
+    dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions,
+                     rewards)
     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=actions)
