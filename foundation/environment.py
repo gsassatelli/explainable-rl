@@ -46,6 +46,7 @@ class MDP:
         coords = []
         data = []
 
+        # TODO change this for loop for efficiency
         for key, value in bins_dict.items():
             # print(key)
             d = []
