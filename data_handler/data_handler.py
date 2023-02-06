@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import MinMaxScaler
 from typing import List, Tuple, Union
 
 import copy
@@ -26,7 +26,7 @@ class DataHandler:
         self.data_path = data_path
         self.dataset = None
         self._normalised_cols = []
-        self._standard_scalars = {}
+        self._minmax_scalars = {}
         self._state_labels = state_labels
         self._action_labels = action_labels
         self._reward_labels = reward_labels
@@ -122,22 +122,22 @@ class DataHandler:
     def _transform_col(self, col_name: str):
         """Normalise one column of the dataset.
         """
-        scalar = self._standard_scalars[col_name]
+        scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
 
     def _inverse_transform_col(self, col_name: str):
         """Reverse the normalisation of one column of the dataset."""
-        scalar = self._standard_scalars[col_name]
+        scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
             pd.DataFrame(self.dataset[col_name]))
 
     def _fit_standard_scalars(self):
-        """Train the sklearn StandardScaler and store one per column."""
+        """Train the sklearn MinMaxScaler and store one per column."""
         for col in self.dataset:
-            scalar = StandardScaler()
+            scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
-            self._standard_scalars[col] = scalar
+            self._minmax_scalars[col] = scalar
 
 
 if __name__ == "__main__":
