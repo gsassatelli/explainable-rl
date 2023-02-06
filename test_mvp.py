@@ -11,7 +11,7 @@ if __name__ == "__main__":
     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=states+actions)
     # Create engine
     engine = Engine(dh.mdp_data[:100], "q_learner", "kaggle", 
-                    num_episodes = 100, num_steps = 10)
+                    num_episodes=100, num_steps=10)
     
     # Create world
     engine.create_world()
