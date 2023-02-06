@@ -68,8 +68,6 @@ class Engine:
         """
         # Initialize environment
         self.env = MDP(self.mdp_data, self.gamma)
-        # Create environment
-        self.env.initialise_env()
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.
@@ -78,17 +76,13 @@ class Engine:
         # Fit the agent
         self.agent.fit(self.num_episodes, self.num_episodes)
 
-    def what_should_i_do_given_state(self):
-        """Implement this."""
-        # TODO: Not sure if this is needed
-        pass
-
     def get_results(self):
         """Get the results of training.
 
         This could be the average return after convergence.
         """
-        # TODO: Not sure if this is needed
+        # TODO: Next sprint
+        # Compare 2 agents
         pass
 
     def save_parameters(self):
@@ -110,5 +104,6 @@ class Engine:
         This method returns the action that should be taken given a state.
         """
         # TODO: ensure that here output is action with max q values (NO exploration)
+        # Get both action & reward
         return self.agent.epsilon_greedy_policy(state)
 
