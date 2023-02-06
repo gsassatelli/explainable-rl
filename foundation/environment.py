@@ -1,13 +1,14 @@
-import agent
+from foundation.agent import Agent
 import sparse
 import numpy as np
 
 
 class MDP:
-    def __init__(self, dataset, discount_factor=0):
+    def __init__(self, mdp_data, discount_factor=0):
         """Initialise the MDP superclass."""
         self.average_rewards = None
-        self.dataset = dataset
+        self.state_to_action = {}
+        self.mdp_data = mdp_data
         self.initialise_env()
 
     def initialise_env(self):
@@ -20,23 +21,25 @@ class MDP:
 
         # Group state and action from the dataset
         zipped = []
-        for i in range(len(self.dataset)):
-            zipped.append(self.dataset[i, 0] + self.dataset[i, 1])
-
-        print(zipped)
+        for i in range(len(self.mdp_data)):
+            state_array = self.mdp_data["s"].iloc[i].tolist()
+            action_array =  self.mdp_data["a"].iloc[i].tolist()
+            zipped.append(state_array + action_array)
 
         # Create the bins
         binned = np.digitize(zipped, np.arange(0, 1 + 1/num_bins, step=1/num_bins).tolist(), right=True)
 
-        print(binned)
-
+        #breakpoint()
         bins_dict = {}
-
+        self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            reward = self.dataset[ix, 2]
-
+            reward = self.mdp_data["r"].iloc[ix]
+            # update state to action
+            state = ",".join([str(s) for s in bin[:-1]])
+            self.state_to_action.setdefault(state, set()).add(bin[-1])
+            
+            # update bin_dict
             bin = str(bin).replace("[", "").replace("]", "")
-
             bins_dict[bin][0] = bins_dict.setdefault(bin, [0, 0])[0] + 1
             bins_dict[bin][1] += reward[0]
 
@@ -47,19 +50,21 @@ class MDP:
             # print(key)
             d = []
             for i in key.split(" "):
-                # print(i)
-                d+= [eval(i)]
+                if len(i) > 0:
+                    d+= [int(i)]
             # d = [eval(i) for i in key]
             coords.append(d)
             data.extend([value[1] / value[0]])
 
         coords = np.array(coords).T.tolist()
-
         return sparse.COO(coords, data)
 
 
-    def reset_env(self):
-        """Reset environment and return a randomised state."""
+    def reset(self):
+        """Reset environment and return a randomised state.
+        
+        TODO: return only states that have happened
+        """
         # Tested
         state = []
         for dim in self.average_rewards.shape:
@@ -69,10 +74,12 @@ class MDP:
 
     def step(self, state, action):
         """Take a step in the environment. Done means is the env terminated.
-        Returns state, next state, reward, done."""
-
-        reward = self.average_rewards[state.extend(action)]
-        return state, state, reward, "done"
+        Returns state, next state, reward, done.
+        
+        TODO: fix the way to query average rewards
+        """
+        reward = self.average_rewards[state[0],state[1],state[2],action]
+        return state, state, reward, True
 
 
 # # """Understanding sparse matrices"""
