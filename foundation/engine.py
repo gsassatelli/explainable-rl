@@ -2,28 +2,30 @@
 from typing import Tuple
 import torch
 import numpy as np
+import pandas as pd
 
 # Import environment and agent
-from agent import Agent
-from environment import MDP
+from foundation.agent import Agent
+from foundation.environment import MDP
 
 class Engine:
 
-    __slots__ = ["dataset", "agent_type", "env_type", "agent", "env", "gamma",
+    __slots__ = ["mdp_data", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", "q_table"]
 
     def __init__(self, 
-                 dataset: np.array[np.array, np.array, np.arraynp.array],
+                 mdp_data: pd.DataFrame,
                  agent_type: str, 
                  env_type: str,
                  num_episodes: int,
-                 num_steps: int):
+                 num_steps: int,
+                 gamma: float = 0.9):
         """Initialise the Engine superclass.
         Dataset is a multi-type np.array [state, action, reward, next_state].
 
         """
         # Save dataset to train
-        self.dataset = dataset
+        self.mdp_data = mdp_data
 
         # Hyperparameters
         self.num_episodes = num_episodes
@@ -46,27 +48,26 @@ class Engine:
         """Create the Agent and MDP instances for the given task.
 
         """
-        # Create chosen agent
-        self.create_agent()
         # Create chosen environment
         self.create_env()
+        
+        # Create chosen agent
+        self.create_agent()
 
     def create_agent(self):
         """Create an agent and store it in Engine.
 
         """
-        if self.agent_type == "q-learner":
+        if self.agent_type == "q_learner":
             # Initialize agent
-            self.agent = Agent()
-            # Create agent
-            self.agent.create_agent()
+            self.agent = Agent(self.env)
 
     def create_env(self):
         """Create an env and store it in Engine.
 
         """
         # Initialize environment
-        self.env = MDP(self.dataset, self.gamma)
+        self.env = MDP(self.mdp_data, self.gamma)
         # Create environment
         self.env.initialise_env()
 
@@ -110,3 +111,4 @@ class Engine:
         """
         # TODO: ensure that here output is action with max q values (NO exploration)
         return self.agent.epsilon_greedy_policy(state)
+
