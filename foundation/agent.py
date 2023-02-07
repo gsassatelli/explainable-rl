@@ -3,25 +3,37 @@ import sparse
 import random
 
 class Agent():
-    def __init__(self, env):
-        """Initialise the agent superclass."""
+    def __init__(self, env, gamma: float = 0.9):
+        """Initialise the agent class.
+        
+        Args:
+            env: mdp.
+            gamma: discount factor.
+        
+        TODO: fix circular import (we cannot import MDP into agent 
+        and agent into MDP)
+        """        
         self.env = env
         self.Q = None
         self.state_to_action = None
         self.gamma = 0.9
-        self.initialize_agent()
         #self.state = None
-        #self.q = ...
-        self.rewards_per_episode = []
+        #self.rewards_per_episode = []
         # self.total_episode_reward = 0
-        pass
 
-    def fit(self, n_episodes, n_steps, lr=1):
-        """Fit agent to dataset.
+        self.initialize_agent()
 
-        TODO: decay. """
-        
-        
+
+    def fit(self, n_episodes: int, n_steps: int, lr: float = 1):
+        """Fit agent to the dataset.
+
+        Args:
+            n_episodes: number of training episodes.
+            n_steps: maximum number of steps within each episode.
+            lr: learning rate.
+
+        TODO: decay.
+        """  
         for _ in range(n_episodes):
             #self.state = self.env.reset()
             # env reset is not working so implementing it here:
@@ -31,17 +43,27 @@ class Agent():
                 action = self.epsilon_greedy_policy(self.state_str)
                 state, next_state, reward, done = self.env.step(self.state,
                                                                 action)
-
                 self.update_q_values(state, action, next_state, reward, lr)
-
                 self.state = next_state
                 if done:
                     break
+
         print("Finished training :) !")
         print(f"Example Q-table for state {[0,11,0]}: {self.Q[0,11,0].todense()}")
 
-    def update_q_values(self, state, action, next_state, reward, lr):
-        """Update the q table of the agent using Bellman.
+    def update_q_values(self, state: list,
+                        action: int,
+                        next_state: list,
+                        reward: float,
+                        lr: float):
+        """Update the Q table using the Bellman equation.
+
+        Args:
+            state: current state of the agent.
+            action: selected action.
+            next_state: state to which the agent transitions.
+            reward: reward obtained with the selected action.
+            lr: learning rate.
         
         TODO: implement part related to gamma (not necessary for now
         because we have a myopic env)
@@ -50,7 +72,7 @@ class Agent():
             (1-lr)*self.Q[state[0],state[1],state[2],action] + lr*(reward)
 
     def initialize_agent(self):
-        """Reset the environment. Called by agent when the episode starts."""
+        """Initialize agent (called by agent when the episode starts)."""
         # reset environment
         self.env.reset()
         
@@ -76,6 +98,9 @@ class Agent():
 
     def epsilon_greedy_policy(self, state):
         """Returns the epsilon greedy action.
+
+        Args:
+            state: current state.
         
         TODO: implement the "epsilon part"
         """
