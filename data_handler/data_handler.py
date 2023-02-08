@@ -9,6 +9,7 @@ import copy
 # TODO: add flag for next states
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
+
     """
 
     def __init__(self, data_path: str,
@@ -35,7 +36,9 @@ class DataHandler:
     def prepare_data_for_engine(self, col_delimiter: str = ',',
                                 cols_to_normalise:
                                 Union[List[str] | None] = None):
-        """Prepare dataset for the Engine class."""
+        """Prepare dataset for the Engine class.
+        
+        """
         self.load_data(delimiter=col_delimiter)
         self.preprocess_data(normalisation=True,
                              columns_to_normalise=cols_to_normalise)
