@@ -1,3 +1,4 @@
+# Import packages
 import numpy as np
 import sparse
 import random
@@ -66,7 +67,7 @@ class Agent():
             lr: learning rate.
         
         TODO: implement part related to gamma (not necessary for now
-        because we have a myopic env)
+              because we have a myopic env)
         """
         self.Q[state[0],state[1],state[2],action] = \
             (1-lr)*self.Q[state[0],state[1],state[2],action] + lr*(reward)

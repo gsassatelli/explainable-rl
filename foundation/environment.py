@@ -1,4 +1,4 @@
-from foundation.agent import Agent
+# Import packages
 import sparse
 import numpy as np
 

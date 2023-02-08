@@ -21,7 +21,6 @@ class Engine:
                  num_steps: int,
                  gamma: float = 0.9):
         """Initialise the Engine superclass.
-        Dataset is a multi-type np.array [state, action, reward, next_state].
 
         """
         # Save dataset to train
@@ -79,10 +78,10 @@ class Engine:
     def get_results(self):
         """Get the results of training.
 
-        This could be the average return after convergence.
+        TODO: Next sprint to compare 2 agents
+              This could be the average return after convergence.
         """
-        # TODO: Next sprint
-        # Compare 2 agents
+        #
         pass
 
     def save_parameters(self):
@@ -101,9 +100,14 @@ class Engine:
     def evaluate(self, state):
         """Evaluate the learned policy at a particular state.
 
-        This method returns the action that should be taken given a state.
+        Args:
+            state: state for which an action needs to be predicted.
+        Returns:
+            action_reward: action and reward for a given state
+
+        TODO: ensure that here output is action with max q values (NO exploration)
         """
-        # TODO: ensure that here output is action with max q values (NO exploration)
         # Get both action & reward
-        return self.agent.epsilon_greedy_policy(state)
+        action_reward = self.agent.epsilon_greedy_policy(state)
+        return action_reward
 
