@@ -102,6 +102,7 @@ class MDP:
         Returns:
             sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
         """
+        print("Create average rewards matrix")
         zipped = self.join_state_action()
 
         # Create the bins

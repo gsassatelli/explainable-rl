@@ -48,9 +48,11 @@ class Engine:
 
         """
         # Create chosen environment
+        print("Initialize environment")
         self.create_env()
         
         # Create chosen agent
+        print("Initialize agent")
         self.create_agent()
 
     def create_agent(self):
