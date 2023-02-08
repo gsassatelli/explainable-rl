@@ -4,8 +4,15 @@ import numpy as np
 
 
 class MDP:
+    """Defines and instantiates an MDP object.
+    """
     def __init__(self, mdp_data, discount_factor=0):
-        """Initialise the MDP superclass."""
+        """Initialises the MDP superclass.
+
+        Args:
+            mdp_data (pd.DataFrame): Dataframe containing states, actions and rewards.
+            discount_factor (int, optional): Gamma value for the MDP. Defaults to 0.
+        """
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
@@ -14,11 +21,15 @@ class MDP:
         
 
     def initialise_env(self):
-        """Create the environment given the MDP information.
-        """
+        """Creates the environment given the MDP information."""
         self.average_rewards = self.make_rewards_from_data()
 
     def join_state_action(self):
+        """Joins the state and action pairs together.
+
+        Returns:
+            list: Group of states and actions per datapoint.
+        """
         zipped = []
         for i in range(len(self.mdp_data)):
             state_array = self.mdp_data["s"].iloc[i].tolist()
@@ -27,9 +38,25 @@ class MDP:
         return zipped
 
     def bin_state_action_space(self, zipped):
+        """Bins the state-action pairs.
+
+        Args:
+            zipped (list): Group of states and actions per datapoint.
+
+        Returns:
+            np.array: Binned state-action pairs.
+        """
         return np.digitize(zipped, np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist(), right=True)
 
     def get_counts_and_rewards_per_bin(self, binned):
+        """Creates a dictionary of counts of datapoints per bin and sums the associated rewards. 
+
+        Args:
+            binned (np.array): Binned state-action pairs.
+
+        Returns:
+            dict: dictionary of counts of datapoints per bin and sums the associated rewards.
+        """
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
@@ -45,6 +72,14 @@ class MDP:
         return bins_dict
 
     def create_average_reward_matrix(self, bins_dict):
+        """Generates a sparse matrix of average rewards for each bin in the dataset.
+
+        Args:
+            bins_dict (dict): dictionary of counts of datapoints per bin and sums the associated rewards.
+
+        Returns:
+            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+        """
         coords = []
         data = []
 
@@ -62,9 +97,11 @@ class MDP:
         return sparse.COO(coords, data)
 
     def make_rewards_from_data(self):
-        
-        """Make the state-action reward table from dataset."""
+        """Creates sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
+        Returns:
+            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+        """
         zipped = self.join_state_action()
 
         # Create the bins
@@ -78,20 +115,26 @@ class MDP:
         return average_reward_matrix
   
     def reset(self):
-        """Reset environment and return a randomised state.
-        
-        TODO: return only states that have happened
+        """Resets environment.
+
+        Returns:
+            list: Randomised initial state.
         """
         state = self.mdp_data['s'].sample().values.tolist()
- 
-        return state
+        binned_state = self.bin_state_action_space(state)
+        return binned_state
 
     def step(self, state, action):
-        """Take a step in the environment. Done means is the env terminated.
-        Returns state, next state, reward, done.
-        
-        TODO: fix the way to query average rewards
+        """Takes a step in the environment.
+
+        Done flags means the environment terminated.
+
+        Args:
+            state (list): Current state values of agent.
+            action (list): Action for agent to take.
+
+        Returns:
+            tuple: current state, action, next state, done flag.
         """
         reward = self.average_rewards[state[0],state[1],state[2],action]
         return state, state, reward, True
-
