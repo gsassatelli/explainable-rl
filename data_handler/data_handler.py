@@ -1,14 +1,15 @@
+# Import packages
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 from typing import List, Tuple, Union
-
 import copy
 
 # TODO: change normalisation to [0, 1]
 # TODO: add flag for next states
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
+
     """
 
     def __init__(self, data_path: str,
@@ -35,7 +36,9 @@ class DataHandler:
     def prepare_data_for_engine(self, col_delimiter: str = ',',
                                 cols_to_normalise:
                                 Union[List[str] | None] = None):
-        """Prepare dataset for the Engine class."""
+        """Prepare dataset for the Engine class.
+        
+        """
         self.load_data(delimiter=col_delimiter)
         self.preprocess_data(normalisation=True,
                              columns_to_normalise=cols_to_normalise)
@@ -48,7 +51,6 @@ class DataHandler:
     def preprocess_data(self,
                         normalisation: bool = True,
                         columns_to_normalise: Union[List[str] | None] = None):
-        # TODO: Extension - aggregate over a time period
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
@@ -58,6 +60,8 @@ class DataHandler:
             normalisation: True if normalisation is to be applied.
             columns_to_normalise: Columns on which to apply normalisation.
                 if left empty all columns will be normalised.
+
+        TODO: Extension - aggregate over a time period
         """
         np.random.seed = 1
         self._filter_data()
@@ -86,6 +90,7 @@ class DataHandler:
 
     def reverse_norm(self):
         """Reverse the normalising of the dataset.
+
         """
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
@@ -116,34 +121,40 @@ class DataHandler:
 
     def _filter_data(self):
         """Filter the dataset.
+
         """
         self.dataset = self.dataset.dropna()
 
     def _transform_col(self, col_name: str):
         """Normalise one column of the dataset.
+
         """
         scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
 
     def _inverse_transform_col(self, col_name: str):
-        """Reverse the normalisation of one column of the dataset."""
+        """Reverse the normalisation of one column of the dataset.
+
+        """
         scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
             pd.DataFrame(self.dataset[col_name]))
 
     def _fit_standard_scalars(self):
-        """Train the sklearn MinMaxScaler and store one per column."""
+        """Train the sklearn MinMaxScaler and store one per column.
+
+        """
         for col in self.dataset:
             scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
             self._minmax_scalars[col] = scalar
 
 
-if __name__ == "__main__":
-    states = ['competitorPrice', 'adFlag', 'availability']
-    actions = ['price']
-    rewards = ['revenue']
-    dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions,
-                     rewards)
-    dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=actions)
+# if __name__ == "__main__":
+#     states = ['competitorPrice', 'adFlag', 'availability']
+#     actions = ['price']
+#     rewards = ['revenue']
+#     dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions,
+#                      rewards)
+#     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=actions)
