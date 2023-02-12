@@ -34,8 +34,7 @@ class DataHandler:
         self.mdp_data = None
 
     def prepare_data_for_engine(self, col_delimiter: str = ',',
-                                cols_to_normalise:
-                                Union[List[str] | None] = None):
+                                cols_to_normalise=None):
         """Prepare dataset for the Engine class.
         
         """
@@ -50,7 +49,7 @@ class DataHandler:
 
     def preprocess_data(self,
                         normalisation: bool = True,
-                        columns_to_normalise: Union[List[str] | None] = None):
+                        columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
@@ -75,7 +74,7 @@ class DataHandler:
 
         self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
 
-    def normalise_dataset(self, cols_to_norm: Union[List[str] | None] = None):
+    def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
 
         Args:
