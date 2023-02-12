@@ -44,8 +44,8 @@
 <li class="toctree-l2 current"><a class="current reference internal" href="#">foundation package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-foundation.agent">foundation.agent module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#foundation-engine-module">foundation.engine module</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#foundation-environment-module">foundation.environment module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-foundation.engine">foundation.engine module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-foundation.environment">foundation.environment module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-foundation">Module contents</a></li>
 </ul>
 </li>
@@ -87,41 +87,320 @@
 <span id="foundation-agent-module"></span><h2>foundation.agent module<a class="headerlink" href="#module-foundation.agent" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="foundation.agent.Agent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">policy</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="foundation.agent.Agent.create_agent">
-<span class="sig-name descname"><span class="pre">create_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.create_agent" title="Permalink to this definition"></a></dt>
-<dd><p>Reset the environment. Called by agent when the episode starts.</p>
-</dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="foundation.agent.Agent.epsilon_greedy_policy">
 <span class="sig-name descname"><span class="pre">epsilon_greedy_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
 <dd><p>Returns the epsilon greedy action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> – current state.</p>
+</dd>
+</dl>
+<p>TODO: implement the “epsilon part”</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="foundation.agent.Agent.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.fit" title="Permalink to this definition"></a></dt>
-<dd><p>Fit agent to dataset.</p>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fit agent to the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_episodes</strong> – number of training episodes.</p></li>
+<li><p><strong>n_steps</strong> – maximum number of steps within each episode.</p></li>
+<li><p><strong>lr</strong> – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
 <p>TODO: decay.</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="foundation.agent.Agent.initialize_agent">
+<span class="sig-name descname"><span class="pre">initialize_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.initialize_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize agent (called by agent when the episode starts).</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="foundation.agent.Agent.update_q_values">
-<span class="sig-name descname"><span class="pre">update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.update_q_values" title="Permalink to this definition"></a></dt>
-<dd><p>Update the q table of the agent using Bellman.</p>
+<span class="sig-name descname"><span class="pre">update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table using the Bellman equation.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> – current state of the agent.</p></li>
+<li><p><strong>action</strong> – selected action.</p></li>
+<li><p><strong>next_state</strong> – state to which the agent transitions.</p></li>
+<li><p><strong>reward</strong> – reward obtained with the selected action.</p></li>
+<li><p><strong>lr</strong> – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+<dl class="simple">
+<dt>TODO: implement part related to gamma (not necessary for now</dt><dd><p>because we have a myopic env)</p>
+</dd>
+</dl>
 </dd></dl>
 
 </dd></dl>
 
 </section>
-<section id="foundation-engine-module">
-<h2>foundation.engine module<a class="headerlink" href="#foundation-engine-module" title="Permalink to this heading"></a></h2>
+<section id="module-foundation.engine">
+<span id="foundation-engine-module"></span><h2>foundation.engine module<a class="headerlink" href="#module-foundation.engine" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foundation.engine.Engine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.engine.</span></span><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdp_data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.agent">
+<span class="sig-name descname"><span class="pre">agent</span></span><a class="headerlink" href="#foundation.engine.Engine.agent" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.agent_type">
+<span class="sig-name descname"><span class="pre">agent_type</span></span><a class="headerlink" href="#foundation.engine.Engine.agent_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.create_agent">
+<span class="sig-name descname"><span class="pre">create_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.create_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Create an agent and store it in Engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.create_env">
+<span class="sig-name descname"><span class="pre">create_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.create_env" title="Permalink to this definition"></a></dt>
+<dd><p>Create an env and store it in Engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.create_world">
+<span class="sig-name descname"><span class="pre">create_world</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.create_world" title="Permalink to this definition"></a></dt>
+<dd><p>Create the Agent and MDP instances for the given task.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.env">
+<span class="sig-name descname"><span class="pre">env</span></span><a class="headerlink" href="#foundation.engine.Engine.env" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.env_type">
+<span class="sig-name descname"><span class="pre">env_type</span></span><a class="headerlink" href="#foundation.engine.Engine.env_type" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.episode_flag">
+<span class="sig-name descname"><span class="pre">episode_flag</span></span><a class="headerlink" href="#foundation.engine.Engine.episode_flag" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.evaluate">
+<span class="sig-name descname"><span class="pre">evaluate</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.evaluate" title="Permalink to this definition"></a></dt>
+<dd><p>Evaluate the learned policy at a particular state.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> – state for which an action needs to be predicted.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>action and reward for a given state</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>action_reward</p>
+</dd>
+</dl>
+<p>TODO: ensure that here output is action with max q values (NO exploration)</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.gamma">
+<span class="sig-name descname"><span class="pre">gamma</span></span><a class="headerlink" href="#foundation.engine.Engine.gamma" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.get_results">
+<span class="sig-name descname"><span class="pre">get_results</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.get_results" title="Permalink to this definition"></a></dt>
+<dd><p>Get the results of training.</p>
+<dl class="simple">
+<dt>TODO: Next sprint to compare 2 agents</dt><dd><p>This could be the average return after convergence.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.mdp_data">
+<span class="sig-name descname"><span class="pre">mdp_data</span></span><a class="headerlink" href="#foundation.engine.Engine.mdp_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.num_episodes">
+<span class="sig-name descname"><span class="pre">num_episodes</span></span><a class="headerlink" href="#foundation.engine.Engine.num_episodes" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.num_steps">
+<span class="sig-name descname"><span class="pre">num_steps</span></span><a class="headerlink" href="#foundation.engine.Engine.num_steps" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.policy">
+<span class="sig-name descname"><span class="pre">policy</span></span><a class="headerlink" href="#foundation.engine.Engine.policy" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="foundation.engine.Engine.q_table">
+<span class="sig-name descname"><span class="pre">q_table</span></span><a class="headerlink" href="#foundation.engine.Engine.q_table" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.save_parameters">
+<span class="sig-name descname"><span class="pre">save_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.save_parameters" title="Permalink to this definition"></a></dt>
+<dd><p>Save the parameters learned during training.</p>
+<p>This could be e.g. the q-values, the policy, or any other learned parameters.</p>
+<p>TODO: Not sure this function is needed, can call directly agent
+TODO: Epsilon greedy policy already contains q-values, remove it?</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.engine.Engine.train_agent">
+<span class="sig-name descname"><span class="pre">train_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.engine.Engine.train_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Train the agent for a chosen number of steps and episodes.</p>
+</dd></dl>
+
+</dd></dl>
+
 </section>
-<section id="foundation-environment-module">
-<h2>foundation.environment module<a class="headerlink" href="#foundation-environment-module" title="Permalink to this heading"></a></h2>
+<section id="module-foundation.environment">
+<span id="foundation-environment-module"></span><h2>foundation.environment module<a class="headerlink" href="#module-foundation.environment" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="foundation.environment.MDP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.environment.</span></span><span class="sig-name descname"><span class="pre">MDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mdp_data</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">discount_factor</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Defines and instantiates an MDP object.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.bin_state_action_space">
+<span class="sig-name descname"><span class="pre">bin_state_action_space</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">zipped</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.bin_state_action_space" title="Permalink to this definition"></a></dt>
+<dd><p>Bins the state-action pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>zipped</strong> (<em>list</em>) – Group of states and actions per datapoint.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Binned state-action pairs.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.array</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.create_average_reward_matrix">
+<span class="sig-name descname"><span class="pre">create_average_reward_matrix</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bins_dict</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.create_average_reward_matrix" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a sparse matrix of average rewards for each bin in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>bins_dict</strong> (<em>dict</em>) – dictionary of counts of datapoints per bin and sums the associated rewards.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>sparse matrix of binned state-action pairs and their associate average reward.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>sparse.COO</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.get_counts_and_rewards_per_bin">
+<span class="sig-name descname"><span class="pre">get_counts_and_rewards_per_bin</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">binned</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.get_counts_and_rewards_per_bin" title="Permalink to this definition"></a></dt>
+<dd><p>Creates a dictionary of counts of datapoints per bin and sums the associated rewards.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>binned</strong> (<em>np.array</em>) – Binned state-action pairs.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>dictionary of counts of datapoints per bin and sums the associated rewards.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.initialise_env">
+<span class="sig-name descname"><span class="pre">initialise_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.initialise_env" title="Permalink to this definition"></a></dt>
+<dd><p>Creates the environment given the MDP information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.join_state_action">
+<span class="sig-name descname"><span class="pre">join_state_action</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.join_state_action" title="Permalink to this definition"></a></dt>
+<dd><p>Joins the state and action pairs together.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Group of states and actions per datapoint.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.make_rewards_from_data">
+<span class="sig-name descname"><span class="pre">make_rewards_from_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.make_rewards_from_data" title="Permalink to this definition"></a></dt>
+<dd><p>Creates sparse matrix of the state-action pairs and associated rewards from the inputted dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>sparse matrix of binned state-action pairs and their associate average reward.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>sparse.COO</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Resets environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Randomised initial state.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="foundation.environment.MDP.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.environment.MDP.step" title="Permalink to this definition"></a></dt>
+<dd><p>Takes a step in the environment.</p>
+<p>Done flags means the environment terminated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – Current state values of agent.</p></li>
+<li><p><strong>action</strong> (<em>list</em>) – Action for agent to take.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>current state, action, next state, done flag.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-foundation">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-foundation" title="Permalink to this heading"></a></h2>

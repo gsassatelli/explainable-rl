@@ -4,5 +4,5 @@ explainable-RL
 .. toctree::
    :maxdepth: 4
 
-   data-handler
+   data_handler
    foundation
