@@ -24,6 +24,7 @@ class MDP:
         """Creates the environment given the MDP information."""
         self.average_rewards = self.make_rewards_from_data()
 
+    @profile
     def join_state_action(self):
         """Joins the state and action pairs together.
 
@@ -32,6 +33,7 @@ class MDP:
         """
         zipped = []
         for i in range(len(self.mdp_data)):
+            # The following 2 lines taking up most time
             state_array = self.mdp_data["s"].iloc[i].tolist()
             action_array =  self.mdp_data["a"].iloc[i].tolist()
             zipped.append(state_array + action_array)
@@ -48,6 +50,7 @@ class MDP:
         """
         return np.digitize(zipped, np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist(), right=True)
 
+    @profile
     def get_counts_and_rewards_per_bin(self, binned):
         """Creates a dictionary of counts of datapoints per bin and sums the associated rewards. 
 
@@ -60,12 +63,14 @@ class MDP:
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
+            # Following line taking up a lot time
             reward = self.mdp_data["r"].iloc[ix]
             # update state to action
             state = ",".join([str(s) for s in bin[:-1]])
             self.state_to_action.setdefault(state, set()).add(bin[-1])
             
             # update bin_dict
+            # Following line taking up a little time. Must be changed anyway.
             bin = str(bin).replace("[", "").replace("]", "")
             bins_dict[bin][0] = bins_dict.setdefault(bin, [0, 0])[0] + 1
             bins_dict[bin][1] += reward[0]
@@ -96,6 +101,7 @@ class MDP:
         coords = np.array(coords).T.tolist()
         return sparse.COO(coords, data)
 
+    @profile
     def make_rewards_from_data(self):
         """Creates sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
