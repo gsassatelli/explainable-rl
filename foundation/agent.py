@@ -15,7 +15,9 @@ class Agent:
     """Agent class to store and update q-table.
     """
 
-    def __init__(self, env: MDP, gamma: float = 0.9):
+    def __init__(self,
+                 env: MDP,
+                 gamma: float = 0.9):
         """Initialise the agent class.
         
         Args:
@@ -124,7 +126,8 @@ class Agent:
                 coords.append(state + [action])
         self._create_dok_q_table(coords)
 
-    def _create_dok_q_table(self, coords):
+    def _create_dok_q_table(self,
+                            coords):
         """Create the q-table in DOK format.
 
         Args:
