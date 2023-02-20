@@ -139,13 +139,16 @@ class Agent:
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        action = self._epsilon_greedy_policy(self.state,
-                                             epsilon=epsilon)
-        state, next_state, reward, done = self.env.step(self.state,
-                                                        action)
-        self._update_q_values(state, action, next_state, reward, lr)
-        self.state = next_state
-        return done
+        if state is None:
+            state = self.state
+        if state_str is None:
+            state_str = self.state_str
+        q_values = self.Q[state[0], state[1], state[2], :].todense()
+        if random.random() > epsilon:
+            action = np.argmax(q_values)
+        else:
+            action = random.choice(list(self.state_to_action[state_str]))
+        return action
 
     def _update_q_values(self, state,
                          action,
