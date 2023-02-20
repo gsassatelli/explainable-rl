@@ -1,28 +1,22 @@
 # Import packages
-from __future__ import annotations
 import numpy as np
 from foundation.utils import *
 import sparse
 import random
 from datetime import datetime
-from typing import Tuple, List, Union, Dict, Optional, TYPE_CHECKING
 
-if TYPE_CHECKING:
-    from foundation.environment import MDP
 
 
 class Agent:
     """Agent class to store and update q-table.
     """
 
-    def __init__(self,
-                 env: MDP,
-                 gamma: float = 0.9):
+    def __init__(self, env, gamma=0.9):
         """Initialise the agent class.
         
         Args:
-            env: mdp.
-            gamma: discount factor.
+            env (MDP): MDP object.
+            gamma (float): Discount factor.
         """
         self.env = env
         self.Q = None
@@ -31,27 +25,21 @@ class Agent:
         self.state = None
         self._initialize_agent()
 
-    def fit(self, n_episodes: int,
-            n_steps: int,
-            lr: float = 0.1,
-            lr_decay: float = 0.05,
-            lr_min: float = 0.01,
-            epsilon: float = 0.1,
-            epsilon_decay: float = 0.05,
-            epsilon_min: float = 0.01,
-            verbose: bool = False):
+    def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
+            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
+
         """Fit agent to the dataset.
 
         Args:
-            n_episodes: number of training episodes.
-            n_steps: maximum number of steps within each episode.
-            lr: learning rate.
-            lr_decay: learning rate decay.
-            lr_min: minimum learning rate.
-            epsilon: epsilon-greedy policy parameter.
-            epsilon_decay: epsilon decay.
-            epsilon_min: minimum epsilon.
-            verbose: print training information.
+            n_episodes (int): number of episodes.
+            n_steps (int): number of steps per episode.
+            lr (float): learning rate.
+            lr_decay (float): learning rate decay.
+            lr_min (float): minimum learning rate.
+            epsilon (float): epsilon-greedy policy parameter.
+            epsilon_decay (float): epsilon decay.
+            epsilon_min (float): minimum epsilon.
+            verbose (bool): print training information.
         """
         if verbose:
             print("Apply q-learning and update q-table")
@@ -74,14 +62,14 @@ class Agent:
                   f"{[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
 
     def _initialize_agent(self,
-                         verbose: bool = False):
+                         verbose=False):
         """Initialize the agent.
 
         This resets the environment, creates the q-table and the state to
         action mapping.
 
         Args:
-            verbose: print information.
+            verbose (bool): print information.
         """
         self.env.reset()
         if verbose:
@@ -91,17 +79,17 @@ class Agent:
         self.state_to_action = self.env.state_to_action
 
     def _epsilon_greedy_policy(self,
-                               state: Optional[List[int]] = None,
-                               epsilon: float = 0.1) -> int:
+                               state=None,
+                               epsilon=0.1):
         """Get the epsilon greedy action.
 
         Args:
-            state: current state.
-            state_str: the state as a string.
-            epsilon: the exploration parameter.
+            state (list): current state of the agent.
+            state_str (string): the state as a string.
+            epsilon (float): the exploration parameter.
 
         Returns:
-            action: selected action.
+            action (int): selected action.
         """
         if state is None:
             state = self.state
@@ -131,7 +119,7 @@ class Agent:
         """Create the q-table in DOK format.
 
         Args:
-            coords: coordinates of the q-table.
+            coords (list): list of coordinates.
         """
         q_values = np.zeros(len(coords))
         coords = np.array(coords).T.tolist()
@@ -142,14 +130,12 @@ class Agent:
         # convert to DOK
         self.Q = sparse.DOK.from_numpy(self.Q.todense())
 
-    def _step(self,
-              epsilon: float,
-              lr: float) -> bool:
+    def _step(self, epsilon, lr):
         """Perform a step in the environment.
 
         Args:
-            epsilon: epsilon-greedy policy parameter.
-            lr: learning rate.
+            epsilon (float): epsilon-greedy policy parameter.
+            lr (float): learning rate.
 
         Returns:
             done: boolean indicating whether the episode is finished.
@@ -162,19 +148,19 @@ class Agent:
         self.state = next_state
         return done
 
-    def _update_q_values(self, state: list,
-                         action: int,
-                         next_state: list,
-                         reward: float,
-                         lr: float):
+    def _update_q_values(self, state,
+                         action,
+                         next_state,
+                         reward,
+                         lr):
         """Update the Q table using the Bellman equation.
 
         Args:
-            state: current state of the agent.
-            action: selected action.
-            next_state: state to which the agent transitions.
-            reward: reward obtained with the selected action.
-            lr: learning rate.
+            state (list): current state of the agent.
+            action (int): selected action.
+            next_state (list): next state of the agent.
+            reward (float): reward for the selected action.
+            lr (float): learning rate.
         """
         q_current = self.Q[state[0], state[1], state[2], action]
         q_next = np.max(self.Q[next_state[0], next_state[1],

@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="data-handler package" href="data-handler.html" /> 
+    <link rel="prev" title="data-handler package" href="data_handler.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,7 +40,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="reference internal" href="modules.html">explainable-RL</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="data-handler.html">data-handler package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="data_handler.html">data-handler package</a></li>
 <li class="toctree-l2 current"><a class="current reference internal" href="#">foundation package</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-foundation.agent">foundation.agent module</a></li>
@@ -87,23 +87,12 @@
 <span id="foundation-agent-module"></span><h2>foundation.agent module<a class="headerlink" href="#module-foundation.agent" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="foundation.agent.Agent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">foundation.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#foundation.environment.MDP" title="foundation.environment.MDP"><span class="pre">MDP</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<dl class="py method">
-<dt class="sig sig-object py" id="foundation.agent.Agent.epsilon_greedy_policy">
-<span class="sig-name descname"><span class="pre">epsilon_greedy_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the epsilon greedy action.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>state</strong> – current state.</p>
-</dd>
-</dl>
-<p>TODO: implement the “epsilon part”</p>
-</dd></dl>
-
+<p>Agent class to store and update q-table.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="foundation.agent.Agent.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_decay</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_min</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit agent to the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -111,35 +100,13 @@
 <li><p><strong>n_episodes</strong> – number of training episodes.</p></li>
 <li><p><strong>n_steps</strong> – maximum number of steps within each episode.</p></li>
 <li><p><strong>lr</strong> – learning rate.</p></li>
+<li><p><strong>lr_decay</strong> – learning rate decay.</p></li>
+<li><p><strong>lr_min</strong> – minimum learning rate.</p></li>
+<li><p><strong>epsilon</strong> – epsilon-greedy policy parameter.</p></li>
+<li><p><strong>epsilon_decay</strong> – epsilon decay.</p></li>
+<li><p><strong>epsilon_min</strong> – minimum epsilon.</p></li>
+<li><p><strong>verbose</strong> – print training information.</p></li>
 </ul>
-</dd>
-</dl>
-<p>TODO: decay.</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="foundation.agent.Agent.initialize_agent">
-<span class="sig-name descname"><span class="pre">initialize_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.initialize_agent" title="Permalink to this definition"></a></dt>
-<dd><p>Initialize agent (called by agent when the episode starts).</p>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="foundation.agent.Agent.update_q_values">
-<span class="sig-name descname"><span class="pre">update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#foundation.agent.Agent.update_q_values" title="Permalink to this definition"></a></dt>
-<dd><p>Update the Q table using the Bellman equation.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> – current state of the agent.</p></li>
-<li><p><strong>action</strong> – selected action.</p></li>
-<li><p><strong>next_state</strong> – state to which the agent transitions.</p></li>
-<li><p><strong>reward</strong> – reward obtained with the selected action.</p></li>
-<li><p><strong>lr</strong> – learning rate.</p></li>
-</ul>
-</dd>
-</dl>
-<dl class="simple">
-<dt>TODO: implement part related to gamma (not necessary for now</dt><dd><p>because we have a myopic env)</p>
 </dd>
 </dl>
 </dd></dl>
@@ -387,7 +354,7 @@ TODO: Epsilon greedy policy already contains q-values, remove it?</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> (<em>list</em>) – Current state values of agent.</p></li>
-<li><p><strong>action</strong> (<em>list</em>) – Action for agent to take.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Action for agent to take.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -411,7 +378,7 @@ TODO: Epsilon greedy policy already contains q-values, remove it?</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="data-handler.html" class="btn btn-neutral float-left" title="data-handler package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="data_handler.html" class="btn btn-neutral float-left" title="data-handler package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
     </div>
 
   <hr/>
