@@ -3,6 +3,8 @@ import numpy as np
 import sparse
 import random
 from datetime import datetime
+from typing import Tuple, List, Union, Dict, Optional
+
 
 class Agent():
     def __init__(self, env, gamma: float = 0.9):
@@ -14,7 +16,7 @@ class Agent():
         
         TODO: fix circular import (we cannot import MDP into agent 
         and agent into MDP)
-        """        
+        """
         self.env = env
         self.Q = None
         self.state_to_action = None
@@ -24,7 +26,6 @@ class Agent():
         # self.total_episode_reward = 0
 
         self.initialize_agent()
-
 
     def fit(self, n_episodes: int, n_steps: int, lr: float = 1):
         """Fit agent to the dataset.
@@ -43,7 +44,7 @@ class Agent():
             self.state_str = random.choice(list(self.state_to_action.keys()))
             self.state = [int(s) for s in self.state_str.split(",")]
             for i in range(n_steps):
-                action = self.epsilon_greedy_policy(self.state_str)
+                action = self.epsilon_greedy_policy(self.state)
                 state, next_state, reward, done = self.env.step(self.state,
                                                                 action)
                 self.update_q_values(state, action, next_state, reward, lr)
@@ -53,8 +54,10 @@ class Agent():
 
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         print(timestamp + ": Finished training :) !")
-        print(f"Example Q-table for state {[1,9,0]}: {self.Q[1,9,0].todense()}")
-        print(f"Example Q-table for state {[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
+        print(
+            f"Example Q-table for state {[1, 9, 0]}: {self.Q[1, 9, 0].todense()}")
+        print(
+            f"Example Q-table for state {[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
 
     def update_q_values(self, state: list,
                         action: int,
@@ -73,8 +76,9 @@ class Agent():
         TODO: implement part related to gamma (not necessary for now
               because we have a myopic env)
         """
-        self.Q[state[0],state[1],state[2],action] = \
-            (1-lr)*self.Q[state[0],state[1],state[2],action] + lr*(reward)
+        self.Q[state[0], state[1], state[2], action] = \
+            (1 - lr) * self.Q[state[0], state[1], state[2], action] + lr * (
+                reward)
 
     def initialize_agent(self):
         """Initialize agent (called by agent when the episode starts)."""
@@ -88,27 +92,39 @@ class Agent():
             state = [int(s) for s in state_str.split(",")]
             actions = list(actions)
             for action in actions:
-                coords.append(state+[action])
+                coords.append(state + [action])
         q_values = np.zeros(len(coords))
         coords = np.array(coords).T.tolist()
-        
+
         # create COO (read only) matrix
         self.Q = sparse.COO(coords, q_values)
-        
+
         # convert to DOK
         self.Q = sparse.DOK.from_numpy(self.Q.todense())
-        
+
         # create state to action mapping
         self.state_to_action = self.env.state_to_action
 
-
-    def epsilon_greedy_policy(self, state):
-        """Returns the epsilon greedy action.
+    def epsilon_greedy_policy(self, state: Optional[List[int]] = None,
+                              state_str: Optional[str] = None,
+                              epsilon: float = 0.1) -> int:
+        """Get the epsilon greedy action.
 
         Args:
             state: current state.
-        
-        TODO: implement the "epsilon part"
+            state_str: the state as a string.
+            epsilon: the exploration parameter.
+
+        Returns:
+            action: selected action.
         """
-        return random.choice(list(self.state_to_action[state]))
-        
+        if state is None:
+            state = self.state
+        if state_str is None:
+            state_str = self.state_str
+        q_values = self.Q[state[0], state[1], state[2], state[3], :].todense()
+        if random.random() > epsilon:
+            action = np.argmax(q_values)
+        else:
+            action = random.choice(list(self.state_to_action[state_str]))
+        return action
