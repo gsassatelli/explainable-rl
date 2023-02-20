@@ -124,7 +124,7 @@ class MDP:
         """
         state = self.mdp_data['s'].sample().values.tolist()
         binned_state = self.bin_state_action_space(state)
-        return binned_state
+        return binned_state[0]
 
     def step(self, state, action):
         """Takes a step in the environment.
