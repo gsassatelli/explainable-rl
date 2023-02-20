@@ -6,13 +6,12 @@ import numpy as np
 class MDP:
     """Defines and instantiates an MDP object.
     """
-    __slots__ = ["mdp_data", "discount_factor", "average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "state_mdp_data", "action_mdp_data", "reward_mdp_data"]
+    __slots__ = ["mdp_data", "average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "state_mdp_data", "action_mdp_data", "reward_mdp_data"]
 
-    def __init__(self, mdp_data, discount_factor=0):
+    def __init__(self, mdp_data):
         """Initialises the MDP superclass.
         Args:
             mdp_data (pd.DataFrame): Dataframe containing states, actions and rewards.
-            discount_factor (int, optional): Gamma value for the MDP. Defaults to 0.
         """
         self.average_rewards = None
         self.state_to_action = {}
