@@ -1,6 +1,7 @@
 # Import packages
 import sparse
 import numpy as np
+from line_profiler_pycharm import profile
 
 
 class MDP:
@@ -16,7 +17,7 @@ class MDP:
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
-        self.num_bins = 9
+        self.num_bins = 100
         self.initialise_env()
         
 
