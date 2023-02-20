@@ -126,7 +126,8 @@ class MDP:
         Done flags means the environment terminated.
         Args:
             state (list): Current state values of agent.
-            action (list): Action for agent to take.
+            action (int): Action for agent to take.
+
         Returns:
             tuple: current state, action, next state, done flag.
         """
