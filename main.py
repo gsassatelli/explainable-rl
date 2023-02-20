@@ -37,9 +37,12 @@ if __name__ == "__main__":
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(timestamp + ": Show PDPs plots")
-    pdp = PDP(bins=engine.env.bins, minmax_scal=dh._minmax_scalars[actions[0]])
+    pdp = PDP(bins = engine.env.bins,
+              minmax_scalers = dh._minmax_scalars,
+              action_labels = actions,
+              state_labels = states)
     pdp. build_pdp_plots(engine.agent.Q, states, savefig=True)
-    
+
 
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
