@@ -1,4 +1,6 @@
 import numpy as np
+import matplotlib.pyplot as plt
+
 
 class PDP():
     def __init__(self, bins, minmax_scal):
@@ -7,6 +9,11 @@ class PDP():
         self.minmax_scal = minmax_scal
         self.dig_state_actions = []
         self.state_actions = []
+
+    def build_pdp_plots(self, Q, states_names, savefig=False):
+        self.get_digitized_pdp(Q)
+        self.denormalize_pdp()
+        self.plot_pdp(states_names, savefig=savefig)
     
     def get_digitized_pdp(self, Q):
         Q_array = Q.todense()
@@ -29,7 +36,28 @@ class PDP():
             self.state_actions.append(unscaled)
             
     
-    def plot_pdp(self, Q, savefig = False):
-        pass
+    def plot_pdp(self, states_names, savefig = False):
+        rows = len(self.state_actions)
+        cols = 1
+
+        fig, ax = plt.subplots(rows, cols, sharex='col', sharey='row')
+
+        for r in range(rows):
+            actions = self.state_actions[r]
+            states = list(range(len(actions)))
+            state = states_names[r]
+            ax[r].plot(states, actions, marker="o")
+            ax[r].set(xlabel=f"State dimension {state}",
+                      ylabel="Actions")
+                      # title=f"PDP of state dimension {state}"
+
+        if savefig:
+            plt.savefig("PDP plots", dpi=600)
+
+        plt.show()
+
+
+
+
 
 
