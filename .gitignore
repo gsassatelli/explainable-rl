@@ -4,3 +4,7 @@ venv/
 .DS_Store
 /kaggle-dummy-dataset/
 kaggle-dummy-dataset/
+
+data_handler/__pycache__/
+
+*.pyc
