@@ -122,7 +122,7 @@ class Agent():
             state = self.state
         if state_str is None:
             state_str = self.state_str
-        q_values = self.Q[state[0], state[1], state[2], state[3], :].todense()
+        q_values = self.Q[state[0], state[1], state[2], :].todense()
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
