@@ -110,6 +110,6 @@ class Engine:
         TODO: ensure that here output is action with max q values (NO exploration)
         """
         # Get both action & reward
-        action_reward = self.agent.epsilon_greedy_policy(state)
+        action_reward = self.agent._epsilon_greedy_policy(state)
         return action_reward
 
