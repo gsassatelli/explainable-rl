@@ -88,7 +88,8 @@ class Agent:
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
 
-    def _epsilon_greedy_policy(self, state: Optional[List[int]] = None,
+    def _epsilon_greedy_policy(self,
+                               state: Optional[List[int]] = None,
                                epsilon: float = 0.1) -> int:
         """Get the epsilon greedy action.
 
