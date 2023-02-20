@@ -20,8 +20,8 @@ if __name__ == "__main__":
 
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Initialize Engine")
-    n_samples = 200000
+    print(timestamp + ": Initialize Engine")
+    n_samples = 10000
     engine = Engine(dh.mdp_data[:n_samples], "q_learner", "kaggle", num_episodes=100, num_steps=10)
     
     # Create world
@@ -31,8 +31,15 @@ if __name__ == "__main__":
     
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Train the agent on {n_samples} samples")
+    print(timestamp + f": Train the agent on {n_samples} samples")
     engine.train_agent()
+
+    # Plot PDPs
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    print(timestamp + ": Show PDPs plots")
+    pdp = PDP(bins=engine.env.bins, minmax_scal=dh._minmax_scalars[actions[0]])
+    pdp. build_pdp_plots(engine.agent.Q, states, savefig=True)
+    
 
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
