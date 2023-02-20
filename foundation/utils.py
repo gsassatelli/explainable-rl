@@ -1,11 +1,9 @@
 
 def convert_to_string(state):
-    """Convert a state to a string."""
     return ",".join([str(s) for s in state])
 
 
 def convert_to_list(state_str):
-    """Convert a state string to a list."""
     return [int(s) for s in state_str.split(",")]
 
 
