@@ -1,6 +1,7 @@
 from foundation.engine import Engine
 from data_handler.data_handler import DataHandler
 from datetime import datetime
+from explainability.pdp import PDP
 
 
 if __name__ == "__main__":
@@ -20,7 +21,8 @@ if __name__ == "__main__":
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(timestamp + ": Initialize Engine")
-    engine = Engine(dh.mdp_data[:10000], "q_learner", "kaggle", num_episodes=100, num_steps=10)
+    n_samples = 10000
+    engine = Engine(dh.mdp_data[:n_samples], "q_learner", "kaggle", num_episodes=100, num_steps=10)
     
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -29,7 +31,13 @@ if __name__ == "__main__":
     
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(timestamp + ": Train the agent on 100 samples")
+    print(timestamp + f": Train the agent on {n_samples} samples")
     engine.train_agent()
+
+    # Plot PDPs
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    print(timestamp + ": Show PDPs plots")
+    pdp = PDP(bins=engine.env.bins, minmax_scal=dh._minmax_scalars[actions[0]])
+    pdp. build_pdp_plots(engine.agent.Q, states, savefig=True)
     
 
