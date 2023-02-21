@@ -68,7 +68,7 @@ class Engine:
 
         """
         # Initialize environment
-        self.env = MDP(self.mdp_data, self.gamma)
+        self.env = MDP(self.mdp_data)
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.

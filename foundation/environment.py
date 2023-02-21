@@ -20,7 +20,7 @@ class MDP:
         self.state_mdp_data = None
         self.action_mdp_data = None
         self.reward_mdp_data = None
-        self.num_bins = 9
+        self.num_bins = 100
         self.initialise_env()
         
 

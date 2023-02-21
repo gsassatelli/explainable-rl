@@ -45,7 +45,10 @@ class Agent:
             print("Apply q-learning and update q-table")
 
         for _ in range(n_episodes):
-            self.state = self.env.reset()
+            # self.state = self.env.reset()
+            # env reset is not working so implementing it here:
+            self.state_str = random.choice(list(self.state_to_action.keys()))
+            self.state = [int(s) for s in self.state_str.split(",") if len(s)>0]
             for i in range(n_steps):
                 done = self._step(epsilon=epsilon, lr=lr)
                 if done:
@@ -108,19 +111,13 @@ class Agent:
         """
         coords = []
         for state_str, actions in self.env.state_to_action.items():
-            state = convert_to_list(state_str)
+            
+            state = [int(s) for s in state_str.split(",") if len(s)>0]
             actions = list(actions)
             for action in actions:
-                coords.append(state + [action])
-        self._create_dok_q_table(coords)
-
-    def _create_dok_q_table(self,
-                            coords):
-        """Create the q-table in DOK format.
-
-        Args:
-            coords (list): list of coordinates.
-        """
+                coords.append(state+[action])
+           
+              
         q_values = np.zeros(len(coords))
         coords = np.array(coords).T.tolist()
 

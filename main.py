@@ -21,8 +21,7 @@ if __name__ == "__main__":
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(timestamp + ": Initialize Engine")
-    n_samples = 10000
-    engine = Engine(dh.mdp_data[:n_samples], "q_learner", "kaggle", num_episodes=100, num_steps=10)
+    engine = Engine(dh.mdp_data[:100], "q_learner", "kaggle", num_episodes=10000, num_steps=10)
     
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
