@@ -1,5 +1,9 @@
+# Note that you need to decorate all the functions being called with the "@profile" decorator for full memory analysis
 # To view the memory usage without saving to the results, run: python3 -m memory_profiler performance/full_flow.py
 # To save the memory data to a data file, run: mprof run performance/full_flow.py
+# To plot the memory usage file just created with the standard title, run: mprof plot
+# To plot the memory usage file just created with a custom title, run: mprof plot -t "DESIRED_TITLE"
+
 
 from foundation.engine import Engine
 from data_handler.data_handler import DataHandler
@@ -24,7 +28,7 @@ def evaluate_full_flow_performance():
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(timestamp + ": Initialize Engine")
-    engine = Engine(dh.mdp_data[:1000], "q_learner", "kaggle", num_episodes=100, num_steps=1)
+    engine = Engine(dh.mdp_data[:100000], "q_learner", "kaggle", num_episodes=100, num_steps=1)
 
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
