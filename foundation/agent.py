@@ -41,7 +41,7 @@ class Agent():
             # self.state = self.env.reset()
             # env reset is not working so implementing it here:
             self.state_str = random.choice(list(self.state_to_action.keys()))
-            self.state = [int(s) for s in self.state_str.split(",")]
+            self.state = [int(s) for s in self.state_str.split(",") if len(s)>0]
             for i in range(n_steps):
                 action = self.epsilon_greedy_policy(self.state_str)
                 state, next_state, reward, done = self.env.step(self.state,
@@ -85,10 +85,13 @@ class Agent():
         # create q-table
         coords = []
         for state_str, actions in self.env.state_to_action.items():
-            state = [int(s) for s in state_str.split(",")]
+            
+            state = [int(s) for s in state_str.split(",") if len(s)>0]
             actions = list(actions)
             for action in actions:
                 coords.append(state+[action])
+           
+              
         q_values = np.zeros(len(coords))
         coords = np.array(coords).T.tolist()
         
