@@ -8,14 +8,6 @@ class PDP():
                  action_labels,
                  state_labels):
         """ Initialize PDP class.
-        
-        FOR GIULIA:
-        I put the "denormalized" state values in the denorm_states attribute,
-        you can directly use it for the x-axis of the plots.
-        You can also use self.state_labels and self.action_labels for the names.
-        
-        I also fixed the normalization issue and now we get prices between[0,350] for the prices
-        <3
         """
         self.pdp = None
         self.bins = bins
@@ -23,15 +15,14 @@ class PDP():
         self.action_labels = action_labels
         self.state_labels = state_labels
         self.dig_state_actions = []
-        self.state_actions = []
+        self.denorm_actions = []
         self.denorm_states = []
         self.bins_per_dim = []
 
-    def build_pdp_plots(self,Q, states_names, savefig=False):
+    def build_data_for_plots(self, Q):
         self.get_digitized_pdp(Q)
-        self.denormalize_pdp()
+        self.get_denorm_actions()
         self.get_denorm_states()
-        self.plot_pdp(states_names, savefig=savefig)
     
     def get_digitized_pdp(self, Q):
         Q_array = Q.todense()
@@ -49,17 +40,17 @@ class PDP():
             dig_actions = np.argmax(Q_avg, axis=-1)
             self.dig_state_actions.append(dig_actions)
 
-    def denormalize_pdp(self):
+    def get_denorm_actions(self):
         scaler = self.minmax_scalers[self.action_labels[0]]
         for dig_actions in self.dig_state_actions:
             # divide dig actions by # bins of the action dimension
             # to get a value between 0 and 1
             denorm_action = scaler.inverse_transform(
                             dig_actions.reshape(-1,1)/self.bins_per_dim[-1])
-            self.state_actions.append(denorm_action)
+            self.denorm_actions.append(denorm_action)
     
     def get_denorm_states(self):
-        num_states = len(self.state_actions)
+        num_states = len(self.denorm_actions)
         for i in range(num_states):
             n_bins = self.bins_per_dim[i]
             # divide by number of bins to get a value between [0,1]
@@ -69,23 +60,32 @@ class PDP():
             denorm_state = scaler.inverse_transform(dig_values.reshape(-1,1))
             self.denorm_states.append(denorm_state)
 
-    def plot_pdp(self, states_names, savefig = False):
-        rows = len(self.state_actions)
+    def plot_pdp(self, states_names, fig_name, type_features, savefig=True, all_states=True):
+        rows = len(self.denorm_actions)
         cols = 1
 
-        fig, ax = plt.subplots(rows, cols, sharex='col', sharey='row')
+        fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True)
 
         for r in range(rows):
-            actions = self.state_actions[r]
-            states = list(range(len(actions)))
+            actions = [i[0] for i in self.denorm_actions[r]]
+            states = [str(round(i[0], 2)) for i in self.denorm_states[r]]
+            if not all_states:
+                states = [states[idx] for idx, a in enumerate(actions) if a > 0.1]
+                actions = [i for i in actions if i > 0.1]
+
             state = states_names[r]
-            ax[r].plot(states, actions, marker="o")
-            ax[r].set(xlabel=f"State dimension {state}",
-                      ylabel="Actions")
-                      # title=f"PDP of state dimension {state}"
+
+            ax[r].grid(zorder=0)
+            if type_features[state] == "continuous":
+                ax[r].plot(states, actions, marker="o", zorder=3)
+            else:
+                ax[r].bar(x=states, height=actions, zorder=3)
+            ax[r].set(xlabel=f"State dimension {state}", ylabel="Actions")
+
+        plt.subplots_adjust(top=0.99, bottom=0.1, hspace=0.5, wspace=0.4)
 
         if savefig:
-            plt.savefig("PDP plots", dpi=600)
+            plt.savefig(fig_name, dpi=600)
 
         plt.show()
 
