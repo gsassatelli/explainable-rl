@@ -4,3 +4,9 @@ venv/
 .DS_Store
 /kaggle-dummy-dataset/
 kaggle-dummy-dataset/
+
+foundation/__pycache__/
+
+data_handler/__pycache__/
+
+main.py.lprof

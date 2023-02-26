@@ -2,7 +2,6 @@
 import sparse
 import numpy as np
 
-
 class MDP:
     """Defines and instantiates an MDP object.
     """
@@ -16,7 +15,7 @@ class MDP:
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
-        self.num_bins = 9
+        self.num_bins = 100
         self.initialise_env()
         
 

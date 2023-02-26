@@ -1,6 +1,7 @@
 # run pip3 install -r requirements.txt to install all dependencies
 sphinx==5.0.2
 sphinx-rtd-theme==1.1.1
+line_profiler_pycharm==1.1.0
 
 pip# This file may be used to create an environment using:
 # $ conda create --name <env> --file <this file>
