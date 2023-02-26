@@ -1,8 +1,6 @@
 # Import packages
 import sparse
 import numpy as np
-from line_profiler_pycharm import profile
-
 
 class MDP:
     """Defines and instantiates an MDP object.
@@ -28,14 +26,6 @@ class MDP:
         """Creates the environment given the MDP information."""
         self.average_rewards = self.make_rewards_from_data()
 
-    def transform_df_to_numpy(self):
-        """Transforms the MDP data from a dataframe to a numpy array
-        """
-        self.state_mdp_data = self.mdp_data["s"].to_numpy()
-        self.action_mdp_data = self.mdp_data["a"].to_numpy()
-        self.reward_mdp_data = self.mdp_data["r"].to_numpy()
-
-
     def join_state_action(self):
         """Joins the state and action pairs together.
         Returns:
@@ -44,8 +34,8 @@ class MDP:
        
         zipped = []
         for i in range(len(self.mdp_data)):
-            state_array = self.state_mdp_data[i].tolist()
-            action_array =  self.action_mdp_data[i].tolist()
+            state_array = self.mdp_data["s"].iloc[i].tolist()
+            action_array =  self.mdp_data["a"].iloc[i].tolist()
             zipped.append(state_array + action_array)
         return zipped
 
@@ -59,7 +49,6 @@ class MDP:
         self.bins = np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist()
         return np.digitize(zipped, self.bins, right=True)
 
-
     def get_counts_and_rewards_per_bin(self, binned):
         """Creates a dictionary of counts of datapoints per bin and sums the associated rewards. 
         Args:
@@ -70,11 +59,13 @@ class MDP:
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            bin = ",".join(str(e) for e in bin.tolist())
-            # Update state to action
-            self.state_to_action.setdefault(bin[:-2], set()).add(int(bin[-1]))
-
-            # Update bins_dict
+            reward = self.mdp_data["r"].iloc[ix]
+            # update state to action
+            state = ",".join([str(s) for s in bin[:-1]])
+            self.state_to_action.setdefault(state, set()).add(bin[-1])
+            
+            # update bin_dict
+            bin = str(bin).replace("[", "").replace("]", "")
             bins_dict[bin][0] = bins_dict.setdefault(bin, [0, 0])[0] + 1
             reward = self.reward_mdp_data[ix]
             bins_dict[bin][1] += reward[0]
@@ -98,7 +89,6 @@ class MDP:
   
         coords = np.array(coords).T.tolist()
         return sparse.COO(coords, data)
-
 
     def make_rewards_from_data(self):
         """Creates sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
