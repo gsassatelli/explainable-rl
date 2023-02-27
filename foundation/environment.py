@@ -15,7 +15,8 @@ class MDP:
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
-        self.num_bins = 100
+        self.num_bins = 9
+        self.bins = None
         self.initialise_env()
         
 
@@ -45,7 +46,8 @@ class MDP:
         Returns:
             np.array: Binned state-action pairs.
         """
-        return np.digitize(zipped, np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist(), right=True)
+        self.bins = np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist()
+        return np.digitize(zipped, self.bins, right=True)
 
     def get_counts_and_rewards_per_bin(self, binned):
         """Creates a dictionary of counts of datapoints per bin and sums the associated rewards. 

@@ -4,9 +4,8 @@ venv/
 .DS_Store
 /kaggle-dummy-dataset/
 kaggle-dummy-dataset/
-
-foundation/__pycache__/
-
-data_handler/__pycache__/
-
-main.py.lprof
+__pycache__
+data_handler/__pycache__
+foundation/__pycache__
+PDP plots - All states.png
+PDP plots - Visited states.png
