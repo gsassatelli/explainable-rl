@@ -99,7 +99,8 @@ class Engine:
         self.q_table = self.agent.q_table
 
 
-    def evaluate(self, state):
+    def evaluate(self,
+                 state):
         """Evaluate the learned policy at a particular state.
 
         Args:
@@ -110,6 +111,6 @@ class Engine:
         TODO: ensure that here output is action with max q values (NO exploration)
         """
         # Get both action & reward
-        action_reward = self.agent.epsilon_greedy_policy(state)
+        action_reward = self.agent._epsilon_greedy_policy(state)
         return action_reward
 

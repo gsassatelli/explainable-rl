@@ -2,7 +2,6 @@
 import sparse
 import numpy as np
 
-
 class MDP:
     """Defines and instantiates an MDP object.
     """
@@ -16,10 +15,13 @@ class MDP:
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
+
         self.state_mdp_data = None
         self.action_mdp_data = None
         self.reward_mdp_data = None
         self.num_bins = 100
+
+
         self.initialise_env()
         
 
@@ -55,7 +57,8 @@ class MDP:
         Returns:
             np.array: Binned state-action pairs.
         """
-        return np.digitize(zipped, np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist(), right=True)
+        self.bins = np.arange(0, 1 + 1/self.num_bins, step=1/self.num_bins).tolist()
+        return np.digitize(zipped, self.bins, right=True)
 
 
     def get_counts_and_rewards_per_bin(self, binned):
@@ -127,14 +130,15 @@ class MDP:
         sample_ix_point = np.random.choice(np.arange(len(self.state_mdp_data) + 1))
         state = self.state_mdp_data[sample_ix_point].tolist()
         binned_state = self.bin_state_action_space(state)
-        return binned_state
+        return binned_state[0]
 
     def step(self, state, action):
         """Takes a step in the environment.
         Done flags means the environment terminated.
         Args:
             state (list): Current state values of agent.
-            action (list): Action for agent to take.
+            action (int): Action for agent to take.
+
         Returns:
             tuple: current state, action, next state, done flag.
         """
