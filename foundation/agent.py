@@ -11,6 +11,7 @@ class Agent:
     """Agent class to store and update q-table.
     """
 
+    __slots__ = 'env', 'Q', 'state_to_action', 'gamma', 'state'
     def __init__(self, env, gamma=0.9):
         """Initialise the agent class.
         
@@ -23,7 +24,7 @@ class Agent:
         self.state_to_action = None
         self.gamma = gamma
         self.state = None
-        self._initialize_agent()
+        self._create_tables()
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
             epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
@@ -64,8 +65,8 @@ class Agent:
                   f"Example Q-table for state "
                   f"{[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
 
-    def _initialize_agent(self,
-                         verbose=False):
+    def _create_tables(self,
+                       verbose=False):
         """Initialize the agent.
 
         This resets the environment, creates the q-table and the state to
