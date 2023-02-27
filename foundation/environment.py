@@ -124,7 +124,7 @@ class MDP:
         """
         state = self.mdp_data['s'].sample().values.tolist()
         binned_state = self.bin_state_action_space(state)
-        return binned_state
+        return binned_state[0]
 
     def step(self, state, action):
         """Takes a step in the environment.
@@ -133,7 +133,7 @@ class MDP:
 
         Args:
             state (list): Current state values of agent.
-            action (list): Action for agent to take.
+            action (int): Action for agent to take.
 
         Returns:
             tuple: current state, action, next state, done flag.

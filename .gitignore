@@ -4,8 +4,16 @@ venv/
 .DS_Store
 /kaggle-dummy-dataset/
 kaggle-dummy-dataset/
+<<<<<<< HEAD
+*.pyc
 __pycache__
 data_handler/__pycache__
 foundation/__pycache__
 PDP plots - All states.png
 PDP plots - Visited states.png
+=======
+
+data_handler/__pycache__/
+
+*.pyc
+>>>>>>> ER-109-Fix-TODOs-and-docstrings-Agent
