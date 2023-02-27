@@ -15,7 +15,8 @@ class MDP:
         self.average_rewards = None
         self.state_to_action = {}
         self.mdp_data = mdp_data
-        self.num_bins = 100
+        self.num_bins = 9
+        self.bins = None
         self.initialise_env()
         
 
