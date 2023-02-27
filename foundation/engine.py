@@ -99,7 +99,8 @@ class Engine:
         self.q_table = self.agent.q_table
 
 
-    def evaluate(self, state):
+    def evaluate(self,
+                 state):
         """Evaluate the learned policy at a particular state.
 
         Args:
