@@ -10,21 +10,28 @@ from foundation.environment import MDP
 
 class Engine:
 
-    __slots__ = ["mdp_data", "agent_type", "env_type", "agent", "env", "gamma",
+    __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", "q_table"]
 
     def __init__(self, 
-                 mdp_data: pd.DataFrame,
-                 agent_type: str, 
-                 env_type: str,
-                 num_episodes: int,
-                 num_steps: int,
-                 gamma: float = 0.9):
-        """Initialise the Engine superclass.
+                 dh,
+                 agent_type,
+                 env_type,
+                 num_episodes,
+                 num_steps,
+                 gamma=0.9):
+        """Initilize engine class.
 
+        Args:
+            dh (DataHandler): DataHandler to be given to the Environment
+            agent_type (str): Type of agent to initialize
+            env_type (int): Type of environment to initialize
+            num_episodes (int): Number of episodes to train the agent for
+            num_steps (int): Number of steps per episode
+            gamma (float): Discount factor
         """
-        # Save dataset to train
-        self.mdp_data = mdp_data
+        # Save data handler
+        self.dh = dh
 
         # Hyperparameters
         self.num_episodes = num_episodes
@@ -68,7 +75,7 @@ class Engine:
 
         """
         # Initialize environment
-        self.env = MDP(self.mdp_data)
+        self.env = MDP(self.dh)
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.

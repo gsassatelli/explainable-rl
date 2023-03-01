@@ -4,6 +4,12 @@ venv/
 .DS_Store
 /kaggle-dummy-dataset/
 kaggle-dummy-dataset/
+
+foundation/__pycache__/
+data_handler/__pycache__/
+/data_handler/__pycache__/
+
+example_data.parquet
 *.pyc
 __pycache__
 data_handler/__pycache__
