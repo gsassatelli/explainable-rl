@@ -12,18 +12,19 @@ class DataHandler:
 
     """
 
-    def __init__(self, data_path: str,
-                 state_labels: List[str],
-                 action_labels: List[str],
-                 reward_labels: List[str]):
-        """Initialise the DataHandler.
+    def __init__(self, data_path,
+                 state_labels,
+                 action_labels,
+                 reward_labels):
+        """Initialize the DataHandler class.
 
         Args:
-            data_path: path to the dataset.
-            state_labels: list of dataset columns to be made into states.
-            action_labels: list of dataset columns to be made into actions.
-            reward_labels: list of dataset columns to be made into rewards.
+            data_path (str): path to the data file.
+            state_labels (list): list of state labels.
+            action_labels (list): list of action labels.
+            reward_labels (list): list of reward labels.
         """
+
         self.data_path = data_path
         self.dataset = None
         self._normalised_cols = []
@@ -33,32 +34,38 @@ class DataHandler:
         self._reward_labels = reward_labels
         self.mdp_data = None
 
-    def prepare_data_for_engine(self, col_delimiter: str = ',',
+    def prepare_data_for_engine(self, col_delimiter=',',
                                 cols_to_normalise=None):
-        """Prepare dataset for the Engine class.
-        
+        """Prepare data for engine.
+
+        Args:
+            col_delimiter (str): column delimiter.
+            cols_to_normalise (list): list of columns to normalise.
         """
         self.load_data(delimiter=col_delimiter)
         self.preprocess_data(normalisation=True,
                              columns_to_normalise=cols_to_normalise)
 
 
-    def load_data(self, delimiter: str = ','):
-        """Load and store a csv dataset."""
+    def load_data(self, delimiter=','):
+        """Load data from file.
+
+        Args:
+            delimiter (str): column
+        """
         self.dataset = pd.read_csv(self.data_path, sep=delimiter)
 
     def preprocess_data(self,
-                        normalisation: bool = True,
+                        normalisation=True,
                         columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
         splits the dataset into states, actions and rewards.
 
-        Args:
-            normalisation: True if normalisation is to be applied.
-            columns_to_normalise: Columns on which to apply normalisation.
-                if left empty all columns will be normalised.
+        Args: normalisation (bool): True if normalisation is to be applied.
+        columns_to_normalise (list): Columns on which to apply
+        normalisation. if left empty all columns will be normalised.
 
         TODO: Extension - aggregate over a time period
         """
@@ -78,7 +85,7 @@ class DataHandler:
         """Normalise the dataset to centre with mean zero and variance one.
 
         Args:
-            cols_to_norm: the column names that need normalising
+            cols_to_norm (list): the column names that need normalising
         """
         self._fit_standard_scalars()
         if cols_to_norm is None:
