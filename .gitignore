@@ -10,8 +10,8 @@ data_handler/__pycache__/
 example_data.parquet
 *.pyc
 __pycache__
-data_handler/__pycache__
-foundation/__pycache__
+src/data_handler/__pycache__
+src/foundation/__pycache__
 PDP plots - All states.png
 PDP plots - Visited states.png
 data_handler/__pycache__/

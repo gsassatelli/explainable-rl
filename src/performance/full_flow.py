@@ -5,8 +5,8 @@
 # To plot the memory usage file just created with a custom title, run: mprof plot -t "DESIRED_TITLE"
 
 
-from foundation.engine import Engine
-from data_handler.data_handler import DataHandler
+from src.foundation.engine import Engine
+from src.data_handler.data_handler import DataHandler
 from datetime import datetime
 from memory_profiler import profile
 
