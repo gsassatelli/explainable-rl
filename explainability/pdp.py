@@ -4,54 +4,57 @@ from typing import Dict, List
 import sparse
 
 
-class PDP():
+class PDP:
+
+    __slots__ = ["_bins", "_minmax_scalers", "_action_labels", "_state_labels",
+                 "_dig_state_actions", "_denorm_actions", "_denorm_states", "_bins_per_dim"]
+
     def __init__(self,
-                 bins: List,
-                 minmax_scalers: Dict,
-                 action_labels: List,
-                 state_labels: List):
+                 bins,
+                 minmax_scalers,
+                 action_labels,
+                 state_labels):
         """Initialize PDP class.
 
         Args:
-            bins: list of bins per each state and action pair.
-            minmax_scalers: list of scalers per each state dimension and actions.
-            action_labels: list of action column names.
-            state_labels: list of state dimensions column names.
+            bins (list): list of bins per each state and action pair.
+            minmax_scalers (dict): list of scalers per each state dimension and actions.
+            action_labels (list): list of action column names.
+            state_labels (list): list of state dimensions column names.
         """
-        self.pdp = None
-        self.bins = bins
-        self.minmax_scalers = minmax_scalers
-        self.action_labels = action_labels
-        self.state_labels = state_labels
-        self.dig_state_actions = []
-        self.denorm_actions = []
-        self.denorm_states = []
-        self.bins_per_dim = []
+        self._bins = bins
+        self._minmax_scalers = minmax_scalers
+        self._action_labels = action_labels
+        self._state_labels = state_labels
+        self._dig_state_actions = []
+        self._denorm_actions = []
+        self._denorm_states = []
+        self._bins_per_dim = []
 
     def build_data_for_plots(self,
-                             Q: sparse.DOK):
+                             Q):
         """Prepare data to build PDP plots.
 
         Args:
-            Q: Q-table to build plots.
+            Q (sparse.DOK): Q-table to build plots.
         """
-        self.get_digitized_pdp(Q)
-        self.get_denorm_actions()
-        self.get_denorm_states()
+        self._get_digitized_pdp(Q)
+        self._get_denorm_actions()
+        self._get_denorm_states()
     
-    def get_digitized_pdp(self,
-                          Q: sparse.DOK):
+    def _get_digitized_pdp(self,
+                          Q):
         """Compute average Q-value per each state-action pair.
         Marginal effect of the state-action pair averaging other state dimensions.
 
         Args:
-            Q: Q-table to build plots.
+            Q (sparse.DOK): Q-table to build plots.
         """
         Q_array = Q.todense()
         shape_Q = Q_array.shape
         num_dims = len(shape_Q)
         num_states = num_dims - 1 # last dimension is action
-        self.bins_per_dim = [shape_Q[i] for i in range(num_dims)]
+        self._bins_per_dim = [shape_Q[i] for i in range(num_dims)]
         set_states = set(list(range(num_states)))
 
         # For each state dimension
@@ -60,57 +63,57 @@ class PDP():
             Q_avg = np.mean(Q_array, axis=states_to_avg)
             # Select action with highest avg Q value
             dig_actions = np.argmax(Q_avg, axis=-1)
-            self.dig_state_actions.append(dig_actions)
+            self._dig_state_actions.append(dig_actions)
 
-    def get_denorm_actions(self):
+    def _get_denorm_actions(self):
         """Get actions denormalized values.
         """
-        scaler = self.minmax_scalers[self.action_labels[0]]
-        for dig_actions in self.dig_state_actions:
+        scaler = self._minmax_scalers[self._action_labels[0]]
+        for dig_actions in self._dig_state_actions:
             # Divide dig actions by # bins of the action dimension
             # to get a value between 0 and 1
             denorm_action = scaler.inverse_transform(
-                            dig_actions.reshape(-1,1)/self.bins_per_dim[-1])
-            self.denorm_actions.append(denorm_action)
+                            dig_actions.reshape(-1,1)/self._bins_per_dim[-1])
+            self._denorm_actions.append(denorm_action)
     
-    def get_denorm_states(self):
+    def _get_denorm_states(self):
         """Get states denormalized values.
         """
-        num_states = len(self.denorm_actions)
+        num_states = len(self._denorm_actions)
         for i in range(num_states):
-            n_bins = self.bins_per_dim[i]
+            n_bins = self._bins_per_dim[i]
             # Divide by number of bins to get a value between [0,1]
             # which can then be inputted into the scaler
-            dig_values =  np.array(list(range(n_bins)))/n_bins
-            scaler = self.minmax_scalers[self.state_labels[i]]
-            denorm_state = scaler.inverse_transform(dig_values.reshape(-1,1))
-            self.denorm_states.append(denorm_state)
+            dig_values = np.array(list(range(n_bins)))/n_bins
+            scaler = self._minmax_scalers[self._state_labels[i]]
+            denorm_state = scaler.inverse_transform(dig_values.reshape(-1, 1))
+            self._denorm_states.append(denorm_state)
 
     def plot_pdp(self,
-                 states_names: List,
-                 fig_name: str,
-                 type_features: Dict,
-                 savefig: bool = True,
-                 all_states: bool = True):
+                 states_names,
+                 fig_name,
+                 type_features,
+                 savefig=True,
+                 all_states=True):
         """Build PDP plots.
         One marginalized plot per each state dimension.
 
         Args:
-            states_names: list of state dimensions column names
-            fig_name: figure name to save plot.
-            type_features: type of variable per each state dimension.
+            states_names (list): list of state dimensions column names
+            fig_name (str): figure name to save plot.
+            type_features (dict): type of variable per each state dimension.
                 Information used to choose how to plot each PDP.
-            savefig: bool to choose whether to save the plot.
-            all_states: bool to choose whether to plot the unvisited states.
+            savefig (bool): bool to choose whether to save the plot.
+            all_states (bool): bool to choose whether to plot the unvisited states.
         """
-        rows = len(self.denorm_actions)
+        rows = len(self._denorm_actions)
         cols = 1
 
         fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True)
 
         for a in range(rows):
-            actions = [i[0] for i in self.denorm_actions[a]]
-            states = [str(round(i[0], 2)) for i in self.denorm_states[a]]
+            actions = [i[0] for i in self._denorm_actions[a]]
+            states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
             if not all_states:
                 states = [states[idx] for idx, a in enumerate(actions) if a > 0.1]
                 actions = [i for i in actions if i > 0.1]
