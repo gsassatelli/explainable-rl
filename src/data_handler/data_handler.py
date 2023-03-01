@@ -2,8 +2,6 @@
 import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
-from typing import List, Tuple, Union
-import copy
 
 # TODO: change normalisation to [0, 1]
 # TODO: add flag for next states
