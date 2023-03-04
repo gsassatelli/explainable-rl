@@ -1,4 +1,3 @@
-
 .idea/
 venv/
 .DS_Store
@@ -8,7 +7,6 @@ kaggle-dummy-dataset/
 foundation/__pycache__/
 data_handler/__pycache__/
 /data_handler/__pycache__/
-
 example_data.parquet
 *.pyc
 __pycache__
@@ -16,8 +14,5 @@ data_handler/__pycache__
 foundation/__pycache__
 PDP plots - All states.png
 PDP plots - Visited states.png
-
-
 data_handler/__pycache__/
-
 *.pyc
