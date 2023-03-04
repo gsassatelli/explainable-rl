@@ -1,13 +1,13 @@
 # Import packages
 import sparse
 import numpy as np
-
+import ipdb 
 
 class MDP:
     """Defines and instantiates an MDP object.
     """
-    __slots__ = ["dh", "_average_rewards", "_num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
-                 "_action_mdp_data", "_reward_mdp_data", "bins"]
+    __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
+                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim']
 
     def __init__(self, dh):
         """Initialises the MDP superclass.
@@ -21,7 +21,8 @@ class MDP:
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
-        self._num_bins = 100
+        self.num_bins = 100
+        self.state_dim = 3
         self.bins = None
 
     def initialise_env(self):
@@ -55,7 +56,7 @@ class MDP:
         Returns:
             np.array: Binned state-action pairs.
         """
-        self.bins = np.arange(0, 1 + 1 / self._num_bins, step=1 / self._num_bins).tolist()
+        self.bins = np.arange(0, 1 + 1 / self.num_bins, step=1 / self.num_bins).tolist()
         return np.digitize(zipped, self.bins, right=True)
 
     def _get_counts_and_rewards_per_bin(self, binned):
@@ -65,17 +66,22 @@ class MDP:
         Returns:
             dict: dictionary of counts of datapoints per bin and sums the associated rewards.
         """
+
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            bin = ",".join(str(e) for e in bin.tolist())
+            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
+            action = bin[-1]
             # Update state to action
-            self.state_to_action.setdefault(bin[:-2], set()).add(int(bin[-1]))
+            self.state_to_action.setdefault(state_str, set()).add(action)
 
-            # Update bins_dict
-            bins_dict[bin][0] = bins_dict.setdefault(bin, [0, 0])[0] + 1
+            # update number of data points in the bin
+            state_action_str = state_str+','+str(action)
+            bins_dict[state_action_str][0] =\
+                bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
+            # update total reward in the bin
             reward = self._reward_mdp_data[ix]
-            bins_dict[bin][1] += reward[0]
+            bins_dict[state_action_str][1] += reward[0]
         return bins_dict
 
     def _create_average_reward_matrix(self, bins_dict):
@@ -125,7 +131,7 @@ class MDP:
         sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data) + 1))
         state = self._state_mdp_data[sample_ix_point].tolist()
         binned_state = self._bin_state_action_space(state)
-        return binned_state[0]
+        return binned_state
 
     def step(self, state, action):
         """Takes a step in the environment.
