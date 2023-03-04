@@ -23,8 +23,6 @@ if __name__ == "__main__":
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Initialize Engine")
-    n_samples = 1000
-    dh.mdp_data = dh.mdp_data[:n_samples]
     engine = Engine(dh, "q_learner", "kaggle", num_episodes=100, num_steps=10)
 
     
