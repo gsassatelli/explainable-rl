@@ -1,3 +1,4 @@
+            scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
 # Import packages
 import pandas as pd
 import numpy as np

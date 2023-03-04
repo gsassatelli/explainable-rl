@@ -110,7 +110,7 @@ class QLearningAgent(Agent):
         """Initialize the q-table.
         """
         coords = []
-        for state_str, actions in self.env._state_to_action.items():
+        for state_str, actions in self.env.state_to_action.items():
 
             state = [int(s) for s in state_str.split(",") if len(s) > 0]
             actions = list(actions)
