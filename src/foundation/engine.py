@@ -5,8 +5,8 @@ import numpy as np
 import pandas as pd
 
 # Import environment and agent
-from foundation.agent import Agent
-from foundation.environment import MDP
+from src.foundation.agent import QLearningAgent
+from src.foundation.environment import MDP
 
 class Engine:
 
@@ -68,7 +68,8 @@ class Engine:
         """
         if self.agent_type == "q_learner":
             # Initialize agent
-            self.agent = Agent(self.env)
+            self.agent = QLearningAgent(self.env, gamma=0.9)
+            self.agent.create_tables()
 
     def create_env(self):
         """Create an env and store it in Engine.
@@ -76,6 +77,7 @@ class Engine:
         """
         # Initialize environment
         self.env = MDP(self.dh)
+        self.env.initialise_env()
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.
@@ -90,7 +92,6 @@ class Engine:
         TODO: Next sprint to compare 2 agents
               This could be the average return after convergence.
         """
-        #
         pass
 
     def save_parameters(self):

@@ -12,6 +12,9 @@ class DataHandler:
 
     """
 
+    __slots__ = ["data_path", "dataset", "_normalised_cols", "_minmax_scalars",
+                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data"]
+
     def __init__(self, data_path,
                  state_labels,
                  action_labels,
