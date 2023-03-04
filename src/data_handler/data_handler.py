@@ -113,7 +113,7 @@ class DataHandler:
         Returns:
             pd.DataFrame of the actions.
         """
-        return self.mdp_data['s']
+        return self.mdp_data['a']
 
     def get_rewards(self):
         """Get the rewards taken in the dataset.
