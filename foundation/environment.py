@@ -5,7 +5,7 @@ import numpy as np
 class MDP:
     """Defines and instantiates an MDP object.
     """
-    __slots__ = ["dh", "_average_rewards", "_num_bins", "_state_to_action", "bins_dict", "ix", "_state_mdp_data", "_action_mdp_data", "_reward_mdp_data"]
+    __slots__ = ["dh", "_average_rewards", "_num_bins", "_state_to_action", "bins_dict", "ix", "_state_mdp_data", "_action_mdp_data", "_reward_mdp_data", "_bins"]
 
     def __init__(self, dh):
         """Initialises the MDP superclass.
@@ -20,6 +20,7 @@ class MDP:
         self._action_mdp_data = None
         self._reward_mdp_data = None
         self._num_bins = 100
+        self._bins = None
 
 
         self.initialise_env()
@@ -32,9 +33,9 @@ class MDP:
     def _transform_df_to_numpy(self):
         """Transforms the MDP data from a dataframe to a numpy array
         """
-        self._state_mdp_data = self.dh.get_states.to_numpy()
-        self._action_mdp_data = self.dh.get_actions.to_numpy()
-        self._reward_mdp_data = self.dh.get_rewards.to_numpy()
+        self._state_mdp_data = self.dh.get_states().to_numpy()
+        self._action_mdp_data = self.dh.get_actions().to_numpy()
+        self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
 
     def _join_state_action(self):
@@ -46,7 +47,7 @@ class MDP:
         zipped = []
         for i in range(len(self._reward_mdp_data)):
             state_array = self._state_mdp_data[i].tolist()
-            action_array =  self._action_mdp_data[i].tolist()
+            action_array = self._action_mdp_data[i].tolist()
             zipped.append(state_array + action_array)
         return zipped
 
@@ -57,8 +58,8 @@ class MDP:
         Returns:
             np.array: Binned state-action pairs.
         """
-        self.bins = np.arange(0, 1 + 1/self._num_bins, step=1/self._num_bins).tolist()
-        return np.digitize(zipped, self.bins, right=True)
+        self._bins = np.arange(0, 1 + 1/self._num_bins, step=1/self._num_bins).tolist()
+        return np.digitize(zipped, self._bins, right=True)
 
 
     def _get_counts_and_rewards_per_bin(self, binned):
