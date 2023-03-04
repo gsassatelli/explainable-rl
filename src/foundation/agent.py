@@ -1,30 +1,30 @@
 # Import packages
 import numpy as np
-from foundation.utils import *
+from src.foundation.utils import *
 import sparse
 import random
 from datetime import datetime
 
+from src.foundation.super_classes import Agent
 
 
-class Agent:
+class QLearningAgent(Agent):
     """Agent class to store and update q-table.
     """
 
-    __slots__ = 'env', 'Q', 'state_to_action', 'gamma', 'state'
-    def __init__(self, env, gamma=0.9):
+    __slots__ = ['Q', 'state_to_action', 'state']
+
+    def __init__(self, env, gamma):
+        super().__init__(env, gamma)
         """Initialise the agent class.
         
         Args:
             env (MDP): MDP object.
             gamma (float): Discount factor.
         """
-        self.env = env
         self.Q = None
         self.state_to_action = None
-        self.gamma = gamma
         self.state = None
-        self._create_tables()
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
             epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
@@ -64,8 +64,8 @@ class Agent:
                   f"Example Q-table for state "
                   f"{[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
 
-    def _create_tables(self,
-                       verbose=False):
+    def create_tables(self,
+                      verbose=False):
         """Initialize the agent.
 
         This resets the environment, creates the q-table and the state to
@@ -97,7 +97,7 @@ class Agent:
         if state is None:
             state = self.state
 
-        state_str = convert_to_string(state)
+        state_str = str(state)  # convert_to_string(state)
 
         q_values = self.Q[state[0], state[1], state[2], :].todense()
         if random.random() > epsilon:
@@ -112,12 +112,11 @@ class Agent:
         coords = []
         for state_str, actions in self.env._state_to_action.items():
 
-            
-            state = [int(s) for s in state_str.split(",") if len(s)>0]
+            state = [int(s) for s in state_str.split(",") if len(s) > 0]
             actions = list(actions)
             for action in actions:
-                coords.append(state+[action])
-         
+                coords.append(state + [action])
+
         self._create_dok_q_table(coords)
 
     def _create_dok_q_table(self,
