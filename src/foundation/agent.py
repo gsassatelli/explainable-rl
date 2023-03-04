@@ -4,7 +4,7 @@ from src.foundation.utils import *
 import sparse
 import random
 from datetime import datetime
-
+import ipdb
 from src.foundation.super_classes import Agent
 
 
@@ -97,44 +97,28 @@ class QLearningAgent(Agent):
         if state is None:
             state = self.state
 
-        state_str = str(state)  # convert_to_string(state)
-
-        q_values = self.Q[state[0], state[1], state[2], :].todense()
+        state_str = self._convert_to_string(state) 
+        try:
+            q_values = self.Q[state[0], state[1], state[2], :].todense()
+        except:
+            ipdb.set_trace()
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[state_str]))
         return action
 
+    def _convert_to_string(self, state):
+        return ",".join(str(s) for s in state)
+    
     def _init_q_table(self):
-        """Initialize the q-table.
+        """Initialize the q-table with zeros.
         """
-        coords = []
-        for state_str, actions in self.env.state_to_action.items():
+        # Q has num_state_dimensions + 1 (action) dimensions 
+        n_Q_dims = self.env.state_dim+1
+        #num_bins+1 because there is a bug producing indices from 0-100 (both included)
+        self.Q = sparse.DOK(n_Q_dims*[self.env.num_bins+1]) # put in the correct shape, initialized at 0 by default
 
-            state = [int(s) for s in state_str.split(",") if len(s) > 0]
-            actions = list(actions)
-            for action in actions:
-                coords.append(state + [action])
-
-        self._create_dok_q_table(coords)
-
-    def _create_dok_q_table(self,
-                            coords):
-        """Create the q-table in DOK format.
-
-        Args:
-            coords (list): list of coordinates.
-        """
-
-        q_values = np.zeros(len(coords))
-        coords = np.array(coords).T.tolist()
-
-        # create COO (read only) matrix
-        self.Q = sparse.COO(coords, q_values)
-
-        # convert to DOK
-        self.Q = sparse.DOK.from_numpy(self.Q.todense())
 
     def _step(self, epsilon, lr):
         """Perform a step in the environment.
