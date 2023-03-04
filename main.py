@@ -11,7 +11,8 @@ if __name__ == "__main__":
     states = ['competitorPrice', 'adFlag', 'availability']
     actions = ['price']
     rewards = ['revenue']
-    dh = DataHandler('kaggle-dummy-dataset/train.csv', states, actions, rewards)
+    n_samples = 2000
+    dh = DataHandler('kaggle-dummy-dataset/train.csv', states, actions, rewards, n_samples=n_samples)
 
     # Preprocess the data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -21,8 +22,9 @@ if __name__ == "__main__":
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Initialize Engine")
-    n_samples = 200000
-    engine = Engine(dh.mdp_data[:n_samples], "q_learner", "kaggle", num_episodes=100, num_steps=10)
+    n_samples = 2000
+    engine = Engine(dh, "q_learner", "kaggle", num_episodes=100, num_steps=10)
+
     
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

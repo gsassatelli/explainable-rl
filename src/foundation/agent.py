@@ -108,8 +108,15 @@ class Agent:
         """Initialize the q-table.
         """
         coords = []
+<<<<<<< main:src/foundation/agent.py
         for state_str, actions in self.env.state_to_action.items():
             state = convert_to_list(state_str)
+=======
+        for state_str, actions in self.env._state_to_action.items():
+
+            
+            state = [int(s) for s in state_str.split(",") if len(s)>0]
+>>>>>>> Bug fixes (133 and 135 in environment.py still need fixes):foundation/agent.py
             actions = list(actions)
             for action in actions:
                 coords.append(state + [action])
