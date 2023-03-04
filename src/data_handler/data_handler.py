@@ -7,7 +7,6 @@ from sklearn.preprocessing import MinMaxScaler
 # TODO: add flag for next states
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
-
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "_minmax_scalars",
@@ -19,7 +18,6 @@ class DataHandler:
                  reward_labels,
                  n_samples):
         """Initialize the DataHandler class.
-
         Args:
             data_path (str): path to the data file.
             state_labels (list): list of state labels.
@@ -40,7 +38,6 @@ class DataHandler:
     def prepare_data_for_engine(self, col_delimiter=',',
                                 cols_to_normalise=None):
         """Prepare data for engine.
-
         Args:
             col_delimiter (str): column delimiter.
             cols_to_normalise (list): list of columns to normalise.
@@ -52,7 +49,6 @@ class DataHandler:
 
     def load_data(self, delimiter=','):
         """Load data from file.
-
         Args:
             delimiter (str): column
         """
@@ -62,14 +58,11 @@ class DataHandler:
                         normalisation=True,
                         columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
-
         Preprocessing applies shuffling, normalisation (if selected) and
         splits the dataset into states, actions and rewards.
-
         Args: normalisation (bool): True if normalisation is to be applied.
         columns_to_normalise (list): Columns on which to apply
         normalisation. if left empty all columns will be normalised.
-
         TODO: Extension - aggregate over a time period
         """
         np.random.seed = 1
@@ -87,7 +80,6 @@ class DataHandler:
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
-
         Args:
             cols_to_norm (list): the column names that need normalising
         """
@@ -100,14 +92,12 @@ class DataHandler:
 
     def reverse_norm(self):
         """Reverse the normalising of the dataset.
-
         """
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
     def get_actions(self):
         """Get the actions taken in the dataset.
-
         Returns:
             pd.DataFrame of the actions.
         """
@@ -115,7 +105,6 @@ class DataHandler:
 
     def get_rewards(self):
         """Get the rewards taken in the dataset.
-
         Returns:
             pd.DataFrame of the rewards.
         """
@@ -123,7 +112,6 @@ class DataHandler:
 
     def get_states(self):
         """Get the states taken in the dataset.
-
         Returns:
             pd.DataFrame of the states.
         """
@@ -131,13 +119,11 @@ class DataHandler:
 
     def _filter_data(self):
         """Filter the dataset.
-
         """
         self.dataset = self.dataset.dropna()
 
     def _transform_col(self, col_name: str):
         """Normalise one column of the dataset.
-
         """
         scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = \
@@ -145,7 +131,6 @@ class DataHandler:
 
     def _inverse_transform_col(self, col_name: str):
         """Reverse the normalisation of one column of the dataset.
-
         """
         scalar = self._minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
@@ -153,7 +138,6 @@ class DataHandler:
 
     def _fit_standard_scalars(self):
         """Train the sklearn MinMaxScaler and store one per column.
-
         """
         for col in self.dataset:
             scalar = MinMaxScaler()
