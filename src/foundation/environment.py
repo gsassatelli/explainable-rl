@@ -128,7 +128,7 @@ class MDP:
         Returns:
             list: Randomised initial state.
         """
-        sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data) + 1))
+        sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data)))
         state = self._state_mdp_data[sample_ix_point].tolist()
         binned_state = self._bin_state_action_space(state)
         return binned_state
