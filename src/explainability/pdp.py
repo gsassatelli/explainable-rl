@@ -4,9 +4,9 @@ import sparse
 
 
 class PDP:
-
     __slots__ = ["_bins", "_minmax_scalers", "_action_labels", "_state_labels",
-                 "_dig_state_actions", "_denorm_actions", "_denorm_states", "_bins_per_dim"]
+                 "_dig_state_actions", "_denorm_actions", "_denorm_states",
+                 "_bins_per_dim"]
 
     def __init__(self,
                  bins,
@@ -40,9 +40,9 @@ class PDP:
         self._get_digitized_pdp(Q)
         self._get_denorm_actions()
         self._get_denorm_states()
-    
+
     def _get_digitized_pdp(self,
-                          Q):
+                           Q):
         """Compute average Q-value per each state-action pair.
         Marginal effect of the state-action pair averaging other state dimensions.
 
@@ -52,7 +52,7 @@ class PDP:
         Q_array = Q.todense()
         shape_Q = Q_array.shape
         num_dims = len(shape_Q)
-        num_states = num_dims - 1 # last dimension is action
+        num_states = num_dims - 1  # last dimension is action
         self._bins_per_dim = [shape_Q[i] for i in range(num_dims)]
         set_states = set(list(range(num_states)))
 
@@ -72,9 +72,9 @@ class PDP:
             # Divide dig actions by # bins of the action dimension
             # to get a value between 0 and 1
             denorm_action = scaler.inverse_transform(
-                            dig_actions.reshape(-1,1)/self._bins_per_dim[-1])
+                dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
             self._denorm_actions.append(denorm_action)
-    
+
     def _get_denorm_states(self):
         """Get states denormalized values.
         """
@@ -83,7 +83,7 @@ class PDP:
             n_bins = self._bins_per_dim[i]
             # Divide by number of bins to get a value between [0,1]
             # which can then be inputted into the scaler
-            dig_values = np.array(list(range(n_bins)))/n_bins
+            dig_values = np.array(list(range(n_bins))) / n_bins
             scaler = self._minmax_scalers[self._state_labels[i]]
             denorm_state = scaler.inverse_transform(dig_values.reshape(-1, 1))
             self._denorm_states.append(denorm_state)
@@ -114,7 +114,8 @@ class PDP:
             actions = [i[0] for i in self._denorm_actions[a]]
             states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
             if not all_states:
-                states = [states[idx] for idx, a in enumerate(actions) if a > 0.1]
+                states = [states[idx] for idx, a in enumerate(actions) if
+                          a > 0.1]
                 actions = [i for i in actions if i > 0.1]
 
             state = states_names[a]
@@ -132,9 +133,3 @@ class PDP:
             plt.savefig(fig_name, dpi=600)
 
         plt.show()
-
-
-
-
-
-
