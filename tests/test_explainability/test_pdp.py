@@ -1,5 +1,8 @@
 import unittest
 from src.explainability.pdp import PDP
+from src.foundation.engine import Engine
+from src.data_handler.data_handler import DataHandler
+
 
 class TestPDP(unittest.TestCase):
     """Test PDP class.
@@ -8,15 +11,25 @@ class TestPDP(unittest.TestCase):
     def setUp(self):
         """Setup PDP class.
         """
-        bins = [10, 10, 10, 10]
-        minmax_scalers = {}
-        action_labels = ['price']
-        state_labels = ['competitorPrice', 'adFlag', 'availability']
-        self.PDP = PDP(bins, minmax_scalers, action_labels, state_labels)
+        states = ['competitorPrice', 'adFlag', 'availability']
+        actions = ['price']
+        rewards = ['revenue']
+        n_samples = 50
+        self.dh = DataHandler('../../kaggle-dummy-dataset/train.csv', states, actions, rewards, n_samples=n_samples)
+        self.dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=states + actions)
+        self.engine = Engine(self.dh, "q_learner", "kaggle", num_episodes=5, num_steps=1)
+        self.engine.create_world()
+        self.engine.train_agent()
+        self.pdp = PDP(bins=self.engine.env.bins,
+                  minmax_scalers=self.dh._minmax_scalars,
+                  action_labels=actions,
+                  state_labels=states)
+
+
     def test_create_pdp(self):
         """Test creation of PDP object.
         """
-        assert type(self.PDP) == PDP
+        assert type(self.pdp) == PDP
 
     def test_get_digitized_pdp(self):
         """Test digitized pdp.
@@ -38,6 +51,6 @@ class TestPDP(unittest.TestCase):
         """
         pass
 
-
-
+if __name__ == '__main__':
+    unittest.main()
 
