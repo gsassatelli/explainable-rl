@@ -1,22 +1,24 @@
 # Import packages
 import sparse
 import numpy as np
-import ipdb 
+import ipdb
+from src.foundation.super_classes import MDP
 
-class MDP:
-    """Defines and instantiates an MDP object.
+class StrategicPricingMDP(MDP):
+    """Defines and instantiates the MDP object for Strategic Pricing.
     """
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
                  "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim']
 
     def __init__(self, dh):
-        """Initialises the MDP superclass.
+        """Initialises the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
+        super().__init__(dh)
+
         self._average_rewards = None
         self.state_to_action = {}
-        self.dh = dh
 
         self._state_mdp_data = None
         self._action_mdp_data = None
