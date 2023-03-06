@@ -6,30 +6,30 @@ class Agent:
         self.gamma = gamma
 
 class MDP:
-    """Defines the MDP super class which all particular MDP should inherit from
+    """Define the MDP super class which all particular MDP should inherit from
     """
     __slots__ = ['dh']
     def __init__(self, dh):
-        """Initialises the Strategic Pricing MDP class.
+        """Initialise the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
         self.dh = dh
 
     def initialise_env(self):
-        """Creates the environment given the MDP information.
+        """Create the environment given the MDP information.
         """
         raise NotImplementedError
 
     def reset(self):
-        """Resets environment.
+        """Reset environment.
         Returns:
             list: Randomised initial state.
         """
         raise NotImplementedError
 
     def step(self, state, action):
-        """Takes a step in the environment.
+        """Take a step in the environment.
         A True done flag indicates that the environment terminated.
         Args:
             state (list): Current state values of agent.
