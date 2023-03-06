@@ -11,7 +11,7 @@ class StrategicPricingMDP(MDP):
                  "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim']
 
     def __init__(self, dh):
-        """Initialises the Strategic Pricing MDP class.
+        """Initialise the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
@@ -28,18 +28,18 @@ class StrategicPricingMDP(MDP):
         self.bins = None
 
     def initialise_env(self):
-        """Creates the environment given the MDP information."""
+        """Create the environment given the MDP information."""
         self._average_rewards = self._make_rewards_from_data()
 
     def _transform_df_to_numpy(self):
-        """Transforms the MDP data from a dataframe to a numpy array
+        """Transform the MDP data from a dataframe to a numpy array
         """
         self._state_mdp_data = self.dh.get_states().to_numpy()
         self._action_mdp_data = self.dh.get_actions().to_numpy()
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
     def _join_state_action(self):
-        """Joins the state and action pairs together.
+        """Join the state and action pairs together.
         Returns:
             list: Group of states and actions per datapoint.
         """
@@ -52,7 +52,7 @@ class StrategicPricingMDP(MDP):
         return zipped
 
     def _bin_state_action_space(self, zipped):
-        """Bins the state-action pairs.
+        """Bin the state-action pairs.
         Args:
             zipped (list): Group of states and actions per datapoint.
         Returns:
@@ -62,7 +62,7 @@ class StrategicPricingMDP(MDP):
         return np.digitize(zipped, self.bins, right=True)
 
     def _get_counts_and_rewards_per_bin(self, binned):
-        """Creates a dictionary of counts of datapoints per bin and sums the associated rewards. 
+        """Create a dictionary of counts of datapoints per bin and sums the associated rewards.
         Args:
             binned (np.array): Binned state-action pairs.
         Returns:
@@ -87,7 +87,7 @@ class StrategicPricingMDP(MDP):
         return bins_dict
 
     def _create_average_reward_matrix(self, bins_dict):
-        """Generates a sparse matrix of average rewards for each bin in the dataset.
+        """Generate a sparse matrix of average rewards for each bin in the dataset.
         Args:
             bins_dict (dict): dictionary of counts of datapoints per bin and sums the associated rewards.
         Returns:
@@ -105,7 +105,7 @@ class StrategicPricingMDP(MDP):
         return sparse.COO(coords, data)
 
     def _make_rewards_from_data(self):
-        """Creates sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
+        """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
         Returns:
             sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
         """
@@ -126,7 +126,7 @@ class StrategicPricingMDP(MDP):
         return average_reward_matrix
 
     def reset(self):
-        """Resets environment.
+        """Reset environment.
         Returns:
             list: Randomised initial state.
         """
@@ -136,7 +136,7 @@ class StrategicPricingMDP(MDP):
         return binned_state
 
     def step(self, state, action):
-        """Takes a step in the environment.
+        """Take a step in the environment.
         Done flags means the environment terminated.
         Args:
             state (list): Current state values of agent.
