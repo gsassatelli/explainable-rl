@@ -70,8 +70,12 @@ class MDP:
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
-            action = bin[-1]
+            # TODO: look into exception
+            try:
+                state_str = ",".join(str(e) for e in bin.tolist()[:-1])
+                action = bin[-1]
+            except:
+                continue
             # Update state to action
             self.state_to_action.setdefault(state_str, set()).add(action)
 
