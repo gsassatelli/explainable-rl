@@ -72,8 +72,12 @@ class StrategicPricingMDP(MDP):
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
-            action = bin[-1]
+            # TODO: look into exception
+            try:
+                state_str = ",".join(str(e) for e in bin.tolist()[:-1])
+                action = bin[-1]
+            except:
+                continue
             # Update state to action
             self.state_to_action.setdefault(state_str, set()).add(action)
 
@@ -130,7 +134,7 @@ class StrategicPricingMDP(MDP):
         Returns:
             list: Randomised initial state.
         """
-        sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data) + 1))
+        sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data)))
         state = self._state_mdp_data[sample_ix_point].tolist()
         binned_state = self._bin_state_action_space(state)
         return binned_state
