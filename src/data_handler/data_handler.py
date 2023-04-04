@@ -3,13 +3,14 @@ import pandas as pd
 import numpy as np
 from sklearn.preprocessing import MinMaxScaler
 
+
 # TODO: change normalisation to [0, 1]
 # TODO: add flag for next states
 class DataHandler:
     """Data handler class to store and preprocess data needed for training.
     """
 
-    __slots__ = ["data_path", "dataset", "_normalised_cols", "_minmax_scalars",
+    __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
                  "_state_labels", "_action_labels", "_reward_labels", "mdp_data", "_n_samples"]
 
     def __init__(self, data_path,
@@ -29,7 +30,7 @@ class DataHandler:
         self._n_samples = n_samples
         self.dataset = None
         self._normalised_cols = []
-        self._minmax_scalars = {}
+        self.minmax_scalars = {}
         self._state_labels = state_labels
         self._action_labels = action_labels
         self._reward_labels = reward_labels
@@ -45,7 +46,6 @@ class DataHandler:
         self.load_data(delimiter=col_delimiter)
         self.preprocess_data(normalisation=True,
                              columns_to_normalise=cols_to_normalise)
-
 
     def load_data(self, delimiter=','):
         """Load data from file.
@@ -125,14 +125,14 @@ class DataHandler:
     def _transform_col(self, col_name: str):
         """Normalise one column of the dataset.
         """
-        scalar = self._minmax_scalars[col_name]
+        scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
 
     def _inverse_transform_col(self, col_name: str):
         """Reverse the normalisation of one column of the dataset.
         """
-        scalar = self._minmax_scalars[col_name]
+        scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
             pd.DataFrame(self.dataset[col_name]))
 
@@ -142,13 +142,4 @@ class DataHandler:
         for col in self.dataset:
             scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
-            self._minmax_scalars[col] = scalar
-
-
-# if __name__ == "__main__":
-#     states = ['competitorPrice', 'adFlag', 'availability']
-#     actions = ['price']
-#     rewards = ['revenue']
-#     dh = DataHandler('../kaggle-dummy-dataset/train.csv', states, actions,
-#                      rewards)
-#     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=actions)
+            self.minmax_scalars[col] = scalar

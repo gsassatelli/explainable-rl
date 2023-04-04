@@ -1,6 +1,6 @@
 # Import environment and agent
 from src.foundation.agent import QLearningAgent
-from src.foundation.environment import MDP
+from src.foundation.environment import StrategicPricingMDP
 
 class Engine:
 
@@ -60,8 +60,8 @@ class Engine:
         """Create an agent and store it in Engine.
 
         """
+        # Initialize agent
         if self.agent_type == "q_learner":
-            # Initialize agent
             self.agent = QLearningAgent(self.env, gamma=0.9)
             self.agent.create_tables()
 
@@ -70,8 +70,9 @@ class Engine:
 
         """
         # Initialize environment
-        self.env = MDP(self.dh)
-        self.env.initialise_env()
+        if self.env_type == "kaggle":
+            self.env = StrategicPricingMDP(self.dh)
+            self.env.initialise_env()
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.

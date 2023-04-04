@@ -1,6 +1,6 @@
-from src.foundation.engine import Engine
-from src.data_handler.data_handler import DataHandler
-from src.explainability.pdp import PDP
+from foundation.engine import Engine
+from data_handler.data_handler import DataHandler
+from explainability.pdp import PDP
 
 from datetime import datetime
 

@@ -1,10 +1,11 @@
 # Import packages
 import numpy as np
-from src.foundation.utils import *
 import sparse
 import random
 from datetime import datetime
 import ipdb
+
+from src.foundation.utils import *
 from src.foundation.super_classes import Agent
 
 

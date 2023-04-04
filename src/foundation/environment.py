@@ -1,7 +1,7 @@
 # Import packages
 import sparse
 import numpy as np
-import ipdb
+
 from src.foundation.super_classes import MDP
 
 class StrategicPricingMDP(MDP):
@@ -23,7 +23,7 @@ class StrategicPricingMDP(MDP):
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
-        self.num_bins = 100
+        self.num_bins = 10
         self.state_dim = 3
         self.bins = None
 
