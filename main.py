@@ -40,10 +40,10 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show PDPs plots")
     pdp = PDP(bins=engine.env.bins,
-              minmax_scalers=dh.minmax_scalars,
+              minmax_scalars=dh.minmax_scalars,
               action_labels=actions,
               state_labels=states)
-    pdp.build_data_for_plots(engine.agent.Q)
+    pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
     type_features = {'competitorPrice': "continuous",
                      'adFlag': "discrete",
                      'availability': "discrete"}

@@ -4,50 +4,56 @@ import sparse
 
 
 class PDP:
-    __slots__ = ["_bins", "_minmax_scalers", "_action_labels", "_state_labels",
+    __slots__ = ["_bins", "_minmax_scalars", "_action_labels", "_state_labels",
                  "_dig_state_actions", "_denorm_actions", "_denorm_states",
-                 "_bins_per_dim"]
+                 "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples"]
 
     def __init__(self,
                  bins,
-                 minmax_scalers,
+                 minmax_scalars,
                  action_labels,
                  state_labels):
         """Initialize PDP class.
 
         Args:
             bins (list): list of bins per each state and action pair.
-            minmax_scalers (dict): list of scalers per each state dimension and actions.
+            minmax_scalars (dict): list of scalars per each state dimension and actions.
             action_labels (list): list of action column names.
             state_labels (list): list of state dimensions column names.
         """
         self._bins = bins
-        self._minmax_scalers = minmax_scalers
+        self._minmax_scalars = minmax_scalars
         self._action_labels = action_labels
         self._state_labels = state_labels
         self._dig_state_actions = []
+        self._dig_state_actions_std = []
+        self._dig_state_actions_samples = []
         self._denorm_actions = []
         self._denorm_states = []
         self._bins_per_dim = []
 
     def build_data_for_plots(self,
-                             Q):
+                             Q,
+                             Q_num_samples):
         """Prepare data to build PDP plots.
 
         Args:
             Q (sparse.DOK): Q-table to build plots.
+            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
-        self._get_digitized_pdp(Q)
+        self._get_digitized_pdp(Q, Q_num_samples)
         self._get_denorm_actions()
         self._get_denorm_states()
 
     def _get_digitized_pdp(self,
-                           Q):
+                           Q,
+                           Q_num_samples):
         """Compute average Q-value per each state-action pair.
         Marginal effect of the state-action pair averaging other state dimensions.
 
         Args:
             Q (sparse.DOK): Q-table to build plots.
+            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
         Q_array = Q.todense()
         shape_Q = Q_array.shape
@@ -56,18 +62,27 @@ class PDP:
         self._bins_per_dim = [shape_Q[i] for i in range(num_dims)]
         set_states = set(list(range(num_states)))
 
+        Q_num_samples_array = Q_num_samples.todense()
+
         # For each state dimension
         for dim in range(num_states):
             states_to_avg = tuple(set_states - set([dim]))
             Q_avg = np.mean(Q_array, axis=states_to_avg)
-            # Select action with highest avg Q value
+            Q_std = np.std(Q_array, axis=states_to_avg)
+            Q_num_samples_sum = np.sum(Q_num_samples_array, axis=states_to_avg)
+            # Select action with the highest avg Q value
             dig_actions = np.argmax(Q_avg, axis=-1)
+            dig_actions_std = np.array([Q_std[idx][action] for idx, action in enumerate(dig_actions)])
+            dig_actions_samples = np.array([Q_num_samples_sum[idx][action] for idx, action in enumerate(dig_actions)])
             self._dig_state_actions.append(dig_actions)
+            self._dig_state_actions_std.append(dig_actions_std)
+            self._dig_state_actions_samples.append(dig_actions_samples)
+            # TODO std no correct because it is not the std of denorm values
 
     def _get_denorm_actions(self):
         """Get actions denormalized values.
         """
-        scaler = self._minmax_scalers[self._action_labels[0]]
+        scaler = self._minmax_scalars[self._action_labels[0]]
         for dig_actions in self._dig_state_actions:
             # Divide dig actions by # bins of the action dimension
             # to get a value between 0 and 1
@@ -84,7 +99,7 @@ class PDP:
             # Divide by number of bins to get a value between [0,1]
             # which can then be inputted into the scaler
             dig_values = np.array(list(range(n_bins))) / n_bins
-            scaler = self._minmax_scalers[self._state_labels[i]]
+            scaler = self._minmax_scalars[self._state_labels[i]]
             denorm_state = scaler.inverse_transform(dig_values.reshape(-1, 1))
             self._denorm_states.append(denorm_state)
 
