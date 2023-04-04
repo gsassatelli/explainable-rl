@@ -12,6 +12,9 @@ class DataHandler:
 
     """
 
+    __slots__ = ["data_path", "dataset", "_normalised_cols", "_minmax_scalars",
+                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data", "_n_samples"]
+
     def __init__(self, data_path,
                  state_labels,
                  action_labels,
@@ -27,7 +30,7 @@ class DataHandler:
         """
 
         self.data_path = data_path
-        self.n_samples = n_samples
+        self._n_samples = n_samples
         self.dataset = None
         self._normalised_cols = []
         self._minmax_scalars = {}
@@ -82,7 +85,7 @@ class DataHandler:
         r = self.dataset[self._reward_labels]
 
         self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
-        self.mdp_data = self.mdp_data[:self.n_samples]
+        self.mdp_data = self.mdp_data[:self._n_samples]
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -110,7 +113,7 @@ class DataHandler:
         Returns:
             pd.DataFrame of the actions.
         """
-        return self.mdp_data['s']
+        return self.mdp_data['a']
 
     def get_rewards(self):
         """Get the rewards taken in the dataset.
