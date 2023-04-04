@@ -1,6 +1,7 @@
+from datetime import datetime
+
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
-from datetime import datetime
 from src.explainability.pdp import PDP
 
 
@@ -11,7 +12,7 @@ if __name__ == "__main__":
     states = ['competitorPrice', 'adFlag', 'availability']
     actions = ['price']
     rewards = ['revenue']
-    n_samples = 2000
+    n_samples = 500000
     dh = DataHandler('kaggle-dummy-dataset/train.csv', states, actions, rewards, n_samples=n_samples)
 
     # Preprocess the data
@@ -25,7 +26,6 @@ if __name__ == "__main__":
     print(f"{timestamp}: Initialize Engine")
     engine = Engine(dh, "q_learner", "kaggle", num_episodes=100, num_steps=10)
 
-    
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Create the world")
@@ -40,7 +40,7 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show PDPs plots")
     pdp = PDP(bins=engine.env.bins,
-              minmax_scalers=dh._minmax_scalars,
+              minmax_scalers=dh.minmax_scalars,
               action_labels=actions,
               state_labels=states)
     pdp.build_data_for_plots(engine.agent.Q)
