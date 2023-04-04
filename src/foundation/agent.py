@@ -13,7 +13,7 @@ class QLearningAgent(Agent):
     """Agent class to store and update q-table.
     """
 
-    __slots__ = ['Q', 'state_to_action', 'state']
+    __slots__ = ['Q', 'state_to_action', 'state', 'Q_num_samples']
 
     def __init__(self, env, gamma):
         super().__init__(env, gamma)
@@ -24,6 +24,7 @@ class QLearningAgent(Agent):
             gamma (float): Discount factor.
         """
         self.Q = None
+        self.Q_num_samples = None
         self.state_to_action = None
         self.state = None
 
@@ -117,6 +118,7 @@ class QLearningAgent(Agent):
         n_Q_dims = self.env.state_dim+1
         #num_bins+1 because there is a bug producing indices from 0-100 (both included)
         self.Q = sparse.DOK(n_Q_dims*[self.env.num_bins+1]) # put in the correct shape, initialized at 0 by default
+        self.Q_num_samples = sparse.DOK(n_Q_dims*[self.env.num_bins+1])
 
 
     def _step(self, epsilon, lr):
@@ -157,3 +159,5 @@ class QLearningAgent(Agent):
 
         self.Q[state[0], state[1], state[2], action] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
+
+        self.Q_num_samples[state[0], state[1], state[2], action] += 1
