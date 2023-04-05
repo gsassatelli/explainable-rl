@@ -16,3 +16,5 @@ PDP plots - All states.png
 PDP plots - Visited states.png
 data_handler/__pycache__/
 *.pyc
+
+pyvenv.cfg
