@@ -47,10 +47,10 @@ def run_all(hyperparam_dict):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show PDPs plots")
     pdp = PDP(bins=engine.env.bins,
-              minmax_scalers=dh.minmax_scalars,
+              minmax_scalars=dh.minmax_scalars,
               action_labels=actions,
               state_labels=states)
-    pdp.build_data_for_plots(engine.agent.Q)
+    pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
     type_features = hyperparam_dict['feature_types']
     fig_name = "PDP plots - All states"
     pdp.plot_pdp(states_names=states, fig_name=fig_name,
