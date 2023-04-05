@@ -108,3 +108,4 @@ if __name__ == "__main__":
     }
     for i in range(10):
         run_all(hyperparam_dict_kaggle_data)
+        # ran this 10 times to check everything was fine.
