@@ -159,4 +159,4 @@ class QLearningAgent(Agent):
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
 
-        self.Q_num_samples[state[0], state[1], state[2], action] += 1
+        self.Q_num_samples[index_current] += 1
