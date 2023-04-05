@@ -178,12 +178,9 @@ class PDP:
                 ax.annotate(txt, (z[i], y[i]))
             """
 
-
         plt.subplots_adjust(top=0.99, bottom=0.1, hspace=0.5, wspace=0.4)
-
 
         if savefig:
             plt.savefig(fig_name, dpi=600)
-        
 
         plt.show()
