@@ -75,14 +75,14 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward' : "continuous"
         },
-        'n_samples': 2000,
+        'n_samples': 500000,
         'data_path': '../data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'kaggle',
-        'num_episodes': 100,
+        'num_episodes': 15000,
         'num_steps': 10
     }
 
@@ -97,15 +97,15 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'n_samples': 2000,
+        'n_samples': 500000,
         'data_path': '../data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
         'env_type': 'kaggle',
-        'num_episodes': 100,
+        'num_episodes': 1000,
         'num_steps': 10
     }
-    for i in range(10):
-        run_all(hyperparam_dict_kaggle_data)
+    for i in range(1):
+        run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.
