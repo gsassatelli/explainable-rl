@@ -18,13 +18,13 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'n_samples': 2000,
-        'data_path': '../kaggle-dummy-dataset/train.csv',
+        'n_samples': 20000,
+        'data_path': '../data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
         'env_type': 'kaggle',
-        'num_episodes': 100,
+        'num_episodes': 1000,
         'num_steps': 10
     }
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
