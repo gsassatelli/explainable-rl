@@ -5,7 +5,7 @@ from src.foundation.environment import StrategicPricingMDP
 class Engine:
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
-                 "episode_flag", "num_episodes", "num_steps", "policy", "q_table"]
+                 "episode_flag", "num_episodes", "num_steps", "policy", "q_table", "bins"]
 
     def __init__(self, 
                  dh,
@@ -13,6 +13,7 @@ class Engine:
                  env_type,
                  num_episodes,
                  num_steps,
+                 bins,
                  gamma=0.9):
         """Initilize engine class.
 
@@ -22,6 +23,8 @@ class Engine:
             env_type (str): Type of environment to initialize
             num_episodes (int): Number of episodes to train the agent for
             num_steps (int): Number of steps per episode
+            bins (int): List of bins per state/action to discretize the state
+                        space.
             gamma (float): Discount factor
         """
         # Save data handler
@@ -43,6 +46,8 @@ class Engine:
         # Parameters of the agent
         self.policy = None
         self.q_table = None
+
+        self.bins = bins
 
     def create_world(self):
         """Create the Agent and MDP instances for the given task.
@@ -70,8 +75,8 @@ class Engine:
 
         """
         # Initialize environment
-        if self.env_type == "kaggle":
-            self.env = StrategicPricingMDP(self.dh)
+        if self.env_type == "strategic_pricing":
+            self.env = StrategicPricingMDP(self.dh, self.bins)
             self.env.initialise_env()
 
     def train_agent(self):

@@ -8,24 +8,29 @@ class StrategicPricingMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
     """
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
-                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim']
+                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim']
 
-    def __init__(self, dh):
+    def __init__(self, dh, bins=None):
         """Initialise the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
         super().__init__(dh)
 
+        if bins is None:
+            bins = [10]
         self._average_rewards = None
         self.state_to_action = {}
 
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
-        self.num_bins = 10
         self.state_dim = self.dh.get_states().shape[1]
-        self.bins = None
+        self.action_dim = self.dh.get_actions().shape[1]
+        if len(bins) != self.state_dim + self.action_dim:
+            self.bins = [10] * (self.state_dim + self.action_dim)
+        else:
+            self.bins = bins
 
     def initialise_env(self):
         """Create the environment given the MDP information."""
@@ -58,8 +63,23 @@ class StrategicPricingMDP(MDP):
         Returns:
             np.array: Binned state-action pairs.
         """
-        self.bins = np.arange(0, 1 + 1 / self.num_bins, step=1 / self.num_bins).tolist()
-        return np.digitize(zipped, self.bins, right=True)
+        binned = []
+        zipped = np.array(zipped)
+        for i in range(zipped.shape[1]):
+            binned.append(
+                np.digitize(zipped[:, i], np.linspace(0, 1, self.bins[i])))
+        return np.array(binned).T
+
+    def _bin_state(self, state):
+        """Bin a singular state.
+
+        Args:
+            state (list): State to bin.
+        """
+        binned = []
+        for i in range(len(state)):
+            binned.append(np.digitize(state[i], np.linspace(0, 1 + 1 / self.bins[i], self.bins[i])))
+        return binned
 
     def _get_counts_and_rewards_per_bin(self, binned):
         """Create a dictionary of counts of datapoints per bin and sums the associated rewards.
@@ -91,12 +111,15 @@ class StrategicPricingMDP(MDP):
         return bins_dict
 
     def _create_average_reward_matrix(self, bins_dict):
-        """Generate a sparse matrix of average rewards for each bin in the dataset.
+        """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
+
         Args:
             bins_dict (dict): dictionary of counts of datapoints per bin and sums the associated rewards.
+
         Returns:
             sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
         """
+
         coords = []
         data = []
 
@@ -136,7 +159,7 @@ class StrategicPricingMDP(MDP):
         """
         sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data)))
         state = self._state_mdp_data[sample_ix_point].tolist()
-        binned_state = self._bin_state_action_space(state)
+        binned_state = self._bin_state(state)
         return binned_state
 
     def step(self, state, action):

@@ -24,8 +24,8 @@ class QLearningAgent(Agent):
             gamma (float): Discount factor.
         """
         self.Q = None
-        self.Q_num_samples = None
         self.state_to_action = None
+        self.Q_num_samples = None
         self.state = None
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
@@ -97,7 +97,7 @@ class QLearningAgent(Agent):
         if state is None:
             state = self.state
 
-        state_str = self._convert_to_string(state) 
+        state_str = self._convert_to_string(state)
         index = tuple(list(state))
         q_values = self.Q[index].todense()
         if random.random() > epsilon:
@@ -106,18 +106,15 @@ class QLearningAgent(Agent):
             action = random.choice(list(self.state_to_action[state_str]))
         return action
 
-    def _convert_to_string(self, state):
+    @staticmethod
+    def _convert_to_string(state):
         return ",".join(str(s) for s in state)
-    
+
     def _init_q_table(self):
         """Initialize the q-table with zeros.
         """
-        # Q has num_state_dimensions + 1 (action) dimensions 
-        n_Q_dims = self.env.state_dim+1
-        #num_bins+1 because there is a bug producing indices from 0-100 (both included)
-        self.Q = sparse.DOK(n_Q_dims*[self.env.num_bins+1]) # put in the correct shape, initialized at 0 by default
-        self.Q_num_samples = sparse.DOK(n_Q_dims*[self.env.num_bins+1])
-
+        self.Q = sparse.DOK(self.env.bins)
+        self.Q_num_samples = sparse.DOK(self.env.bins)
 
     def _step(self, epsilon, lr):
         """Perform a step in the environment.
