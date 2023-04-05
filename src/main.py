@@ -1,32 +1,10 @@
 from foundation.engine import Engine
 from data_handler.data_handler import DataHandler
 from explainability.pdp import PDP
-
 from datetime import datetime
 
 
-if __name__ == "__main__":
-    # Load data
-    hyperparam_dict = {
-        'states': ['competitorPrice', 'adFlag', 'availability'],
-        'actions': ['price'],
-        'rewards': ['revenue'],
-        'feature_types': {
-            'competitorPrice': "continuous",
-            'adFlag': "discrete",
-            'availability': "discrete",
-            'price': "continuous",
-            'revenue': "continuous"
-        },
-        'n_samples': 2000,
-        'data_path': '../kaggle-dummy-dataset/train.csv',
-        'col_delimiter': '|',
-        'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'agent_type': 'q_learner',
-        'env_type': 'kaggle',
-        'num_episodes': 100,
-        'num_steps': 10
-    }
+def run_all(hyperparam_dict):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
     states = hyperparam_dict['states']
@@ -43,7 +21,8 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Preprocess data")
     dh.prepare_data_for_engine(col_delimiter=hyperparam_dict['col_delimiter'],
-                               cols_to_normalise=hyperparam_dict['cols_to_normalise'])
+                               cols_to_normalise=hyperparam_dict[
+                                   'cols_to_normalise'])
 
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -59,7 +38,7 @@ if __name__ == "__main__":
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Create the world")
     engine.create_world()
-    
+
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Train the agent on {n_samples} samples")
@@ -75,6 +54,58 @@ if __name__ == "__main__":
     pdp.build_data_for_plots(engine.agent.Q)
     type_features = hyperparam_dict['feature_types']
     fig_name = "PDP plots - All states"
-    pdp.plot_pdp(states_names=states, fig_name=fig_name, type_features=type_features, savefig=True, all_states=True)
+    pdp.plot_pdp(states_names=states, fig_name=fig_name,
+                 type_features=type_features, savefig=True, all_states=True)
     fig_name = "PDP plots - Visited states"
-    pdp.plot_pdp(states_names=states, fig_name=fig_name, type_features=type_features, savefig=True, all_states=False)
+    pdp.plot_pdp(states_names=states, fig_name=fig_name,
+                 type_features=type_features, savefig=True, all_states=False)
+
+
+if __name__ == "__main__":
+    # Load data
+    hyperparam_dict_ds_data = {
+        'states': ['lead_time', 'length_of_stay',
+                   'competitor_price_difference_bin', 'demand_bin'],
+        'actions': ['price'],
+        'rewards': ['reward'],
+        'feature_types': {
+            'lead_time': "continuous",
+            'length_of_stay': "continuous",
+            'competitor_price_difference_bin': "discrete",
+            'demand_bin': "discrete",
+            'price': "continuous",
+            'reward' : "continuous"
+        },
+        'n_samples': 2000,
+        'data_path': '../data/ds-data/my_example_data.parquet',
+        'col_delimiter': '|',
+        'cols_to_normalise': ['lead_time', 'length_of_stay',
+                   'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
+        'agent_type': 'q_learner',
+        'env_type': 'kaggle',
+        'num_episodes': 100,
+        'num_steps': 10
+    }
+
+    hyperparam_dict_kaggle_data = {
+        'states': ['competitorPrice', 'adFlag', 'availability'],
+        'actions': ['price'],
+        'rewards': ['revenue'],
+        'feature_types': {
+            'competitorPrice': "continuous",
+            'adFlag': "discrete",
+            'availability': "discrete",
+            'price': "continuous",
+            'revenue': "continuous"
+        },
+        'n_samples': 2000,
+        'data_path': '../data/kaggle-dummy-dataset/train.csv',
+        'col_delimiter': '|',
+        'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
+        'agent_type': 'q_learner',
+        'env_type': 'kaggle',
+        'num_episodes': 100,
+        'num_steps': 10
+    }
+    for i in range(10):
+        run_all(hyperparam_dict_kaggle_data)

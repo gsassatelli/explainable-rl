@@ -52,7 +52,15 @@ class DataHandler:
         Args:
             delimiter (str): column
         """
-        self.dataset = pd.read_csv(self.data_path, sep=delimiter)
+        file_type = self.data_path.split('.')[-1]
+        if file_type == 'csv':
+            self.dataset = pd.read_csv(self.data_path, sep=delimiter)
+        elif file_type == 'xlsx':
+            self.dataset = pd.read_excel(self.data_path)
+        elif file_type == 'parquet':
+            self.dataset = pd.read_parquet(self.data_path)
+        else:
+            raise ValueError("File type not supported")
 
     def preprocess_data(self,
                         normalisation=True,
