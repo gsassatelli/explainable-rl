@@ -100,10 +100,8 @@ class QLearningAgent(Agent):
             state = self.state
 
         state_str = self._convert_to_string(state) 
-        try:
-            q_values = self.Q[state[0], state[1], state[2], :].todense()
-        except:
-            ipdb.set_trace()
+        index = tuple(list(state))
+        q_values = self.Q[index].todense()
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
@@ -155,11 +153,12 @@ class QLearningAgent(Agent):
             reward (float): reward for the selected action.
             lr (float): learning rate.
         """
-        q_current = self.Q[state[0], state[1], state[2], action]
-        q_next = np.max(self.Q[next_state[0], next_state[1],
-                        next_state[2], :].todense())
+        index_current = tuple(list(state) + [action])
+        q_current = self.Q[index_current]
+        index_next = tuple(next_state)
+        q_next = np.max(self.Q[index_next].todense())
 
-        self.Q[state[0], state[1], state[2], action] = \
+        self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
 
         self.Q_num_samples[state[0], state[1], state[2], action] += 1
