@@ -33,7 +33,7 @@ def test_q_table():
     Q = agent.Q
     
     # state dim
-    n_bins = engine.env.num_bins
+    n_bins = engine.env.state_dim + engine.env.action_dim
     state_dim = engine.env.state_dim
     
     assert Q.shape == tuple([n_bins+1]*(state_dim+1))

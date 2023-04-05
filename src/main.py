@@ -32,7 +32,8 @@ def run_all(hyperparam_dict):
                     agent_type=hyperparam_dict['agent_type'],
                     env_type=hyperparam_dict['env_type'],
                     num_episodes=hyperparam_dict['num_episodes'],
-                    num_steps=hyperparam_dict['num_steps']
+                    num_steps=hyperparam_dict['num_steps'],
+                    bins=hyperparam_dict['bins']
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -66,6 +67,7 @@ if __name__ == "__main__":
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin'],
         'actions': ['price'],
+        'bins': [10, 10, 4, 4, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'feature_types': {
             'lead_time': "continuous",
@@ -73,7 +75,7 @@ if __name__ == "__main__":
             'competitor_price_difference_bin': "discrete",
             'demand_bin': "discrete",
             'price': "continuous",
-            'reward' : "continuous"
+            'reward': "continuous"
         },
         'n_samples': 2000,
         'data_path': '../data/ds-data/my_example_data.parquet',
@@ -81,7 +83,7 @@ if __name__ == "__main__":
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
-        'env_type': 'kaggle',
+        'env_type': 'strategic_pricing',
         'num_episodes': 100,
         'num_steps': 10
     }
@@ -97,15 +99,16 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'n_samples': 2000,
+        'bins': [10, 2, 2, 10],
+        'n_samples': 20000,
         'data_path': '../data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
-        'env_type': 'kaggle',
+        'env_type': 'strategic_pricing',
         'num_episodes': 100,
         'num_steps': 10
     }
-    for i in range(10):
+    for i in range(1):
         run_all(hyperparam_dict_kaggle_data)
         # ran this 10 times to check everything was fine.
