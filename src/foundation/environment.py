@@ -24,7 +24,7 @@ class StrategicPricingMDP(MDP):
         self._action_mdp_data = None
         self._reward_mdp_data = None
         self.num_bins = 10
-        self.state_dim = 3
+        self.state_dim = self.dh.get_states().shape[1]
         self.bins = None
 
     def initialise_env(self):
@@ -149,6 +149,7 @@ class StrategicPricingMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
-        reward = self._average_rewards[state[0], state[1], state[2], action]
+        index = tuple(list(state) + [action])
+        reward = self._average_rewards[index]
 
         return state, state, reward, True
