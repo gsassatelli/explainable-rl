@@ -99,7 +99,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10],
+        'bins': [10, 2, 2, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 20000,
         'data_path': '../data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
