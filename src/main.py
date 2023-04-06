@@ -85,7 +85,7 @@ if __name__ == "__main__":
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
-        'num_steps': 10
+        'num_steps': 1
     }
 
     hyperparam_dict_kaggle_data = {
@@ -107,8 +107,8 @@ if __name__ == "__main__":
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
-        'num_steps': 10
+        'num_steps': 1
     }
-    for i in range(1):
-        run_all(hyperparam_dict_kaggle_data)
+    for i in range(10):
+        run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.

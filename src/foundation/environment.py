@@ -64,11 +64,9 @@ class StrategicPricingMDP(MDP):
             np.array: Binned state-action pairs.
         """
         binned = []
-        zipped = np.array(zipped)
-        for i in range(zipped.shape[1]):
-            binned.append(
-                np.digitize(zipped[:, i], np.linspace(0, 1, self.bins[i])))
-        return np.array(binned).T
+        for i in range(len(zipped)):
+            binned.append(self._bin_state(zipped[i]))
+        return np.array(binned)
 
     def _bin_state(self, state):
         """Bin a singular state.
@@ -82,7 +80,7 @@ class StrategicPricingMDP(MDP):
         return binned
 
     def _get_counts_and_rewards_per_bin(self, binned):
-        """Create a dictionary of counts of datapoints per bin and sums the associated rewards.
+        """Create a dictionary of counts of datapoints per bin and sum the associated rewards.
         Args:
             binned (np.array): Binned state-action pairs.
         Returns:
@@ -92,17 +90,13 @@ class StrategicPricingMDP(MDP):
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            # TODO: look into exception
-            try:
-                state_str = ",".join(str(e) for e in bin.tolist()[:-1])
-                action = bin[-1]
-            except:
-                continue
+            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
+            action = bin[-1]
             # Update state to action
             self.state_to_action.setdefault(state_str, set()).add(action)
 
             # update number of data points in the bin
-            state_action_str = state_str+','+str(action)
+            state_action_str = state_str + ',' + str(action)
             bins_dict[state_action_str][0] =\
                 bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
             # update total reward in the bin
