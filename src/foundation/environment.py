@@ -92,12 +92,9 @@ class StrategicPricingMDP(MDP):
         bins_dict = {}
         self.state_to_action = {}
         for ix, bin in enumerate(binned):
-            # TODO: look into exception
-            try:
-                state_str = ",".join(str(e) for e in bin.tolist()[:-1])
-                action = bin[-1]
-            except:
-                continue
+
+            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
+            action = bin[-1]
             # Update state to action
             self.state_to_action.setdefault(state_str, set()).add(action)
 
@@ -174,5 +171,18 @@ class StrategicPricingMDP(MDP):
         """
         index = tuple(list(state) + [action])
         reward = self._average_rewards[index]
+        next_state = self._find_next_state(state, action)
+        done = False
+        if next_state == None:
+            done = True
+        return state, next_state, reward, done
 
-        return state, state, reward, True
+    def _find_next_state(self, state, action):
+        # confine states to current ones in bin
+        # decided the next state: if it exists: continue, else: return None
+        # lookup in dataset for similar state with new set price
+        self._state_mdp_data
+        # The possible 
+        
+        return next_state
+
