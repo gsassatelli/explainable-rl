@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.data_handler.data_handler &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.data_handler.data_handler</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.data_handler.data_handler</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Import packages</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+
+
+<span class="c1"># TODO: change normalisation to [0, 1]</span>
+<span class="c1"># TODO: add flag for next states</span>
+<div class="viewcode-block" id="DataHandler"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler">[docs]</a><span class="k">class</span> <span class="nc">DataHandler</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Data handler class to store and preprocess data needed for training.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;_normalised_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;minmax_scalars&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_state_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;_action_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;_reward_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;mdp_data&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_samples&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span>
+                 <span class="n">state_labels</span><span class="p">,</span>
+                 <span class="n">action_labels</span><span class="p">,</span>
+                 <span class="n">reward_labels</span><span class="p">,</span>
+                 <span class="n">n_samples</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initialize the DataHandler class.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            data_path (str): path to the data file.</span>
+<span class="sd">            state_labels (list): list of state labels.</span>
+<span class="sd">            action_labels (list): list of action labels.</span>
+<span class="sd">            reward_labels (list): list of reward labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span> <span class="o">=</span> <span class="n">n_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_normalised_cols</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_labels</span> <span class="o">=</span> <span class="n">state_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span> <span class="o">=</span> <span class="n">action_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reward_labels</span> <span class="o">=</span> <span class="n">reward_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
+
+<div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
+                                <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Prepare data for engine.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            col_delimiter (str): column delimiter.</span>
+<span class="sd">            cols_to_normalise (list): list of columns to normalise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">delimiter</span><span class="o">=</span><span class="n">col_delimiter</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_data</span><span class="p">(</span><span class="n">normalisation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                             <span class="n">columns_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataHandler.load_data"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Load data from file.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            delimiter (str): column</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;xlsx&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;parquet&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File type not supported&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataHandler.preprocess_data"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.preprocess_data">[docs]</a>    <span class="k">def</span> <span class="nf">preprocess_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                        <span class="n">normalisation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">columns_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Preprocess data into state, action and reward spaces.</span>
+<span class="sd">        Preprocessing applies shuffling, normalisation (if selected) and</span>
+<span class="sd">        splits the dataset into states, actions and rewards.</span>
+<span class="sd">        Args: normalisation (bool): True if normalisation is to be applied.</span>
+<span class="sd">        columns_to_normalise (list): Columns on which to apply</span>
+<span class="sd">        normalisation. if left empty all columns will be normalised.</span>
+<span class="sd">        TODO: Extension - aggregate over a time period</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_filter_data</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">sample</span><span class="p">(</span><span class="n">frac</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">normalisation</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">normalise_dataset</span><span class="p">(</span><span class="n">cols_to_norm</span><span class="o">=</span><span class="n">columns_to_normalise</span><span class="p">)</span>
+
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_labels</span><span class="p">]</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span><span class="p">]</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataHandler.normalise_dataset"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.normalise_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">normalise_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols_to_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalise the dataset to centre with mean zero and variance one.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            cols_to_norm (list): the column names that need normalising</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_fit_standard_scalars</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">cols_to_norm</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cols_to_norm</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">columns</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="n">cols_to_norm</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_transform_col</span><span class="p">(</span><span class="n">col_name</span><span class="o">=</span><span class="n">col</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_normalised_cols</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">col</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataHandler.reverse_norm"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.reverse_norm">[docs]</a>    <span class="k">def</span> <span class="nf">reverse_norm</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reverse the normalising of the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_normalised_cols</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_transform_col</span><span class="p">(</span><span class="n">col_name</span><span class="o">=</span><span class="n">col</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="DataHandler.get_actions"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.get_actions">[docs]</a>    <span class="k">def</span> <span class="nf">get_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the actions taken in the dataset.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame of the actions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[</span><span class="s1">&#39;a&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataHandler.get_rewards"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.get_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">get_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the rewards taken in the dataset.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame of the rewards.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[</span><span class="s1">&#39;r&#39;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="DataHandler.get_states"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.get_states">[docs]</a>    <span class="k">def</span> <span class="nf">get_states</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the states taken in the dataset.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame of the states.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span></div>
+
+    <span class="k">def</span> <span class="nf">_filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Filter the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">_transform_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Normalise one column of the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> \
+            <span class="n">scalar</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col_name</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_inverse_transform_col</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_name</span><span class="p">:</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Reverse the normalisation of one column of the dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span>
+            <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col_name</span><span class="p">]))</span>
+
+    <span class="k">def</span> <span class="nf">_fit_standard_scalars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the sklearn MinMaxScaler and store one per column.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">:</span>
+            <span class="n">scalar</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
+            <span class="n">scalar</span> <span class="o">=</span> <span class="n">scalar</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar</span></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
