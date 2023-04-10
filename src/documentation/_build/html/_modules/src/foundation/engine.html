@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.foundation.engine &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.foundation.engine</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.foundation.engine</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Import environment and agent</span>
+<span class="kn">from</span> <span class="nn">src.foundation.agent</span> <span class="kn">import</span> <span class="n">QLearningAgent</span>
+<span class="kn">from</span> <span class="nn">src.foundation.environment</span> <span class="kn">import</span> <span class="n">StrategicPricingMDP</span>
+
+<div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
+
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dh&quot;</span><span class="p">,</span> <span class="s2">&quot;agent_type&quot;</span><span class="p">,</span> <span class="s2">&quot;env_type&quot;</span><span class="p">,</span> <span class="s2">&quot;agent&quot;</span><span class="p">,</span> <span class="s2">&quot;env&quot;</span><span class="p">,</span> <span class="s2">&quot;gamma&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;episode_flag&quot;</span><span class="p">,</span> <span class="s2">&quot;num_episodes&quot;</span><span class="p">,</span> <span class="s2">&quot;num_steps&quot;</span><span class="p">,</span> <span class="s2">&quot;policy&quot;</span><span class="p">,</span> <span class="s2">&quot;q_table&quot;</span><span class="p">,</span> <span class="s2">&quot;bins&quot;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+                 <span class="n">dh</span><span class="p">,</span>
+                 <span class="n">agent_type</span><span class="p">,</span>
+                 <span class="n">env_type</span><span class="p">,</span>
+                 <span class="n">num_episodes</span><span class="p">,</span>
+                 <span class="n">num_steps</span><span class="p">,</span>
+                 <span class="n">bins</span><span class="p">,</span>
+                 <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initilize engine class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            dh (DataHandler): DataHandler to be given to the Environment</span>
+<span class="sd">            agent_type (str): Type of agent to initialize</span>
+<span class="sd">            env_type (int): Type of environment to initialize</span>
+<span class="sd">            num_episodes (int): Number of episodes to train the agent for</span>
+<span class="sd">            num_steps (int): Number of steps per episode</span>
+<span class="sd">            bins (int): List of bins per state/action to discretize the state</span>
+<span class="sd">                        space.</span>
+<span class="sd">            gamma (float): Discount factor</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save data handler</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dh</span> <span class="o">=</span> <span class="n">dh</span>
+
+        <span class="c1"># Hyperparameters</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span> <span class="o">=</span> <span class="n">num_episodes</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">=</span> <span class="n">num_steps</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+
+        <span class="c1"># Initialize agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_type</span> <span class="o">=</span> <span class="n">agent_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Initialize environment</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">=</span> <span class="n">env_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="c1"># Parameters of the agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
+
+<div class="viewcode-block" id="Engine.create_world"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_world">[docs]</a>    <span class="k">def</span> <span class="nf">create_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create the Agent and MDP instances for the given task.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Create chosen environment</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialize environment&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_env</span><span class="p">()</span>
+        
+        <span class="c1"># Create chosen agent</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialize agent&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">create_agent</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Engine.create_agent"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_agent">[docs]</a>    <span class="k">def</span> <span class="nf">create_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an agent and store it in Engine.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize agent</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_type</span> <span class="o">==</span> <span class="s2">&quot;q_learner&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">QLearningAgent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Engine.create_env"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_env">[docs]</a>    <span class="k">def</span> <span class="nf">create_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Create an env and store it in Engine.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Initialize environment</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">==</span> <span class="s2">&quot;strategic_pricing&quot;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">StrategicPricingMDP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">initialise_env</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="Engine.train_agent"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.train_agent">[docs]</a>    <span class="k">def</span> <span class="nf">train_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Train the agent for a chosen number of steps and episodes.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Fit the agent</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Engine.get_results"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the results of training.</span>
+
+<span class="sd">        TODO: Next sprint to compare 2 agents</span>
+<span class="sd">              This could be the average return after convergence.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">pass</span></div>
+
+<div class="viewcode-block" id="Engine.save_parameters"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.save_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Save the parameters learned during training.</span>
+
+<span class="sd">        This could be e.g. the q-values, the policy, or any other learned parameters.</span>
+
+<span class="sd">        TODO: Not sure this function is needed, can call directly agent</span>
+<span class="sd">        TODO: Epsilon greedy policy already contains q-values, remove it?</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Save parameters of the trained agent to predict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">policy</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">q_table</span></div>
+
+
+<div class="viewcode-block" id="Engine.evaluate"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.evaluate">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">state</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Evaluate the learned policy at a particular state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state: state for which an action needs to be predicted.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            action_reward: action and reward for a given state</span>
+
+<span class="sd">        TODO: ensure that here output is action with max q values (NO exploration)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Get both action &amp; reward</span>
+        <span class="n">action_reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">_epsilon_greedy_policy</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">action_reward</span></div></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
