@@ -146,17 +146,17 @@ class PDP:
         fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True)
 
         for a in range(rows):
+            state = states_names[a]
             # Plot action-state graph
-            axis = [ax[a] , ax[a].twinx()] 
+            axis = [ax[a], ax[a].twinx()]
             actions = [i[0] for i in self._denorm_actions[a]]
-            states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
+            states = [str(round(i[0], 3)) for i in self._denorm_states[a]]
             samples = self._dig_state_actions_samples[a]
             if not all_states:
-                states = [states[idx] for idx, a in enumerate(actions) if a > 0.1]
-                samples = np.array([samples[idx] for idx, a in enumerate(actions) if a > 0.1])
-                actions = [i for i in actions if i > 0.1]
-
-            state = states_names[a]
+                total_samples = list(samples[:, 1])
+                states = [states[idx] for idx, s in enumerate(total_samples) if s > 0]
+                actions = [actions[idx] for idx, s in enumerate(total_samples) if s > 0]
+                samples = np.array([samples[idx] for idx, s in enumerate(total_samples) if s > 0])
 
             axis[0].grid(zorder=0)
             #if type_features[state] == "continuous":
@@ -169,7 +169,7 @@ class PDP:
             # Super-impose number of samples plot
             axis[1].bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b',label='total')
             axis[1].bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
-            axis[1].set(ylabel='Number of samples')
+            axis[1].set(ylabel='Num. of samples')
             axis[1].legend()
             # Super-impose the distribution over the actions
             """
