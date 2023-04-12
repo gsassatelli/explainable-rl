@@ -1,6 +1,6 @@
-from foundation.engine import Engine
-from data_handler.data_handler import DataHandler
-from explainability.pdp import PDP
+from src.foundation.engine import Engine
+from src.data_handler.data_handler import DataHandler
+from src.explainability.pdp import PDP
 from datetime import datetime
 
 
@@ -78,7 +78,7 @@ if __name__ == "__main__":
             'reward': "continuous"
         },
         'n_samples': 2000,
-        'data_path': '../data/ds-data/my_example_data.parquet',
+        'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
@@ -101,7 +101,7 @@ if __name__ == "__main__":
         },
         'bins': [10, 2, 2, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 20000,
-        'data_path': '../data/kaggle-dummy-dataset/train.csv',
+        'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
