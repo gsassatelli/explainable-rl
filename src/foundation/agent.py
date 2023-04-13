@@ -48,7 +48,9 @@ class QLearningAgent(Agent):
             print("Apply q-learning and update q-table")
 
         for _ in range(n_episodes):
+
             self.state = self.env.reset()
+
             for i in range(n_steps):
                 done = self._step(epsilon=epsilon, lr=lr)
                 if done:

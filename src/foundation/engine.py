@@ -20,7 +20,7 @@ class Engine:
         Args:
             dh (DataHandler): DataHandler to be given to the Environment
             agent_type (str): Type of agent to initialize
-            env_type (str): Type of environment to initialize
+            env_type (int): Type of environment to initialize
             num_episodes (int): Number of episodes to train the agent for
             num_steps (int): Number of steps per episode
             bins (int): List of bins per state/action to discretize the state

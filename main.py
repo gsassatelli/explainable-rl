@@ -26,6 +26,7 @@ def run_all(hyperparam_dict):
 
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+
     print(f"{timestamp}: Initialize Engine")
     engine = Engine(dh,
                     agent_type=hyperparam_dict['agent_type'],
@@ -62,7 +63,6 @@ def run_all(hyperparam_dict):
 
 
 if __name__ == "__main__":
-    # Load data
     hyperparam_dict_ds_data = {
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin'],
