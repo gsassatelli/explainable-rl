@@ -47,7 +47,7 @@ def run_all(hyperparam_dict):
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Train the agent on {n_samples} samples")
-    engine.train_agent(evaluate=True, n_eval_steps=1)
+    engine.train_agent()
 
     ###########################################################
     ################ Evaluate agent ###########################
