@@ -1,6 +1,6 @@
 # Import environment and agent
-from src.foundation.agent import QLearningAgent
-from src.foundation.environment import StrategicPricingMDP
+from foundation.agent import QLearningAgent
+from foundation.environment import StrategicPricingMDP
 
 class Engine:
 

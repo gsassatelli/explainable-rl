@@ -61,10 +61,6 @@ class StrategicPricingMDP(MDP):
             state_array = self._state_mdp_data[i].tolist()
             for j in range(self.action_dim):
                 action_array = self._action_mdp_data[j].tolist()
-            # price = self._state_mdp_data[i].tolist()[-1]
-            # price_bin = np.digitize(price, np.linspace(0, 1 / self.bins[-1], self.bins[-1]))
-            # action_bin = price_bin
-            # action_array = self._action_mdp_data[i].tolist()
                 zipped.append(state_array + [action_array])
         return zipped
     
@@ -81,6 +77,7 @@ class StrategicPricingMDP(MDP):
             binned.append(
                 np.digitize(zipped[:, i], np.linspace(0, 1, self.bins[i])))
         return np.array(binned).T
+    
 
     def _bin_state(self, state):
         """Bin a singular state.
@@ -159,7 +156,6 @@ class StrategicPricingMDP(MDP):
         zipped = self._join_state_action()
 
         # Create the bins
-        # binned = self._bin_state_space(state_array)
         binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
@@ -188,9 +184,6 @@ class StrategicPricingMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
-        # Index for new state given action OR index for current state-action
-        
-
         index = tuple(list(state) + [action])
 
         reward = self._average_rewards[index]
@@ -201,12 +194,15 @@ class StrategicPricingMDP(MDP):
         return state, next_state, reward, done
 
     def _find_next_state(self, state, action):
-        # State is binned, and so is action
-        # So we need to look at the bins dict to check if it exists?
-        # confine states to current ones in bin
-        # decided the next state: if it exists: continue, else: return None
-        # lookup in dataset for similar state with new set price
+        """Lookup whether the next state exists in the state-action space matrix
 
+        Args:
+            state (list): Current state values of agent.
+            action (int): Action for agent to take.
+
+        Returns:
+            list: next state for the agent to visit
+        """
         index_next_state = tuple(state + [action])
         next_state_reward = self._average_rewards[index_next_state]
         if next_state_reward > 0.00001:

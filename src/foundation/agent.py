@@ -106,12 +106,13 @@ class QLearningAgent(Agent):
             q_values = self.Q[index].todense()
         except:
             q_values = self.Q[index]
+            raise IndexError
+
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[state_str]))
-        if action == 10:
-            action = 9
+        
         return action
 
     @staticmethod

@@ -1,6 +1,6 @@
-from foundation.engine import Engine
-from data_handler.data_handler import DataHandler
-from explainability.pdp import PDP
+from src.foundation.engine import Engine
+from src.data_handler.data_handler import DataHandler
+from src.explainability.pdp import PDP
 from datetime import datetime
 
 
@@ -92,7 +92,7 @@ if __name__ == "__main__":
 
     hyperparam_dict_kaggle_data = {
         'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'actions': [price_bin for price_bin in range(10)],
+        'actions': [price_bin/10 for price_bin in range(1,11)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
