@@ -105,8 +105,8 @@ class Engine:
             self.build_evaluation()
             for i in range(int(self.num_episodes/n_eval_steps)):
                 self.agent.fit(n_eval_steps, self.num_steps)
-                self.agent_cumrewards.append(self.get_agent_cumreward())
-            self.hist_cumrewards = self.get_hist_cumreward()
+                self.agent_cumrewards.append(self._evaluate_total_agent_reward())
+            self.hist_cumrewards = self._evaluate_total_hist_reward()
 
     def get_results(self):
         """Get the results of training.
@@ -128,23 +128,6 @@ class Engine:
         self.policy = self.agent.policy
         self.q_table = self.agent.q_table
 
-    def _denorm_feature(self,
-                        label,
-                        bins,
-                        values):
-        """De-bin and de-normalize feature values.
-
-        Args:
-            label (list): name of the feature (state or action)
-            values (list): normalized feature values
-        
-        Returns:
-        """
-        scaler = self._minmax_scalars[label]
-        values = np.array(values) # convert to array
-        d_values = scaler.inverse_transform(
-                values.reshape(-1, 1) / bins)
-        return d_values
     
     def _inverse_scale_feature(self,
                                values,
@@ -187,7 +170,7 @@ class Engine:
         # Get the binned states
         self._eval_b_states = self.env.bin_states(self._eval_states, idxs=self._eval_state_dims)
 
-    def get_agent_cumreward(self):
+    def _evaluate_total_agent_reward(self):
         """ Calculate the total reward obtained on the evaluation states using
             the agent's policy.
         
@@ -209,12 +192,12 @@ class Engine:
 
         return np.sum(rewards_agent)
     
-    def get_hist_cumreward(self):
+    def _evaluate_total_hist_reward(self):
         """ Calculate the total reward obtained on the evaluation states using
             the agent's policy.
         
         Returns:
-            cumreward (float): total (not scaled) cumulative based on data
+            cumreward (float): total (not scaled) cumulative based on historical data
         """
         # Get the binned actions
         b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
