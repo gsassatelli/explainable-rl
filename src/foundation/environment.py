@@ -200,7 +200,8 @@ class StrategicPricingMDP(MDP):
             data.extend([value[1] / value[0]])
 
         coords = np.array(coords).T.tolist()
-        return sparse.COO(coords, data)
+        
+        return sparse.COO(coords, data, shape=tuple(self.bins))
 
     def _make_rewards_from_data(self):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
