@@ -10,6 +10,9 @@ from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
 from datetime import datetime
 
+# TODO: now that all the content has been obtained, use html to create pdf from results:
+#  https://towardsdatascience.com/how-to-easily-create-a-pdf-file-with-python-in-3-steps-a70faaf5bed5
+
 class PerformanceEvaluator:
     def __init__(self):
         # Directory containing all results for this evaluator
@@ -22,16 +25,27 @@ class PerformanceEvaluator:
         self.NUM_SAMPLES = int(1e+5)
 
         # Graph colors
-        self.time_color = "purple"
-        self.space_color = "green"
+        self.time_color = "cornflowerblue"
+        self.space_color = "sienna"
+
+        # Print statements
+        self.verbose = True
+
+        # How many of the top lines of memory allocation to record
+        self.num_memalloc_lines_to_keep = 5000
 
     def get_all_performance_evaluations(self):
         self.get_benchmark_performance()
         self.get_performance_graphs()
-        self.per_function_time_breakdown()
+        self.get_time_breakdown_per_function()
+        self.get_space_breakdown_per_function()
 
     def get_benchmark_performance(self):
         """ Get performance (space and time) for constant benchmark settings.
+
+        Note, the reason the timeit module is not used is because the piece of code being profiled
+        is lengthy (whole training flow); timeit is designed to test small snippets of code
+        by running them many times.
 
         """
         # Halt any ongoing memory tracing not to get memory results from previous code runs
@@ -51,6 +65,8 @@ class PerformanceEvaluator:
 
         # Memory usage results returned in bytes (num. Bytes / 1024 = num. KiB ; num. KiB / 1024 = num. MiB)
         _, first_peak = tracemalloc.get_traced_memory()
+
+        tracemalloc.stop()
 
         # Peak in MiB
         peak = first_peak/(1024*1024)
@@ -85,17 +101,17 @@ class PerformanceEvaluator:
         # Plot of performance vs number of samples
         num_sample_range = [int(1e1), int(1e2), int(1e3)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=num_sample_range)
-        self.plot_performance_graph(xlabel="samples", x=num_sample_range, times=times, memory=memory)
+        self.plot_performance_graph(x_label="samples", x=num_sample_range, times=times, memory=memory)
 
         # Plot of performance vs number of episodes
         num_ep_range = [int(1e1), int(1e2), int(1e3)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=num_ep_range)
-        self.plot_performance_graph(xlabel="episodes", x=num_ep_range, times=times, memory=memory)
+        self.plot_performance_graph(x_label="episodes", x=num_ep_range, times=times, memory=memory)
 
         # Plot of performance vs number of bins
         num_bin_range = [2, 5, 10, 20, 30, 40]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=num_bin_range)
-        self.plot_performance_graph(xlabel="bins", x=num_bin_range, times=times, memory=memory)
+        self.plot_performance_graph(x_label="bins", x=num_bin_range, times=times, memory=memory)
 
     def get_times_and_memory_from_parameter_range(self, parameter_name, x):
         times = []
@@ -121,20 +137,24 @@ class PerformanceEvaluator:
 
         return times, memory
 
-    def plot_performance_graph(self, xlabel, x, times, memory):
+    def plot_performance_graph(self, x_label, x, times, memory):
+        plt.style.use("seaborn-v0_8-darkgrid")
 
         fig, ax1 = plt.subplots()
-        ax1.plot(x, times, color=self.time_color)
+        ax1.plot(x, times, color=self.time_color, alpha=0.6)
         ax2 = ax1.twinx()
-        ax2.plot(x, memory, color=self.space_color)
+        ax2.plot(x, memory, color=self.space_color, alpha=0.6)
 
         ax1.set_ylabel("Time (s)", color=self.time_color)
         ax2.set_ylabel("Space (MiB)", color=self.space_color)
+        plt.xlabel(f"Number of {x_label}")
+        plt.title(f"Time and space complexities vs number of {x_label}")
+        plt.grid()
+        plt.tight_layout()
 
-        plt.xlabel(f"Number of {xlabel}")
-        plt.savefig(f"evaluations/performance-{self.init_time}/perf_vs_{xlabel}.png")
+        plt.savefig(f"evaluations/performance-{self.init_time}/perf_vs_{x_label}.png")
 
-    def per_function_time_breakdown(self):
+    def get_time_breakdown_per_function(self):
         # See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/
         # And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file
         profiler = cProfile.Profile()
@@ -149,6 +169,24 @@ class PerformanceEvaluator:
 
         with open(f"evaluations/performance-{self.init_time}/per_function_time.txt", "w") as outfile:
             outfile.write(stream.getvalue())
+
+    def get_space_breakdown_per_function(self):
+        tracemalloc.start()
+
+        self.run_training_loop(num_episodes=self.NUM_EP,
+                               num_bins=self.NUM_BINS,
+                               num_samples=self.NUM_SAMPLES)
+
+        snapshot = tracemalloc.take_snapshot()
+        top_stats = snapshot.statistics('lineno')
+
+        with open(f"evaluations/performance-{self.init_time}/per_function_space.txt", "w") as outfile:
+
+            outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
+            for stat in top_stats[:self.num_memalloc_lines_to_keep]:
+                outfile.write(f"\n{stat}")
+
+        tracemalloc.stop()
 
     def run_training_loop(self, num_episodes, num_bins, num_samples):
         """ Run an example main.py.
@@ -246,5 +284,4 @@ class PerformanceEvaluator:
 
 if __name__ == "__main__":
     performance_evaluator = PerformanceEvaluator()
-    performance_evaluator.per_function_time_breakdown()
-    # performance_evaluator.get_all_performance_evaluations()
+    performance_evaluator.get_all_performance_evaluations()
