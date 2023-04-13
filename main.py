@@ -47,7 +47,7 @@ def run_all(hyperparam_dict):
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Train the agent on {n_samples} samples")
-    engine.train_agent()
+    engine.train_agent(evaluate=True, n_eval_steps=1)
 
     ###########################################################
     ################ Evaluate agent ###########################
@@ -57,7 +57,6 @@ def run_all(hyperparam_dict):
 
     states, actions, rewards_hist, actions_agent, rewards_agent = \
         engine.evaluate_agent()
-    
     # Sum obtained reward optimal vs historical policy
     import numpy as np
     print(f"Return based on historical data: {np.sum(rewards_hist)}")
@@ -105,14 +104,14 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 100000,
+        'n_samples': 10,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 100000,
+        'num_episodes': 10,
         'num_steps': 1,
         'train_test_split': 0.2
     }
