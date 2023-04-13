@@ -1,7 +1,8 @@
 import os
-
+import io
 import time
 import tracemalloc
+import cProfile, pstats
 import matplotlib.pyplot as plt
 
 from src.foundation.engine import Engine
@@ -20,10 +21,14 @@ class PerformanceEvaluator:
         self.NUM_BINS = 10
         self.NUM_SAMPLES = int(1e+5)
 
+        # Graph colors
+        self.time_color = "purple"
+        self.space_color = "green"
+
     def get_all_performance_evaluations(self):
         self.get_benchmark_performance()
         self.get_performance_graphs()
-        self.per_function_performance_breakdown()
+        self.per_function_time_breakdown()
 
     def get_benchmark_performance(self):
         """ Get performance (space and time) for constant benchmark settings.
@@ -117,16 +122,33 @@ class PerformanceEvaluator:
         return times, memory
 
     def plot_performance_graph(self, xlabel, x, times, memory):
+
         fig, ax1 = plt.subplots()
-        ax1.plot(x, times, color="purple", label="time")
+        ax1.plot(x, times, color=self.time_color)
         ax2 = ax1.twinx()
-        ax2.plot(x, memory, color="green", label="space")
-        ax1.legend(loc="upper left")
-        ax2.legend(loc="upper right")
+        ax2.plot(x, memory, color=self.space_color)
+
+        ax1.set_ylabel("Time (s)", color=self.time_color)
+        ax2.set_ylabel("Space (MiB)", color=self.space_color)
+
+        plt.xlabel(f"Number of {xlabel}")
         plt.savefig(f"evaluations/performance-{self.init_time}/perf_vs_{xlabel}.png")
 
-    def per_function_performance_breakdown(self):
-        pass
+    def per_function_time_breakdown(self):
+        # See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/
+        # And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file
+        profiler = cProfile.Profile()
+        profiler.enable()
+        self.run_training_loop(num_episodes=self.NUM_EP,
+                               num_bins=self.NUM_BINS,
+                               num_samples=self.NUM_SAMPLES)
+        profiler.disable()
+        stream = io.StringIO()
+        stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime')
+        stats.print_stats()
+
+        with open(f"evaluations/performance-{self.init_time}/per_function_time.txt", "w") as outfile:
+            outfile.write(stream.getvalue())
 
     def run_training_loop(self, num_episodes, num_bins, num_samples):
         """ Run an example main.py.
@@ -224,4 +246,5 @@ class PerformanceEvaluator:
 
 if __name__ == "__main__":
     performance_evaluator = PerformanceEvaluator()
-    performance_evaluator.get_all_performance_evaluations()
+    performance_evaluator.per_function_time_breakdown()
+    # performance_evaluator.get_all_performance_evaluations()
