@@ -6,7 +6,6 @@ import copy
 
 class TestQLearningAgent(unittest.TestCase):
 
-    env = None
     dh = None
 
     @classmethod
@@ -15,15 +14,17 @@ class TestQLearningAgent(unittest.TestCase):
         actions = ['price']
         rewards = ['revenue']
         n_samples = 50
-        cls.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
+        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                         cols_to_normalise=states+actions)
-        cls.env = StrategicPricingMDP(cls.dh)
-        cls.env.initialise_env()
+
 
     def setUp(self) -> None:
+        self.env = StrategicPricingMDP(self.dh)
+        self.env.initialise_env()
         self.agent = QLearningAgent(self.env, gamma=0.9)
+
 
     def tearDown(self) -> None:
         del self.agent
