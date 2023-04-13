@@ -1,6 +1,6 @@
 # Note that you need to decorate all the functions being called with the "@profile" decorator for full memory analysis
-# To view the memory usage without saving to the results, run: python3 -m memory_profiler performance/full_flow.py
-# To save the memory data to a data file, run: mprof run performance/full_flow.py
+# To view the memory usage without saving to the results, run: python3 -m memory_profiler performance/performance_old.py
+# To save the memory data to a data file, run: mprof run performance/performance_old.py
 # To plot the memory usage file just created with the standard title, run: mprof plot
 # To plot the memory usage file just created with a custom title, run: mprof plot -t "DESIRED_TITLE"
 
