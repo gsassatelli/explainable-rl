@@ -11,9 +11,9 @@ class TestDataHandler(unittest.TestCase):
         actions = ['price']
         rewards = ['revenue']
         n_samples = 50
-        self.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
+        self.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
-        self.target = pd.read_csv('../test_env_data.csv').dropna()
+        self.target = pd.read_csv('tests/test_env_data.csv').dropna()
         self.dh.load_data(delimiter=',')
         self.dh.preprocess_data(normalisation=False)
 
