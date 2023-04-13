@@ -223,7 +223,7 @@ class QLearningAgent(Agent):
         rewards = []
         for state, action in zip(states, actions):
             _, _, reward, _ = self.env.step(state, action)
-            rewards.append(reward[0])
+            rewards.append([reward[0]])
         
         return rewards
 
