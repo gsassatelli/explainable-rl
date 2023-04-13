@@ -1,6 +1,7 @@
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
+from src.explainability.shap_values import ShapValues
 from datetime import datetime
 
 
@@ -57,9 +58,16 @@ def run_all(hyperparam_dict):
     fig_name = "PDP plots - All states"
     pdp.plot_pdp(states_names=states, fig_name=fig_name,
                  type_features=type_features, savefig=True, all_states=True)
-    fig_name = "PDP plots - Visited states"
-    pdp.plot_pdp(states_names=states, fig_name=fig_name,
+    if False:
+        fig_name = "PDP plots - Visited states"
+        pdp.plot_pdp(states_names=states, fig_name=fig_name,
                  type_features=type_features, savefig=True, all_states=False)
+
+    # Plot SHAP values
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    print(f"{timestamp}: Show SHAP values plots")
+    shap_values = ShapValues(sample=[0.5, 0.5, 0.5, 0.5], features=states, env=engine.env, Q=engine.agent.Q)
+    print(shap_values.compute_shape_values())
 
 
 if __name__ == "__main__":
@@ -109,6 +117,6 @@ if __name__ == "__main__":
         'num_episodes': 100,
         'num_steps': 1
     }
-    for i in range(10):
+    for i in range(1):
         run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.
