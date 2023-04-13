@@ -84,7 +84,7 @@ class Engine:
 
         """
         # Fit the agent
-        self.agent.fit(self.num_episodes, self.num_episodes)
+        self.agent.fit(self.num_episodes, self.num_steps)
 
     def get_results(self):
         """Get the results of training.

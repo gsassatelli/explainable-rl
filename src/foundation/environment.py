@@ -25,10 +25,15 @@ class StrategicPricingMDP(MDP):
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
+        
         self.state_dim = self.dh.get_states().shape[1]
-        self.action_dim = self.dh.get_actions().shape[1]
-        if len(bins) != self.state_dim + self.action_dim:
-            self.bins = [10] * (self.state_dim + self.action_dim)
+        ####### NEW
+        # self.action_dim = self.dh.get_actions().shape[1]
+        self.action_dim = len(self.dh.get_actions())
+        #######
+
+        if len(bins) != self.state_dim + 1:
+            self.bins = [10] * (self.state_dim + 1)
         else:
             self.bins = bins
 
@@ -40,7 +45,10 @@ class StrategicPricingMDP(MDP):
         """Transform the MDP data from a dataframe to a numpy array
         """
         self._state_mdp_data = self.dh.get_states().to_numpy()
-        self._action_mdp_data = self.dh.get_actions().to_numpy()
+        ######## NEW
+        self._action_mdp_data = np.array(self.dh.get_actions())
+        # self._action_mdp_data = self.dh.get_actions().to_numpy()
+        ########
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
     def _join_state_action(self):
@@ -48,14 +56,18 @@ class StrategicPricingMDP(MDP):
         Returns:
             list: Group of states and actions per datapoint.
         """
-
         zipped = []
         for i in range(len(self._reward_mdp_data)):
             state_array = self._state_mdp_data[i].tolist()
-            action_array = self._action_mdp_data[i].tolist()
-            zipped.append(state_array + action_array)
+            for j in range(self.action_dim):
+                action_array = self._action_mdp_data[j].tolist()
+            # price = self._state_mdp_data[i].tolist()[-1]
+            # price_bin = np.digitize(price, np.linspace(0, 1 / self.bins[-1], self.bins[-1]))
+            # action_bin = price_bin
+            # action_array = self._action_mdp_data[i].tolist()
+                zipped.append(state_array + [action_array])
         return zipped
-
+    
     def _bin_state_action_space(self, zipped):
         """Bin the state-action pairs.
         Args:
@@ -91,8 +103,12 @@ class StrategicPricingMDP(MDP):
 
         bins_dict = {}
         self.state_to_action = {}
-        for ix, bin in enumerate(binned):
 
+        # I want to go through binned with step_size = 10
+        for ix, bin in enumerate(binned):
+            if (ix % 9 == 0 and ix != 0) or 1 <= ix < 9 or ix >= len(binned)/10:
+                continue
+            # Go through each bin
             state_str = ",".join(str(e) for e in bin.tolist()[:-1])
             action = bin[-1]
             # Update state to action
@@ -138,9 +154,12 @@ class StrategicPricingMDP(MDP):
         # Transform data for efficiency
         self._transform_df_to_numpy()
 
+        # state_data = self._state_mdp_data.tolist()
+
         zipped = self._join_state_action()
 
         # Create the bins
+        # binned = self._bin_state_space(state_array)
         binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
@@ -169,7 +188,11 @@ class StrategicPricingMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
+        # Index for new state given action OR index for current state-action
+        
+
         index = tuple(list(state) + [action])
+
         reward = self._average_rewards[index]
         next_state = self._find_next_state(state, action)
         done = False
@@ -178,11 +201,18 @@ class StrategicPricingMDP(MDP):
         return state, next_state, reward, done
 
     def _find_next_state(self, state, action):
+        # State is binned, and so is action
+        # So we need to look at the bins dict to check if it exists?
         # confine states to current ones in bin
         # decided the next state: if it exists: continue, else: return None
         # lookup in dataset for similar state with new set price
-        self._state_mdp_data
-        # The possible 
+
+        index_next_state = tuple(state + [action])
+        next_state_reward = self._average_rewards[index_next_state]
+        if next_state_reward > 0.00001:
+            next_state = state + [action]
+        else:
+            next_state = None
         
         return next_state
 

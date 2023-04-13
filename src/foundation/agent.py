@@ -100,12 +100,18 @@ class QLearningAgent(Agent):
             state = self.state
 
         state_str = self._convert_to_string(state)
+
         index = tuple(list(state))
-        q_values = self.Q[index].todense()
+        try:
+            q_values = self.Q[index].todense()
+        except:
+            q_values = self.Q[index]
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[state_str]))
+        if action == 10:
+            action = 9
         return action
 
     @staticmethod
@@ -132,7 +138,8 @@ class QLearningAgent(Agent):
                                              epsilon=epsilon)
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
-        self._update_q_values(state, action, next_state, reward, lr)
+
+        self._update_q_values(state, action, next_state, reward, lr, done)
         self.state = next_state
         return done
 
@@ -140,7 +147,8 @@ class QLearningAgent(Agent):
                          action,
                          next_state,
                          reward,
-                         lr):
+                         lr,
+                         done):
         """Update the Q table using the Bellman equation.
 
         Args:
@@ -150,11 +158,20 @@ class QLearningAgent(Agent):
             reward (float): reward for the selected action.
             lr (float): learning rate.
         """
-        index_current = tuple(list(state) + [action])
-        q_current = self.Q[index_current]
-        index_next = tuple(next_state)
-        q_next = np.max(self.Q[index_next].todense())
 
+        index_current = tuple(list(state) + [action])
+        
+        q_current = self.Q[index_current]
+        
+        if done == True:
+            next_state = state
+
+        index_next = tuple(next_state)
+        try:
+            q_next = np.max(self.Q[index_next].todense())
+        except:
+            q_next = np.max(self.Q[index_next])
+        
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
 

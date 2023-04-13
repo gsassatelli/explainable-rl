@@ -4,6 +4,7 @@ from explainability.pdp import PDP
 from datetime import datetime
 
 
+
 def run_all(hyperparam_dict):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
@@ -11,6 +12,7 @@ def run_all(hyperparam_dict):
     actions = hyperparam_dict['actions']
     rewards = hyperparam_dict['rewards']
     n_samples = hyperparam_dict['n_samples']
+
     dh = DataHandler(data_path=hyperparam_dict['data_path'],
                      state_labels=states,
                      action_labels=actions,
@@ -78,7 +80,7 @@ if __name__ == "__main__":
             'reward': "continuous"
         },
         'n_samples': 2000,
-        'data_path': '../data/ds-data/my_example_data.parquet',
+        'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
@@ -89,8 +91,8 @@ if __name__ == "__main__":
     }
 
     hyperparam_dict_kaggle_data = {
-        'states': ['competitorPrice', 'adFlag', 'availability'],
-        'actions': ['price'],
+        'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
+        'actions': [price_bin for price_bin in range(10)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
@@ -99,9 +101,9 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10],
+        'bins': [10, 2, 2, 10, 10],
         'n_samples': 20000,
-        'data_path': '../data/kaggle-dummy-dataset/train.csv',
+        'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
