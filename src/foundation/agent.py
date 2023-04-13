@@ -134,7 +134,8 @@ class QLearningAgent(Agent):
         self.state = next_state
         return done
 
-    def _update_q_values(self, state,
+    def _update_q_values(self,
+                         state,
                          action,
                          next_state,
                          reward,
