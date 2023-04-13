@@ -38,8 +38,20 @@ class ShapValues:
             samples_plus = np.zeros(self.number_of_samples)
             samples_minus = np.zeros(self.number_of_samples)
             for sample in range(self.number_of_samples):
+                # Sample once feature shap for random sample
                 for ft in range(len(self.features)):
                     True
+                    # Sample twice or once each feature and add to 2 sample
+                    # Bin 2 samples
+                    # Check if we have Q values for 2 sample
+                    # If not repeat
+                # Find best Q values for 2 samples
+                # Find actions that Q
+                # Append the 2 actions
+            # Compute difference between arrays
+            # Compute mean
+            # Append shap value for that feature!
+                
 
                     # Sample with dimension fixed until sample has been visited
                     # Get action for that sample
