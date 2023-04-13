@@ -30,7 +30,8 @@ class QLearningAgent(Agent):
         self.state = None
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
-            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
+            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False,
+            evaluate=False, n_eval_steps=1):
 
         """Fit agent to the dataset.
 
@@ -48,7 +49,9 @@ class QLearningAgent(Agent):
         if verbose:
             print("Apply q-learning and update q-table")
 
-        for _ in tqdm(range(n_episodes)):
+        rewards = []
+
+        for i in tqdm(range(n_episodes)):
 
             self.state = self.env.reset()
 
@@ -58,6 +61,10 @@ class QLearningAgent(Agent):
                     break
             lr = decay_param(lr, lr_decay, lr_min)
             epsilon = decay_param(epsilon, epsilon_decay, epsilon_min)
+
+            if evaluate and i%n_eval_steps == 0:
+                rewards.append(self._evaluate())
+
 
         if verbose:
             timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -84,29 +91,6 @@ class QLearningAgent(Agent):
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
     
-    def evaluate(self,
-                 states,
-                 epsilon=0):
-        """Evaluate agent on test set.
-
-        Args:
-            states: list of states to evaluate the agent
-            epsilon: value of epsilon of the epsilon-greedy
-                policy (default: 0 for greedy policy)
-        
-        Returns:
-            actions: list of recommended actions
-            rewards: list of obtained rewards
-        """
-        actions = []
-        for state in states:
-            action = self._epsilon_greedy_policy(self.state,
-                                             epsilon=epsilon)
-            actions.append(action)
-
-
-        
-        return actions
 
 
     def _epsilon_greedy_policy(self,
