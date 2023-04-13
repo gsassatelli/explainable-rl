@@ -30,8 +30,7 @@ class QLearningAgent(Agent):
         self.state = None
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
-            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False,
-            evaluate=False, n_eval_steps=1):
+            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
 
         """Fit agent to the dataset.
 
@@ -49,8 +48,6 @@ class QLearningAgent(Agent):
         if verbose:
             print("Apply q-learning and update q-table")
 
-        rewards = []
-
         for i in tqdm(range(n_episodes)):
 
             self.state = self.env.reset()
@@ -61,9 +58,6 @@ class QLearningAgent(Agent):
                     break
             lr = decay_param(lr, lr_decay, lr_min)
             epsilon = decay_param(epsilon, epsilon_decay, epsilon_min)
-
-            if evaluate and i%n_eval_steps == 0:
-                rewards.append(self._evaluate())
 
 
         if verbose:
