@@ -102,7 +102,7 @@ if __name__ == "__main__":
             'revenue': "continuous"
         },
         'bins': [10, 2, 2, 10, 10],
-        'n_samples': 20000,
+        'n_samples': 2000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],

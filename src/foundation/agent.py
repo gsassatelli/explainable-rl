@@ -82,7 +82,26 @@ class QLearningAgent(Agent):
         # create q-table
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
+    
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1):
+        if state is None:
+            state = self.state
 
+        state_str = self._convert_to_string(state)
+        index = tuple(list(state))
+        
+        state_bin_counts = self.env.bins_dict[state_str]
+        # q_value for each action
+        q_values = self.Q[index].todense()
+        
+        if random.random() > epsilon:
+            action = np.argmax(q_values)
+        else:
+            action = random.choice(list(self.state_to_action[state_str]))
+        
+        return action
+        
+    
     def _epsilon_greedy_policy(self,
                                state=None,
                                epsilon=0.1):
@@ -102,11 +121,9 @@ class QLearningAgent(Agent):
         state_str = self._convert_to_string(state)
 
         index = tuple(list(state))
-        try:
-            q_values = self.Q[index].todense()
-        except:
-            q_values = self.Q[index]
-            raise IndexError
+        
+        q_values = self.Q[index].todense()
+        
 
         if random.random() > epsilon:
             action = np.argmax(q_values)
@@ -168,10 +185,8 @@ class QLearningAgent(Agent):
             next_state = state
 
         index_next = tuple(next_state)
-        try:
-            q_next = np.max(self.Q[index_next].todense())
-        except:
-            q_next = np.max(self.Q[index_next])
+
+        q_next = np.max(self.Q[index_next].todense())    
         
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
