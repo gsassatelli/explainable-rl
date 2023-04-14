@@ -77,7 +77,6 @@ class Engine:
         # Initialize environment
         if self.env_type == "strategic_pricing":
             self.env = StrategicPricingMDP(self.dh, self.bins)
-            self.env.initialise_env()
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.

@@ -19,7 +19,6 @@ class StrategicPricingMDP(MDP):
 
         if bins is None:
             bins = [10]
-        self._average_rewards = None
         self.state_to_action = {}
 
         self._state_mdp_data = None
@@ -31,9 +30,6 @@ class StrategicPricingMDP(MDP):
             self.bins = [10] * (self.state_dim + self.action_dim)
         else:
             self.bins = bins
-
-    def initialise_env(self):
-        """Create the environment given the MDP information."""
         self._average_rewards = self._make_rewards_from_data()
 
     def _transform_df_to_numpy(self):
@@ -76,7 +72,7 @@ class StrategicPricingMDP(MDP):
         """
         binned = []
         for i in range(len(state)):
-            binned.append(np.digitize(state[i], np.linspace(0, 1 + 1 / self.bins[i], self.bins[i])))
+            binned.append(np.digitize(state[i], np.linspace(0, 1., self.bins[i])))
         return binned
 
     def _get_counts_and_rewards_per_bin(self, binned):

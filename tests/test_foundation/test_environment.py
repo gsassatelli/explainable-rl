@@ -1,7 +1,79 @@
 import unittest
+from src.data_handler.data_handler import DataHandler
+from src.foundation.environment import StrategicPricingMDP
+import numpy as np
+import os
 
-class TestEngine(unittest.TestCase):
-    pass
+
+class TestStrategicPricingMDP(unittest.TestCase):
+
+    dh = None
+
+    @classmethod
+    def setUpClass(cls) -> None:
+        states = ['competitorPrice', 'adFlag', 'availability']
+        actions = ['price']
+        rewards = ['revenue']
+        n_samples = 50
+        cls.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
+                              n_samples=n_samples)
+        cls.dh.prepare_data_for_engine(col_delimiter=',',
+                                        cols_to_normalise=states+actions)
+
+    def setUp(self) -> None:
+        self.env = StrategicPricingMDP(self.dh)
+
+    def tearDown(self) -> None:
+        del self.env
+
+    def test_transform_df_to_numpy(self):
+        target_states = self.dh.get_states().to_numpy()
+        target_actions = self.dh.get_actions().to_numpy()
+        target_rewards = self.dh.get_rewards().to_numpy()
+        self.env._transform_df_to_numpy()
+        result_states = self.env._state_mdp_data
+        result_actions = self.env._action_mdp_data
+        result_reward = self.env._reward_mdp_data
+        assert np.array_equal(target_states, result_states)
+        assert np.array_equal(target_actions, result_actions)
+        assert np.array_equal(target_rewards, result_reward)
+
+    def test_join_state_action(self):
+        self.env._state_mdp_data = np.array([[1, 2, 3], [4, 5, 6]])
+        self.env._action_mdp_data = np.array([[1], [2]])
+        self.env._reward_mdp_data = np.array([[1], [2]])
+        result = self.env._join_state_action()
+        target = np.array([[1, 2, 3, 1], [4, 5, 6, 2]])
+        assert np.array_equal(result, target)
+
+    def test_bin_state_action_space(self):
+        pass
+
+    def test_bin_state(self):
+        state = np.array([0.34, 0.19, 0.89])
+        self.env.bins = [10, 10, 5]
+        result = self.env._bin_state(state)
+        target = [4, 2, 4]
+        assert result == target
+
+    def test_get_counts_and_rewards_per_bin(self):
+        pass
+
+    def test_create_average_reward_matrix(self):
+        pass
+
+    def test_make_rewards_from_data(self):
+        pass
+
+    def test_reset(self):
+        pass
+
+    def test_step(self):
+        pass
+
+
+
+
 
 
 
