@@ -72,7 +72,7 @@ class StrategicPricingMDP(MDP):
         """
         binned = []
         for i in range(len(state)):
-            binned.append(np.digitize(state[i], np.linspace(0, 1., self.bins[i])))
+            binned.append(np.digitize(state[i], np.linspace(0, 1., self.bins[i])) - 1)
         return binned
 
     def _get_counts_and_rewards_per_bin(self, binned):

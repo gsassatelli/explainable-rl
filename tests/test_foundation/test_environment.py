@@ -15,7 +15,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
         actions = ['price']
         rewards = ['revenue']
         n_samples = 50
-        cls.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
+        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                         cols_to_normalise=states+actions)
@@ -53,7 +53,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
         state = np.array([0.34, 0.19, 0.89])
         self.env.bins = [10, 10, 5]
         result = self.env._bin_state(state)
-        target = [4, 2, 4]
+        target = [3, 1, 3]
         assert result == target
 
     def test_get_counts_and_rewards_per_bin(self):

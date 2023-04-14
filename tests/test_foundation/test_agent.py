@@ -21,7 +21,6 @@ class TestQLearningAgent(unittest.TestCase):
 
     def setUp(self) -> None:
         self.env = StrategicPricingMDP(self.dh)
-        self.env.initialise_env()
         self.agent = QLearningAgent(self.env, gamma=0.9)
 
     def tearDown(self) -> None:
