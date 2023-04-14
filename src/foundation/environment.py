@@ -1,8 +1,6 @@
 # Import packages
 import sparse
 import numpy as np
-from numpy import array_equal
-
 from src.foundation.super_classes import MDP
 
 class StrategicPricingMDP(MDP):
@@ -135,10 +133,6 @@ class StrategicPricingMDP(MDP):
         self.state_to_action = {}
         binned = [list(item) for item in binned]
         for ix, bin in enumerate(binned):
-            # bin has the state (including price)
-            # we want to check whether for all state variables fix but the
-            # price, there's other similar datapoints, and if so, what price bin
-            # do they correspond to
             for action in range(self.action_dim):
                 fixed_state = bin[:-1]
                 lookup_state = list(fixed_state + [action])

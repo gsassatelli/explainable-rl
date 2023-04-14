@@ -83,7 +83,17 @@ class QLearningAgent(Agent):
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
     
-    def uncertainty_informed_policy(self, state=None, epsilon=0.1):
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1, alpha=0.9):
+        """Get epsilon greedy policy that favours more densely populated state-action pairs. 
+
+        Args:
+            state (list): current state of the agent.
+            epsilon (float): the exploration parameter.
+            alpha (float): the exploitation parameter.
+
+        Returns:
+            action (int): selected action.
+        """
         if state is None:
             state = self.state
 
@@ -121,16 +131,16 @@ class QLearningAgent(Agent):
         state_str = self._convert_to_string(state)
 
         index = tuple(list(state))
-        
-        q_values = self.Q[index].todense()
-        
 
+        q_values = self.Q[index].todense()
+            
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[state_str]))
         
         return action
+       
 
     @staticmethod
     def _convert_to_string(state):
