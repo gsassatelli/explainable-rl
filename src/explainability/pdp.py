@@ -54,6 +54,7 @@ class PDP:
             Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
         self._get_digitized_pdp(Q, Q_num_samples)
+        # self._denorm_actions = self._action_labels
         self._get_denorm_actions()
         self._get_denorm_states()
 

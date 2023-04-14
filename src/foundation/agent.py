@@ -194,9 +194,9 @@ class QLearningAgent(Agent):
         if done == True:
             next_state = state
 
-        index_next = tuple(next_state)
+        index_next_state = tuple(next_state)
 
-        q_next = np.max(self.Q[index_next].todense())    
+        q_next = np.max(self.Q[index_next_state].todense())    
         
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)

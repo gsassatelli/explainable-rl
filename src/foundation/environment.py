@@ -2,6 +2,7 @@
 import sparse
 import numpy as np
 from src.foundation.super_classes import MDP
+import ipdb
 
 class StrategicPricingMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
@@ -69,57 +70,90 @@ class StrategicPricingMDP(MDP):
             np.array: Binned state-action pairs.
         """
         binned = []
-        zipped = np.array(zipped)
-        for i in range(zipped.shape[1]):
-            binned.append(
-                np.digitize(zipped[:, i], np.linspace(0, 1, self.bins[i])))
-        return np.array(binned).T
+        for i in range(len(zipped)):
+            binned.append(self._bin_state(zipped[i]))
+        return np.array(binned)
     
-
-    def _bin_state(self, state):
+    def bin_states(self, states, idxs=None):
+        """ Bin a list of states.
+        Args:
+            states (list[list]): State to bin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+        Returns:
+            b_states (list): Binned state
+        """
+        b_states = []
+        for state in states:
+            b_states.append(
+                self._bin_state(state, idxs=idxs)
+            )
+        return b_states
+    
+    def _bin_state(self, state, idxs=None):
         """Bin a singular state.
-
+        The states are binned according to the number of bins
+        of each feature. 
         Args:
             state (list): State to bin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+        
+        Returns:
+            binned (list): Binned state
         """
+        if idxs == None:
+            idxs = range(len(state))
+
         binned = []
-        for i in range(len(state)):
-            # binned.append(np.digitize(state[i], np.linspace(0, 1 + 1 / self.bins[i], self.bins[i])))
-            binned.append(np.digitize(state[i], np.linspace(0, 1, self.bins[i])))
-
+        for i, value in zip(idxs, state):
+            binned.append(
+                np.digitize(
+                    value, 
+                    [n/self.bins[i] if n<self.bins[i] else 1.01 \
+                     for n in range(1,self.bins[i]+1)]
+                )
+            )
         return binned
+    
+    def _debin_state(self, b_state, idxs=None):
+        """ Debin a singular states.
+        Returns middle point of the bin.
+        
+        Args:
+            b_state (list): Binned state to de-bin
+        """
+        if idxs == None:
+            idxs = range(len(state))
 
-    # def _get_counts_and_rewards_per_bin(self, binned):
-    #     """Create a dictionary of counts of datapoints per bin and sums the associated rewards.
-    #     Args:
-    #         binned (np.array): Binned state-action pairs.
-    #     Returns:
-    #         dict: dictionary of counts of datapoints per bin and sums the associated rewards.
-    #     """
-
-    #     bins_dict = {}
-    #     self.state_to_action = {}
-    #     i = 0
-    #     for ix, bin in enumerate(binned):
-    #         # Go through each bin
-    #         state_str = ",".join(str(e) for e in bin.tolist()[:-1])
-    #         action = bin[-1]
-            
-    #         # Update state to action for populated state-action pairs
-    #         self.state_to_action.setdefault(state_str, set()).add(action)
-    #         # update number of data points in the bin
-    #         state_action_str = state_str+','+str(action)
-    #         if bin[-2] == bin[-1]:
-    #             bins_dict[state_action_str][0] =\
-    #                 bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
-    #             # update total reward in the bin
-    #             reward = self._reward_mdp_data[i]
-    #             bins_dict[state_action_str][1] += reward[0]
-    #             i += 1
-    #         else:
-    #             bins_dict[state_action_str][0] =\
-    #                 bins_dict.setdefault(state_action_str, [0, 0])[0]
-    #     return bins_dict
+        state = []
+        for i, value in zip(idxs, b_state):
+            # append middle point of the state bin
+            try:
+                state.append((value + 0.5) / self.bins[i])
+            except:
+                ipdb.set_trace()
+        return state
+    
+    def debin_states(self, b_states, idxs=None):
+        """ Debin a list of binned states.
+        Args:
+            b_states (list[list]): Binned states to debin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+        Returns:
+            states (list): Binned state
+        """
+        states = []
+        for b_state in b_states:
+            states.append(
+                self._debin_state(b_state, idxs=idxs)
+            )
+        return states
+    
 
     def _get_counts_and_rewards_per_bin(self, binned):
         """Create a dictionary of counts of datapoints per bin and sums the associated rewards.
@@ -186,8 +220,6 @@ class StrategicPricingMDP(MDP):
 
         state_data = self._state_mdp_data.tolist()
 
-        # zipped = self._join_state_action()
-
         # Create the bins
         binned = self._bin_state_action_space(state_data)
 
@@ -217,6 +249,7 @@ class StrategicPricingMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
+        # TODO: input index to find_next_state
         index = tuple(list(state) + [action])
 
         reward = self._average_rewards[index]
@@ -236,12 +269,11 @@ class StrategicPricingMDP(MDP):
         Returns:
             list: next state for the agent to visit
         """
-        index_next_state = tuple(state + [action])
-        next_state_reward = self._average_rewards[index_next_state]
-        if next_state_reward > 0.00001:
-            next_state = state + [action]
+        index = list(state) + [action]
+        state_action_str = ",".join(str(e) for e in index)
+        if state_action_str in self.bins_dict:
+            next_state = state[:-1] + [action]
         else:
             next_state = None
         
         return next_state
-
