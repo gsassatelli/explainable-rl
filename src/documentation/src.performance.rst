@@ -4,10 +4,10 @@ src.performance package
 Submodules
 ----------
 
-src.performance.full\_flow module
+src.performance.performance\_evaluator module
 ---------------------------------
 
-.. automodule:: src.performance.full_flow
+.. automodule:: src.performance.performance_evaluator
    :members:
    :undoc-members:
    :show-inheritance:
