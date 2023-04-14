@@ -10,12 +10,12 @@ from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
 from datetime import datetime
 
-# TODO: now that all the content has been obtained, use html to create pdf from results:
-#  https://towardsdatascience.com/how-to-easily-create-a-pdf-file-with-python-in-3-steps-a70faaf5bed5
-
 class PerformanceEvaluator:
     def __init__(self):
-        # Directory containing all results for this evaluator
+        """Initialise a PerformanceEvaluator.
+
+        """
+        # Define the directory containing all the evaluations of this performance evaluator
         self.init_time = time.strftime("%Y%m%d-%H:%M:%S")
         os.mkdir(f"evaluations/performance-{self.init_time}")
 
@@ -35,13 +35,14 @@ class PerformanceEvaluator:
         self.num_memalloc_lines_to_keep = 5000
 
     def get_all_performance_evaluations(self):
+        """Perform and save all desired performance evaluations."""
         self.get_benchmark_performance()
         self.get_performance_graphs()
         self.get_time_breakdown_per_function()
         self.get_space_breakdown_per_function()
 
     def get_benchmark_performance(self):
-        """ Get performance (space and time) for constant benchmark settings.
+        """Get performance (space and time) for constant benchmark settings.
 
         Note, the reason the timeit module is not used is because the piece of code being profiled
         is lengthy (whole training flow); timeit is designed to test small snippets of code
@@ -69,9 +70,9 @@ class PerformanceEvaluator:
         tracemalloc.stop()
 
         # Peak in MiB
-        peak = first_peak/(1024*1024)
+        peak = first_peak / (1024 * 1024)
 
-        time_summary = f"Time spent (s): {end_time-start_time}"
+        time_summary = f"Time spent (s): {end_time - start_time}"
         space_summary = f"Peak memory usage (MiB): {peak}"
 
         with open(f"evaluations/performance-{self.init_time}/benchmark-report.txt", "w") as report_file:
@@ -79,47 +80,64 @@ class PerformanceEvaluator:
                               f'Number of bins: {self.NUM_BINS}\nNumber of samples: {self.NUM_SAMPLES}\n\n'
                               f'RESULTS\n{time_summary}\n{space_summary}')
 
-    def pre_performance_run_config(self):
+    def do_pre_benchmark_run_configuration(self):
+        """Prepare the benchmark performance run."""
         tracemalloc.stop()
         tracemalloc.start()
         start_time = time.time()
         return start_time
 
-    def post_performance_run_results(self):
+    def get_post_benchmark_run_results(self):
+        """Get the results of the benchmark performance run."""
         end_time = time.time()
         _, first_peak = tracemalloc.get_traced_memory()
         peak = first_peak / (1024 * 1024)
         return end_time, peak
 
     def get_performance_graphs(self):
-        """ Plot performance (time and space) against chosen varying parameters:
+        """ Plot performance (time and space) against chosen varying parameters.
+
+            Parameters:
             - Number of samples
             - Number of episodes
             - Number of bins (held constant for all dimensions)
 
         """
+        if self.verbose:
+            print("\nGetting performance graphs...\n")
+
         # Plot of performance vs number of samples
-        num_sample_range = [int(1e1), int(1e2), int(1e3)]
+        num_sample_range = [int(1e2), int(1e3), int(1e4), int(1e5), int(1e6)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=num_sample_range)
         self.plot_performance_graph(x_label="samples", x=num_sample_range, times=times, memory=memory)
 
         # Plot of performance vs number of episodes
-        num_ep_range = [int(1e1), int(1e2), int(1e3)]
+        num_ep_range = [int(1e1), int(1e2), int(1e3), int(1e4), int(1e5)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=num_ep_range)
         self.plot_performance_graph(x_label="episodes", x=num_ep_range, times=times, memory=memory)
 
         # Plot of performance vs number of bins
-        num_bin_range = [2, 5, 10, 20, 30, 40]
+        num_bin_range = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=num_bin_range)
         self.plot_performance_graph(x_label="bins", x=num_bin_range, times=times, memory=memory)
 
     def get_times_and_memory_from_parameter_range(self, parameter_name, x):
+        """Get time and memory complexities for varying values of an inputted parameter name.
+
+        Args:
+            parameter_name (str): Name of the parameter against which time and memory complexities are recorded.
+            x (list[int]): Range of values to vary the parameter.
+
+        Returns:
+            (list[float], list[float]): Time and memory recordings for the different parameter values in x.
+
+        """
         times = []
         memory = []
 
         for val in x:
 
-            start_time = self.pre_performance_run_config()
+            start_time = self.do_pre_benchmark_run_configuration()
 
             if parameter_name == "num_samples":
                 self.run_training_loop(num_episodes=self.NUM_EP, num_bins=self.NUM_BINS, num_samples=val)
@@ -130,7 +148,7 @@ class PerformanceEvaluator:
             elif parameter_name == "num_episodes":
                 self.run_training_loop(num_episodes=val, num_bins=self.NUM_BINS, num_samples=self.NUM_SAMPLES)
 
-            end_time, peak = self.post_performance_run_results()
+            end_time, peak = self.get_post_benchmark_run_results()
 
             times += [end_time - start_time]
             memory += [peak]
@@ -138,6 +156,15 @@ class PerformanceEvaluator:
         return times, memory
 
     def plot_performance_graph(self, x_label, x, times, memory):
+        """Plot and save a performance graph.
+
+        Args:
+            x_label (str): Label of the horizontal axis (e.g. "episodes", "samples", or "bins").
+            x (list[int]): Range of the x parameter across which time and memory have been recorded.
+            times (list[int]): Results of time complexity recording for different values of x.
+            memory (list[int]): Results of memory complexity recording for different values of x.
+
+        """
         plt.style.use("seaborn-v0_8-darkgrid")
 
         fig, ax1 = plt.subplots()
@@ -155,8 +182,12 @@ class PerformanceEvaluator:
         plt.savefig(f"evaluations/performance-{self.init_time}/perf_vs_{x_label}.png")
 
     def get_time_breakdown_per_function(self):
-        # See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/
-        # And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file
+        """Get a per-function breakdown of time complexity.
+
+            See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.
+            And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.
+
+        """
         profiler = cProfile.Profile()
         profiler.enable()
         self.run_training_loop(num_episodes=self.NUM_EP,
@@ -171,6 +202,9 @@ class PerformanceEvaluator:
             outfile.write(stream.getvalue())
 
     def get_space_breakdown_per_function(self):
+        """Get a per-function breakdown of space complexity.
+
+        """
         tracemalloc.start()
 
         self.run_training_loop(num_episodes=self.NUM_EP,
@@ -181,7 +215,6 @@ class PerformanceEvaluator:
         top_stats = snapshot.statistics('lineno')
 
         with open(f"evaluations/performance-{self.init_time}/per_function_space.txt", "w") as outfile:
-
             outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
             for stat in top_stats[:self.num_memalloc_lines_to_keep]:
                 outfile.write(f"\n{stat}")
@@ -189,13 +222,17 @@ class PerformanceEvaluator:
         tracemalloc.stop()
 
     def run_training_loop(self, num_episodes, num_bins, num_samples):
-        """ Run an example main.py.
+        """Run an example main.py.
 
-        Eventually, may load the hyperparameter data from a user-facing file.
+            Eventually, may load the hyperparameter data from a user-facing file.
+
+        Args:
+            num_episodes (int): Number of episodes in the training loop.
+            num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).
+            num_samples (int): Number of datapoint samples used for training.
 
         """
-
-        # This is the function call to potentially be replaced
+        # Get the hyperparameter dictionary for the specified parameters
         hyperparam_dict = self.get_hyperparam_dict_ds_data(num_episodes, num_bins, num_samples)
 
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -255,6 +292,17 @@ class PerformanceEvaluator:
                      type_features=type_features, savefig=True, all_states=False)
 
     def get_hyperparam_dict_ds_data(self, num_episodes, num_bins, num_samples):
+        """Load the hyperparameter dictionaries for the Datasparq data.
+
+        Args:
+            num_episodes (int): Number of episodes in the training loop.
+            num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).
+            num_samples (int): Number of datapoint samples used for training.
+
+        Returns:
+            (dict): Hyperparameter dictionary specific to the Datasparq dataset.
+
+        """
         hyperparam_dict_ds_data = {
             'states': ['lead_time', 'length_of_stay',
                        'competitor_price_difference_bin', 'demand_bin'],
@@ -285,3 +333,8 @@ class PerformanceEvaluator:
 if __name__ == "__main__":
     performance_evaluator = PerformanceEvaluator()
     performance_evaluator.get_all_performance_evaluations()
+
+
+# TODO: now that all the content has been obtained, use html to create pdf from results:
+#  https://towardsdatascience.com/how-to-easily-create-a-pdf-file-with-python-in-3-steps-a70faaf5bed5
+
