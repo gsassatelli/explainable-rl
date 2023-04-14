@@ -49,6 +49,8 @@ class PerformanceEvaluator:
         by running them many times.
 
         """
+        if self.verbose:
+            print("\nGETTING BENCHMARK PERFORMANCE")
         # Halt any ongoing memory tracing not to get memory results from previous code runs
         tracemalloc.stop()
 
@@ -104,20 +106,26 @@ class PerformanceEvaluator:
 
         """
         if self.verbose:
-            print("\nGetting performance graphs...\n")
+            print("\nGETTING PERFORMANCE GRAPHS")
 
+        if self.verbose:
+            print("* Plot of performance vs number of samples")
         # Plot of performance vs number of samples
-        num_sample_range = [int(1e2), int(1e3), int(1e4), int(1e5), int(1e6)]
+        num_sample_range = [int(1e2), int(1e3), int(1e4), int(1e5)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=num_sample_range)
         self.plot_performance_graph(x_label="samples", x=num_sample_range, times=times, memory=memory)
 
+        if self.verbose:
+            print("* Plot of performance vs number of episodes")
         # Plot of performance vs number of episodes
-        num_ep_range = [int(1e1), int(1e2), int(1e3), int(1e4), int(1e5)]
+        num_ep_range = [int(1e1), int(1e2), int(1e3), int(1e4)]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=num_ep_range)
         self.plot_performance_graph(x_label="episodes", x=num_ep_range, times=times, memory=memory)
 
+        if self.verbose:
+            print("* Plot of performance vs number of bins")
         # Plot of performance vs number of bins
-        num_bin_range = [2, 5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100]
+        num_bin_range = [2, 5, 10, 20, 30, 40, 50]
         times, memory = self.get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=num_bin_range)
         self.plot_performance_graph(x_label="bins", x=num_bin_range, times=times, memory=memory)
 
@@ -188,6 +196,9 @@ class PerformanceEvaluator:
             And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.
 
         """
+        if self.verbose:
+            print("\nGETTING TIME BREAKDOWN PER FUNCTION")
+
         profiler = cProfile.Profile()
         profiler.enable()
         self.run_training_loop(num_episodes=self.NUM_EP,
@@ -205,6 +216,9 @@ class PerformanceEvaluator:
         """Get a per-function breakdown of space complexity.
 
         """
+        if self.verbose:
+            print("\nGETTING SPACE BREAKDOWN PER FUNCTION")
+
         tracemalloc.start()
 
         self.run_training_loop(num_episodes=self.NUM_EP,
@@ -232,11 +246,15 @@ class PerformanceEvaluator:
             num_samples (int): Number of datapoint samples used for training.
 
         """
+        # TODO: call the outside function.
+        if self.verbose:
+            print(f"-> Running training loop for {num_episodes} episodes, {num_bins} bins, {num_samples} samples")
+
         # Get the hyperparameter dictionary for the specified parameters
         hyperparam_dict = self.get_hyperparam_dict_ds_data(num_episodes, num_bins, num_samples)
 
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Load data")
+        #print(f"{timestamp}: Load data")
         states = hyperparam_dict['states']
         actions = hyperparam_dict['actions']
         rewards = hyperparam_dict['rewards']
@@ -249,7 +267,7 @@ class PerformanceEvaluator:
 
         # Preprocess the data
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Preprocess data")
+        #print(f"{timestamp}: Preprocess data")
         dh.prepare_data_for_engine(col_delimiter=hyperparam_dict['col_delimiter'],
                                    cols_to_normalise=hyperparam_dict[
                                        'cols_to_normalise'])
@@ -257,7 +275,7 @@ class PerformanceEvaluator:
         # Create engine
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-        print(f"{timestamp}: Initialize Engine")
+        #print(f"{timestamp}: Initialize Engine")
         engine = Engine(dh,
                         agent_type=hyperparam_dict['agent_type'],
                         env_type=hyperparam_dict['env_type'],
@@ -267,29 +285,31 @@ class PerformanceEvaluator:
                         )
         # Create world
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Create the world")
+        #print(f"{timestamp}: Create the world")
         engine.create_world()
 
         # Train agent
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Train the agent on {n_samples} samples")
+        #print(f"{timestamp}: Train the agent on {n_samples} samples")
         engine.train_agent()
 
+        # TODO: removed PDP plotting for now because having many plots successively hinders flow of performance check
+        #  this should not be a problem considering the build_data_for_plots has been kept (it is space/time consuming)
         # Plot PDPs
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Show PDPs plots")
+        #print(f"{timestamp}: Show PDPs plots")
         pdp = PDP(bins=engine.env.bins,
                   minmax_scalars=dh.minmax_scalars,
                   action_labels=actions,
                   state_labels=states)
         pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
         type_features = hyperparam_dict['feature_types']
-        fig_name = "PDP plots - All states"
-        pdp.plot_pdp(states_names=states, fig_name=fig_name,
-                     type_features=type_features, savefig=True, all_states=True)
-        fig_name = "PDP plots - Visited states"
-        pdp.plot_pdp(states_names=states, fig_name=fig_name,
-                     type_features=type_features, savefig=True, all_states=False)
+        # fig_name = "PDP plots - All states"
+        # pdp.plot_pdp(states_names=states, fig_name=fig_name,
+        #              type_features=type_features, savefig=True, all_states=True)
+        # fig_name = "PDP plots - Visited states"
+        # pdp.plot_pdp(states_names=states, fig_name=fig_name,
+        #              type_features=type_features, savefig=True, all_states=False)
 
     def get_hyperparam_dict_ds_data(self, num_episodes, num_bins, num_samples):
         """Load the hyperparameter dictionaries for the Datasparq data.
@@ -338,3 +358,5 @@ if __name__ == "__main__":
 # TODO: now that all the content has been obtained, use html to create pdf from results:
 #  https://towardsdatascience.com/how-to-easily-create-a-pdf-file-with-python-in-3-steps-a70faaf5bed5
 
+# TODO: remove all the print statements from the other classes (environment, agent, etc...) because it clouds the output
+#  here.
