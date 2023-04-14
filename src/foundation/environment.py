@@ -1,4 +1,5 @@
 # Import packages
+import ipdb as ipdb
 import sparse
 import numpy as np
 
@@ -64,16 +65,85 @@ class StrategicPricingMDP(MDP):
             binned.append(self._bin_state(zipped[i]))
         return np.array(binned)
 
-    def _bin_state(self, state):
-        """Bin a singular state.
+    def bin_states(self, states, idxs=None):
+        """ Bin a list of states.
+        Args:
+            states (list[list]): State to bin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+        Returns:
+            b_states (list): Binned state
+        """
+        b_states = []
+        for state in states:
+            b_states.append(
+                self._bin_state(state, idxs=idxs)
+            )
+        return b_states
 
+    def debin_states(self, b_states, idxs=None):
+        """ Debin a list of binned states.
+        Args:
+            b_states (list[list]): Binned states to debin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+        Returns:
+            states (list): Binned state
+        """
+        states = []
+        for b_state in b_states:
+            states.append(
+                self._debin_state(b_state, idxs=idxs)
+            )
+        return states
+
+    def _bin_state(self, state, idxs=None):
+        """Bin a singular state.
+        The states are binned according to the number of bins
+        of each feature.
         Args:
             state (list): State to bin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+
+        Returns:
+            binned (list): Binned state
         """
+        if idxs == None:
+            idxs = range(len(state))
+
         binned = []
-        for i in range(len(state)):
-            binned.append(np.digitize(state[i], np.linspace(0, 1., self.bins[i])) - 1)
+        for i, value in zip(idxs, state):
+            binned.append(
+                np.digitize(
+                    value,
+                    [n / self.bins[i] if n < self.bins[i] else 1.01 \
+                     for n in range(1, self.bins[i] + 1)]
+                )
+            )
         return binned
+
+    def _debin_state(self, b_state, idxs=None):
+        """ Debin a singular states.
+        Returns middle point of the bin.
+
+        Args:
+            b_state (list): Binned state to de-bin
+        """
+        if idxs == None:
+            idxs = range(len(b_state))
+
+        state = []
+        for i, value in zip(idxs, b_state):
+            # append middle point of the state bin
+            try:
+                state.append((value + 0.5) / self.bins[i])
+            except:
+                ipdb.set_trace()
+        return state
 
     def _get_counts_and_rewards_per_bin(self, binned):
         """Create a dictionary of counts of datapoints per bin and sum the associated rewards.

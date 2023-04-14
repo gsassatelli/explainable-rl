@@ -50,14 +50,16 @@ class TestStrategicPricingMDP(unittest.TestCase):
         pass
 
     def test_bin_state(self):
-        state = np.array([0.34, 0.19, 0.89])
+        state = np.array([0.34, 0.19, 0.79])
         self.env.bins = [10, 10, 5]
         result = self.env._bin_state(state)
         target = [3, 1, 3]
         assert result == target
 
     def test_get_counts_and_rewards_per_bin(self):
-        pass
+        binned = np.array([[1, 2, 3, 1], [1, 2, 3, 2], [1, 2, 3, 1], [1, 2, 3, 2]])
+        self.env._reward_mdp_data = np.array([[1], [2], [1], [2]])
+
 
     def test_create_average_reward_matrix(self):
         pass
