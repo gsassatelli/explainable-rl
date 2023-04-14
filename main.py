@@ -12,6 +12,7 @@ def run_all(hyperparam_dict):
     actions = hyperparam_dict['actions']
     rewards = hyperparam_dict['rewards']
     n_samples = hyperparam_dict['n_samples']
+    n_episodes = hyperparam_dict['num_episodes']
     dh = DataHandler(data_path=hyperparam_dict['data_path'],
                      state_labels=states,
                      action_labels=actions,
@@ -43,7 +44,7 @@ def run_all(hyperparam_dict):
 
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Train the agent on {n_samples} samples")
+    print(f"{timestamp}: Train the agent on {n_samples} samples and {n_episodes} episodes")
     engine.train_agent()
 
     # Plot PDPs
@@ -66,8 +67,9 @@ def run_all(hyperparam_dict):
     # Plot SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
-    shap_values = ShapValues(sample=[0.5, 0.5, 0.5, 0.5], features=states, env=engine.env, Q=engine.agent.Q)
-    print(shap_values.compute_shape_values())
+    shap_values = ShapValues(sample=[8, 3, 1, 1], features=states, env=engine.env,
+                             Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=actions)
+    print(shap_values.compute_shap_values())
 
 
 if __name__ == "__main__":
@@ -85,14 +87,14 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 2000,
+        'n_samples': 500000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 100,
+        'num_episodes': 20000,
         'num_steps': 1
     }
 

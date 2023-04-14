@@ -68,7 +68,34 @@ class StrategicPricingMDP(MDP):
             binned.append(self._bin_state(zipped[i]))
         return np.array(binned)
 
-    def _bin_state(self, state):
+    def _bin_state(self, state, idxs=None):
+        """Bin a singular state.
+        The states are binned according to the number of bins
+        of each feature.
+        Args:
+            state (list): State to bin.
+            idxs (list): indexes of the state dimensions
+                This argument can be used if the state list contains
+                only certain features (e.g. only actions)
+
+        Returns:
+            binned (list): Binned state
+        """
+        if idxs == None:
+            idxs = range(len(state))
+
+        binned = []
+        for i, value in zip(idxs, state):
+            binned.append(
+                np.digitize(
+                    value,
+                    [n / self.bins[i] if n < self.bins[i] else 1.01 \
+                     for n in range(1, self.bins[i] + 1)]
+                )
+            )
+        return binned
+
+    def _bin_state_old(self, state):
         """Bin a singular state.
 
         Args:
