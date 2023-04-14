@@ -60,10 +60,7 @@ class StrategicPricingMDP(MDP):
         Returns:
             np.array: Binned state-action pairs.
         """
-        binned = []
-        for i in range(len(zipped)):
-            binned.append(self._bin_state(zipped[i]))
-        return np.array(binned)
+        return np.array(self.bin_states(zipped))
 
     def bin_states(self, states, idxs=None):
         """ Bin a list of states.
