@@ -4,9 +4,10 @@ from src.explainability.pdp import PDP
 from datetime import datetime
 
 
-def run_all(hyperparam_dict):
+def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Load data")
+    if verbose:
+        print(f"{timestamp}: Load data")
     states = hyperparam_dict['states']
     actions = hyperparam_dict['actions']
     rewards = hyperparam_dict['rewards']
@@ -19,15 +20,16 @@ def run_all(hyperparam_dict):
 
     # Preprocess the data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Preprocess data")
+    if verbose:
+        print(f"{timestamp}: Preprocess data")
     dh.prepare_data_for_engine(col_delimiter=hyperparam_dict['col_delimiter'],
                                cols_to_normalise=hyperparam_dict[
                                    'cols_to_normalise'])
 
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-
-    print(f"{timestamp}: Initialize Engine")
+    if verbose:
+        print(f"{timestamp}: Initialize Engine")
     engine = Engine(dh,
                     agent_type=hyperparam_dict['agent_type'],
                     env_type=hyperparam_dict['env_type'],
@@ -37,29 +39,33 @@ def run_all(hyperparam_dict):
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Create the world")
+    if verbose:
+        print(f"{timestamp}: Create the world")
     engine.create_world()
 
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Train the agent on {n_samples} samples")
+    if verbose:
+        print(f"{timestamp}: Train the agent on {n_samples} samples")
     engine.train_agent()
 
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    print(f"{timestamp}: Show PDPs plots")
+    if verbose:
+        print(f"{timestamp}: Show PDPs plots")
     pdp = PDP(bins=engine.env.bins,
               minmax_scalars=dh.minmax_scalars,
               action_labels=actions,
               state_labels=states)
     pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
     type_features = hyperparam_dict['feature_types']
-    fig_name = "PDP plots - All states"
-    pdp.plot_pdp(states_names=states, fig_name=fig_name,
-                 type_features=type_features, savefig=True, all_states=True)
-    fig_name = "PDP plots - Visited states"
-    pdp.plot_pdp(states_names=states, fig_name=fig_name,
-                 type_features=type_features, savefig=True, all_states=False)
+    if show_plots:
+        fig_name = "PDP plots - All states"
+        pdp.plot_pdp(states_names=states, fig_name=fig_name,
+                     type_features=type_features, savefig=True, all_states=True)
+        fig_name = "PDP plots - Visited states"
+        pdp.plot_pdp(states_names=states, fig_name=fig_name,
+                     type_features=type_features, savefig=True, all_states=False)
 
 
 if __name__ == "__main__":
@@ -67,7 +73,8 @@ if __name__ == "__main__":
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin'],
         'actions': ['price'],
-        'bins': [10, 10, 4, 4, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
+        'bins': [10, 10, 4, 4, 10],
+        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'feature_types': {
             'lead_time': "continuous",
@@ -81,7 +88,7 @@ if __name__ == "__main__":
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
-                   'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
+                              'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
@@ -99,7 +106,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
+        'bins': [10, 2, 2, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 20000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',

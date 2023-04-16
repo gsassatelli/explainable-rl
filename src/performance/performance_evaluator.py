@@ -254,7 +254,7 @@ class PerformanceEvaluator:
         # Get the hyperparameter dictionary for the specified parameters
         hyperparam_dict = self.get_hyperparam_dict_ds_data(num_episodes, num_bins, num_samples)
 
-        run_all(hyperparam_dict)
+        run_all(hyperparam_dict, verbose=False, show_plots=False)
 
     def get_hyperparam_dict_ds_data(self, num_episodes, num_bins, num_samples):
         """Load the hyperparameter dictionaries for the Datasparq data.
