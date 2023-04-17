@@ -26,9 +26,11 @@ class TestTD(unittest.TestCase):
         del self.agent
 
     def test_update_q_values(self):
+        """Implemented in tests for subclasses."""
         pass
 
     def test_step(self):
+        """Implemented in tests for subclasses."""
         pass
 
     def test_init_q_table(self):
@@ -58,5 +60,6 @@ class TestTD(unittest.TestCase):
         assert self.agent.state_to_action is not None
 
     def test_fit(self):
+        """Implemented in tests for subclasses."""
         pass
 
