@@ -8,7 +8,7 @@ from src.agents.td import TD
 
 
 class SarsaAgent(TD):
-    def __init__(self, env, gamma, verbose=False):
+    def __init__(self, env, gamma):
         """Initialise the agent class.
 
         Args:
@@ -16,7 +16,7 @@ class SarsaAgent(TD):
             gamma (float): Discount factor.
         """
 
-        super().__init__(env, gamma, verbose)
+        super().__init__(env, gamma)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
 

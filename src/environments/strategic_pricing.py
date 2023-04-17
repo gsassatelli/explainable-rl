@@ -9,14 +9,14 @@ class StrategicPricingMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
     """
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
-                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim', "verbose"]
+                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim']
 
-    def __init__(self, dh, bins=None, verbose=False):
+    def __init__(self, dh, bins=None):
         """Initialise the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
-        super().__init__(dh, verbose)
+        super().__init__(dh)
 
         if bins is None:
             bins = [10]
@@ -193,8 +193,7 @@ class StrategicPricingMDP(MDP):
         Returns:
             sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
         """
-        if self.verbose:
-            print("Create average rewards matrix")
+        print("Create average rewards matrix")
 
         # Transform data for efficiency
         self._transform_df_to_numpy()

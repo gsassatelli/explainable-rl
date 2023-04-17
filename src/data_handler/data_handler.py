@@ -11,14 +11,13 @@ class DataHandler:
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data", "_n_samples", "verbose"]
+                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data", "_n_samples"]
 
     def __init__(self, data_path,
                  state_labels,
                  action_labels,
                  reward_labels,
-                 n_samples,
-                 verbose=False):
+                 n_samples):
         """Initialize the DataHandler class.
         Args:
             data_path (str): path to the data file.
@@ -36,7 +35,6 @@ class DataHandler:
         self._action_labels = action_labels
         self._reward_labels = reward_labels
         self.mdp_data = None
-        self.verbose=verbose
 
     def prepare_data_for_engine(self, col_delimiter=',',
                                 cols_to_normalise=None):

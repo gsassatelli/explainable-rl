@@ -6,14 +6,13 @@ import ipdb
 class PDP:
     __slots__ = ["_bins", "_minmax_scalars", "_action_labels", "_state_labels",
                  "_dig_state_actions", "_denorm_actions", "_denorm_states", "_Q_array",
-                 "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples", "verbose"]
+                 "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples"]
 
     def __init__(self,
                  bins,
                  minmax_scalars,
                  action_labels,
-                 state_labels,
-                 verbose=False):
+                 state_labels):
         """Initialize PDP class.
 
         Args:
@@ -44,7 +43,6 @@ class PDP:
         self._denorm_states = []
         self._bins_per_dim = []
         self._Q_array = []
-        self.verbose=verbose
 
     def build_data_for_plots(self,
                              Q,

@@ -4,7 +4,7 @@ from src.explainability.pdp import PDP
 from datetime import datetime
 
 
-def run_all(hyperparam_dict, verbose=False, show_plots=True):
+def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
         print(f"{timestamp}: Load data")
@@ -16,8 +16,7 @@ def run_all(hyperparam_dict, verbose=False, show_plots=True):
                      state_labels=states,
                      action_labels=actions,
                      reward_labels=rewards,
-                     n_samples=n_samples,
-                     verbose=verbose)
+                     n_samples=n_samples)
 
     # Preprocess the data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -37,8 +36,7 @@ def run_all(hyperparam_dict, verbose=False, show_plots=True):
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
                     bins=hyperparam_dict['bins'],
-                    gamma=hyperparam_dict['gamma'],
-                    verbose=verbose
+                    gamma=hyperparam_dict['gamma']
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -59,8 +57,7 @@ def run_all(hyperparam_dict, verbose=False, show_plots=True):
     pdp = PDP(bins=engine.env.bins,
               minmax_scalars=dh.minmax_scalars,
               action_labels=actions,
-              state_labels=states,
-              verbose=verbose)
+              state_labels=states)
     pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
     type_features = hyperparam_dict['feature_types']
     if show_plots:
@@ -123,5 +120,5 @@ if __name__ == "__main__":
         'num_steps': 1
     }
     for i in range(10):
-        run_all(hyperparam_dict_ds_data, verbose=True)
+        run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.

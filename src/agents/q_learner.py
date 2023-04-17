@@ -10,7 +10,7 @@ class QLearningAgent(TD):
     """Agent class to store and update q-table.
     """
 
-    def __init__(self, env, gamma, verbose=False):
+    def __init__(self, env, gamma):
         """Initialise the agent class.
 
         Args:
@@ -18,7 +18,7 @@ class QLearningAgent(TD):
             gamma (float): Discount factor.
         """
 
-        super().__init__(env, gamma, verbose)
+        super().__init__(env, gamma)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
         """Update the Q table using the Bellman equation and q_learning update.

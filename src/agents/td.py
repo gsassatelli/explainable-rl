@@ -10,10 +10,10 @@ class TD(Agent):
     """Agent class to store and update q-table.
     """
 
-    __slots__ = ['Q', 'state_to_action', 'state', 'Q_num_samples', 'verbose']
+    __slots__ = ['Q', 'state_to_action', 'state', 'Q_num_samples']
 
-    def __init__(self, env, gamma, verbose=False):
-        super().__init__(env, gamma, verbose)
+    def __init__(self, env, gamma):
+        super().__init__(env, gamma)
         """Initialise the agent class.
 
         Args:
