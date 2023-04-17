@@ -2,6 +2,7 @@
 from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
 from src.agents.sarsa_lambda import SarsaLambdaAgent
+from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing import StrategicPricingMDP
 
 
@@ -91,6 +92,11 @@ class Engine:
                                           gamma=self.gamma,
                                           verbose=self.verbose,
                                           lambda_=0.9) # TODO make this a parameter passed by the dictionary.
+
+        elif self.agent_type == "double_q_learner":
+            self.agent = DoubleQLearner(env=self.env,
+                                        gamma=self.gamma,
+                                        verbose=self.verbose)
 
         else:
             raise NotImplementedError

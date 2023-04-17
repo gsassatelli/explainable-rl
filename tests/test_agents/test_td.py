@@ -2,7 +2,7 @@ import unittest
 from src.agents.td import TD
 from src.environments.strategic_pricing import StrategicPricingMDP
 from src.data_handler.data_handler import DataHandler
-import copy
+
 
 class TestTD(unittest.TestCase):
     dh = None
