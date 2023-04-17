@@ -54,7 +54,6 @@ class DoubleQLearner(TD):
                                   Q_a=self.Q_b,
                                   Q_b=self.Q_a)
         self.Q = (self.Q_a + self.Q_b) / 2
-        # TODO: check that this is actually what you're meant to do with the two Q tables.
 
         self.state = next_state
 
