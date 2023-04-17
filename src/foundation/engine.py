@@ -1,12 +1,8 @@
 # Import environment and agent
 from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
-from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.environments.strategic_pricing import StrategicPricingMDP
 
-
-
-# TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
 class Engine:
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
@@ -85,12 +81,6 @@ class Engine:
             self.agent = SarsaAgent(env=self.env,
                                     gamma=self.gamma,
                                     verbose=self.verbose)
-
-        elif self.agent_type == "sarsa_lambda":
-            self.agent = SarsaLambdaAgent(env=self.env,
-                                          gamma=self.gamma,
-                                          verbose=self.verbose,
-                                          lambda_=0.9) # TODO make this a parameter passed by the dictionary.
 
         else:
             raise NotImplementedError

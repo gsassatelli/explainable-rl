@@ -1,4 +1,8 @@
 import numpy as np
+import sparse
+import random
+from datetime import datetime
+from src.foundation.utils import *
 from src.agents.td import TD
 
 
@@ -16,7 +20,7 @@ class QLearningAgent(TD):
 
         super().__init__(env, gamma, verbose)
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
         """Update the Q table using the Bellman equation and q_learning update.
 
         Args:
