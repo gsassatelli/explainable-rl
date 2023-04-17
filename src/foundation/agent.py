@@ -1,11 +1,12 @@
 class Agent:
     """Define the Agent super class which all particular agents (e.g Q-learner, SARSA).
     """
-    __slots__ = ['env', 'gamma']
+    __slots__ = ['env', 'gamma', 'verbose']
 
-    def __init__(self, env, gamma):
+    def __init__(self, env, gamma, verbose=False):
         self.env = env
         self.gamma = gamma
+        self.verbose = verbose
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
             epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):

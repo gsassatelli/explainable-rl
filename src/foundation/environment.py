@@ -1,13 +1,15 @@
 class MDP:
     """Define the MDP super class which all particular MDP should inherit from.
     """
-    __slots__ = ['dh']
-    def __init__(self, dh):
+    __slots__ = ['dh', "verbose"]
+
+    def __init__(self, dh, verbose=False):
         """Initialise the Strategic Pricing MDP class.
         Args:
             dh (DataHandler): Data handler object.
         """
         self.dh = dh
+        self.verbose = verbose
 
     def initialise_env(self):
         """Create the environment given the MDP information.
@@ -32,4 +34,3 @@ class MDP:
             tuple: current state, action, next state, done flag.
         """
         raise NotImplementedError
-

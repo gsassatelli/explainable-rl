@@ -6,7 +6,7 @@ from src.environments.strategic_pricing import StrategicPricingMDP
 class Engine:
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
-                 "episode_flag", "num_episodes", "num_steps", "policy", "q_table", "bins"]
+                 "episode_flag", "num_episodes", "num_steps", "policy", "q_table", "bins", "verbose"]
 
     def __init__(self, 
                  dh,
@@ -15,8 +15,9 @@ class Engine:
                  num_episodes,
                  num_steps,
                  bins,
-                 gamma=0.9):
-        """Initilize engine class.
+                 gamma=0.9,
+                 verbose=False):
+        """Initialise engine class.
 
         Args:
             dh (DataHandler): DataHandler to be given to the Environment
@@ -50,16 +51,20 @@ class Engine:
 
         self.bins = bins
 
+        self.verbose = verbose
+
     def create_world(self):
         """Create the Agent and MDP instances for the given task.
 
         """
         # Create chosen environment
-        print("Initialize environment")
+        if self.verbose:
+            print("Initialize environment")
         self.create_env()
         
         # Create chosen agent
-        print("Initialize agent")
+        if self.verbose:
+            print("Initialize agent")
         self.create_agent()
 
     def create_agent(self):
@@ -69,11 +74,13 @@ class Engine:
         # Initialize agent
         if self.agent_type == "q_learner":
             self.agent = QLearningAgent(self.env,
-                                        gamma=self.gamma)
+                                        gamma=self.gamma,
+                                        verbose=self.verbose)
 
         elif self.agent_type == "sarsa":
             self.agent = SarsaAgent(env=self.env,
-                                    gamma=self.gamma)
+                                    gamma=self.gamma,
+                                    verbose=self.verbose)
 
         else:
             raise NotImplementedError
@@ -86,7 +93,7 @@ class Engine:
         """
         # Initialize environment
         if self.env_type == "strategic_pricing":
-            self.env = StrategicPricingMDP(self.dh, self.bins)
+            self.env = StrategicPricingMDP(self.dh, self.bins, verbose=self.verbose)
 
         else:
             raise NotImplementedError
