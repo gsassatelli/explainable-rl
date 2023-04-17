@@ -1,6 +1,6 @@
 import unittest
-from src.agents.q_learner import QLearningAgent
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.foundation.agent import QLearningAgent
+from src.foundation.environment import StrategicPricingMDP
 from src.data_handler.data_handler import DataHandler
 import copy
 
