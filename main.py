@@ -35,7 +35,8 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
                     env_type=hyperparam_dict['env_type'],
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
-                    bins=hyperparam_dict['bins']
+                    bins=hyperparam_dict['bins'],
+                    gamma=hyperparam_dict['gamma']
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -89,7 +90,8 @@ if __name__ == "__main__":
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
-        'agent_type': 'q_learner',
+        'agent_type': 'sarsa',
+        'gamma': 0.9,
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
         'num_steps': 1
@@ -112,6 +114,7 @@ if __name__ == "__main__":
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
+        'gamma': 0.9,
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
         'num_steps': 1

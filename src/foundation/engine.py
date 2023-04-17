@@ -1,5 +1,6 @@
 # Import environment and agent
 from src.agents.q_learner import QLearningAgent
+from src.agents.sarsa import SarsaAgent
 from src.environments.strategic_pricing import StrategicPricingMDP
 
 class Engine:
@@ -67,8 +68,17 @@ class Engine:
         """
         # Initialize agent
         if self.agent_type == "q_learner":
-            self.agent = QLearningAgent(self.env, gamma=0.9)
-            self.agent.create_tables()
+            self.agent = QLearningAgent(self.env,
+                                        gamma=self.gamma)
+
+        elif self.agent_type == "sarsa":
+            self.agent = SarsaAgent(env=self.env,
+                                    gamma=self.gamma)
+
+        else:
+            raise NotImplementedError
+
+        self.agent.create_tables()
 
     def create_env(self):
         """Create an env and store it in Engine.
@@ -77,6 +87,9 @@ class Engine:
         # Initialize environment
         if self.env_type == "strategic_pricing":
             self.env = StrategicPricingMDP(self.dh, self.bins)
+
+        else:
+            raise NotImplementedError
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.
