@@ -31,7 +31,7 @@ class TestSarsa(TestTD):
         assert result in target
 
     def test_step(self):
-        epsilon = 0  # epsilon 0 as this functionality is tested above.
+        epsilon = 0  # epsilon = 0 as this functionality is tested above.
         lr = 0.1
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, :] = 1.5
