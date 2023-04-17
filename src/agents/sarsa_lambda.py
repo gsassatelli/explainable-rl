@@ -9,7 +9,7 @@ class SarsaLambdaAgent(TD):
         self.e = sparse.DOK(self.env.bins)
         self.lambda_ = lambda_
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]
         next_action = self._epsilon_greedy_policy(next_state, epsilon=epsilon)

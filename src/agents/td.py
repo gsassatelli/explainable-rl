@@ -82,8 +82,7 @@ class TD(Agent):
 
     def _epsilon_greedy_policy(self,
                                state=None,
-                               epsilon=0.1,
-                               Q=None):
+                               epsilon=0.1):
         """Get the epsilon greedy action.
 
         Args:
@@ -99,9 +98,7 @@ class TD(Agent):
 
         state_str = self._convert_to_string(state)
         index = tuple(list(state))
-        if Q is None:
-            Q = self.Q
-        q_values = Q[index].todense()
+        q_values = self.Q[index].todense()
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
@@ -141,7 +138,7 @@ class TD(Agent):
         self.state = next_state
         return done
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
 
         """Update the Q table.
 

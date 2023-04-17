@@ -93,7 +93,7 @@ if __name__ == "__main__":
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
-        'agent_type': 'double_q_learner',
+        'agent_type': 'sarsa_lambda',
         'gamma': 0.9,
         'env_type': 'strategic_pricing',
         'num_episodes': 100,

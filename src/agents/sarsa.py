@@ -12,7 +12,7 @@ class SarsaAgent(TD):
 
         super().__init__(env, gamma, verbose)
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(self, state, action, next_state, reward, epsilon, lr):
 
         """Update the Q table using the Bellman equation and SARSA update.
 
