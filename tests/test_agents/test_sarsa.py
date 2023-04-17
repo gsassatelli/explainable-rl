@@ -1,23 +1,22 @@
 from tests.test_agents.test_td import TestTD
-import copy
 from src.environments.strategic_pricing import StrategicPricingMDP
-from src.agents.q_learner import QLearningAgent
+from src.agents.sarsa import SarsaAgent
+import copy
 
-class TestQLearningAgent(TestTD):
 
+class TestSarsa(TestTD):
     def setUp(self) -> None:
         self.env = StrategicPricingMDP(self.dh)
-        self.agent = QLearningAgent(self.env, gamma=0.9)
-
+        self.agent = SarsaAgent(self.env, gamma=0.9)
 
     def test_update_q_values(self):
-        self.agent._init_q_table()
+        self.agent.create_tables()
         self.agent.Q[0, 0, 0, 2] = 1.5
-        self.agent.Q[0, 2, 0, 3] = 5
+        self.agent.Q[3, 0, 0, 3] = 5
         state = [0, 0, 0]
         action = 2
-        epsilon = 1
-        next_state = [0, 2, 0]
+        epsilon = 0.5
+        next_state = [3, 0, 0]
         reward = 10
         lr = 0.1
 
@@ -28,8 +27,8 @@ class TestQLearningAgent(TestTD):
                                     epsilon=epsilon,
                                     lr=lr)
         result = self.agent.Q[0, 0, 0, 2]
-        target = 1.5 + lr * (10 + 0.9 * 5 - 1.5)
-        assert result == target
+        target = [1.5 + lr * (10 + 0.9 * 5 - 1.5), 1.5 + lr * (10 + 0.9 * 0 - 1.5)]
+        assert result in target
 
     def test_step(self):
         epsilon = 0
@@ -49,4 +48,3 @@ class TestQLearningAgent(TestTD):
         self.agent.fit(n_episodes=10, n_steps=1)
         assert self.agent.Q.shape == original_Q.shape
         assert self.agent.Q != original_Q
-
