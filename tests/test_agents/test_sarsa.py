@@ -31,16 +31,16 @@ class TestSarsa(TestTD):
         assert result in target
 
     def test_step(self):
-        epsilon = 0  # epsilon 0 as this functionality is tested above.
+        epsilon = 0
         lr = 0.1
         self.agent.create_tables()
-        self.agent.Q[0, 0, 0, :] = 1.5
+        self.agent.Q[0, 0, 0, 2] = 1.5
         self.agent.state = [0, 0, 0]
-        reward = 2.41
+
         self.agent._step(epsilon, lr)
 
         assert self.agent.state == [0, 0, 0]
-        assert self.agent.Q[0, 0, 0, 0] in [1.5 + lr * (reward + 0.9 * 1.5 - 1.5), 1.5 + lr * (reward + 0.9 * 0 - 1.5)]
+        assert self.agent.Q[0, 0, 0, 2] == 1.5 + lr * (0 + 0.9 * 1.5 - 1.5)
 
     def test_fit(self):
         self.agent.create_tables()
