@@ -105,7 +105,59 @@ class TD(Agent):
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
-            action = random.choice(list(self.state_to_action[state_str]))
+            action = random.choice(list(self.state_to_action[str(state_str)]))
+        return action
+    
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
+        """Get epsilon greedy policy that favours more densely populated state-action pairs. 
+
+        Args:
+            state (list): current state of the agent.
+            epsilon (float): the exploration parameter.
+
+        Returns:
+            action (int): selected action.
+        """
+        if state is None:
+            state = self.state
+
+        state_str = self._convert_to_string(state)
+        index_no_action = tuple(list(state))
+        possible_actions = self.env.state_to_action[state_str]
+
+        if use_uncertainty == True:
+
+            state_action_counts = {}
+            q_values_weights = {}
+
+            # Determine the sum of the q values for the possible actions 
+            sum_possible_q = sum(self.Q[index_no_action].todense())
+            
+            if sum_possible_q == 0:
+                return np.random.choice(list(possible_actions))
+
+
+            for possible_action in possible_actions:
+                possible_state_action_str = self._convert_to_string(state + [possible_action])
+                counts = self.env.bins_dict[possible_state_action_str][0]
+                # Count number of times an state-action pair occurred 
+                state_action_counts[str(possible_action)] = counts
+                index_with_action = tuple(state + [possible_action])
+                q_values_weights[possible_action] = self.Q[index_with_action] / sum_possible_q
+            
+            # Get weights given population for state-action space
+            # N.b. A high value represents a well-known, certain state
+            uncertainty_weights = {key:float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
+
+
+            if random.random() > epsilon: # Exploring
+                action = np.random.choice(list(possible_actions))
+            else: # Exploiting
+                for possible_action in possible_actions:
+                    score = q_importance * q_values_weights[possible_action] + (1 - q_importance) * uncertainty_weights[possible_action]
+                    action_scores = {possible_action: score}
+                action = np.argmax(list(action_scores.values()))
+        
         return action
 
     @staticmethod
@@ -128,8 +180,13 @@ class TD(Agent):
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        action = self._epsilon_greedy_policy(self.state,
-                                             epsilon=epsilon)
+        action = self.uncertainty_informed_policy(self.state,
+                                             epsilon=epsilon,
+                                             use_uncertainty=True, 
+                                             q_importance=0.7)
+
+        # action = self._epsilon_greedy_policy(self.state,
+        #                                      epsilon=epsilon)
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
         self._update_q_values(state=state,
