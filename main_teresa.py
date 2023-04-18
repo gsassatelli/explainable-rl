@@ -107,7 +107,7 @@ if __name__ == "__main__":
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'agent_type': 'q_learner',
+        'agent_type': 'sarsa_lambda',
         'env_type': 'strategic_pricing',
         'num_episodes': 100,
         'num_steps': 10,

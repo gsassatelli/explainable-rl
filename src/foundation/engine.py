@@ -1,16 +1,20 @@
 # Import environment and agent
-from src.foundation.agent import QLearningAgent
-from src.foundation.environment import StrategicPricingMDP
-import numpy as np
-import ipdb 
+from src.agents.q_learner import QLearningAgent
+from src.agents.sarsa import SarsaAgent
+from src.agents.sarsa_lambda import SarsaLambdaAgent
+from src.agents.double_q_learner import DoubleQLearner
+from src.environments.strategic_pricing import StrategicPricingMDP
 
+
+
+# TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
 class Engine:
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", 
                  "q_table", "bins", "train_test_split", "agent_cumrewards",
                  "hist_cumrewards", "_eval_states", "_eval_actions","_eval_rewards",
-                 "_eval_b_states","_eval_state_dims","_eval_action_dims"]
+                 "_eval_b_states","_eval_state_dims","_eval_action_dims", "verbose"]
     
 
     def __init__(self, 
@@ -21,7 +25,8 @@ class Engine:
                  num_steps,
                  bins,
                  train_test_split,
-                 gamma=0.9):
+                 gamma=0.9,
+                 verbose=False):
         """Initilize engine class.
 
         Args:
@@ -50,6 +55,7 @@ class Engine:
         # Initialize environment
         self.env_type = env_type
         self.env = None
+        self.verbose = verbose
 
         # Parameters of the agent
         self.policy = None
@@ -75,8 +81,31 @@ class Engine:
         """
         # Initialize agent
         if self.agent_type == "q_learner":
-            self.agent = QLearningAgent(self.env, gamma=0.9)
-            self.agent.create_tables()
+            self.agent = QLearningAgent(self.env,
+                                        gamma=self.gamma,
+                                        verbose=self.verbose)
+
+        elif self.agent_type == "sarsa":
+            self.agent = SarsaAgent(env=self.env,
+                                    gamma=self.gamma,
+                                    verbose=self.verbose)
+
+        elif self.agent_type == "sarsa_lambda":
+            self.agent = SarsaLambdaAgent(env=self.env,
+                                          gamma=self.gamma,
+                                          verbose=self.verbose,
+                                          lambda_=0.9) # TODO make this a parameter passed by the dictionary.
+
+        elif self.agent_type == "double_q_learner":
+            self.agent = DoubleQLearner(env=self.env,
+                                        gamma=self.gamma,
+                                        verbose=self.verbose)
+
+        else:
+            raise NotImplementedError
+
+        self.agent.create_tables()
+
 
     def create_env(self):
         """Create an env and store it in Engine.
