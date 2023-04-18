@@ -41,7 +41,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
                     bins=hyperparam_dict['bins'],
-                    train_test_split = hyperparam_dict['train_test_split']
+                    train_test_split=hyperparam_dict['train_test_split']
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

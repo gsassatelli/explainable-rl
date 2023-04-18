@@ -1,57 +1,39 @@
-def test_engine():
-    pass
+import unittest
+from src.foundation.engine import Engine
+from src.data_handler.data_handler import DataHandler
+from src.foundation.environment import MDP
+from src.foundation.agent import Agent
 
 
-# import ipdb
-# from src.foundation.engine import Engine
-# from src.data_handler.data_handler import DataHandler
-# from src.explainability.pdp import PDP
-# from src.foundation.environment import MDP
-# from src.foundation.agent import QLearningAgent
-#
-#
-# def test_create_env_class():
-#     """ Test creation of environment.
-#     """
-#
-#     states = ['competitorPrice', 'adFlag', 'availability']
-#     actions = ['price']
-#     rewards = ['revenue']
-#     n_samples = 2000
-#     dh = DataHandler('kaggle-dummy-dataset/train.csv', states, actions, rewards, n_samples=n_samples)
-#
-#     # Preprocess the data
-#     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=states+actions)
-#
-#     # Create engine
-#     engine = Engine(dh, "q_learner", "kaggle", num_episodes=100, num_steps=10)
-#
-#     # Create world
-#     engine.create_world()
-#
-#     # Assert it creates an environment of type MDP
-#     assert type(engine.env) == MDP
-#
-#
-# def test_create_agent_class():
-#     """ Test creation of environment.
-#     """
-#
-#     states = ['competitorPrice', 'adFlag', 'availability']
-#     actions = ['price']
-#     rewards = ['revenue']
-#     n_samples = 2000
-#     dh = DataHandler('kaggle-dummy-dataset/train.csv', states, actions, rewards, n_samples=n_samples)
-#
-#     # Preprocess the data
-#     dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=states+actions)
-#
-#     # Create engine
-#     engine = Engine(dh, "q_learner", "kaggle", num_episodes=100, num_steps=10)
-#
-#     # Create world
-#     engine.create_world()
-#
-#     # Assert it creates an environment of type MDP
-#     assert type(engine.agent) == QLearningAgent
-#
+class TestEngine(unittest.TestCase):
+
+    dh = None
+
+    @classmethod
+    def setUpClass(cls):
+        states = ['competitorPrice', 'adFlag', 'availability']
+        actions = ['price']
+        rewards = ['revenue']
+        n_samples = 200
+        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
+        cls.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
+
+    def setUp(self):
+        self.engine = Engine(dh=self.dh,
+                             agent_type="q_learner",
+                             env_type="kaggle",
+                             bins=[10, 10, 10, 10],
+                             num_episodes=100,
+                             num_steps=10)
+        self.engine.create_world()
+
+    def tearDown(self) -> None:
+        del self.engine
+
+    def test_env_type(self):
+        assert isinstance(self.engine.env, MDP)
+
+    def test_agent_type(self):
+        assert isinstance(self.engine.agent, Agent)
+
+
