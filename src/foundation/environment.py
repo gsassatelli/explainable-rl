@@ -33,6 +33,8 @@ class StrategicPricingMDP(MDP):
         else:
             self.bins = bins
         
+        self.initialise_env()
+        
     def initialise_env(self):
         """Create the environment given the MDP information."""
         self._average_rewards = self._make_rewards_from_data()
