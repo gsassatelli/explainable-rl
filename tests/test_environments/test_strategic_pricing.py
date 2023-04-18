@@ -31,7 +31,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
 
     def test_transform_df_to_numpy(self):
         target_states = self.dh.get_states().to_numpy()
-        target_actions = self.dh.get_actions().to_numpy()
+        target_actions = np.array(self.dh.get_actions())
         target_rewards = self.dh.get_rewards().to_numpy()
         self.env._transform_df_to_numpy()
         result_states = self.env._state_mdp_data

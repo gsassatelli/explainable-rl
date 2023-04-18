@@ -4,6 +4,7 @@ import pandas as pd
 
 
 class TestDataHandler(unittest.TestCase):
+
     dh = None
 
     @classmethod
