@@ -2,10 +2,8 @@ from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
 from datetime import datetime
-import ipdb
 
-def policy_deviation():
-    pass
+
 
 def run_all(hyperparam_dict):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -14,6 +12,7 @@ def run_all(hyperparam_dict):
     actions = hyperparam_dict['actions']
     rewards = hyperparam_dict['rewards']
     n_samples = hyperparam_dict['n_samples']
+
     dh = DataHandler(data_path=hyperparam_dict['data_path'],
                      state_labels=states,
                      action_labels=actions,
@@ -37,7 +36,7 @@ def run_all(hyperparam_dict):
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
                     bins=hyperparam_dict['bins'],
-                    train_test_split = hyperparam_dict['train_test_split']
+                    train_test_split=hyperparam_dict['train_test_split']
                     )
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -49,30 +48,6 @@ def run_all(hyperparam_dict):
     print(f"{timestamp}: Train the agent on {n_samples} samples")
     engine.train_agent()
 
-    ###########################################################
-    ################ Evaluate agent ###########################
-    ###########################################################
-
-    # TODO: denorm states, actions and rewards (using datahandler's inverse scaling)
-
-    states, actions, rewards_hist, actions_agent, rewards_agent = \
-        engine.evaluate_agent()
-    ipdb.set_trace()
-    # Sum obtained reward optimal vs historical policy
-    import numpy as np
-    print(f"Return based on historical data: {np.sum(rewards_hist)}")
-    print(f"Return based on agent policy: {np.sum(rewards_agent)}")
-    
-    import matplotlib.pyplot as plt
-    plt.scatter(actions, actions_agent)
-    plt.savefig('policy.png')
-
-    ipdb.set_trace()
-
-    ###########################################################
-    ################# End of evaluation #######################
-    ###########################################################
-    
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show PDPs plots")
@@ -105,21 +80,20 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 200000,
+        'n_samples': 2000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 100000,
-        'num_steps': 1,
-        'train_test_split': 0.2
+        'num_episodes': 100,
+        'num_steps': 10
     }
 
     hyperparam_dict_kaggle_data = {
-        'states': ['competitorPrice', 'adFlag', 'availability'],
-        'actions': ['price'],
+        'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
+        'actions': [price_bin/10 for price_bin in range(1,11)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
@@ -128,17 +102,17 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10], #TODO: these correspond to the states and actions. Probably should change to a dict.
-        'n_samples': 100,
+        'bins': [10, 2, 2, 10, 10],
+        'n_samples': 2000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'agent_type': 'q_learner',
+        'agent_type': 'sarsa_lambda',
         'env_type': 'strategic_pricing',
-        'num_episodes': 10,
-        'num_steps': 1,
+        'num_episodes': 100,
+        'num_steps': 10,
         'train_test_split': 0.2
     }
-    for i in range(10):
-        run_all(hyperparam_dict_ds_data)
+    for i in range(1):
+        run_all(hyperparam_dict_kaggle_data)
         # ran this 10 times to check everything was fine.

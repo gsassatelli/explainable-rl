@@ -11,7 +11,7 @@ class DataHandler:
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "state_labels", "action_labels", "reward_labels", "mdp_data",
+                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data",
                  "mdp_data_test", "_n_samples"]
 
     def __init__(self, data_path,
@@ -32,9 +32,9 @@ class DataHandler:
         self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self.state_labels = state_labels
-        self.action_labels = action_labels
-        self.reward_labels = reward_labels
+        self._state_labels = state_labels
+        self._action_labels = action_labels
+        self._reward_labels = reward_labels
         self.mdp_data = None
         self.mdp_data_test = None
 
@@ -82,12 +82,12 @@ class DataHandler:
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
-        s = self.dataset[self.state_labels]
-        a = self.dataset[self.action_labels]
-        r = self.dataset[self.reward_labels]
-
-        self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
-        self.mdp_data = self.mdp_data.sample(self._n_samples)
+        s = self.dataset[self._state_labels]
+        a = self._action_labels
+        r = self.dataset[self._reward_labels]
+        self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
+    
+        self.mdp_data = self.mdp_data[:self._n_samples]
 
         # split into train-test
         split_indx = int(self._n_samples*train_test_split)
@@ -122,10 +122,8 @@ class DataHandler:
         Returns:
             pd.DataFrame of the actions.
         """
-        if split == 'train':
-            return self.mdp_data['a']
-        else:
-            return self.mdp_data_test['a']
+        return self._action_labels
+
 
     def get_rewards(self,
                     split='train'):
