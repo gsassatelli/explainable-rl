@@ -85,8 +85,44 @@ class QLearningAgent(Agent):
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
     
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1, alpha=0.9):
+        """Get epsilon greedy policy that favours more densely populated state-action pairs. 
 
+        Args:
+            state (list): current state of the agent.
+            epsilon (float): the exploration parameter.
+            alpha (float): the exploitation parameter.
 
+        Returns:
+            action (int): selected action.
+        """
+        if state is None:
+            state = self.state
+
+        state_str = self._convert_to_string(state)
+        index = tuple(list(state))
+        possible_actions = self.env.state_to_action[state_str]
+        state_action_counts = {}
+        for possible_action in possible_actions:
+            possible_state_action_str = self._convert_to_string(state + [possible_action])
+            counts = self.env.bins_dict[possible_state_action_str][0]
+            # Count number of times an state-action pair occurred 
+            state_action_counts[str(possible_action)] = counts
+
+        # Get weights for counts
+        action_weights = {key:float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
+
+        # q_value for each action
+        q_values = self.Q[index].todense()
+
+        if random.random() > epsilon:
+            action = np.argmax(q_values)
+        else:
+            action = int(np.random.choice(list(action_weights.keys()), 1, list(action_weights.values())))
+        
+        return action
+        
+    
     def _epsilon_greedy_policy(self,
                                state=None,
                                epsilon=0.1):
@@ -103,13 +139,18 @@ class QLearningAgent(Agent):
             state = self.state
 
         state_str = self._convert_to_string(state)
+
         index = tuple(list(state))
+
         q_values = self.Q[index].todense()
+            
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[state_str]))
+        
         return action
+       
 
     @staticmethod
     def _convert_to_string(state):
@@ -131,11 +172,15 @@ class QLearningAgent(Agent):
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        action = self._epsilon_greedy_policy(self.state,
-                                             epsilon=epsilon)
+        # action = self._epsilon_greedy_policy(self.state,
+        #                                      epsilon=epsilon)
+        action = self.uncertainty_informed_policy(self.state,
+                                             epsilon=epsilon,
+                                             alpha=0.9)
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
-        self._update_q_values(state, action, next_state, reward, lr)
+
+        self._update_q_values(state, action, next_state, reward, lr, done)
         self.state = next_state
         return done
 
@@ -144,7 +189,8 @@ class QLearningAgent(Agent):
                          action,
                          next_state,
                          reward,
-                         lr):
+                         lr,
+                         done):
         """Update the Q table using the Bellman equation.
 
         Args:
@@ -154,11 +200,18 @@ class QLearningAgent(Agent):
             reward (float): reward for the selected action.
             lr (float): learning rate.
         """
-        index_current = tuple(list(state) + [action])
-        q_current = self.Q[index_current]
-        index_next = tuple(next_state)
-        q_next = np.max(self.Q[index_next].todense())
 
+        index_current = tuple(list(state) + [action])
+        
+        q_current = self.Q[index_current]
+        
+        if done == True:
+            next_state = state
+
+        index_next_state = tuple(next_state)
+
+        q_next = np.max(self.Q[index_next_state].todense())    
+        
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
 

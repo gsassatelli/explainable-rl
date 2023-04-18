@@ -54,8 +54,18 @@ class PDP:
             Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
         self._get_digitized_pdp(Q, Q_num_samples)
-        self._get_denorm_actions()
+        a = self._action_labels
+        self._denorm_actions = np.array(a).reshape(-1,1)
+        # self._get_denorm_actions()
+            ### Example denormalised actions
+            # [[33.66666667]]
+            # [[33.66666667]]
+            # [[17.33333333]]
+            # [[50.]]
         self._get_denorm_states()
+        
+        
+        
 
     def _get_digitized_pdp(self,
                            Q,
@@ -102,6 +112,7 @@ class PDP:
     def _get_denorm_actions(self):
         """Get actions denormalized values.
         """
+
         scaler = self._minmax_scalars[self._action_labels[0]]
         for dig_actions in self._dig_state_actions:
             # Divide dig actions by # bins of the action dimension
@@ -110,10 +121,12 @@ class PDP:
                 dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
             self._denorm_actions.append(denorm_action)
 
+
     def _get_denorm_states(self):
         """Get states denormalized values.
         """
-        num_states = len(self._denorm_actions)
+        num_states = len(self._state_labels)
+        # num_states = len(self._denorm_actions)
         for i in range(num_states):
             n_bins = self._bins_per_dim[i]
             # Divide by number of bins to get a value between [0,1]
