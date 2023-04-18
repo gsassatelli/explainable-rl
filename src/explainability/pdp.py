@@ -143,7 +143,7 @@ class PDP:
         rows = len(self._denorm_actions)
         cols = 1
         unit = 1.5
-        figsize = (5, unit * rows)
+        figsize = (8, unit * rows)
 
         fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True, figsize=figsize)
 
