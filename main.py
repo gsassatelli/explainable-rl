@@ -1,6 +1,7 @@
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
+from src.explainability.shap_values import ShapValues
 from datetime import datetime
 import ipdb
 
@@ -14,6 +15,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     action_labels = hyperparam_dict['actions']
     reward_labels = hyperparam_dict['rewards']
     n_samples = hyperparam_dict['n_samples']
+    n_episodes = hyperparam_dict['num_episodes']
     dh = DataHandler(data_path=hyperparam_dict['data_path'],
                      state_labels=state_labels,
                      action_labels=action_labels,
@@ -91,6 +93,13 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     pdp.plot_pdp(states_names=state_labels, fig_name=fig_name,
                  type_features=type_features, savefig=True, all_states=False)
 
+    # Plot SHAP values
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    print(f"{timestamp}: Show SHAP values plots")
+    shap_values = ShapValues(sample=[8, 3, 1, 1], features=states, env=engine.env,
+                             Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=actions)
+    print(shap_values.compute_shap_values())
+
 
 if __name__ == "__main__":
     hyperparam_dict_ds_data = {
@@ -142,6 +151,6 @@ if __name__ == "__main__":
         'num_steps': 1,
         'train_test_split': 0.2
     }
-    for i in range(10):
+    for i in range(1):
         run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.

@@ -142,8 +142,10 @@ class PDP:
         """
         rows = len(self._denorm_actions)
         cols = 1
+        unit = 1.5
+        figsize = (5, unit * rows)
 
-        fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True)
+        fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True, figsize=figsize)
 
         for a in range(rows):
             state = states_names[a]
