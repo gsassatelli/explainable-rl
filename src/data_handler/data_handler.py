@@ -11,7 +11,7 @@ class DataHandler:
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "state_labels", "action_labels", "reward_labels", "mdp_data",
+                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data",
                  "mdp_data_test", "_n_samples"]
 
     def __init__(self, data_path,
@@ -32,9 +32,9 @@ class DataHandler:
         self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self.state_labels = state_labels
-        self.action_labels = action_labels
-        self.reward_labels = reward_labels
+        self._state_labels = state_labels
+        self._action_labels = action_labels
+        self._reward_labels = reward_labels
         self.mdp_data = None
         self.mdp_data_test = None
 
@@ -125,7 +125,8 @@ class DataHandler:
         return self._action_labels
 
 
-    def get_rewards(self):
+    def get_rewards(self,
+                    split='train'):
         """Get the rewards taken in the dataset.
 
         Args:
