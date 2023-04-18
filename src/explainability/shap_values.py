@@ -60,6 +60,10 @@ class ShapValues:
         self.binned_sample = self.bin_sample()
         print(self.binned_sample)
 
+        # Predict action
+        print("Predict action")
+        predicted_action = self.predict_action()
+
         # Verify if cell has been visited
         print("Verify if selected cell has been visited")
         if not self.verify_cell_availability(self.binned_sample):
@@ -108,7 +112,7 @@ class ShapValues:
             # Append shap value for that feature
             shap_values.update({self.features[shap_ft]: mean_difference})
 
-        return shap_values
+        return shap_values, predicted_action
 
     def verify_sample_length(self):
         """ This function verifies if the sample length is correct.
@@ -187,3 +191,15 @@ class ShapValues:
             norm_ft = scalar.transform(np.array(self.sample[idx]).reshape(-1, 1))
             normalized_sample.append(norm_ft[0][0])
         return normalized_sample
+
+    def predict_action(self):
+        """Predict action.
+        """
+        Q_state = np.zeros(self.env.bins[-1])
+        for a in range(self.env.bins[-1]):
+            index = tuple(list(self.binned_sample) + [a])
+            current_q = self.Q[index]
+            Q_state[a] = current_q
+        binned_action = np.argmax(np.array(current_q))
+        action = self.get_denorm_actions([binned_action])
+        return action
