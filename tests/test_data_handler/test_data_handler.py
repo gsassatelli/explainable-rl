@@ -3,6 +3,7 @@ import numpy as np
 from src.data_handler.data_handler import DataHandler
 import unittest 
 import pandas as pd
+from typing import List
 
 # Load data
 states = ['competitorPrice', 'adFlag', 'availability']
@@ -18,7 +19,7 @@ def test_load_data():
 
 def test_type_get_actions():
     result = dh.get_actions()
-    assert type(result) == pd.core.frame.DataFrame
+    assert type(result) == List
 
 def test_len_get_actions():
     result = dh.get_actions()
