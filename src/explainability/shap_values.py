@@ -75,8 +75,8 @@ class ShapValues:
         for shap_ft in range(len(self.features)):
             print("Compute shap values for feature: ", self.features[shap_ft])
             num_bins_per_shap_ft = self.env.bins[shap_ft]
-            action_samples_plus = np.zeros(self.number_of_samples)
-            action_samples_minus = np.zeros(self.number_of_samples)
+            action_samples_plus = np.zeros(self.number_of_samples, dtype=int)
+            action_samples_minus = np.zeros(self.number_of_samples, dtype=int)
             for sample in range(self.number_of_samples):
                 verified_samples = False
                 # Sample plus and minus samples
@@ -173,13 +173,9 @@ class ShapValues:
             actions (list): List of actions.
         """
         denorm_actions = []
-        scalar = self.minmax_scalars[self.action[0]]
         for a in actions:
-            # Divide dig actions by # bins of the action dimension
-            # to get a value between 0 and 1
-            denorm_a = scalar.inverse_transform(
-                a.reshape(-1, 1) / self.env.bins[-1])
-            denorm_actions.append(denorm_a[0][0])
+            denorm_a = self.action[a]
+            denorm_actions.append(denorm_a)
         return denorm_actions
 
     def normalize_sample(self):

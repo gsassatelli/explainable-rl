@@ -90,14 +90,11 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     fig_name = "PDP plots - All states"
     pdp.plot_pdp(states_names=state_labels, fig_name=fig_name,
                  type_features=type_features, savefig=True, all_states=True)
-    fig_name = "PDP plots - Visited states"
-    pdp.plot_pdp(states_names=state_labels, fig_name=fig_name,
-                 type_features=type_features, savefig=True, all_states=False)
 
     # Plot SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
-    shap_values = ShapValues(sample=[8, 3, 1, 1], features=state_labels, env=engine.env,
+    shap_values = ShapValues(sample=[8, 0.5, 1, 1], features=state_labels, env=engine.env,
                              Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=action_labels,
                              number_of_samples=shap_num_samples)
     shaps, predicted_action = shap_values.compute_shap_values()
@@ -135,8 +132,8 @@ if __name__ == "__main__":
     }
 
     hyperparam_dict_kaggle_data = {
-        'states': ['competitorPrice', 'adFlag', 'availability'],
-        'actions': ['price'],
+        'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
+        'actions': [price_bin/10 for price_bin in range(1,11)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
@@ -145,18 +142,18 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
+        'bins': [10, 2, 2, 10, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 20000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 10,
+        'num_episodes': 1000,
         'num_steps': 1,
         'train_test_split': 0.2,
-        'shap_num_samples': 500
+        'shap_num_samples': 1
     }
     for i in range(1):
-        run_all(hyperparam_dict_ds_data)
+        run_all(hyperparam_dict_kaggle_data)
         # ran this 10 times to check everything was fine.

@@ -54,14 +54,7 @@ class PDP:
             Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
         self._get_digitized_pdp(Q, Q_num_samples)
-        a = self._action_labels
-        self._denorm_actions = np.array(a).reshape(-1,1)
-        # self._get_denorm_actions()
-            ### Example denormalised actions
-            # [[33.66666667]]
-            # [[33.66666667]]
-            # [[17.33333333]]
-            # [[50.]]
+        self._get_denorm_actions()
         self._get_denorm_states()
         
         
@@ -113,12 +106,8 @@ class PDP:
         """Get actions denormalized values.
         """
 
-        scaler = self._minmax_scalars[self._action_labels[0]]
-        for dig_actions in self._dig_state_actions:
-            # Divide dig actions by # bins of the action dimension
-            # to get a value between 0 and 1
-            denorm_action = scaler.inverse_transform(
-                dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
+        for dim in self._dig_state_actions:
+            denorm_action = [self._action_labels[i] for i in dim]
             self._denorm_actions.append(denorm_action)
 
 
@@ -164,8 +153,8 @@ class PDP:
             state = states_names[a]
             # Plot action-state graph
             axis = [ax[a], ax[a].twinx()]
-            actions = [i[0] for i in self._denorm_actions[a]]
-            states = [str(round(i[0], 3)) for i in self._denorm_states[a]]
+            actions = self._denorm_actions[a]
+            states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
             samples = self._dig_state_actions_samples[a]
             if not all_states:
                 total_samples = list(samples[:, 1])
