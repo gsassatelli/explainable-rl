@@ -2,6 +2,7 @@
 import ipdb as ipdb
 import sparse
 import numpy as np
+import ipdb
 
 from src.foundation.super_classes import MDP
 
@@ -31,8 +32,11 @@ class StrategicPricingMDP(MDP):
             self.bins = [10] * (self.state_dim + self.action_dim)
         else:
             self.bins = bins
+        
+    def initialise_env(self):
+        """Create the environment given the MDP information."""
         self._average_rewards = self._make_rewards_from_data()
-
+    
     def _transform_df_to_numpy(self):
         """Transform the MDP data from a dataframe to a numpy array
         """
@@ -50,7 +54,8 @@ class StrategicPricingMDP(MDP):
         for i in range(len(self._reward_mdp_data)):
             state_array = self._state_mdp_data[i].tolist()
             action_array = self._action_mdp_data[i].tolist()
-            zipped.append(state_array + action_array)
+            zipped.append(state_array+action_array)
+
         return zipped
 
     def _bin_state_action_space(self, zipped):
@@ -95,17 +100,19 @@ class StrategicPricingMDP(MDP):
                 self._debin_state(b_state, idxs=idxs)
             )
         return states
-
+        
     def _bin_state(self, state, idxs=None):
         """Bin a singular state.
+
         The states are binned according to the number of bins
-        of each feature.
+        of each feature. 
+
         Args:
             state (list): State to bin.
             idxs (list): indexes of the state dimensions
                 This argument can be used if the state list contains
                 only certain features (e.g. only actions)
-
+        
         Returns:
             binned (list): Binned state
         """
@@ -116,12 +123,32 @@ class StrategicPricingMDP(MDP):
         for i, value in zip(idxs, state):
             binned.append(
                 np.digitize(
-                    value,
-                    [n / self.bins[i] if n < self.bins[i] else 1.01 \
-                     for n in range(1, self.bins[i] + 1)]
+                    value, 
+                    [n/self.bins[i] if n<self.bins[i] else 1.01 \
+                     for n in range(1,self.bins[i]+1)]
                 )
             )
         return binned
+    
+    def _debin_state(self, b_state, idxs=None):
+        """ Debin a singular states.
+
+        Returns middle point of the bin.
+        
+        Args:
+            b_state (list): Binned state to de-bin
+        """
+        if idxs == None:
+            idxs = range(len(state))
+
+        state = []
+        for i, value in zip(idxs, b_state):
+            # append middle point of the state bin
+            try:
+                state.append((value + 0.5) / self.bins[i])
+            except:
+                ipdb.set_trace()
+        return state
 
     def _debin_state(self, b_state, idxs=None):
         """ Debin a singular states.
@@ -186,7 +213,8 @@ class StrategicPricingMDP(MDP):
             data.extend([value[1] / value[0]])
 
         coords = np.array(coords).T.tolist()
-        return sparse.COO(coords, data)
+        
+        return sparse.COO(coords, data, shape=tuple(self.bins))
 
     def _make_rewards_from_data(self):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
@@ -204,7 +232,6 @@ class StrategicPricingMDP(MDP):
         binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
-
         average_reward_matrix = self._create_average_reward_matrix(bins_dict)
 
         return average_reward_matrix
