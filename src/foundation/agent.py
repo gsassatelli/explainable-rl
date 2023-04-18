@@ -99,15 +99,24 @@ class QLearningAgent(Agent):
 
         state_str = self._convert_to_string(state)
         index = tuple(list(state))
-        
-        state_bin_counts = self.env.bins_dict[state_str]
+        possible_actions = self.env.state_to_action[state_str]
+        state_action_counts = {}
+        for possible_action in possible_actions:
+            possible_state_action_str = self._convert_to_string(state + [possible_action])
+            counts = self.env.bins_dict[possible_state_action_str][0]
+            # Count number of times an state-action pair occurred 
+            state_action_counts[str(possible_action)] = counts
+
+        # Get weights for counts
+        action_weights = {key:float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
+
         # q_value for each action
         q_values = self.Q[index].todense()
-        
+
         if random.random() > epsilon:
             action = np.argmax(q_values)
         else:
-            action = random.choice(list(self.state_to_action[state_str]))
+            action = int(np.random.choice(list(action_weights.keys()), 1, list(action_weights.values())))
         
         return action
         
@@ -162,8 +171,11 @@ class QLearningAgent(Agent):
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        action = self._epsilon_greedy_policy(self.state,
-                                             epsilon=epsilon)
+        # action = self._epsilon_greedy_policy(self.state,
+        #                                      epsilon=epsilon)
+        action = self.uncertainty_informed_policy(self.state,
+                                             epsilon=epsilon,
+                                             alpha=0.9)
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
 

@@ -43,10 +43,7 @@ class StrategicPricingMDP(MDP):
         """Transform the MDP data from a dataframe to a numpy array
         """
         self._state_mdp_data = self.dh.get_states().to_numpy()
-        ######## NEW
         self._action_mdp_data = np.array(self.dh.get_actions())
-        # self._action_mdp_data = self.dh.get_actions().to_numpy()
-        ########
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
     def _join_state_action(self):

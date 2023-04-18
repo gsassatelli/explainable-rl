@@ -80,13 +80,10 @@ class DataHandler:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
         s = self.dataset[self._state_labels]
-        ########## NEW
-        # a = self.dataset[self._action_labels]
         a = self._action_labels
         r = self.dataset[self._reward_labels]
         self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
-        # self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
-        ###########
+    
         self.mdp_data = self.mdp_data[:self._n_samples]
 
     def normalise_dataset(self, cols_to_norm=None):
@@ -112,10 +109,8 @@ class DataHandler:
         Returns:
             pd.DataFrame of the actions.
         """
-        ######## NEW
-        # return self.mdp_data['a']
         return self._action_labels
-        ########
+
 
     def get_rewards(self):
         """Get the rewards taken in the dataset.
