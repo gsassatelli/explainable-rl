@@ -16,6 +16,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     reward_labels = hyperparam_dict['rewards']
     n_samples = hyperparam_dict['n_samples']
     n_episodes = hyperparam_dict['num_episodes']
+    shap_num_samples = hyperparam_dict['shap_num_samples']
     dh = DataHandler(data_path=hyperparam_dict['data_path'],
                      state_labels=state_labels,
                      action_labels=action_labels,
@@ -51,7 +52,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
-        print(f"{timestamp}: Train the agent on {n_samples} samples")
+        print(f"{timestamp}: Train the agent on {n_samples} samples and {n_episodes} episodes")
     engine.train_agent()
 
     ###########################################################
@@ -97,7 +98,8 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
     shap_values = ShapValues(sample=[8, 3, 1, 1], features=state_labels, env=engine.env,
-                             Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=actions)
+                             Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=action_labels,
+                             number_of_samples=shap_num_samples)
     shaps, predicted_action = shap_values.compute_shap_values()
     print(shaps)
     print(predicted_action)
@@ -119,16 +121,17 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 1000,
+        'n_samples': 100000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 1000,
+        'num_episodes': 10000,
         'num_steps': 1,
-        'train_test_split': 0.2
+        'train_test_split': 0.2,
+        'shap_num_samples': 1
     }
 
     hyperparam_dict_kaggle_data = {
@@ -151,7 +154,8 @@ if __name__ == "__main__":
         'env_type': 'strategic_pricing',
         'num_episodes': 10,
         'num_steps': 1,
-        'train_test_split': 0.2
+        'train_test_split': 0.2,
+        'shap_num_samples': 500
     }
     for i in range(1):
         run_all(hyperparam_dict_ds_data)
