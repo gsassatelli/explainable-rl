@@ -238,7 +238,6 @@ class Engine:
                                     self.env.state_dim+self.env.action_dim))
         # Get the binned states
         b_states = self.env.bin_states(states, idxs=state_dims)
-
         # Inverse scaling
         states = self._inverse_scale_feature(states, self.dh.state_labels)
 
@@ -268,4 +267,4 @@ class Engine:
                                                     self.dh.reward_labels)
         rewards_agent = self._inverse_scale_feature(rewards_agent,
                                                     self.dh.reward_labels)
-        return states, actions_hist, rewards_hist, actions_agent, rewards_agent
+        return states, actions_hist, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent
