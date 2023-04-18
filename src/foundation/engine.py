@@ -5,6 +5,8 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing import StrategicPricingMDP
 
+# Import packages
+import numpy as np
 
 
 # TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
