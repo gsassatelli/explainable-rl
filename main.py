@@ -96,7 +96,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Plot SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
-    shap_values = ShapValues(sample=[8, 3, 1, 1], features=states, env=engine.env,
+    shap_values = ShapValues(sample=[8, 3, 1, 1], features=state_labels, env=engine.env,
                              Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=actions)
     print(shap_values.compute_shap_values())
 
