@@ -27,7 +27,7 @@ class Engine:
                  num_episodes,
                  num_steps,
                  bins,
-                 train_test_split,
+                 train_test_split=0.2,
                  gamma=0.9,
                  verbose=False):
         """Initilize engine class.
