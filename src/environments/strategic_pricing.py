@@ -2,9 +2,10 @@
 import ipdb as ipdb
 import sparse
 import numpy as np
-
-from src.foundation.environment import MDP
 import ipdb
+
+# Import Environment
+from src.foundation.environment import MDP
 
 class StrategicPricingMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
@@ -143,7 +144,7 @@ class StrategicPricingMDP(MDP):
             b_state (list): Binned state to de-bin
         """
         if idxs == None:
-            idxs = range(len(state))
+            idxs = range(len(b_state))
 
         state = []
         for i, value in zip(idxs, b_state):
