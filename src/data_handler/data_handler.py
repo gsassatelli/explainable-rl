@@ -11,7 +11,8 @@ class DataHandler:
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data", "_n_samples"]
+                 "state_labels", "action_labels", "reward_labels", "mdp_data",
+                 "mdp_data_test", "_n_samples"]
 
     def __init__(self, data_path,
                  state_labels,
@@ -31,10 +32,11 @@ class DataHandler:
         self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self._state_labels = state_labels
-        self._action_labels = action_labels
-        self._reward_labels = reward_labels
+        self.state_labels = state_labels
+        self.action_labels = action_labels
+        self.reward_labels = reward_labels
         self.mdp_data = None
+        self.mdp_data_test = None
 
     def prepare_data_for_engine(self, col_delimiter=',',
                                 cols_to_normalise=None):
@@ -64,7 +66,8 @@ class DataHandler:
 
     def preprocess_data(self,
                         normalisation=True,
-                        columns_to_normalise=None):
+                        columns_to_normalise=None,
+                        train_test_split=0.2):
         """Preprocess data into state, action and reward spaces.
         Preprocessing applies shuffling, normalisation (if selected) and
         splits the dataset into states, actions and rewards.
@@ -79,12 +82,17 @@ class DataHandler:
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
-        s = self.dataset[self._state_labels]
-        a = self.dataset[self._action_labels]
-        r = self.dataset[self._reward_labels]
+        s = self.dataset[self.state_labels]
+        a = self.dataset[self.action_labels]
+        r = self.dataset[self.reward_labels]
 
         self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
-        self.mdp_data = self.mdp_data[:self._n_samples]
+        self.mdp_data = self.mdp_data.sample(self._n_samples)
+
+        # split into train-test
+        split_indx = int(self._n_samples*train_test_split)
+        self.mdp_data_test = self.mdp_data[:split_indx]
+        self.mdp_data = self.mdp_data[split_indx:]
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -104,26 +112,51 @@ class DataHandler:
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self):
+    def get_actions(self,
+                    split='train'):
         """Get the actions taken in the dataset.
+
+        Args:
+            split (str): specifies train or test split
+
         Returns:
             pd.DataFrame of the actions.
         """
-        return self.mdp_data['a']
+        if split == 'train':
+            return self.mdp_data['a']
+        else:
+            return self.mdp_data_test['a']
 
-    def get_rewards(self):
+    def get_rewards(self,
+                    split='train'):
         """Get the rewards taken in the dataset.
+
+        Args:
+            split (str): specifies train or test split
+        
         Returns:
             pd.DataFrame of the rewards.
         """
-        return self.mdp_data['r']
+        if split == 'train':
+            return self.mdp_data['r']
+        else:
+            return self.mdp_data_test['r']
 
-    def get_states(self):
+    def get_states(self,
+                   split='train'):
         """Get the states taken in the dataset.
+
+        Args:
+            split (str): specifies train or test split
+        
         Returns:
             pd.DataFrame of the states.
         """
-        return self.mdp_data['s']
+        if split == 'train':
+            return self.mdp_data['s']
+        else:
+            return self.mdp_data_test['s']
+
 
     def _filter_data(self):
         """Filter the dataset.
@@ -146,6 +179,8 @@ class DataHandler:
 
     def _fit_standard_scalars(self):
         """Train the sklearn MinMaxScaler and store one per column.
+
+        TODO: fit only using train data and not test data
         """
         for col in self.dataset:
             scalar = MinMaxScaler()

@@ -4,6 +4,7 @@ import sparse
 import random
 from datetime import datetime
 import ipdb
+from tqdm import tqdm
 
 from src.foundation.utils import *
 from src.foundation.super_classes import Agent
@@ -47,7 +48,7 @@ class QLearningAgent(Agent):
         if verbose:
             print("Apply q-learning and update q-table")
 
-        for _ in range(n_episodes):
+        for i in tqdm(range(n_episodes)):
 
             self.state = self.env.reset()
 
@@ -57,6 +58,7 @@ class QLearningAgent(Agent):
                     break
             lr = decay_param(lr, lr_decay, lr_min)
             epsilon = decay_param(epsilon, epsilon_decay, epsilon_min)
+
 
         if verbose:
             timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -82,6 +84,8 @@ class QLearningAgent(Agent):
         # create q-table
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
+    
+
 
     def _epsilon_greedy_policy(self,
                                state=None,
@@ -90,7 +94,6 @@ class QLearningAgent(Agent):
 
         Args:
             state (list): current state of the agent.
-            state_str (string): the state as a string.
             epsilon (float): the exploration parameter.
 
         Returns:
@@ -160,3 +163,46 @@ class QLearningAgent(Agent):
             q_current + lr * (reward + self.gamma * q_next - q_current)
 
         self.Q_num_samples[index_current] += 1
+    
+    def predict_actions(self,
+                states, 
+                epsilon=0):
+        """ Predict action for a list of states using epislon-greedy policy.
+        
+        Args:
+            states (list): States (binned).
+            epislon (float): Epislon of epislon-greedy policy.
+                Defaults to 0 for pure exploitation.
+        
+        Returns:
+            actions (list): List of recommended actions
+        """
+        actions = []
+        for state in states:
+            action = self._epsilon_greedy_policy(state, epsilon)
+            actions.append([action])
+
+        return actions
+    
+    def predict_rewards(self,
+                    states,
+                    actions):
+        """ Predict reward for a list of state-actions.
+         
+        This function uses the avg reward matrix (which simulates a real-life scenario)
+        
+        Args:
+            states (list): States (binned).
+            actions (list): Actions (binned).
+        
+        Returns:
+            rewards (list): List of recommended actions
+        """
+
+        rewards = []
+        for state, action in zip(states, actions):
+            _, _, reward, _ = self.env.step(state, action)
+            rewards.append([reward[0]])
+        
+        return rewards
+

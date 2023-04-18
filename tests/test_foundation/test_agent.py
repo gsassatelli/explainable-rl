@@ -19,12 +19,9 @@ class TestQLearningAgent(unittest.TestCase):
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                         cols_to_normalise=states+actions)
 
-
     def setUp(self) -> None:
         self.env = StrategicPricingMDP(self.dh)
-        self.env.initialise_env()
         self.agent = QLearningAgent(self.env, gamma=0.9)
-
 
     def tearDown(self) -> None:
         del self.agent

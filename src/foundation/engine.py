@@ -1,11 +1,17 @@
 # Import environment and agent
 from src.foundation.agent import QLearningAgent
 from src.foundation.environment import StrategicPricingMDP
+import numpy as np
+import ipdb 
 
 class Engine:
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
-                 "episode_flag", "num_episodes", "num_steps", "policy", "q_table", "bins"]
+                 "episode_flag", "num_episodes", "num_steps", "policy", 
+                 "q_table", "bins", "train_test_split", "agent_cumrewards",
+                 "hist_cumrewards", "_eval_states", "_eval_actions","_eval_rewards",
+                 "_eval_b_states","_eval_state_dims","_eval_action_dims"]
+    
 
     def __init__(self, 
                  dh,
@@ -14,6 +20,7 @@ class Engine:
                  num_episodes,
                  num_steps,
                  bins,
+                 train_test_split,
                  gamma=0.9):
         """Initilize engine class.
 
@@ -26,6 +33,7 @@ class Engine:
             bins (int): List of bins per state/action to discretize the state
                         space.
             gamma (float): Discount factor
+            train_test_split (float): proportion of test data
         """
         # Save data handler
         self.dh = dh
@@ -77,14 +85,27 @@ class Engine:
         # Initialize environment
         if self.env_type == "strategic_pricing":
             self.env = StrategicPricingMDP(self.dh, self.bins)
-            self.env.initialise_env()
 
-    def train_agent(self):
+    def train_agent(self,
+                    evaluate=False,
+                    n_eval_steps=10):
         """Train the agent for a chosen number of steps and episodes.
 
+        Args:
+            evaluate (bool): whether to evaluate agent
+            n_eval_steps (int): number of evaluation steps
         """
         # Fit the agent
-        self.agent.fit(self.num_episodes, self.num_episodes)
+        if not evaluate:
+            self.agent.fit(self.num_episodes, self.num_steps)
+        
+        self.agent_cumrewards = []
+        if evaluate:
+            self.build_evaluation()
+            for i in range(int(self.num_episodes/n_eval_steps)):
+                self.agent.fit(n_eval_steps, self.num_steps)
+                self.agent_cumrewards.append(self._evaluate_total_agent_reward())
+            self.hist_cumrewards = self._evaluate_total_hist_reward()
 
     def get_results(self):
         """Get the results of training.
@@ -106,19 +127,143 @@ class Engine:
         self.policy = self.agent.policy
         self.q_table = self.agent.q_table
 
-
-    def evaluate(self,
-                 state):
-        """Evaluate the learned policy at a particular state.
+    
+    def _inverse_scale_feature(self,
+                               values,
+                               labels):
+        """De-bin and de-normalize feature values.
 
         Args:
-            state: state for which an action needs to be predicted.
+            labels (list): list of feature labels
+            values (list): list of (scaled) feature values
+        
         Returns:
-            action_reward: action and reward for a given state
-
-        TODO: ensure that here output is action with max q values (NO exploration)
         """
-        # Get both action & reward
-        action_reward = self.agent._epsilon_greedy_policy(state)
-        return action_reward
+        i_values = []
+        for i, label in enumerate(labels):
+            try:
+                scaler = self.dh.minmax_scalars[label]
+            except:
+                ipdb.set_trace()
+            val = np.array([v[i] for v in values])
+            val = scaler.inverse_transform(
+                    val.reshape(-1, 1))
+            i_values.append(val)
+        # transpose and convert to list
+        i_values = np.concatenate(
+            [np.expand_dims(v,1) for v in i_values],
+            1).squeeze(-1).tolist()
+        return i_values
 
+    def build_evaluation(self):
+        """ Save data for evaluation. """
+        # Get test data from data handler
+        self._eval_states = self.dh.get_states(split='test').to_numpy().tolist()
+        self._eval_actions = self.dh.get_actions(split='test').to_numpy().tolist()
+        self._eval_rewards = self.dh.get_rewards(split='test').to_numpy().tolist()
+
+        # get state and action indexes
+        self._eval_state_dims = list(range(self.env.state_dim))
+        self._eval_action_dims = list(range(self.env.state_dim, 
+                                    self.env.state_dim+self.env.action_dim))
+        # Get the binned states
+        self._eval_b_states = self.env.bin_states(self._eval_states, idxs=self._eval_state_dims)
+
+    def _evaluate_total_agent_reward(self):
+        """ Calculate the total reward obtained on the evaluation states using
+            the agent's policy.
+        
+        Returns:
+            cumreward (float): total (not scaled) cumulative reward
+        """
+        # Get actions corresponding to agent's learned policy
+        b_actions_agent = self.agent.predict_actions(self._eval_b_states)
+
+        # De-bin the recommended actions
+        actions_agent = self.env.debin_states(b_actions_agent, idxs=self._eval_action_dims)
+
+        # Get reward based on agent policy
+        rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)
+        
+        # Inverse scale agent rewards
+        rewards_agent = self._inverse_scale_feature(rewards_agent,
+                                                    self.dh.reward_labels)
+
+        return np.sum(rewards_agent)
+    
+    def _evaluate_total_hist_reward(self):
+        """ Calculate the total reward obtained on the evaluation states using
+            the agent's policy.
+        
+        Returns:
+            cumreward (float): total (not scaled) cumulative based on historical data
+        """
+        # Get the binned actions
+        b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
+
+        # Get reward based on historical policy
+        rewards_hist = self.agent.predict_rewards(self._eval_b_states, b_actions)
+
+        # Inverse scale agent rewards
+        rewards_hist = self._inverse_scale_feature(rewards_hist,
+                                                    self.dh.reward_labels)
+
+        return np.sum(rewards_hist)
+
+    def evaluate_agent(self,
+                 epsilon=0):
+        """Evaluate the learned policy for the test states
+
+        Rewards are calculated using the average reward matrix.
+
+        Args:
+            epsilon: value of epsilon in the epsilon-greedy policy
+                (default= 0 corresponds to pure exploitation)
+        Returns:
+            states (list): list of test states
+            actions (list): list of test actions (historical)
+            rewards_hist (list): list of historical rewards (calculated)
+            actions_agent (list): list of recommended actions
+            rewards_agent (list): list of rewards obtained by agent (calculated)
+        """
+        # Get test data from data handler
+        states = self.dh.get_states(split='test').to_numpy().tolist()
+        actions = self.dh.get_actions(split='test').to_numpy().tolist()
+        rewards = self.dh.get_rewards(split='test').to_numpy().tolist()
+
+        # get state and action indexes
+        state_dims = list(range(self.env.state_dim))
+        action_dims = list(range(self.env.state_dim, 
+                                    self.env.state_dim+self.env.action_dim))
+        # Get the binned states
+        b_states = self.env.bin_states(states, idxs=state_dims)
+        # Inverse scaling
+        states = self._inverse_scale_feature(states, self.dh.state_labels)
+
+        # Get the binned actions
+        b_actions =  self.env.bin_states(actions, idxs=action_dims)
+
+        # Get actions corresponding to agent's learned policy
+        b_actions_agent = self.agent.predict_actions(b_states)
+
+        # De-bin the recommended actions
+        actions_agent = self.env.debin_states(b_actions_agent, idxs=action_dims)
+
+        # Get reward based on agent policy
+        rewards_agent = self.agent.predict_rewards(b_states, b_actions_agent)
+
+        # Get reward based on historical policy
+        rewards_hist = self.agent.predict_rewards(b_states, b_actions)
+
+        #  Apply inverse scaling to actions, states, and rewards
+        states = self._inverse_scale_feature(states,
+                                            self.dh.state_labels)
+        actions_hist = self._inverse_scale_feature(actions,
+                                                    self.dh.action_labels)
+        actions_agent = self._inverse_scale_feature(actions_agent,
+                                                    self.dh.action_labels)
+        rewards_hist = self._inverse_scale_feature(rewards_hist,
+                                                    self.dh.reward_labels)
+        rewards_agent = self._inverse_scale_feature(rewards_agent,
+                                                    self.dh.reward_labels)
+        return states, actions_hist, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent
