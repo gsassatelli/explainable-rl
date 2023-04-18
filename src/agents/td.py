@@ -125,7 +125,7 @@ class TD(Agent):
         index_no_action = tuple(list(state))
         possible_actions = self.env.state_to_action[state_str]
 
-        if use_uncertainty == True:
+        if use_uncertainty:
 
             state_action_counts = {}
             q_values_weights = {}
@@ -136,11 +136,10 @@ class TD(Agent):
             if sum_possible_q == 0:
                 return np.random.choice(list(possible_actions))
 
-
             for possible_action in possible_actions:
                 possible_state_action_str = self._convert_to_string(state + [possible_action])
                 counts = self.env.bins_dict[possible_state_action_str][0]
-                # Count number of times an state-action pair occurred 
+                # Count number of times a state-action pair occurred
                 state_action_counts[str(possible_action)] = counts
                 index_with_action = tuple(state + [possible_action])
                 q_values_weights[possible_action] = self.Q[index_with_action] / sum_possible_q
@@ -149,10 +148,9 @@ class TD(Agent):
             # N.b. A high value represents a well-known, certain state
             uncertainty_weights = {key:float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
 
-
             if random.random() > epsilon: # Exploring
                 action = np.random.choice(list(possible_actions))
-            else: # Exploiting
+            else:  # Exploiting
                 for possible_action in possible_actions:
                     score = q_importance * q_values_weights[possible_action] + (1 - q_importance) * uncertainty_weights[possible_action]
                     action_scores = {possible_action: score}
