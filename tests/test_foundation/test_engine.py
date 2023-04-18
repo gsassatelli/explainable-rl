@@ -21,7 +21,7 @@ class TestEngine(unittest.TestCase):
     def setUp(self):
         self.engine = Engine(dh=self.dh,
                              agent_type="q_learner",
-                             env_type="kaggle",
+                             env_type="strategic_pricing",
                              bins=[10, 10, 10, 10],
                              num_episodes=100,
                              num_steps=10)
