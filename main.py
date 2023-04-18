@@ -121,17 +121,17 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 100000,
+        'n_samples': 500000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 10000,
+        'num_episodes': 50000,
         'num_steps': 1,
         'train_test_split': 0.2,
-        'shap_num_samples': 1
+        'shap_num_samples': 100
     }
 
     hyperparam_dict_kaggle_data = {
