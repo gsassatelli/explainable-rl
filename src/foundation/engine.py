@@ -35,10 +35,10 @@ class Engine:
         Args:
             dh (DataHandler): DataHandler to be given to the Environment
             agent_type (str): Type of agent to initialize
-            env_type (int): Type of environment to initialize
+            env_type (str): Type of environment to initialize
             num_episodes (int): Number of episodes to train the agent for
             num_steps (int): Number of steps per episode
-            bins (int): List of bins per state/action to discretize the state
+            bins (list): List of bins per state/action to discretize the state
                         space.
             gamma (float): Discount factor
             train_test_split (float): proportion of test data
@@ -117,6 +117,9 @@ class Engine:
         # Initialize environment
         if self.env_type == "strategic_pricing":
             self.env = StrategicPricingMDP(self.dh, self.bins)
+
+        else:
+            raise NotImplementedError
 
     def train_agent(self,
                     evaluate=False,
