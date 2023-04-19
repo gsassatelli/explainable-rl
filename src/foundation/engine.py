@@ -118,8 +118,8 @@ class Engine:
 
         """
         # Initialize environment
-        if self.env_type == "strategic_pricing":
-            self.env = StrategicPricingSuggestionMDP(self.dh, self.bins)
+        if self.env_type == "strategic_pricing_predict":
+            self.env = StrategicPricingPredictionMDP(self.dh, self.bins)
 
         else:
             raise NotImplementedError
@@ -265,7 +265,7 @@ class Engine:
         """
         # Get test data from data handler
         states = self.dh.get_states(split='test').to_numpy().tolist()
-        actions = self.dh.get_actions(split='test')
+        actions = self.dh.get_actions(split='test').to_numpy().tolist()
         rewards = self.dh.get_rewards(split='test').to_numpy().tolist()
 
         # get state and action indexes
@@ -294,13 +294,13 @@ class Engine:
 
         #  Apply inverse scaling to actions, states, and rewards
         states = self._inverse_scale_feature(states,
-                                            self.dh.state_labels)
+                                            self.dh._state_labels)
         actions_hist = self._inverse_scale_feature(actions,
-                                                    self.dh.action_labels)
+                                                    self.dh._action_labels)
         actions_agent = self._inverse_scale_feature(actions_agent,
-                                                    self.dh.action_labels)
+                                                    self.dh._action_labels)
         rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh.reward_labels)
+                                                    self.dh._reward_labels)
         rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh.reward_labels)
+                                                    self.dh._reward_labels)
         return states, actions_hist, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent
