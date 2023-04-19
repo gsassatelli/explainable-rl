@@ -121,6 +121,9 @@ class Engine:
         if self.env_type == "strategic_pricing_predict":
             self.env = StrategicPricingPredictionMDP(self.dh, self.bins)
 
+        elif self.env_type == "strategic_pricing_suggest":
+            self.env = StrategicPricingSuggestionMDP(self.dh, self.bins)
+
         else:
             raise NotImplementedError
 

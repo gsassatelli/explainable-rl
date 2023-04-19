@@ -61,20 +61,20 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 
     # TODO: denorm states, actions and rewards (using datahandler's inverse scaling)
 
-    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-    if verbose:
-        print(f"{timestamp}: Evaluate agent")
+    # timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    # if verbose:
+    #     print(f"{timestamp}: Evaluate agent")
 
-    states, actions, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent = \
-        engine.evaluate_agent()
-    # Sum obtained reward optimal vs historical policy
-    import numpy as np
-    print(f"Return based on historical data: {np.sum(rewards_hist)}")
-    print(f"Return based on agent policy: {np.sum(rewards_agent)}")
+    # states, actions, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent = \
+    #     engine.evaluate_agent()
+    # # Sum obtained reward optimal vs historical policy
+    # import numpy as np
+    # print(f"Return based on historical data: {np.sum(rewards_hist)}")
+    # print(f"Return based on agent policy: {np.sum(rewards_agent)}")
     
-    import matplotlib.pyplot as plt
-    plt.scatter(actions, actions_agent)
-    plt.savefig('policy.png')
+    # import matplotlib.pyplot as plt
+    # plt.scatter(actions, actions_agent)
+    # plt.savefig('policy.png')
 
 
     ###########################################################
@@ -98,7 +98,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Plot SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
-    shap_values = ShapValues(sample=[8, 0.5, 1, 1], features=state_labels, env=engine.env,
+    shap_values = ShapValues(sample=[8, 1, 1, 1], features=state_labels, env=engine.env,
                              Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=action_labels,
                              number_of_samples=shap_num_samples)
     shaps, predicted_action = shap_values.compute_shap_values()
@@ -122,7 +122,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 5000,
+        'n_samples': 50000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
@@ -147,7 +147,7 @@ if __name__ == "__main__":
             'revenue': "continuous"
         },
         'bins': [10, 2, 2, 10, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
-        'n_samples': 20000,
+        'n_samples': 2000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
         'cols_to_normalise': ['competitorPrice', 'adFlag', 'availability', 'price'],
@@ -174,14 +174,14 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 5000,
+        'n_samples': 50000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing_predict',
-        'num_episodes': 500,
+        'num_episodes': 5000,
         'num_steps': 1,
         'train_test_split': 0.2,
         'shap_num_samples': 1
@@ -212,5 +212,5 @@ if __name__ == "__main__":
     }
 
     for i in range(1):
-        run_all(hyperparam_dict_kaggle_data_predict)
+        run_all(hyperparam_dict_ds_data_predict)
         # ran this 10 times to check everything was fine.

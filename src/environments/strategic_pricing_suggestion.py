@@ -29,7 +29,7 @@ class StrategicPricingSuggestionMDP(MDP):
         self.bins_dict = None
 
         self.state_dim = self.dh.get_states().shape[1]
-        self.action_dim = len(self.dh.get_actions())
+        self.action_dim = len(self.dh.get_action_labels())
 
         if len(bins) != self.state_dim + 1:
             self.bins = [10] * (self.state_dim + 1)
@@ -46,7 +46,7 @@ class StrategicPricingSuggestionMDP(MDP):
         """Transform the MDP data from a dataframe to a numpy array
         """
         self._state_mdp_data = self.dh.get_states().to_numpy()
-        self._action_mdp_data = np.array(self.dh.get_actions())
+        self._action_mdp_data = np.array(self.dh.get_action_labels())
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
     def _join_state_action(self):

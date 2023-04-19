@@ -158,8 +158,8 @@ class TD(Agent):
                     score = q_importance * q_values_weights[possible_action] + (1 - q_importance) * uncertainty_weights[possible_action]
                     action_scores = {possible_action: score}
                 action = np.argmax(list(action_scores.values()))
-
-        # TODO: add else statement for when use_uncertainty is False
+        else:
+            action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
         
         return action
 
@@ -183,12 +183,12 @@ class TD(Agent):
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        # action = self.uncertainty_informed_policy(self.state,
-        #                                           epsilon=epsilon,
-        #                                           use_uncertainty=True,
-        #                                           q_importance=0.7)
+        action = self.uncertainty_informed_policy(self.state,
+                                                  epsilon=epsilon,
+                                                  use_uncertainty=False,
+                                                  q_importance=0.7)
 
-        action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
+        
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
         self._update_q_values(state=state,
