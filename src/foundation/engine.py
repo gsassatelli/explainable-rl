@@ -228,7 +228,7 @@ class Engine:
         
         # Inverse scale agent rewards
         rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh.reward_labels)
+                                                    self.dh._reward_labels)
 
         return np.sum(rewards_agent)
     
@@ -247,7 +247,7 @@ class Engine:
 
         # Inverse scale agent rewards
         rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh.reward_labels)
+                                                    self.dh._reward_labels)
 
         return np.sum(rewards_hist)
 
