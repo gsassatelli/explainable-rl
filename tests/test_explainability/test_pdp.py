@@ -24,7 +24,7 @@ class TestPDP(unittest.TestCase):
         cls.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
         cls.engine = Engine(cls.dh,
                             agent_type="q_learner",
-                            env_type="strategic_pricing",
+                            env_type="strategic_pricing_predict",
                             bins=[10, 10, 10, 10],
                             num_episodes=100,
                             num_steps=1)

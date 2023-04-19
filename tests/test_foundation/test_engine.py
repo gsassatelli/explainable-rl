@@ -25,7 +25,7 @@ class TestEngine(unittest.TestCase):
     def setUp(self) -> None:
         self.engine = Engine(self.dh,
                              agent_type="q_learner",
-                             env_type="strategic_pricing",
+                             env_type="strategic_pricing_predict",
                              bins=[10, 10, 10, 10],
                              num_episodes=100,
                              num_steps=1)
@@ -60,8 +60,8 @@ class TestEngine(unittest.TestCase):
             assert isinstance(self.engine.agent, types_dict[agent_type])
 
     def test_create_env(self):
-        types = ["strategic_pricing"]
-        types_dict = {"strategic_pricing": StrategicPricingSuggestionMDP}
+        types = ["strategic_pricing_predict"]
+        types_dict = {"strategic_pricing_predict": StrategicPricingSuggestionMDP}
 
         for env_type in types:
             self.engine.env_type = env_type
