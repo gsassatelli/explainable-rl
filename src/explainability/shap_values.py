@@ -25,7 +25,7 @@ class ShapValues:
             env (MDP): MDP object.
             Q (np.array): Q-table.
             minmax_scalars (list): List of minmax scalars.
-            action (int): Action to explain.
+            action (int): Action.
             number_of_samples (int): Number of samples to use.
         """
         self.sample = sample
@@ -173,9 +173,20 @@ class ShapValues:
             actions (list): List of actions.
         """
         denorm_actions = []
-        for a in actions:
-            denorm_a = self.action[a]
-            denorm_actions.append(denorm_a)
+        if len(self.action) == 1:
+            scalar = self.minmax_scalars[self.action[0]]
+            for a in actions:
+                # Divide dig actions by # bins of the action dimension
+                # to get a value between 0 and 1
+                denorm_a = scalar.inverse_transform(
+                    a.reshape(-1, 1) / self.env.bins[-1])
+                denorm_actions.append(denorm_a[0][0])
+        
+        else:
+            for a in actions:
+                denorm_a = self.action[a]
+                denorm_actions.append(denorm_a)
+
         return denorm_actions
 
     def normalize_sample(self):

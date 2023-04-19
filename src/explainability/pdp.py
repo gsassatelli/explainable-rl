@@ -102,10 +102,21 @@ class PDP:
     def _get_denorm_actions(self):
         """Get actions denormalized values.
         """
+        if len(self._action_labels) == 1:
+            # The action column comes from the dataset
+            scaler = self._minmax_scalars[self._action_labels[0]]
+            for dig_actions in self._dig_state_actions:
+                # Divide dig actions by # bins of the action dimension
+                # to get a value between 0 and 1
+                denorm_action = scaler.inverse_transform(
+                    dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
+                self._denorm_actions.append(denorm_action)
 
-        for dim in self._dig_state_actions:
-            denorm_action = [self._action_labels[i] for i in dim]
-            self._denorm_actions.append(denorm_action)
+        else:
+            # The action are imputed by the user
+            for dim in self._dig_state_actions:
+                denorm_action = [self._action_labels[i] for i in dim]
+                self._denorm_actions.append(denorm_action)
 
     def _get_denorm_states(self):
         """Get states denormalized values.
