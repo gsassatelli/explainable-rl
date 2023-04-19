@@ -68,7 +68,7 @@ class TestEngine(unittest.TestCase):
         for env_type in types:
             self.engine.env_type = env_type
             self.engine.create_env()
-            self.engine.agent = QLearningAgent(self.engine.env)
+            self.engine.agent = QLearningAgent(self.engine.env, gamma=0.8)
             assert isinstance(self.engine.env, types_dict[env_type])
             assert isinstance(self.engine.agent, QLearningAgent)
 
