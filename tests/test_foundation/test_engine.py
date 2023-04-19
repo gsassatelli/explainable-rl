@@ -7,7 +7,7 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-
+import copy
 
 class TestEngine(unittest.TestCase):
 
@@ -70,10 +70,10 @@ class TestEngine(unittest.TestCase):
 
     def test_train_agent(self):
         self.engine.create_world()
-        original_q = self.engine.agent.Q
+        original_q = copy.deepcopy(self.engine.agent.Q)
         self.engine.train_agent()
-        assert self.engine.agent.q_table is not None
-        assert self.engine.agent.q_table is not original_q
+        assert self.engine.agent.Q is not None
+        assert self.engine.agent.Q is not original_q
 
 
     def test_get_results(self):
