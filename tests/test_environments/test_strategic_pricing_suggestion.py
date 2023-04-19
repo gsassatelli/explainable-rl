@@ -1,8 +1,5 @@
 # Import package
 import unittest
-import pandas as pd
-import numpy as np
-import sparse
 
 # Import functions
 from src.data_handler.data_handler import DataHandler
@@ -16,7 +13,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         states = ['competitorPrice', 'adFlag', 'availability', 'price']
-        actions = [price_bin/10 for price_bin in range(1,11)]
+        actions = [price_bin/10 for price_bin in range(1, 11)]
         rewards = ['revenue']
         n_samples = 50
         cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
