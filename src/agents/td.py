@@ -102,7 +102,8 @@ class TD(Agent):
         if Q is None:
             Q = self.Q
         q_values = Q[index].todense()
-        if random.random() > epsilon:
+        r = random.random()
+        if r > epsilon:
             action = np.argmax(q_values)
         else:
             action = random.choice(list(self.state_to_action[str(state_str)]))

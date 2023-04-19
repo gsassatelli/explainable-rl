@@ -167,7 +167,7 @@ class StrategicPricingPredictionMDP(MDP):
         binned = [list(item) for item in binned]
         for ix, bin in enumerate(binned):
             # Go through each bin
-            state_str = ",".join(str(e) for e in bin)
+            state_str = ",".join(str(e) for e in bin[:-1])
             action = bin[-1]
             # Update state to action for populated state-action pairs
             self.state_to_action.setdefault(state_str, set()).add(action)
@@ -245,8 +245,11 @@ class StrategicPricingPredictionMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
+        
         index = tuple(list(state) + [action])
-        reward = self._average_rewards[state[0], state[1], state[2], action]
+
+
+        reward = self._average_rewards[index]
 
         return state, state, reward, True
 
