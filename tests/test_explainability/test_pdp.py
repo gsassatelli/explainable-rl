@@ -21,7 +21,7 @@ class TestPDP(unittest.TestCase):
         rewards = ['revenue']
         n_samples = 50
         cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        cls.dh.prepare_data_for_engine(col_delimiter='|', cols_to_normalise=states + actions)
+        cls.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
         cls.engine = Engine(cls.dh,
                             agent_type="q_learner",
                             env_type="strategic_pricing",
