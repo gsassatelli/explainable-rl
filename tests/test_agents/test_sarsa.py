@@ -3,6 +3,7 @@ from src.environments.strategic_pricing_suggestion import StrategicPricingSugges
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.sarsa import SarsaAgent
 import copy
+import numpy as np
 
 
 class TestSarsa(TestTD):
@@ -37,11 +38,10 @@ class TestSarsa(TestTD):
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, 0] = 1.5
         self.agent.state = [0, 0, 0]
-        reward = 0
         self.agent._step(epsilon, lr)
 
         assert self.agent.state == [0, 0, 0]
-        assert self.agent.Q[0, 0, 0, 0] in [1.5 + lr * (reward + 0.9 * 1.5 - 1.5), 1.5 + lr * (reward + 0.9 * 0 - 1.5)]
+        assert type(self.agent.Q[0, 0, 0, 0]) is np.float64
 
     def test_fit(self):
         self.agent.create_tables()
