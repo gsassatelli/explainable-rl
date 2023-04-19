@@ -29,7 +29,7 @@ class StrategicPricingMDP(MDP):
         self.bins_dict = None
 
         self.state_dim = self.dh.get_states().shape[1]
-        self.action_dim = len(self.dh.get_actions())
+        self.action_dim = len(self.dh.get_action_labels())
 
         if len(bins) != self.state_dim + 1:
             self.bins = [10] * (self.state_dim + 1)
