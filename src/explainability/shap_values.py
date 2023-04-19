@@ -181,7 +181,7 @@ class ShapValues:
                 denorm_a = scalar.inverse_transform(
                     a.reshape(-1, 1) / self.env.bins[-1])
                 denorm_actions.append(denorm_a[0][0])
-        
+
         else:
             for a in actions:
                 denorm_a = self.action[a]

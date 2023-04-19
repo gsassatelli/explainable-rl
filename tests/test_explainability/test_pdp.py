@@ -31,7 +31,7 @@ class TestPDP(unittest.TestCase):
         cls.engine.create_world()
         cls.engine.train_agent()
         cls.pdp = PDP(bins=cls.engine.env.bins,
-                      minmax_scalers=cls.dh.minmax_scalars,
+                      minmax_scalars=cls.dh.minmax_scalars,
                       action_labels=actions,
                       state_labels=states)
         cls.pdp.build_data_for_plots(cls.engine.agent.Q,
