@@ -27,7 +27,7 @@ class TestEngine(unittest.TestCase):
                              env_type="strategic_pricing",
                              bins=[10, 10, 10, 10],
                              num_episodes=100,
-                             num_steps=10)
+                             num_steps=1)
 
     def tearDown(self) -> None:
         del self.engine

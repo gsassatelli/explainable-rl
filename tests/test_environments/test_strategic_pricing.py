@@ -21,7 +21,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
         cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
-                                        cols_to_normalise=states+actions)
+                                       cols_to_normalise=states+actions)
 
     def setUp(self) -> None:
         self.env = StrategicPricingMDP(self.dh)
