@@ -4,8 +4,8 @@ from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 
 
-class TestPDP(unittest.TestCase):
-    """Test PDP class.
+class TestShapValues(unittest.TestCase):
+    """Test ShapValues class.
     """
 
     dh = None
@@ -26,11 +26,11 @@ class TestPDP(unittest.TestCase):
                             agent_type="q_learner",
                             env_type="strategic_pricing_predict",
                             bins=[10, 10, 10, 10],
-                            num_episodes=100,
+                            num_episodes=1000,
                             num_steps=1)
         cls.engine.create_world()
         cls.engine.train_agent()
-        cls.shap_values = ShapValues(sample=[8, 0.5, 1], features=states, env=cls.engine.env,
+        cls.shap_values = ShapValues(sample=[8, 1, 1], features=states, env=cls.engine.env,
                                      Q=cls.engine.agent.Q, minmax_scalars=cls.dh.minmax_scalars, action=actions,
                                      number_of_samples=10)
 
@@ -98,5 +98,6 @@ class TestPDP(unittest.TestCase):
         """Test predict_action method.
         """
         result = self.shap_values.predict_action()
-        assert isinstance(result, float)
+        assert isinstance(result, list)
+        assert isinstance(result[0], float)
 

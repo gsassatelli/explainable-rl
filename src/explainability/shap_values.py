@@ -100,6 +100,7 @@ class ShapValues:
                 action_samples_minus[sample] = np.argmax(np.array(Q_state_minus))
 
             # Denorm actions
+            print(action_samples_plus)
             denorm_action_samples_plus = self.get_denorm_actions(action_samples_plus)
             denorm_action_samples_minus = self.get_denorm_actions(action_samples_minus)
 
