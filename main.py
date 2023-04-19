@@ -61,6 +61,10 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 
     # TODO: denorm states, actions and rewards (using datahandler's inverse scaling)
 
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    if verbose:
+        print(f"{timestamp}: Evaluate agent")
+
     states, actions, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent = \
         engine.evaluate_agent()
     # Sum obtained reward optimal vs historical policy
