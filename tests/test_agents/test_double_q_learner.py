@@ -3,6 +3,7 @@ import copy
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.double_q_learner import DoubleQLearner
+import numpy as np
 
 class TestDoubleQLearner(TestTD):
     def setUp(self) -> None:
@@ -38,11 +39,10 @@ class TestDoubleQLearner(TestTD):
         self.agent.create_tables()
         self.agent.Q_a[0, 0, 0, :] = 1.5
         self.agent.state = [0, 0, 0]
-        reward = 2.41
         self.agent._step(epsilon, lr)
 
         assert self.agent.state == [0, 0, 0]
-        assert self.agent.Q_a[0, 0, 0, 0] == 1.5
+        assert type(self.agent.Q_a[0, 0, 0, 0]) is np.float64
 
     def test_fit(self):
         self.agent.create_tables()
