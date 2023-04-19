@@ -136,8 +136,8 @@ if __name__ == "__main__":
     }
 
     hyperparam_dict_kaggle_data = {
-        'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'actions': [price_bin/10 for price_bin in range(1, 11)],
+        'states': ['competitorPrice', 'adFlag', 'availability'],
+        'actions': ['price'],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",

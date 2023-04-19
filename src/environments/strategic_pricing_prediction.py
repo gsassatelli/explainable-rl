@@ -29,10 +29,10 @@ class StrategicPricingMDP(MDP):
         self.bins_dict = None
 
         self.state_dim = self.dh.get_states().shape[1]
-        self.action_dim = len(self.dh.get_action_labels())
+        self.action_dim = self.dh.get_actions().shape[1]
 
-        if len(bins) != self.state_dim + 1:
-            self.bins = [10] * (self.state_dim + 1)
+        if len(bins) != self.state_dim + self.action_dim:
+            self.bins = [10] * (self.state_dim + self.action_dim)
         else:
             self.bins = bins
         
@@ -46,7 +46,7 @@ class StrategicPricingMDP(MDP):
         """Transform the MDP data from a dataframe to a numpy array
         """
         self._state_mdp_data = self.dh.get_states().to_numpy()
-        self._action_mdp_data = np.array(self.dh.get_actions())
+        self._action_mdp_data = self.dh.get_actions().to_numpy()
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
 
     def _join_state_action(self):
@@ -166,23 +166,19 @@ class StrategicPricingMDP(MDP):
         self.state_to_action = {}
         binned = [list(item) for item in binned]
         for ix, bin in enumerate(binned):
-            for action in range(self.action_dim):
-                fixed_state = bin[:-1]
-                lookup_state = list(fixed_state + [action])
-                if lookup_state in binned:
-                    # Go through each bin
-                    state_str = ",".join(str(e) for e in bin)
-                    # Update state to action for populated state-action pairs
-                    self.state_to_action.setdefault(state_str, set()).add(action)
-                    # update number of data points in the bin
-                    state_action_str = state_str+','+str(action)
+            # Go through each bin
+            state_str = ",".join(str(e) for e in bin)
+            action = bin[-1]
+            # Update state to action for populated state-action pairs
+            self.state_to_action.setdefault(state_str, set()).add(action)
+            # update number of data points in the bin
+            state_action_str = state_str+','+str(action)
 
-                    for ix in range(binned.count(lookup_state)):
-                        bins_dict[state_action_str][0] =\
-                            bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
-                        # update total reward in the bin
-                        reward = self._reward_mdp_data[ix]
-                        bins_dict[state_action_str][1] += reward[0]
+            bins_dict[state_action_str][0] =\
+                bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
+            # update total reward in the bin
+            reward = self._reward_mdp_data[ix]
+            bins_dict[state_action_str][1] += reward[0]
                 
         return bins_dict
 
@@ -218,10 +214,10 @@ class StrategicPricingMDP(MDP):
         # Transform data for efficiency
         self._transform_df_to_numpy()
 
-        state_data = self._state_mdp_data.tolist()
+        zipped = self._join_state_action()
 
         # Create the bins
-        binned = self._bin_state_action_space(state_data)
+        binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
         self.bins_dict = bins_dict
@@ -249,30 +245,9 @@ class StrategicPricingMDP(MDP):
         Returns:
             tuple: current state, action, next state, done flag.
         """
-        # TODO: input index to find_next_state
         index = tuple(list(state) + [action])
+        reward = self._average_rewards[state[0], state[1], state[2], action]
 
-        reward = self._average_rewards[index]
-        next_state, done = self._find_next_state(state, action)
-        return state, next_state, reward, done
+        return state, state, reward, True
 
-    def _find_next_state(self, state, action):
-        """Lookup whether the next state exists in the state-action space matrix
-
-        Args:
-            state (list): Current state values of agent.
-            action (int): Action for agent to take.
-
-        Returns:
-            list: next state for the agent to visit
-        """
-        index = list(state) + [action]
-        state_action_str = ",".join(str(e) for e in index)
-        if state_action_str in self.bins_dict:
-            next_state = state[:-1] + [action]
-            done = False
-        else:
-            next_state = state
-            done = True
-        
-        return next_state, done
+ 

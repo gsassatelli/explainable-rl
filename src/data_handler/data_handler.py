@@ -83,9 +83,12 @@ class DataHandler:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
         s = self.dataset[self._state_labels]
-        a = self._action_labels
         r = self.dataset[self._reward_labels]
-        self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
+        try:
+            a = self.dataset[self._action_labels]
+            self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
+        except KeyError:
+            self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
     
         self.mdp_data = self.mdp_data[:self._n_samples]
 
@@ -121,6 +124,14 @@ class DataHandler:
 
         Returns:
             pd.DataFrame of the actions.
+        """
+        return self.mdp_data['a']
+
+    def get_action_labels(self):
+        """Get the action labels.
+
+        Returns:
+            list of action labels.
         """
         return self._action_labels
 

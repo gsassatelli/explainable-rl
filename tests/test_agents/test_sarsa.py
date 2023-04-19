@@ -34,9 +34,9 @@ class TestSarsa(TestTD):
         epsilon = 0  # epsilon = 0 as this functionality is tested above.
         lr = 0.1
         self.agent.create_tables()
-        self.agent.Q[0, 0, 0, :] = 1.5
+        self.agent.Q[0, 0, 0, 0] = 1.5
         self.agent.state = [0, 0, 0]
-        reward = 2.41
+        reward = 0
         self.agent._step(epsilon, lr)
 
         assert self.agent.state == [0, 0, 0]
