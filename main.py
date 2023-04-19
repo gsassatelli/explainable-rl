@@ -110,7 +110,7 @@ if __name__ == "__main__":
     hyperparam_dict_ds_data_suggest = {
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price'],
-        'actions': [price_bin/10 for price_bin in range(1,11)],
+        'actions': [price_bin/10 for price_bin in range(1, 11)],
         'bins': [10, 10, 4, 4, 10, 10],
         # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],

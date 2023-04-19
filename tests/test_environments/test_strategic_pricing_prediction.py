@@ -1,12 +1,12 @@
+# Import package
 import unittest
-
 import pandas as pd
-
-from src.data_handler.data_handler import DataHandler
-from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
-from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 import numpy as np
 import sparse
+
+# Import functions
+from src.data_handler.data_handler import DataHandler
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
 class TestStrategicPricingMDP(unittest.TestCase):
@@ -24,10 +24,13 @@ class TestStrategicPricingMDP(unittest.TestCase):
                                        cols_to_normalise=states+actions)
 
     def setUp(self) -> None:
-        self.env = StrategicPricingSuggestionMDP(self.dh)
+        self.env = StrategicPricingPredictionMDP(self.dh)
 
     def tearDown(self) -> None:
         del self.env
+
+    def test_type(self):
+        assert isinstance(self.env, StrategicPricingPredictionMDP)
 
     def test_transform_df_to_numpy(self):
         target_states = self.dh.get_states().to_numpy()
