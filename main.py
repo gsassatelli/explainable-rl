@@ -105,9 +105,9 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 if __name__ == "__main__":
     hyperparam_dict_ds_data = {
         'states': ['lead_time', 'length_of_stay',
-                   'competitor_price_difference_bin', 'demand_bin'],
-        'actions': ['price'],
-        'bins': [10, 10, 4, 4, 10],
+                   'competitor_price_difference_bin', 'demand_bin', 'price'],
+        'actions': [price_bin/10 for price_bin in range(1,11)],
+        'bins': [10, 10, 4, 4, 10, 10],
         # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'feature_types': {
@@ -118,22 +118,22 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 500000,
+        'n_samples': 5000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
                               'competitor_price_difference_bin', 'demand_bin', 'price', 'reward'],
         'agent_type': 'q_learner',
         'env_type': 'strategic_pricing',
-        'num_episodes': 50000,
+        'num_episodes': 500,
         'num_steps': 1,
         'train_test_split': 0.2,
-        'shap_num_samples': 100
+        'shap_num_samples': 1
     }
 
     hyperparam_dict_kaggle_data = {
         'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'actions': [price_bin/10 for price_bin in range(1,11)],
+        'actions': [price_bin/10 for price_bin in range(1, 11)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
@@ -155,5 +155,5 @@ if __name__ == "__main__":
         'shap_num_samples': 1
     }
     for i in range(1):
-        run_all(hyperparam_dict_kaggle_data)
+        run_all(hyperparam_dict_ds_data)
         # ran this 10 times to check everything was fine.

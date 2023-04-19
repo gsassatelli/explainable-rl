@@ -245,8 +245,7 @@ class Engine:
 
         return np.sum(rewards_hist)
 
-    def evaluate_agent(self,
-                 epsilon=0):
+    def evaluate_agent(self, epsilon=0):
         """Evaluate the learned policy for the test states
 
         Rewards are calculated using the average reward matrix.
@@ -263,20 +262,20 @@ class Engine:
         """
         # Get test data from data handler
         states = self.dh.get_states(split='test').to_numpy().tolist()
-        actions = self.dh.get_actions(split='test').to_numpy().tolist()
+        actions = self.dh.get_actions(split='test')
         rewards = self.dh.get_rewards(split='test').to_numpy().tolist()
 
         # get state and action indexes
         state_dims = list(range(self.env.state_dim))
         action_dims = list(range(self.env.state_dim, 
-                                    self.env.state_dim+self.env.action_dim))
+                                 self.env.state_dim+self.env.action_dim))
         # Get the binned states
         b_states = self.env.bin_states(states, idxs=state_dims)
         # Inverse scaling
-        states = self._inverse_scale_feature(states, self.dh.state_labels)
+        states = self._inverse_scale_feature(states, self.dh._state_labels)
 
         # Get the binned actions
-        b_actions =  self.env.bin_states(actions, idxs=action_dims)
+        b_actions = self.env.bin_states(actions, idxs=action_dims)
 
         # Get actions corresponding to agent's learned policy
         b_actions_agent = self.agent.predict_actions(b_states)

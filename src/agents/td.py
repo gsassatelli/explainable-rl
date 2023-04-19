@@ -114,6 +114,8 @@ class TD(Agent):
         Args:
             state (list): current state of the agent.
             epsilon (float): the exploration parameter.
+            use_uncertainty (bool): whether to use uncertainty informed policy.
+            q_importance (float): the importance of the q value in the policy.
 
         Returns:
             action (int): selected action.
@@ -146,15 +148,17 @@ class TD(Agent):
             
             # Get weights given population for state-action space
             # N.b. A high value represents a well-known, certain state
-            uncertainty_weights = {key:float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
+            uncertainty_weights = {key: float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
 
-            if random.random() > epsilon: # Exploring
+            if random.random() > epsilon:  # Exploring
                 action = np.random.choice(list(possible_actions))
             else:  # Exploiting
                 for possible_action in possible_actions:
                     score = q_importance * q_values_weights[possible_action] + (1 - q_importance) * uncertainty_weights[possible_action]
                     action_scores = {possible_action: score}
                 action = np.argmax(list(action_scores.values()))
+
+        # TODO: add else statement for when use_uncertainty is False
         
         return action
 
@@ -178,13 +182,12 @@ class TD(Agent):
         Returns:
             done: boolean indicating whether the episode is finished.
         """
-        action = self.uncertainty_informed_policy(self.state,
-                                             epsilon=epsilon,
-                                             use_uncertainty=True, 
-                                             q_importance=0.7)
+        # action = self.uncertainty_informed_policy(self.state,
+        #                                           epsilon=epsilon,
+        #                                           use_uncertainty=True,
+        #                                           q_importance=0.7)
 
-        # action = self._epsilon_greedy_policy(self.state,
-        #                                      epsilon=epsilon)
+        action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
         state, next_state, reward, done = self.env.step(self.state,
                                                         action)
         self._update_q_values(state=state,
