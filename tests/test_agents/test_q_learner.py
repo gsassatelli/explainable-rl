@@ -1,6 +1,7 @@
 from tests.test_agents.test_td import TestTD
 import copy
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.q_learner import QLearningAgent
 
 class TestQLearningAgent(TestTD):
@@ -32,6 +33,7 @@ class TestQLearningAgent(TestTD):
         assert result == target
 
     def test_step(self):
+        print("testing test_step")
         epsilon = 0
         lr = 0.1
         self.agent.create_tables()
@@ -39,6 +41,8 @@ class TestQLearningAgent(TestTD):
         self.agent.state = [0, 0, 0]
 
         self.agent._step(epsilon, lr)
+
+        print(f"self.agent.Q[0, 0, 0, 2]:{self.agent.Q[0, 0, 0, 2]}")
 
         assert self.agent.state == [0, 0, 0]
         assert self.agent.Q[0, 0, 0, 2] == 1.5 + lr * (0 + 0.9 * 1.5 - 1.5)

@@ -28,11 +28,16 @@ class QLearningAgent(TD):
             lr (float): learning rate.
         """
         index_current = tuple(list(state) + [action])
+        print(f"action:{action}")
+        print(f"index_current:{index_current}")
         q_current = self.Q[index_current]
+        print(f"q_current:{q_current}")
         index_next = tuple(next_state)
+        print(f"index_next:{index_next}")
         q_next = np.max(self.Q[index_next].todense())
-
+        print(f"q_next:{q_next}")
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
-
+        print(f"self.Q[index_current]:{self.Q[index_current]}")
         self.Q_num_samples[index_current] += 1
+
