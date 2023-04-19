@@ -44,7 +44,7 @@ class TestEngine(unittest.TestCase):
             self.engine.agent_type = agent_type
             self.engine.create_world()
             assert isinstance(self.engine.agent, types_dict[agent_type])
-            assert isinstance(self.engine.env, StrategicPricingMDP)
+            assert isinstance(self.engine.env, StrategicPricingSuggestionMDP)
 
     def test_create_agent(self):
         types = ["q_learner", "sarsa", "sarsa_lambda", "double_q_learner"]
@@ -55,13 +55,13 @@ class TestEngine(unittest.TestCase):
 
         for agent_type in types:
             self.engine.agent_type = agent_type
-            self.engine.env = StrategicPricingMDP(self.dh, self.engine.bins)
+            self.engine.env = StrategicPricingSuggestionMDP(self.dh, self.engine.bins)
             self.engine.create_agent()
             assert isinstance(self.engine.agent, types_dict[agent_type])
 
     def test_create_env(self):
         types = ["strategic_pricing"]
-        types_dict = {"strategic_pricing": StrategicPricingMDP}
+        types_dict = {"strategic_pricing": StrategicPricingSuggestionMDP}
 
         for env_type in types:
             self.engine.env_type = env_type

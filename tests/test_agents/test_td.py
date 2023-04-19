@@ -10,17 +10,17 @@ class TestTD(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls) -> None:
-        states = ['competitorPrice', 'adFlag', 'availability', 'price'],
-        actions = [price_bin/10 for price_bin in range(1, 11)]
+        states = ['competitorPrice', 'adFlag', 'availability']
+        actions = ['price']
         rewards = ['revenue']
         n_samples = 50
-        cls.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
+        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                        cols_to_normalise=states)
 
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = TD(self.env, gamma=0.9)
 
     def tearDown(self) -> None:

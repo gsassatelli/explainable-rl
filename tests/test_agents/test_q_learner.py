@@ -7,7 +7,7 @@ from src.agents.q_learner import QLearningAgent
 class TestQLearningAgent(TestTD):
 
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingSuggestionMDP(self.dh)
         self.agent = QLearningAgent(self.env, gamma=0.9)
 
 

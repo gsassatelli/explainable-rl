@@ -24,7 +24,7 @@ class TestStrategicPricingMDP(unittest.TestCase):
                                        cols_to_normalise=states+actions)
 
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingSuggestionMDP(self.dh)
 
     def tearDown(self) -> None:
         del self.env

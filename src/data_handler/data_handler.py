@@ -106,6 +106,7 @@ class DataHandler:
         if cols_to_norm is None:
             cols_to_norm = self.dataset.columns
         for col in cols_to_norm:
+            print(cols_to_norm)
             self._transform_col(col_name=col)
             self._normalised_cols.append(col)
 
@@ -175,6 +176,7 @@ class DataHandler:
     def _transform_col(self, col_name: str):
         """Normalise one column of the dataset.
         """
+        print(col_name)
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))

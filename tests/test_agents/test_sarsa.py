@@ -7,7 +7,7 @@ import copy
 
 class TestSarsa(TestTD):
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = SarsaAgent(self.env, gamma=0.9)
 
     def test_update_q_values(self):

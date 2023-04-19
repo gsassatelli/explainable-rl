@@ -6,7 +6,7 @@ from src.agents.double_q_learner import DoubleQLearner
 
 class TestDoubleQLearner(TestTD):
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingSuggestionMDP(self.dh)
         self.agent = DoubleQLearner(self.env, gamma=0.9)
 
     def test_update_q_values(self):

@@ -7,7 +7,7 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 class TestSarsaLambda(TestTD):
 
     def setUp(self) -> None:
-        self.env = StrategicPricingMDP(self.dh)
+        self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = SarsaLambdaAgent(self.env, gamma=0.9, lambda_=0.9)
 
     def test_update_q_values(self):
