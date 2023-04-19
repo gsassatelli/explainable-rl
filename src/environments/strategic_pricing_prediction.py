@@ -6,7 +6,7 @@ import ipdb
 # Import Environment
 from src.foundation.environment import MDP
 
-class StrategicPricingMDP(MDP):
+class StrategicPricingPredictionMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
     """
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
