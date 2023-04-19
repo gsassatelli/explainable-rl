@@ -5,8 +5,8 @@ from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
 from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
-from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 import copy
 
 class TestEngine(unittest.TestCase):
@@ -33,7 +33,7 @@ class TestEngine(unittest.TestCase):
     def tearDown(self) -> None:
         del self.engine
 
-    def test_create_world(self):
+    def test_create_world_agents(self):
         types = ["q_learner", "sarsa", "sarsa_lambda", "double_q_learner"]
         types_dict = {"q_learner": QLearningAgent,
                         "sarsa": SarsaAgent,
@@ -44,7 +44,7 @@ class TestEngine(unittest.TestCase):
             self.engine.agent_type = agent_type
             self.engine.create_world()
             assert isinstance(self.engine.agent, types_dict[agent_type])
-            assert isinstance(self.engine.env, StrategicPricingSuggestionMDP)
+            assert isinstance(self.engine.env, StrategicPricingPredictionMDP)
 
     def test_create_agent(self):
         types = ["q_learner", "sarsa", "sarsa_lambda", "double_q_learner"]
@@ -55,18 +55,21 @@ class TestEngine(unittest.TestCase):
 
         for agent_type in types:
             self.engine.agent_type = agent_type
-            self.engine.env = StrategicPricingSuggestionMDP(self.dh, self.engine.bins)
+            self.engine.env = StrategicPricingPredictionMDP(self.dh, self.engine.bins)
             self.engine.create_agent()
             assert isinstance(self.engine.agent, types_dict[agent_type])
+            assert isinstance(self.engine.env, StrategicPricingPredictionMDP)
 
     def test_create_env(self):
-        types = ["strategic_pricing_predict"]
-        types_dict = {"strategic_pricing_predict": StrategicPricingSuggestionMDP}
+        types = ["strategic_pricing_predict", "strategic_pricing_suggest"]
+        types_dict = {"strategic_pricing_predict": StrategicPricingPredictionMDP,
+                      "strategic_pricing_suggest": StrategicPricingSuggestionMDP}
 
         for env_type in types:
             self.engine.env_type = env_type
             self.engine.create_env()
             assert isinstance(self.engine.env, types_dict[env_type])
+            assert isinstance(self.engine.agent, QLearningAgent)
 
     def test_train_agent(self):
         self.engine.create_world()
@@ -74,7 +77,6 @@ class TestEngine(unittest.TestCase):
         self.engine.train_agent()
         assert self.engine.agent.Q is not None
         assert self.engine.agent.Q is not original_q
-
 
     def test_get_results(self):
         pass
