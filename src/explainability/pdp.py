@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import sparse
-import ipdb
+
 
 class PDP:
     __slots__ = ["_bins", "_minmax_scalars", "_action_labels", "_state_labels",
@@ -56,9 +56,6 @@ class PDP:
         self._get_digitized_pdp(Q, Q_num_samples)
         self._get_denorm_actions()
         self._get_denorm_states()
-        
-        
-        
 
     def _get_digitized_pdp(self,
                            Q,
@@ -92,11 +89,11 @@ class PDP:
             dig_actions_samples = np.array([Q_num_samples_sum[idx][action] for idx, action in enumerate(dig_actions)])
             # add the total number of samples per state bin
             dig_actions_samples = np.concatenate(
-                [np.expand_dims(dig_actions_samples,-1), 
-                np.expand_dims(Q_num_samples_sum.sum(-1),-1)],
+                [np.expand_dims(dig_actions_samples, -1),
+                 np.expand_dims(Q_num_samples_sum.sum(-1), -1)],
                 axis=-1
             )
-            
+
             self._dig_state_actions.append(dig_actions)
             self._dig_state_actions_std.append(dig_actions_std)
             self._dig_state_actions_samples.append(dig_actions_samples)
@@ -109,7 +106,6 @@ class PDP:
         for dim in self._dig_state_actions:
             denorm_action = [self._action_labels[i] for i in dim]
             self._denorm_actions.append(denorm_action)
-
 
     def _get_denorm_states(self):
         """Get states denormalized values.
@@ -163,7 +159,7 @@ class PDP:
                 samples = np.array([samples[idx] for idx, s in enumerate(total_samples) if s > 0])
 
             axis[0].grid(zorder=0)
-            #if type_features[state] == "continuous":
+            # if type_features[state] == "continuous":
             if True:
                 axis[0].plot(states, actions, marker="o", color='b', zorder=3)
             else:
@@ -171,7 +167,7 @@ class PDP:
             axis[0].set(xlabel=f"State dimension {state}", ylabel="Actions")
 
             # Super-impose number of samples plot
-            axis[1].bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b',label='total')
+            axis[1].bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b', label='total')
             axis[1].bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
             axis[1].set(ylabel='Num. of samples')
             axis[1].legend()
