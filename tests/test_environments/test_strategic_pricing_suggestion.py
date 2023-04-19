@@ -6,7 +6,7 @@ from src.data_handler.data_handler import DataHandler
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 
 
-class TestStrategicPricingMDP(unittest.TestCase):
+class TestStrategicPricingSuggestionMDP(unittest.TestCase):
 
     dh = None
 

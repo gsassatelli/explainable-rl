@@ -9,7 +9,7 @@ from src.data_handler.data_handler import DataHandler
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
-class TestStrategicPricingMDP(unittest.TestCase):
+class TestStrategicPricingPredictionMDP(unittest.TestCase):
 
     dh = None
 

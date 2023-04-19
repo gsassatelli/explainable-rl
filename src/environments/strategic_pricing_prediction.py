@@ -138,7 +138,7 @@ class StrategicPricingPredictionMDP(MDP):
             b_state (list): Binned state to de-bin
         """
         if idxs == None:
-            idxs = range(len(state))
+            idxs = range(len(b_state))
 
         state = []
         for i, value in zip(idxs, b_state):
