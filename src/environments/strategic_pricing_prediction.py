@@ -6,7 +6,7 @@ import ipdb
 # Import Environment
 from src.foundation.environment import MDP
 
-class StrategicPricingPredictionMDP(MDP):
+class StrategicPricingMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
     """
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
@@ -26,11 +26,8 @@ class StrategicPricingPredictionMDP(MDP):
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
-        self.bins_dict = None
-
         self.state_dim = self.dh.get_states().shape[1]
         self.action_dim = self.dh.get_actions().shape[1]
-
         if len(bins) != self.state_dim + self.action_dim:
             self.bins = [10] * (self.state_dim + self.action_dim)
         else:
@@ -54,6 +51,7 @@ class StrategicPricingPredictionMDP(MDP):
         Returns:
             list: Group of states and actions per datapoint.
         """
+
         zipped = []
         for i in range(len(self._reward_mdp_data)):
             state_array = self._state_mdp_data[i].tolist()
@@ -61,7 +59,7 @@ class StrategicPricingPredictionMDP(MDP):
             zipped.append(state_array+action_array)
 
         return zipped
-    
+
     def _bin_state_action_space(self, zipped):
         """Bin the state-action pairs.
         Args:
@@ -107,10 +105,8 @@ class StrategicPricingPredictionMDP(MDP):
         
     def _bin_state(self, state, idxs=None):
         """Bin a singular state.
-
         The states are binned according to the number of bins
         of each feature. 
-
         Args:
             state (list): State to bin.
             idxs (list): indexes of the state dimensions
@@ -136,9 +132,26 @@ class StrategicPricingPredictionMDP(MDP):
     
     def _debin_state(self, b_state, idxs=None):
         """ Debin a singular states.
-
         Returns middle point of the bin.
         
+        Args:
+            b_state (list): Binned state to de-bin
+        """
+        if idxs == None:
+            idxs = range(len(state))
+
+        state = []
+        for i, value in zip(idxs, b_state):
+            # append middle point of the state bin
+            try:
+                state.append((value + 0.5) / self.bins[i])
+            except:
+                ipdb.set_trace()
+        return state
+
+    def _debin_state(self, b_state, idxs=None):
+        """ Debin a singular states.
+        Returns middle point of the bin.
         Args:
             b_state (list): Binned state to de-bin
         """
@@ -164,30 +177,25 @@ class StrategicPricingPredictionMDP(MDP):
 
         bins_dict = {}
         self.state_to_action = {}
-        binned = [list(item) for item in binned]
         for ix, bin in enumerate(binned):
-            # Go through each bin
-            state_str = ",".join(str(e) for e in bin[:-1])
+            state_str = ",".join(str(e) for e in bin.tolist()[:-1])
             action = bin[-1]
-            # Update state to action for populated state-action pairs
+            # Update state to action
             self.state_to_action.setdefault(state_str, set()).add(action)
-            # update number of data points in the bin
-            state_action_str = state_str+','+str(action)
 
+            # update number of data points in the bin
+            state_action_str = state_str + ',' + str(action)
             bins_dict[state_action_str][0] =\
                 bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
             # update total reward in the bin
             reward = self._reward_mdp_data[ix]
             bins_dict[state_action_str][1] += reward[0]
-                
         return bins_dict
 
     def _create_average_reward_matrix(self, bins_dict):
         """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
-
         Args:
             bins_dict (dict): dictionary of counts of datapoints per bin and sums the associated rewards.
-
         Returns:
             sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
         """
@@ -220,7 +228,6 @@ class StrategicPricingPredictionMDP(MDP):
         binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
-        self.bins_dict = bins_dict
         average_reward_matrix = self._create_average_reward_matrix(bins_dict)
 
         return average_reward_matrix
@@ -241,16 +248,10 @@ class StrategicPricingPredictionMDP(MDP):
         Args:
             state (list): Current state values of agent.
             action (int): Action for agent to take.
-
         Returns:
             tuple: current state, action, next state, done flag.
         """
-        
         index = tuple(list(state) + [action])
-
-
         reward = self._average_rewards[index]
 
         return state, state, reward, True
-
- 
