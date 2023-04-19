@@ -3,7 +3,10 @@ from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
 from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+
+
 
 # Import packages
 import numpy as np
@@ -116,7 +119,7 @@ class Engine:
         """
         # Initialize environment
         if self.env_type == "strategic_pricing":
-            self.env = StrategicPricingMDP(self.dh, self.bins)
+            self.env = StrategicPricingSuggestionMDP(self.dh, self.bins)
 
         else:
             raise NotImplementedError

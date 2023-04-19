@@ -1,6 +1,7 @@
 import unittest
 from src.agents.td import TD
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.data_handler.data_handler import DataHandler
 
 
@@ -13,7 +14,7 @@ class TestTD(unittest.TestCase):
         actions = [price_bin/10 for price_bin in range(1, 11)]
         rewards = ['revenue']
         n_samples = 50
-        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
+        cls.dh = DataHandler('../test_env_data.csv', states, actions, rewards,
                               n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                        cols_to_normalise=states)

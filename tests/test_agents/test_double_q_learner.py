@@ -1,6 +1,7 @@
 from tests.test_agents.test_td import TestTD
 import copy
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.double_q_learner import DoubleQLearner
 
 class TestDoubleQLearner(TestTD):

@@ -3,7 +3,8 @@ import unittest
 import pandas as pd
 
 from src.data_handler.data_handler import DataHandler
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 import numpy as np
 import sparse
 

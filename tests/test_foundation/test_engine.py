@@ -5,7 +5,8 @@ from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
 from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
-from src.environments.strategic_pricing import StrategicPricingMDP
+from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
 class TestEngine(unittest.TestCase):
