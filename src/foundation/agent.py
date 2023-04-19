@@ -24,3 +24,48 @@ class Agent:
             verbose (bool): print training information.
         """
         raise NotImplementedError
+
+    def _epsilon_greedy_policy(self, state, epsilon):
+        raise NotImplementedError
+
+    def predict_actions(self,
+                        states,
+                        epsilon=0):
+        """ Predict action for a list of states using epislon-greedy policy.
+
+        Args:
+            states (list): States (binned).
+            epislon (float): Epislon of epislon-greedy policy.
+                Defaults to 0 for pure exploitation.
+
+        Returns:
+            actions (list): List of recommended actions
+        """
+        actions = []
+        for state in states:
+            action = self._epsilon_greedy_policy(state, epsilon)
+            actions.append([action])
+
+        return actions
+
+    def predict_rewards(self,
+                        states,
+                        actions):
+        """ Predict reward for a list of state-actions.
+
+        This function uses the avg reward matrix (which simulates a real-life scenario)
+
+        Args:
+            states (list): States (binned).
+            actions (list): Actions (binned).
+
+        Returns:
+            rewards (list): List of recommended actions
+        """
+
+        rewards = []
+        for state, action in zip(states, actions):
+            _, _, reward, _ = self.env.step(state, action)
+            rewards.append([reward[0]])
+
+        return rewards
