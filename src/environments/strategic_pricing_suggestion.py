@@ -311,30 +311,4 @@ class StrategicPricingSuggestionMDP(MDP):
             done = True
         
         return next_state, done
-
-    def _create_state_to_action_dict(self, binned):
-        """Create a dictionary mapping states to possible actions from state.
-
-        Args:
-            binned (np.array): Binned state-action pairs.
-
-        Returns:
-            dict: dictionary mapping states to possible actions from state.
-        """
-
-        state_to_action = {}
-        for ix, bin in enumerate(binned):
-            original_state = ",".join(str(e) for e in bin.tolist())
-            if original_state in state_to_action:
-                continue
-            base_state = bin[:-1]
-            possible_actions = range(self.action_dim)
-            for a in possible_actions:
-                new_state = np.append(base_state, a)
-                if any(np.array_equal(new_state, i) for i in binned):
-                    try:
-                        state_to_action[original_state].add(a)
-                    except KeyError:
-                        state_to_action[original_state] = {a}
-
-        return state_to_action
+    
