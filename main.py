@@ -209,5 +209,5 @@ if __name__ == "__main__":
     }
 
     for i in range(1):
-        run_all(hyperparam_dict_ds_data_suggest)
+        run_all(hyperparam_dict_ds_data_predict)
         # ran this 10 times to check everything was fine.

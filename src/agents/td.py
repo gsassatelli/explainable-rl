@@ -123,10 +123,14 @@ class TD(Agent):
         """
         if state is None:
             state = self.state
-
-        state_str = self._convert_to_string(state)
-        index_no_action = tuple(list(state))
-        possible_actions = self.env.state_to_action[state_str]
+        try:
+            state_str = self._convert_to_string(state)
+            index_no_action = tuple(list(state))
+            possible_actions = self.env.state_to_action[state_str]
+        except KeyError:
+            state_str = self._convert_to_string(state[:-1])
+            index_no_action = tuple(list(state))
+            possible_actions = self.env.state_to_action[state_str]
 
         if use_uncertainty:
 

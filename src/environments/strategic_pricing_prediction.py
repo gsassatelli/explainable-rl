@@ -5,6 +5,7 @@ import ipdb
 
 # Import Environment
 from src.foundation.environment import MDP
+import pandas as pd
 
 class StrategicPricingPredictionMDP(MDP):
     """Defines and instantiates the MDP object for Strategic Pricing.
@@ -176,13 +177,9 @@ class StrategicPricingPredictionMDP(MDP):
         """
 
         bins_dict = {}
-        self.state_to_action = {}
         for ix, bin in enumerate(binned):
             state_str = ",".join(str(e) for e in bin.tolist()[:-1])
             action = bin[-1]
-            # Update state to action
-            self.state_to_action.setdefault(state_str, set()).add(action)
-
             # update number of data points in the bin
             state_action_str = state_str + ',' + str(action)
             bins_dict[state_action_str][0] =\
@@ -228,6 +225,7 @@ class StrategicPricingPredictionMDP(MDP):
         binned = self._bin_state_action_space(zipped)
 
         bins_dict = self._get_counts_and_rewards_per_bin(binned)
+        self.state_to_action = self._get_state_to_action(binned)
         average_reward_matrix = self._create_average_reward_matrix(bins_dict)
 
         return average_reward_matrix
@@ -255,3 +253,19 @@ class StrategicPricingPredictionMDP(MDP):
         reward = self._average_rewards[index]
 
         return state, state, reward, True
+
+    def _get_state_to_action(self, binned):
+        state_to_action = {}
+        final_dim = binned.shape[1] - 1
+        binned_df = pd.DataFrame(binned)
+        binned_df[final_dim] = binned_df[final_dim].apply(lambda x: [x])
+        group_by_inds = [i for i in range(final_dim)]
+        binned_df = binned_df.groupby(group_by_inds).sum(numeric_only=False).\
+            reset_index()
+        binned_df[final_dim] = binned_df[final_dim].apply(lambda x: set(x))
+        binned = np.array(binned_df)
+        for ix, bin in enumerate(binned):
+            state = ",".join(str(e) for e in bin[:-1])
+            state_to_action[state] = bin[-1]
+
+        return state_to_action

@@ -1,4 +1,5 @@
 # Import packages
+import pandas as pd
 import sparse
 import numpy as np
 import ipdb
@@ -208,15 +209,7 @@ class StrategicPricingSuggestionMDP(MDP):
             reward = self._reward_mdp_data[ix]
             bins_dict[state_str][1] += reward[0]
 
-            if state_str not in self.state_to_action:
-                base_state = bin[:-1]
-                for action in range(self.action_dim):
-                    lookup_state = np.append(base_state, action)
-                    if any(np.array_equal(lookup_state, i) for i in binned):
-                        try:
-                            self.state_to_action[state_str].add(action)
-                        except KeyError:
-                            self.state_to_action[state_str] = {action}
+
         return bins_dict
 
 
@@ -259,7 +252,7 @@ class StrategicPricingSuggestionMDP(MDP):
         binned = self._bin_state_action_space(state_data)
 
         self.bins_dict = self._get_counts_and_rewards_per_bin(binned)
-        print('here')
+        self.state_to_action = self._get_state_to_action(binned)
         average_reward_matrix = self._create_average_reward_matrix(self.bins_dict)
 
         return average_reward_matrix
@@ -311,4 +304,19 @@ class StrategicPricingSuggestionMDP(MDP):
             done = True
         
         return next_state, done
-    
+
+    def _get_state_to_action(self, binned):
+        state_to_action = {}
+        final_dim = binned.shape[1] - 1
+        binned_df = pd.DataFrame(binned)
+        binned_df[final_dim] = binned_df[final_dim].apply(lambda x: [x])
+        group_by_inds = [i for i in range(final_dim)]
+        binned_df = binned_df.groupby(group_by_inds).sum(numeric_only=False).\
+            reset_index()
+        binned_df[final_dim] = binned_df[final_dim].apply(lambda x: set(x))
+        binned = np.array(binned_df)
+        for ix, bin in enumerate(binned):
+            state = ",".join(str(e) for e in bin[:-1])
+            state_to_action[state] = bin[-1]
+
+        return state_to_action
