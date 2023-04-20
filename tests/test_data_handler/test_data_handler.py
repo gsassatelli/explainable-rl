@@ -66,10 +66,10 @@ class TestDataHandler(unittest.TestCase):
         scalar = MinMaxScaler()
         target = self.target
         target[col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
-        target = target.round(decimals=2).astype('float64')
+        target = target.round(decimals=2).astype('float64')[col_name]
         self.dh._fit_standard_scalars()
         self.dh._transform_col(col_name='price')
-        result = self.dh.dataset.sort_index().round(decimals=2).astype('float64')
+        result = self.dh.dataset.sort_index().round(decimals=2).astype('float64')[col_name]
         assert target.equals(result)
 
     def test_inverse_transform_col(self):
@@ -80,6 +80,7 @@ class TestDataHandler(unittest.TestCase):
         result = self.dh.dataset['price'].sort_index().round(
             decimals=2).astype('float64')
         assert target.equals(result)
+
 
     def test_fit_standard_scalars(self):
         self.dh._fit_standard_scalars()
