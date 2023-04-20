@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.agents package &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="src.data_handler package" href="src.data_handler.html" />
+    <link rel="prev" title="src package" href="src.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">explainable-RL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">src.agents package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.data_handler.html">src.data_handler package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.environments.html">src.environments package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.explainability.html">src.explainability package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.foundation.html">src.foundation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.performance.html">src.performance package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">explainable-RL</a></li>
+          <li class="breadcrumb-item"><a href="src.html">src package</a></li>
+      <li class="breadcrumb-item active">src.agents package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/src.agents.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="src-agents-package">
+<h1>src.agents package<a class="headerlink" href="#src-agents-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-src.agents.double_q_learner">
+<span id="src-agents-double-q-learner-module"></span><h2>src.agents.double_q_learner module<a class="headerlink" href="#module-src.agents.double_q_learner" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.double_q_learner.</span></span><span class="sig-name descname"><span class="pre">DoubleQLearner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q_num_samples">
+<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q_num_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner._step">
+<span class="sig-name descname"><span class="pre">_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner._step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner._step" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a step in the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean indicating whether the episode is finished.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>done</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner._update_q_values">
+<span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner._update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.create_tables">
+<span class="sig-name descname"><span class="pre">create_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner.create_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.create_tables" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the agent.</p>
+<p>This resets the environment, creates the q-table and the state to
+action mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em>) – print information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.state_to_action">
+<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.state_to_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.verbose" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.agents.q_learner">
+<span id="src-agents-q-learner-module"></span><h2>src.agents.q_learner module<a class="headerlink" href="#module-src.agents.q_learner" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.q_learner.</span></span><span class="sig-name descname"><span class="pre">QLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/q_learner.html#QLearningAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.q_learner.QLearningAgent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
+<p>Agent class to store and update q-table.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.Q" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.Q_num_samples">
+<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.Q_num_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent._update_q_values">
+<span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/q_learner.html#QLearningAgent._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.q_learner.QLearningAgent._update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table using the Bellman equation and q_learning update.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.state_to_action">
+<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.state_to_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.verbose" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.agents.sarsa">
+<span id="src-agents-sarsa-module"></span><h2>src.agents.sarsa module<a class="headerlink" href="#module-src.agents.sarsa" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.sarsa.</span></span><span class="sig-name descname"><span class="pre">SarsaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa.html#SarsaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa.SarsaAgent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.Q" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.Q_num_samples">
+<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.Q_num_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent._update_q_values">
+<span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa.html#SarsaAgent._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa.SarsaAgent._update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table using the Bellman equation and SARSA update.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.state_to_action">
+<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.state_to_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.verbose" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.agents.sarsa_lambda">
+<span id="src-agents-sarsa-lambda-module"></span><h2>src.agents.sarsa_lambda module<a class="headerlink" href="#module-src.agents.sarsa_lambda" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.sarsa_lambda.</span></span><span class="sig-name descname"><span class="pre">SarsaLambdaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.Q" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.Q_num_samples">
+<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.Q_num_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent._update_q_values">
+<span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent._update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.state_to_action">
+<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.state_to_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.verbose" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.agents.td">
+<span id="src-agents-td-module"></span><h2>src.agents.td module<a class="headerlink" href="#module-src.agents.td" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="src.agents.td.TD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.td.</span></span><span class="sig-name descname"><span class="pre">TD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="src.foundation.html#src.foundation.agent.Agent" title="src.foundation.agent.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a></p>
+<p>Agent class to store and update q-table.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.td.TD.Q">
+<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.td.TD.Q" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.td.TD.Q_num_samples">
+<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.td.TD.Q_num_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD._convert_to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._convert_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._convert_to_string" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD._epsilon_greedy_policy">
+<span class="sig-name descname"><span class="pre">_epsilon_greedy_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._epsilon_greedy_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Get the epsilon greedy action.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>state_str</strong> (<em>string</em>) – the state as a string.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>selected action.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>action (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD._init_q_table">
+<span class="sig-name descname"><span class="pre">_init_q_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._init_q_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._init_q_table" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the q-table with zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD._step">
+<span class="sig-name descname"><span class="pre">_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._step" title="Permalink to this definition"></a></dt>
+<dd><p>Perform a step in the environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>boolean indicating whether the episode is finished.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>done</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD._update_q_values">
+<span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Update the Q table.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD.create_tables">
+<span class="sig-name descname"><span class="pre">create_tables</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.create_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.create_tables" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the agent.</p>
+<p>This resets the environment, creates the q-table and the state to
+action mapping.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em>) – print information.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fit agent to the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>n_episodes</strong> (<em>int</em>) – number of episodes.</p></li>
+<li><p><strong>n_steps</strong> (<em>int</em>) – number of steps per episode.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>lr_decay</strong> (<em>float</em>) – learning rate decay.</p></li>
+<li><p><strong>lr_min</strong> (<em>float</em>) – minimum learning rate.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
+<li><p><strong>epsilon_decay</strong> (<em>float</em>) – epsilon decay.</p></li>
+<li><p><strong>epsilon_min</strong> (<em>float</em>) – minimum epsilon.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – print training information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.td.TD.state">
+<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.td.TD.state" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.td.TD.state_to_action">
+<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.td.TD.state_to_action" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD.uncertainty_informed_policy">
+<span class="sig-name descname"><span class="pre">uncertainty_informed_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_importance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.uncertainty_informed_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.uncertainty_informed_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Get epsilon greedy policy that favours more densely populated state-action pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – whether to use uncertainty informed policy.</p></li>
+<li><p><strong>q_importance</strong> (<em>float</em>) – the importance of the q value in the policy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>selected action.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>action (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.agents.td.TD.verbose">
+<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.td.TD.verbose" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-src.agents">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-src.agents" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="src.html" class="btn btn-neutral float-left" title="src package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="src.data_handler.html" class="btn btn-neutral float-right" title="src.data_handler package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>tests.test_data_handler package &mdash; Explainable RL  documentation</title>
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="tests.test_foundation package" href="tests.test_foundation.html" />
-    <link rel="prev" title="tests package" href="tests.html" /> 
+    <link rel="next" title="tests.test_environments package" href="tests.test_environments.html" />
+    <link rel="prev" title="tests.test_agents package" href="tests.test_agents.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,7 +45,10 @@
 <li class="toctree-l2"><a class="reference internal" href="src.html">src package</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="tests.html">tests package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="tests.test_agents.html">tests.test_agents package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">tests.test_data_handler package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_environments.html">tests.test_environments package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_explainability.html">tests.test_explainability package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="tests.test_foundation.html">tests.test_foundation package</a></li>
 </ul>
 </li>
@@ -87,8 +90,106 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
 </section>
-<section id="tests-test-data-handler-test-data-handler-module">
-<h2>tests.test_data_handler.test_data_handler module<a class="headerlink" href="#tests-test-data-handler-test-data-handler-module" title="Permalink to this heading"></a></h2>
+<section id="module-tests.test_data_handler.test_data_handler">
+<span id="tests-test-data-handler-test-data-handler-module"></span><h2>tests.test_data_handler.test_data_handler module<a class="headerlink" href="#module-tests.test_data_handler.test_data_handler" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.test_data_handler.test_data_handler.</span></span><span class="sig-name descname"><span class="pre">TestDataHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.dh">
+<span class="sig-name descname"><span class="pre">dh</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.dh" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.tearDown" title="Permalink to this definition"></a></dt>
+<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_filter_data">
+<span class="sig-name descname"><span class="pre">test_filter_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_filter_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_filter_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_fit_standard_scalars">
+<span class="sig-name descname"><span class="pre">test_fit_standard_scalars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_fit_standard_scalars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_fit_standard_scalars" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_inverse_transform_col">
+<span class="sig-name descname"><span class="pre">test_inverse_transform_col</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_inverse_transform_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_inverse_transform_col" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_action_labels">
+<span class="sig-name descname"><span class="pre">test_len_get_action_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_len_get_action_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_action_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_actions">
+<span class="sig-name descname"><span class="pre">test_len_get_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_len_get_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_rewards">
+<span class="sig-name descname"><span class="pre">test_len_get_rewards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_len_get_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_rewards" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_states">
+<span class="sig-name descname"><span class="pre">test_len_get_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_len_get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_len_get_states" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_load_data">
+<span class="sig-name descname"><span class="pre">test_load_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_load_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_prepare_data_for_engine">
+<span class="sig-name descname"><span class="pre">test_prepare_data_for_engine</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_prepare_data_for_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_prepare_data_for_engine" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_reverse_norm">
+<span class="sig-name descname"><span class="pre">test_reverse_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_reverse_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_reverse_norm" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_transform_col">
+<span class="sig-name descname"><span class="pre">test_transform_col</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_transform_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_transform_col" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_action_labels">
+<span class="sig-name descname"><span class="pre">test_type_get_action_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_type_get_action_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_action_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_actions">
+<span class="sig-name descname"><span class="pre">test_type_get_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_type_get_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_actions" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_rewards">
+<span class="sig-name descname"><span class="pre">test_type_get_rewards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_type_get_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_rewards" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_states">
+<span class="sig-name descname"><span class="pre">test_type_get_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_data_handler/test_data_handler.html#TestDataHandler.test_type_get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_data_handler.test_data_handler.TestDataHandler.test_type_get_states" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
 </section>
 <section id="module-tests.test_data_handler">
 <span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests.test_data_handler" title="Permalink to this heading"></a></h2>
@@ -99,8 +200,8 @@
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="tests.html" class="btn btn-neutral float-left" title="tests package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="tests.test_foundation.html" class="btn btn-neutral float-right" title="tests.test_foundation package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="tests.test_agents.html" class="btn btn-neutral float-left" title="tests.test_agents package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.test_environments.html" class="btn btn-neutral float-right" title="tests.test_environments package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

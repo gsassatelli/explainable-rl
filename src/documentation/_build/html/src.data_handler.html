@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>src.data_handler package &mdash; Explainable RL  documentation</title>
@@ -19,8 +19,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="src.explainability package" href="src.explainability.html" />
-    <link rel="prev" title="src package" href="src.html" /> 
+    <link rel="next" title="src.environments package" href="src.environments.html" />
+    <link rel="prev" title="src.agents package" href="src.agents.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -44,14 +44,14 @@
 <li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
 <li class="toctree-l2 current"><a class="reference internal" href="src.html">src package</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="src.agents.html">src.agents package</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">src.data_handler package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="src.environments.html">src.environments package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.explainability.html">src.explainability package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.foundation.html">src.foundation package</a></li>
 <li class="toctree-l4"><a class="reference internal" href="src.performance.html">src.performance package</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.html#submodules">Submodules</a></li>
-<li class="toctree-l3"><a class="reference internal" href="src.html#src-main-module">src.main module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
 </ul>
 </li>
@@ -99,6 +99,56 @@
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Data handler class to store and preprocess data needed for training.</p>
 <dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._action_labels">
+<span class="sig-name descname"><span class="pre">_action_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._action_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._filter_data">
+<span class="sig-name descname"><span class="pre">_filter_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._filter_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._filter_data" title="Permalink to this definition"></a></dt>
+<dd><p>Filter the dataset.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._fit_standard_scalars">
+<span class="sig-name descname"><span class="pre">_fit_standard_scalars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._fit_standard_scalars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._fit_standard_scalars" title="Permalink to this definition"></a></dt>
+<dd><p>Train the sklearn MinMaxScaler and store one per column.</p>
+<p>TODO: fit only using train data and not test data</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._inverse_transform_col">
+<span class="sig-name descname"><span class="pre">_inverse_transform_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._inverse_transform_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._inverse_transform_col" title="Permalink to this definition"></a></dt>
+<dd><p>Reverse the normalisation of one column of the dataset.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._n_samples">
+<span class="sig-name descname"><span class="pre">_n_samples</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._n_samples" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._normalised_cols">
+<span class="sig-name descname"><span class="pre">_normalised_cols</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._normalised_cols" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._reward_labels">
+<span class="sig-name descname"><span class="pre">_reward_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._reward_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._state_labels">
+<span class="sig-name descname"><span class="pre">_state_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._state_labels" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._transform_col">
+<span class="sig-name descname"><span class="pre">_transform_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._transform_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._transform_col" title="Permalink to this definition"></a></dt>
+<dd><p>Normalise one column of the dataset.</p>
+</dd></dl>
+
+<dl class="py attribute">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.data_path">
 <span class="sig-name descname"><span class="pre">data_path</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.data_path" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
@@ -109,48 +159,74 @@
 <dd></dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.get_action_labels">
+<span class="sig-name descname"><span class="pre">get_action_labels</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_action_labels"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_action_labels" title="Permalink to this definition"></a></dt>
+<dd><p>Get the action labels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of action labels.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.get_actions">
-<span class="sig-name descname"><span class="pre">get_actions</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_actions" title="Permalink to this definition"></a></dt>
-<dd><p>Get the actions taken in the dataset.
-Returns:</p>
-<blockquote>
-<div><p>pd.DataFrame of the actions.</p>
-</div></blockquote>
+<span class="sig-name descname"><span class="pre">get_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_actions" title="Permalink to this definition"></a></dt>
+<dd><p>Get the actions taken in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame of the actions.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.get_rewards">
-<span class="sig-name descname"><span class="pre">get_rewards</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_rewards" title="Permalink to this definition"></a></dt>
-<dd><p>Get the rewards taken in the dataset.
-Returns:</p>
-<blockquote>
-<div><p>pd.DataFrame of the rewards.</p>
-</div></blockquote>
+<span class="sig-name descname"><span class="pre">get_rewards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_rewards" title="Permalink to this definition"></a></dt>
+<dd><p>Get the rewards taken in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame of the rewards.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.get_states">
-<span class="sig-name descname"><span class="pre">get_states</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_states" title="Permalink to this definition"></a></dt>
-<dd><p>Get the states taken in the dataset.
-Returns:</p>
-<blockquote>
-<div><p>pd.DataFrame of the states.</p>
-</div></blockquote>
+<span class="sig-name descname"><span class="pre">get_states</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'train'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.get_states"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.get_states" title="Permalink to this definition"></a></dt>
+<dd><p>Get the states taken in the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>pd.DataFrame of the states.</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.load_data">
 <span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.load_data" title="Permalink to this definition"></a></dt>
 <dd><p>Load data from file.
-Args:</p>
-<blockquote>
-<div><p>delimiter (str): column</p>
-</div></blockquote>
+:param delimiter: column
+:type delimiter: str</p>
 </dd></dl>
 
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.mdp_data">
 <span class="sig-name descname"><span class="pre">mdp_data</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.mdp_data" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.mdp_data_test">
+<span class="sig-name descname"><span class="pre">mdp_data_test</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.mdp_data_test" title="Permalink to this definition"></a></dt>
 <dd></dd></dl>
 
 <dl class="py attribute">
@@ -162,26 +238,23 @@ Args:</p>
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.normalise_dataset">
 <span class="sig-name descname"><span class="pre">normalise_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cols_to_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.normalise_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.normalise_dataset" title="Permalink to this definition"></a></dt>
 <dd><p>Normalise the dataset to centre with mean zero and variance one.
-Args:</p>
-<blockquote>
-<div><p>cols_to_norm (list): the column names that need normalising</p>
-</div></blockquote>
+:param cols_to_norm: the column names that need normalising
+:type cols_to_norm: list</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.prepare_data_for_engine">
 <span class="sig-name descname"><span class="pre">prepare_data_for_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols_to_normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.prepare_data_for_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.prepare_data_for_engine" title="Permalink to this definition"></a></dt>
 <dd><p>Prepare data for engine.
-Args:</p>
-<blockquote>
-<div><p>col_delimiter (str): column delimiter.
-cols_to_normalise (list): list of columns to normalise.</p>
-</div></blockquote>
+:param col_delimiter: column delimiter.
+:type col_delimiter: str
+:param cols_to_normalise: list of columns to normalise.
+:type cols_to_normalise: list</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.preprocess_data">
-<span class="sig-name descname"><span class="pre">preprocess_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalisation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_to_normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.preprocess_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.preprocess_data" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">preprocess_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">normalisation</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">columns_to_normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_test_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.preprocess_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.preprocess_data" title="Permalink to this definition"></a></dt>
 <dd><p>Preprocess data into state, action and reward spaces.
 Preprocessing applies shuffling, normalisation (if selected) and
 splits the dataset into states, actions and rewards.
@@ -209,8 +282,8 @@ TODO: Extension - aggregate over a time period</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="src.html" class="btn btn-neutral float-left" title="src package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="src.explainability.html" class="btn btn-neutral float-right" title="src.explainability package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="src.agents.html" class="btn btn-neutral float-left" title="src.agents package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="src.environments.html" class="btn btn-neutral float-right" title="src.environments package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

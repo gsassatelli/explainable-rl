@@ -28,14 +28,6 @@ src.foundation.environment module
    :undoc-members:
    :show-inheritance:
 
-src.foundation.super\_classes module
-------------------------------------
-
-.. automodule:: src.foundation.super_classes
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 src.foundation.utils module
 ---------------------------
 

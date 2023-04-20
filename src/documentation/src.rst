@@ -7,21 +7,12 @@ Subpackages
 .. toctree::
    :maxdepth: 4
 
+   src.agents
    src.data_handler
+   src.environments
    src.explainability
    src.foundation
    src.performance
-
-Submodules
-----------
-
-src.main module
----------------
-
-.. automodule:: src.main
-   :members:
-   :undoc-members:
-   :show-inheritance:
 
 Module contents
 ---------------

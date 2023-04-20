@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>src.environments.strategic_pricing_suggestion &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">src.environments.strategic_pricing_suggestion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for src.environments.strategic_pricing_suggestion</h1><div class="highlight"><pre>
+<span></span><span class="c1"># Import packages</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">sparse</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">ipdb</span>
+
+<span class="c1"># Import Environment</span>
+<span class="kn">from</span> <span class="nn">src.foundation.environment</span> <span class="kn">import</span> <span class="n">MDP</span>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP">[docs]</a><span class="k">class</span> <span class="nc">StrategicPricingSuggestionMDP</span><span class="p">(</span><span class="n">MDP</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Defines and instantiates the MDP object for Strategic Pricing.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dh&quot;</span><span class="p">,</span> <span class="s2">&quot;_average_rewards&quot;</span><span class="p">,</span> <span class="s2">&quot;num_bins&quot;</span><span class="p">,</span> <span class="s2">&quot;state_to_action&quot;</span><span class="p">,</span> <span class="s2">&quot;bins_dict&quot;</span><span class="p">,</span> <span class="s2">&quot;ix&quot;</span><span class="p">,</span> <span class="s2">&quot;_state_mdp_data&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;_action_mdp_data&quot;</span><span class="p">,</span> <span class="s2">&quot;_reward_mdp_data&quot;</span><span class="p">,</span> <span class="s2">&quot;bins&quot;</span><span class="p">,</span> <span class="s1">&#39;state_dim&#39;</span><span class="p">,</span> <span class="s1">&#39;action_dim&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the Strategic Pricing MDP class.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            dh (DataHandler): Data handler object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dh</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">bins</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_action_mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reward_mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins_dict</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_dim</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_dim</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_action_labels</span><span class="p">())</span>
+
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">bins</span><span class="p">)</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
+        <span class="c1"># TODO: check this logic</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_env</span><span class="p">()</span>
+        
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.initialise_env"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.initialise_env">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the environment given the MDP information.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_average_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_make_rewards_from_data</span><span class="p">()</span></div>
+    
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._transform_df_to_numpy"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._transform_df_to_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_df_to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Transform the MDP data from a dataframe to a numpy array</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_action_mdp_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_action_labels</span><span class="p">())</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_reward_mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_rewards</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._join_state_action"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._join_state_action">[docs]</a>    <span class="k">def</span> <span class="nf">_join_state_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Join the state and action pairs together.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Group of states and actions per datapoint.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">zipped</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_reward_mdp_data</span><span class="p">)):</span>
+            <span class="n">state_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">action_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_mdp_data</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+            <span class="n">zipped</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">state_array</span><span class="o">+</span><span class="n">action_array</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">zipped</span></div>
+    
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._bin_state_action_space"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._bin_state_action_space">[docs]</a>    <span class="k">def</span> <span class="nf">_bin_state_action_space</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">zipped</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bin the state-action pairs.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            zipped (list): Group of states and actions per datapoint.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            np.array: Binned state-action pairs.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bin_states</span><span class="p">(</span><span class="n">zipped</span><span class="p">))</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.bin_states"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.bin_states">[docs]</a>    <span class="k">def</span> <span class="nf">bin_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Bin a list of states.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            states (list[list]): State to bin.</span>
+<span class="sd">            idxs (list): indexes of the state dimensions. This argument can be used if the state list contains</span>
+<span class="sd">            only certain features (e.g. only actions)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            b_states (list): Binned state</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">b_states</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+            <span class="n">b_states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_bin_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">idxs</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">b_states</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.debin_states"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.debin_states">[docs]</a>    <span class="k">def</span> <span class="nf">debin_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b_states</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Debin a list of binned states.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            b_states (list[list]): Binned states to debin.</span>
+<span class="sd">            idxs (list): indexes of the state dimensions. This argument can be used if the state list contains</span>
+<span class="sd">            only certain features (e.g. only actions)</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            states (list): Binned state</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">b_state</span> <span class="ow">in</span> <span class="n">b_states</span><span class="p">:</span>
+            <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_debin_state</span><span class="p">(</span><span class="n">b_state</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">idxs</span><span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">states</span></div>
+        
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._bin_state"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._bin_state">[docs]</a>    <span class="k">def</span> <span class="nf">_bin_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bin a singular state.</span>
+
+<span class="sd">        The states are binned according to the number of bins</span>
+<span class="sd">        of each feature. </span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): State to bin.</span>
+<span class="sd">            idxs (list): indexes of the state dimensions</span>
+<span class="sd">                This argument can be used if the state list contains</span>
+<span class="sd">                only certain features (e.g. only actions)</span>
+<span class="sd">        </span>
+<span class="sd">        Returns:</span>
+<span class="sd">            binned (list): Binned state</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">idxs</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">idxs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+
+        <span class="n">binned</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+            <span class="n">binned</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">digitize</span><span class="p">(</span>
+                    <span class="n">value</span><span class="p">,</span> 
+                    <span class="p">[</span><span class="n">n</span><span class="o">/</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">if</span> <span class="n">n</span><span class="o">&lt;</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">else</span> <span class="mf">1.01</span> \
+                     <span class="k">for</span> <span class="n">n</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+                <span class="p">)</span>
+            <span class="p">)</span>
+        <span class="k">return</span> <span class="n">binned</span></div>
+    
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._debin_state"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._debin_state">[docs]</a>    <span class="k">def</span> <span class="nf">_debin_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b_state</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Debin a singular states.</span>
+
+<span class="sd">        Returns middle point of the bin.</span>
+<span class="sd">        </span>
+<span class="sd">        Args:</span>
+<span class="sd">            b_state (list): Binned state to de-bin</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">idxs</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">idxs</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">b_state</span><span class="p">))</span>
+
+        <span class="n">state</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">idxs</span><span class="p">,</span> <span class="n">b_state</span><span class="p">):</span>
+            <span class="c1"># append middle point of the state bin</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">state</span><span class="o">.</span><span class="n">append</span><span class="p">((</span><span class="n">value</span> <span class="o">+</span> <span class="mf">0.5</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="n">ipdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">state</span></div>
+
+    <span class="c1"># def _get_counts_and_rewards_per_bin(self, binned):</span>
+    <span class="c1">#     &quot;&quot;&quot;Create a dictionary of counts of datapoints per bin and sum the associated rewards.</span>
+    <span class="c1">#     Args:</span>
+    <span class="c1">#         binned (np.array): Binned state-action pairs.</span>
+    <span class="c1">#     Returns:</span>
+    <span class="c1">#         dict: dictionary of counts of datapoints per bin and sums the associated rewards.</span>
+    <span class="c1">#     &quot;&quot;&quot;</span>
+    <span class="c1">#</span>
+    <span class="c1">#     bins_dict = {}</span>
+    <span class="c1">#     self.state_to_action = {}</span>
+    <span class="c1">#     binned = [list(item) for item in binned]</span>
+    <span class="c1">#     for ix, bin in enumerate(binned):</span>
+    <span class="c1">#         for action in range(self.action_dim):</span>
+    <span class="c1">#             fixed_state = bin[:-1]</span>
+    <span class="c1">#             lookup_state = list(fixed_state + [action])</span>
+    <span class="c1">#             if lookup_state in binned:</span>
+    <span class="c1">#                 # Go through each bin</span>
+    <span class="c1">#                 state_str = &quot;,&quot;.join(str(e) for e in bin)</span>
+    <span class="c1">#                 # Update state to action for populated state-action pairs</span>
+    <span class="c1">#                 self.state_to_action.setdefault(state_str, set()).add(action)</span>
+    <span class="c1">#                 # update number of data points in the bin</span>
+    <span class="c1">#                 state_action_str = state_str+&#39;,&#39;+str(action)</span>
+    <span class="c1">#                 count = binned.count(lookup_state)</span>
+    <span class="c1">#                 bins_dict[state_action_str][0] = \</span>
+    <span class="c1">#                     bins_dict.setdefault(state_action_str, [0, 0])[0] + count</span>
+    <span class="c1">#                 reward = self._reward_mdp_data[ix]</span>
+    <span class="c1">#                 bins_dict[state_action_str][1] += reward[0] * count</span>
+    <span class="c1">#</span>
+    <span class="c1">#                 # for _ in range(binned.count(lookup_state)):</span>
+    <span class="c1">#                 #     bins_dict[state_action_str][0] =\</span>
+    <span class="c1">#                 #         bins_dict.setdefault(state_action_str, [0, 0])[0] + 1</span>
+    <span class="c1">#                 #     # update total reward in the bin</span>
+    <span class="c1">#                 #     reward = self._reward_mdp_data[ix]</span>
+    <span class="c1">#                 #     bins_dict[state_action_str][1] += reward[0]</span>
+    <span class="c1">#</span>
+    <span class="c1">#     return bins_dict</span>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._get_counts_and_rewards_per_bin"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._get_counts_and_rewards_per_bin">[docs]</a>    <span class="k">def</span> <span class="nf">_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of counts of datapoints per bin and sum the associated rewards.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            binned (np.array): Binned state-action pairs.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: dictionary of counts of datapoints per bin and sums the associated rewards.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">bins_dict</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="nb">bin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binned</span><span class="p">):</span>
+            <span class="n">state_str</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">bin</span><span class="o">.</span><span class="n">tolist</span><span class="p">())</span>
+            <span class="n">bins_dict</span><span class="p">[</span><span class="n">state_str</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span>\
+                <span class="n">bins_dict</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">state_str</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mi">1</span>
+            <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_reward_mdp_data</span><span class="p">[</span><span class="n">ix</span><span class="p">]</span>
+            <span class="n">bins_dict</span><span class="p">[</span><span class="n">state_str</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">reward</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+
+        <span class="k">return</span> <span class="n">bins_dict</span></div>
+
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._create_average_reward_matrix"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._create_average_reward_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">_create_average_reward_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">bins_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            bins_dict (dict): dictionary of counts of datapoints per bin and sum of the associated rewards.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            sparse.COO: sparse matrix of binned state-action pairs and their associated average reward.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">coords</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">bins_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+            <span class="n">d</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span>
+            <span class="n">coords</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">d</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">extend</span><span class="p">([</span><span class="n">value</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">/</span> <span class="n">value</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        
+        <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">COO</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
+        <span class="c1"># TODO: make the bins dimensions work</span>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._make_rewards_from_data"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._make_rewards_from_data">[docs]</a>    <span class="k">def</span> <span class="nf">_make_rewards_from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create average rewards matrix&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Transform data for efficiency</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_transform_df_to_numpy</span><span class="p">()</span>
+
+        <span class="n">state_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+
+        <span class="c1"># Create the bins</span>
+        <span class="n">binned</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_state_action_space</span><span class="p">(</span><span class="n">state_data</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="n">binned</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_state_to_action</span><span class="p">(</span><span class="n">binned</span><span class="p">)</span>
+        <span class="n">average_reward_matrix</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_create_average_reward_matrix</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins_dict</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">average_reward_matrix</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.reset"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset environment.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            list: Randomised initial state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">sample_ix_point</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">arange</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span><span class="p">)))</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span><span class="p">[</span><span class="n">sample_ix_point</span><span class="p">]</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
+        <span class="n">binned_state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_bin_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">binned_state</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.step"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take a step in the environment.</span>
+<span class="sd">        Done flags means the environment terminated.</span>
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): Current state values of agent.</span>
+<span class="sd">            action (int): Action for agent to take.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            tuple: current state, action, next state, done flag.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># TODO: input index to find_next_state</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">action</span><span class="p">])</span>
+
+        <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average_rewards</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+        <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_find_next_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">state</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._find_next_state"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._find_next_state">[docs]</a>    <span class="k">def</span> <span class="nf">_find_next_state</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Lookup whether the next state exists in the state-action space matrix</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): Current state values of agent.</span>
+<span class="sd">            action (int): Action for agent to take.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: next state for the agent to visit</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">index</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">action</span><span class="p">]</span>
+        <span class="n">state_action_str</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">state_action_str</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">bins_dict</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">action</span><span class="p">]</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">next_state</span> <span class="o">=</span> <span class="n">state</span>
+            <span class="n">done</span> <span class="o">=</span> <span class="kc">True</span>
+        
+        <span class="k">return</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">done</span></div>
+
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP._get_state_to_action"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._get_state_to_action">[docs]</a>    <span class="k">def</span> <span class="nf">_get_state_to_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned</span><span class="p">):</span>
+        <span class="n">state_to_action</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">final_dim</span> <span class="o">=</span> <span class="n">binned</span><span class="o">.</span><span class="n">shape</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="n">binned_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">binned</span><span class="p">)</span>
+        <span class="n">binned_df</span><span class="p">[</span><span class="n">final_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">binned_df</span><span class="p">[</span><span class="n">final_dim</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="p">[</span><span class="n">x</span><span class="p">])</span>
+        <span class="n">group_by_inds</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">final_dim</span><span class="p">)]</span>
+        <span class="n">binned_df</span> <span class="o">=</span> <span class="n">binned_df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_by_inds</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">numeric_only</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="o">.</span>\
+            <span class="n">reset_index</span><span class="p">()</span>
+        <span class="n">binned_df</span><span class="p">[</span><span class="n">final_dim</span><span class="p">]</span> <span class="o">=</span> <span class="n">binned_df</span><span class="p">[</span><span class="n">final_dim</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="nb">set</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+        <span class="n">binned</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">binned_df</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">ix</span><span class="p">,</span> <span class="nb">bin</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">binned</span><span class="p">):</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">e</span><span class="p">)</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="nb">bin</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">state_to_action</span><span class="p">[</span><span class="n">state</span><span class="p">]</span> <span class="o">=</span> <span class="nb">bin</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">state_to_action</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

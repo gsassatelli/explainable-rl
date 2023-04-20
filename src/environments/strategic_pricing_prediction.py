@@ -72,13 +72,15 @@ class StrategicPricingPredictionMDP(MDP):
 
     def bin_states(self, states, idxs=None):
         """ Bin a list of states.
+
         Args:
             states (list[list]): State to bin.
-            idxs (list): indexes of the state dimensions
-                This argument can be used if the state list contains
-                only certain features (e.g. only actions)
+            idxs (list): indexes of the state dimensions. This argument can be used if the state list contains only
+            certain features (e.g. only actions)
+
         Returns:
             b_states (list): Binned state
+
         """
         b_states = []
         for state in states:
@@ -92,8 +94,8 @@ class StrategicPricingPredictionMDP(MDP):
         Args:
             b_states (list[list]): Binned states to debin.
             idxs (list): indexes of the state dimensions
-                This argument can be used if the state list contains
-                only certain features (e.g. only actions)
+            This argument can be used if the state list contains
+            only certain features (e.g. only actions)
         Returns:
             states (list): Binned state
         """
@@ -106,8 +108,10 @@ class StrategicPricingPredictionMDP(MDP):
         
     def _bin_state(self, state, idxs=None):
         """Bin a singular state.
+
         The states are binned according to the number of bins
-        of each feature. 
+        of each feature.
+
         Args:
             state (list): State to bin.
             idxs (list): indexes of the state dimensions
@@ -116,6 +120,7 @@ class StrategicPricingPredictionMDP(MDP):
         
         Returns:
             binned (list): Binned state
+
         """
         if idxs == None:
             idxs = range(len(state))

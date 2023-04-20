@@ -5,7 +5,7 @@ Submodules
 ----------
 
 src.performance.performance\_evaluator module
----------------------------------
+---------------------------------------------
 
 .. automodule:: src.performance.performance_evaluator
    :members:
