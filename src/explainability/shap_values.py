@@ -54,6 +54,11 @@ class ShapValues:
         # Bin sample
         self.binned_sample = self.bin_sample()
 
+        # Verify if sample is an outlier
+        print("Verify if sample is an outlier")
+        if self.verify_outliers(self.binned_sample):
+            raise ValueError("The sample is an outlier.")
+
         # Verify if cell has been visited
         print("Verify if selected cell has been visited")
         if not self.verify_cell_availability(self.binned_sample):
@@ -135,6 +140,17 @@ class ShapValues:
             index_current = tuple(list(binned_sample) + [a])
             if self.Q[index_current] != 0:
                 # At least one action has been visited for this state has been visited
+                return True
+        return False
+
+    def verify_outliers(self, binned_sample):
+        """ This function verifies if the sample is an outlier.
+
+        Args:
+            binned_sample (np.array): Binned sample.
+        """
+        for ft in range(len(self.features)):
+            if binned_sample[ft] >= self.env.bins[ft] or binned_sample[ft] < 0:
                 return True
         return False
 

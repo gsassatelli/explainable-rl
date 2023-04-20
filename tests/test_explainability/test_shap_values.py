@@ -107,3 +107,15 @@ class TestShapValues(unittest.TestCase):
         assert isinstance(result, list)
         assert isinstance(result[0], float)
 
+    def test_verify_outliers(self):
+        """Test verify_outliers method.
+        """
+        binned_sample_correct = [0, 0, 0]
+        binned_sample_wrong = [0, 0, 20]
+        result_correct = self.shap_values.verify_outliers(binned_sample_correct)
+        result_wrong = self.shap_values.verify_outliers(binned_sample_wrong)
+        assert isinstance(result_correct, bool)
+        assert isinstance(result_wrong, bool)
+        assert result_correct == False
+        assert result_wrong == True
+

@@ -171,7 +171,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 50000,
+        'n_samples': 100000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
