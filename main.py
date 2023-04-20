@@ -85,10 +85,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
         print(f"{timestamp}: Show PDPs plots")
-    pdp = PDP(bins=engine.env.bins,
-              minmax_scalars=dh.minmax_scalars,
-              action_labels=action_labels,
-              state_labels=state_labels)
+    pdp = PDP(engine=engine)
     pdp.build_data_for_plots(engine.agent.Q, engine.agent.Q_num_samples)
     type_features = hyperparam_dict['feature_types']
     fig_name = "PDP plots - All states"
@@ -98,8 +95,8 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Plot SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
-    shap_values = ShapValues(sample=[8, 1, 1, 1], features=state_labels, env=engine.env,
-                             Q=engine.agent.Q, minmax_scalars=dh.minmax_scalars, action=action_labels,
+    shap_values = ShapValues(sample=[8, 1, 1, 1],
+                             engine=engine,
                              number_of_samples=shap_num_samples)
     shaps, predicted_action = shap_values.compute_shap_values()
     print(shaps)

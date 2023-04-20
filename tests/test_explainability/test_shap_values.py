@@ -31,8 +31,8 @@ class TestShapValues(unittest.TestCase):
                             num_steps=1)
         cls.engine.create_world()
         cls.engine.train_agent()
-        cls.shap_values = ShapValues(sample=[9, 1, 1], features=states, env=cls.engine.env,
-                                     Q=cls.engine.agent.Q, minmax_scalars=cls.dh.minmax_scalars, action=actions,
+        cls.shap_values = ShapValues(sample=[9, 1, 1],
+                                     engine=cls.engine,
                                      number_of_samples=10)
 
     def test_create_shap_values(self):

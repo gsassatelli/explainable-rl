@@ -12,12 +12,9 @@ class ShapValues:
 
     def __init__(self,
                  sample,
-                 features,
-                 env,
-                 Q,
-                 minmax_scalars,
-                 action,
+                 engine,
                  number_of_samples=500):
+
         """ Initialise the ShapValues class.
 
         Args:
@@ -30,19 +27,16 @@ class ShapValues:
             number_of_samples (int): Number of samples to use.
         """
         self.sample = sample
-        self.features = features
-        self.env = env
-        self.Q = Q
-        self.minmax_scalars = minmax_scalars
-        self.action = action
+        self.features = engine.dh._state_labels
+        self.env = engine.env
+        self.Q = engine.agent.Q
+        self.minmax_scalars = engine.dh.minmax_scalars
+        self.action = engine.dh._action_labels
         self.number_of_samples = number_of_samples
         self.binned_sample = None
 
-        # TODO: unit testing
-        # TODO: parametrize number of samples
-        # TODO: Check number of bins problem - should be 0-1?
-        # TODO: how to use shap value function better, no re run of the algorithm
-        # TODO: check warning in shap values
+        # TODO: Check number of bins problem - should be 0-1? >> Clip sample to min max values
+        # TODO: how to use shap value function better, no re run of the algorithm >> Save trained agent
         # TODO: improve random sampling - time consuming
 
     def compute_shap_values(self):

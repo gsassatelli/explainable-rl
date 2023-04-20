@@ -9,33 +9,16 @@ class PDP:
                  "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples"]
 
     def __init__(self,
-                 bins,
-                 minmax_scalars,
-                 action_labels,
-                 state_labels):
+                 engine):
         """Initialize PDP class.
 
         Args:
-            bins (list): list of bins per each state and action pair.
-            minmax_scalars (dict): list of scalars per each state dimension and actions.
-            action_labels (list): list of action column names.
-            state_labels (list): list of state dimensions column names.
-            dig_state_actions (list[np.ndarray]): list of length = # state dims.
-                Each element is a np.ndarray mapping the state bin to the index of the action
-                that maximizes the (marginalized) Q-value wrt the other state dimensions.
-            dig_state_std (list[np.ndarray]): list of length = # state dims.
-                Each element is a np.ndarray mapping the state bin to the standard deviation
-                of the (marginalized) Q-value corresponding to the greedy (argmax) action.
-            dig_state_actions_samples (list[np.ndarray]): list of length = # state dims.
-                Each element is a np.ndarray of shape (# bins, 2) mapping the state bin to:
-                    1) # samples used to obtain the mean Q-value for the greedy (argmax) action.
-                    2) total # samples explored for this bin
-
+            engine (Engine): Engine object.
         """
-        self._bins = bins
-        self._minmax_scalars = minmax_scalars
-        self._action_labels = action_labels
-        self._state_labels = state_labels
+        self._bins = engine.env.bins
+        self._minmax_scalars = engine.dh.minmax_scalars
+        self._action_labels = engine.dh._action_labels
+        self._state_labels = engine.dh._state_labels
         self._dig_state_actions = []
         self._dig_state_actions_std = []
         self._dig_state_actions_samples = []
