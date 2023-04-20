@@ -67,13 +67,15 @@ class TestTD(unittest.TestCase):
     def test_uncertainty_informed_policy(self):
         """Test the uncertainty_informed_policy method."""
         epsilon = 0
-        state = [0, 0, 0]
+        state = [0,0,0]
         self.agent._init_q_table()
-        self.agent.Q[0, 0, 0, 2] = 1.5
-        self.env.bins_dict = {'0, 0, 0, 2': [2, 2]}
-        self.agent.state = [0, 0, 0]
+        self.agent.Q[0,0,0,2] = 1.5
+        self.env.bins_dict = {'0,0,0,2': [2, 2]}
+        self.env.state_to_action = {'0,0,0': {2}}
+        self.agent.state = [0,0,0]
         result = self.agent.uncertainty_informed_policy(state=state, epsilon=epsilon, use_uncertainty=True)
-        assert result == 0
+        assert result == 2
+
 
     def test_create_tables(self):
         """Test the create_tables method."""
@@ -85,4 +87,3 @@ class TestTD(unittest.TestCase):
     def test_fit(self):
         """Implemented in tests for subclasses."""
         pass
-
