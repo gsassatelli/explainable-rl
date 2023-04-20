@@ -1,5 +1,6 @@
 import numpy as np
 import random
+import pandas as pd
 
 
 class ShapValues:
@@ -194,7 +195,8 @@ class ShapValues:
         normalized_sample = []
         for idx, ft in enumerate(self.features):
             scalar = self.minmax_scalars[ft]
-            norm_ft = scalar.transform(np.array(self.sample[idx]).reshape(-1, 1))
+            idx_df = pd.DataFrame(np.array(self.sample[idx]).reshape(-1, 1), columns=[ft])
+            norm_ft = scalar.transform(idx_df)
             normalized_sample.append(norm_ft[0][0])
         return normalized_sample
 
