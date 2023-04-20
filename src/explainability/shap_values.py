@@ -58,16 +58,15 @@ class ShapValues:
 
         # Bin sample
         self.binned_sample = self.bin_sample()
-        print(self.binned_sample)
-
-        # Predict action
-        print("Predict action")
-        predicted_action = self.predict_action()
 
         # Verify if cell has been visited
         print("Verify if selected cell has been visited")
         if not self.verify_cell_availability(self.binned_sample):
             raise ValueError("The cell has not been visited by the agent.")
+
+        # Predict action
+        print("Predict action")
+        predicted_action = self.predict_action()
 
         # Loop over all state dimensions
         print("Compute shap values")
@@ -100,7 +99,6 @@ class ShapValues:
                 action_samples_minus[sample] = np.argmax(np.array(Q_state_minus))
 
             # Denorm actions
-            print(action_samples_plus)
             denorm_action_samples_plus = self.get_denorm_actions(action_samples_plus)
             denorm_action_samples_minus = self.get_denorm_actions(action_samples_minus)
 

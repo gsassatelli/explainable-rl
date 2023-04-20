@@ -184,7 +184,7 @@ if __name__ == "__main__":
         'num_episodes': 5000,
         'num_steps': 1,
         'train_test_split': 0.2,
-        'shap_num_samples': 1
+        'shap_num_samples': 10
     }
 
     hyperparam_dict_kaggle_data_predict = {
