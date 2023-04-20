@@ -54,6 +54,16 @@ class TestTD(unittest.TestCase):
         result = self.agent._epsilon_greedy_policy(state=state, epsilon=epsilon)
         assert result == 2
 
+    def test_uncertainty_informed_policy(self):
+        epsilon = 0
+        state = [0, 0, 0]
+        self.agent._init_q_table()
+        self.agent.Q[0, 0, 0, 2] = 1.5
+        self.env.bins_dict = {'0, 0, 0, 2': [2, 2]}
+        self.agent.state = [0, 0, 0]
+        result = self.agent.uncertainty_informed_policy(state=state, epsilon=epsilon, use_uncertainty=True)
+        assert result == 0
+
     def test_create_tables(self):
         self.agent.env.bins = [10, 5, 4, 6]
         self.agent.create_tables()
