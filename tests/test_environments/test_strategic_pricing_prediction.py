@@ -97,10 +97,12 @@ class TestStrategicPricingPredictionMDP(unittest.TestCase):
     def test_create_average_reward_matrix(self):
         counts_rewards = {'1,2,3,1': [2, 2], '1,2,3,2': [2, 4]}
         result = self.env._create_average_reward_matrix(counts_rewards)
-        target = np.zeros((2, 3, 4, 3))
-        target[1, 2, 3, 1] = 1
-        target[1, 2, 3, 2] = 2
+        target = np.zeros((10, 10, 10, 10))
+        target[1, 2, 3, 1] = 1.0
+        target[1, 2, 3, 2] = 2.0
         target = sparse.COO(target)
+        
+        print(result)
         assert result == target
 
     def test_make_rewards_from_data(self):
