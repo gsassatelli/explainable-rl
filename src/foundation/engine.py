@@ -251,6 +251,47 @@ class Engine:
 
         return np.sum(rewards_hist)
 
+    def _evaluate_total_agent_reward(self):
+        """ Calculate the total reward obtained on the evaluation states using
+            the agent's policy.
+        
+        Returns:
+            cumreward (float): total (not scaled) cumulative reward
+        """
+        # Get actions corresponding to agent's learned policy
+        b_actions_agent = self.agent.predict_actions(self._eval_b_states)
+
+        # De-bin the recommended actions
+        actions_agent = self.env.debin_states(b_actions_agent, idxs=self._eval_action_dims)
+
+        # Get reward based on agent policy
+        rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)
+        
+        # Inverse scale agent rewards
+        rewards_agent = self._inverse_scale_feature(rewards_agent,
+                                                    self.dh._reward_labels)
+
+        return np.sum(rewards_agent)
+    
+    def _evaluate_total_hist_reward(self):
+        """ Calculate the total reward obtained on the evaluation states using
+            the agent's policy.
+        
+        Returns:
+            cumreward (float): total (not scaled) cumulative based on historical data
+        """
+        # Get the binned actions
+        b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
+
+        # Get reward based on historical policy
+        rewards_hist = self.agent.predict_rewards(self._eval_b_states, b_actions)
+
+        # Inverse scale agent rewards
+        rewards_hist = self._inverse_scale_feature(rewards_hist,
+                                                    self.dh._reward_labels)
+
+        return np.sum(rewards_hist)
+
     def evaluate_agent(self, epsilon=0):
         """Evaluate the learned policy for the test states
 
@@ -266,6 +307,13 @@ class Engine:
             actions_agent (list): list of recommended actions
             rewards_agent (list): list of rewards obtained by agent (calculated)
         """
+        # Define dictionary containing evaluation results
+        eval_results = {}
+
+        # Save training results
+        eval_results['agent_cumrewards'] = self.agent_cumrewards
+        eval_results['hist_cumrewards'] = self.hist_cumrewards
+ 
         # Get test data from data handler
         states = self.dh.get_states(split='test').to_numpy().tolist()
         actions = self.dh.get_actions(split='test').to_numpy().tolist()
@@ -296,14 +344,19 @@ class Engine:
         rewards_hist = self.agent.predict_rewards(b_states, b_actions)
 
         #  Apply inverse scaling to actions, states, and rewards
-        states = self._inverse_scale_feature(states,
+        eval_results['states'] = self._inverse_scale_feature(states,
                                             self.dh._state_labels)
-        actions_hist = self._inverse_scale_feature(actions,
+        eval_results['actions_hist'] = self._inverse_scale_feature(actions,
                                                     self.dh._action_labels)
-        actions_agent = self._inverse_scale_feature(actions_agent,
+        eval_results['actions_agent'] = self._inverse_scale_feature(actions_agent,
                                                     self.dh._action_labels)
-        rewards_hist = self._inverse_scale_feature(rewards_hist,
+        eval_results['rewards_hist'] = self._inverse_scale_feature(rewards_hist,
                                                     self.dh._reward_labels)
-        rewards_agent = self._inverse_scale_feature(rewards_agent,
+        eval_results['rewards_agent'] = self._inverse_scale_feature(rewards_agent,
                                                     self.dh._reward_labels)
-        return states, actions_hist, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent
+        
+        # Save additional arrays
+        eval_results['b_actions'] = b_actions
+        eval_results['b_actions_agent'] = b_actions_agent
+        
+        return eval_results
