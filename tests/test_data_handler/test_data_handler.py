@@ -126,7 +126,4 @@ class TestDataHandler(unittest.TestCase):
         target = self.target.round(decimals=2).astype('float64')
         self.dh.reverse_norm()
         result = self.dh.dataset.round(decimals=2).astype('float64').sort_index()
-        a = result['price']
-        b = target['price']
-        assert result['price'].equals(target['price'])
-       
+        assert result.equals(target)
