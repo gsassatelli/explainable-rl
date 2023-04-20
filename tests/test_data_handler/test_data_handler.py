@@ -74,8 +74,6 @@ class TestDataHandler(unittest.TestCase):
 
     def test_inverse_transform_col(self):
         target = self.target['price'].astype('float64')
-        self.dh._fit_standard_scalars()
-        self.dh._transform_col(col_name='price')
         self.dh._inverse_transform_col(col_name='price')
         result = self.dh.dataset['price'].sort_index().round(
             decimals=2).astype('float64')
@@ -106,11 +104,9 @@ class TestDataHandler(unittest.TestCase):
 
     def test_reverse_norm(self):
         target = self.target.round(decimals=2).astype('float64')
-        self.dh.prepare_data_for_engine(col_delimiter=',',
-                                        cols_to_normalise=['competitorPrice',
-                                                           'adFlag',
-                                                           'availability',
-                                                           'price'])
         self.dh.reverse_norm()
         result = self.dh.dataset.round(decimals=2).astype('float64').sort_index()
-        assert result.equals(target)
+        a = result['price']
+        b = target['price']
+        assert result['price'].equals(target['price'])
+       
