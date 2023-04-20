@@ -28,7 +28,7 @@ class TestDataHandler(unittest.TestCase):
 
     def test_type_get_actions(self):
         result = self.dh.get_actions()
-        assert isinstance(result, list)
+        assert isinstance(result, pd.DataFrame)
 
     def test_len_get_actions(self):
         result = self.dh.get_actions()
