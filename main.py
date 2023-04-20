@@ -122,7 +122,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'reward': "continuous"
         },
-        'n_samples': 50000,
+        'n_samples': 1000,
         'data_path': 'data/ds-data/my_example_data.parquet',
         'col_delimiter': '|',
         'cols_to_normalise': ['lead_time', 'length_of_stay',
@@ -212,5 +212,5 @@ if __name__ == "__main__":
     }
 
     for i in range(1):
-        run_all(hyperparam_dict_ds_data_predict)
+        run_all(hyperparam_dict_ds_data_suggest)
         # ran this 10 times to check everything was fine.

@@ -35,6 +35,7 @@ class StrategicPricingSuggestionMDP(MDP):
             self.bins = [10] * (self.state_dim + 1)
         else:
             self.bins = bins
+        # TODO: check this logic
         
         self.initialise_env()
         
@@ -154,6 +155,43 @@ class StrategicPricingSuggestionMDP(MDP):
                 ipdb.set_trace()
         return state
 
+    # def _get_counts_and_rewards_per_bin(self, binned):
+    #     """Create a dictionary of counts of datapoints per bin and sum the associated rewards.
+    #     Args:
+    #         binned (np.array): Binned state-action pairs.
+    #     Returns:
+    #         dict: dictionary of counts of datapoints per bin and sums the associated rewards.
+    #     """
+    #
+    #     bins_dict = {}
+    #     self.state_to_action = {}
+    #     binned = [list(item) for item in binned]
+    #     for ix, bin in enumerate(binned):
+    #         for action in range(self.action_dim):
+    #             fixed_state = bin[:-1]
+    #             lookup_state = list(fixed_state + [action])
+    #             if lookup_state in binned:
+    #                 # Go through each bin
+    #                 state_str = ",".join(str(e) for e in bin)
+    #                 # Update state to action for populated state-action pairs
+    #                 self.state_to_action.setdefault(state_str, set()).add(action)
+    #                 # update number of data points in the bin
+    #                 state_action_str = state_str+','+str(action)
+    #                 count = binned.count(lookup_state)
+    #                 bins_dict[state_action_str][0] = \
+    #                     bins_dict.setdefault(state_action_str, [0, 0])[0] + count
+    #                 reward = self._reward_mdp_data[ix]
+    #                 bins_dict[state_action_str][1] += reward[0] * count
+    #
+    #                 # for _ in range(binned.count(lookup_state)):
+    #                 #     bins_dict[state_action_str][0] =\
+    #                 #         bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
+    #                 #     # update total reward in the bin
+    #                 #     reward = self._reward_mdp_data[ix]
+    #                 #     bins_dict[state_action_str][1] += reward[0]
+    #
+    #     return bins_dict
+
     def _get_counts_and_rewards_per_bin(self, binned):
         """Create a dictionary of counts of datapoints per bin and sum the associated rewards.
         Args:
@@ -163,37 +201,33 @@ class StrategicPricingSuggestionMDP(MDP):
         """
 
         bins_dict = {}
-        self.state_to_action = {}
-        binned = [list(item) for item in binned]
         for ix, bin in enumerate(binned):
-            for action in range(self.action_dim):
-                fixed_state = bin[:-1]
-                lookup_state = list(fixed_state + [action])
-                if lookup_state in binned:
-                    # Go through each bin
-                    state_str = ",".join(str(e) for e in bin)
-                    # Update state to action for populated state-action pairs
-                    self.state_to_action.setdefault(state_str, set()).add(action)
-                    # update number of data points in the bin
-                    state_action_str = state_str+','+str(action)
+            state_str = ",".join(str(e) for e in bin.tolist())
+            bins_dict[state_str][0] =\
+                bins_dict.setdefault(state_str, [0, 0])[0] + 1
+            reward = self._reward_mdp_data[ix]
+            bins_dict[state_str][1] += reward[0]
 
-                    for ix in range(binned.count(lookup_state)):
-                        bins_dict[state_action_str][0] =\
-                            bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
-                        # update total reward in the bin
-                        reward = self._reward_mdp_data[ix]
-                        bins_dict[state_action_str][1] += reward[0]
-                
+            if state_str not in self.state_to_action:
+                base_state = bin[:-1]
+                for action in range(self.action_dim):
+                    lookup_state = np.append(base_state, action)
+                    if any(np.array_equal(lookup_state, i) for i in binned):
+                        try:
+                            self.state_to_action[state_str].add(action)
+                        except KeyError:
+                            self.state_to_action[state_str] = {action}
         return bins_dict
+
 
     def _create_average_reward_matrix(self, bins_dict):
         """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Args:
-            bins_dict (dict): dictionary of counts of datapoints per bin and sums the associated rewards.
+            bins_dict (dict): dictionary of counts of datapoints per bin and sum of the associated rewards.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+            sparse.COO: sparse matrix of binned state-action pairs and their associated average reward.
         """
 
         coords = []
@@ -206,7 +240,8 @@ class StrategicPricingSuggestionMDP(MDP):
 
         coords = np.array(coords).T.tolist()
         
-        return sparse.COO(coords, data, shape=tuple(self.bins))
+        return sparse.COO(coords, data, shape=tuple(self.bins[:-1]))
+        # TODO: make the bins dimensions work
 
     def _make_rewards_from_data(self):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
@@ -223,9 +258,9 @@ class StrategicPricingSuggestionMDP(MDP):
         # Create the bins
         binned = self._bin_state_action_space(state_data)
 
-        bins_dict = self._get_counts_and_rewards_per_bin(binned)
-        self.bins_dict = bins_dict
-        average_reward_matrix = self._create_average_reward_matrix(bins_dict)
+        self.bins_dict = self._get_counts_and_rewards_per_bin(binned)
+        print('here')
+        average_reward_matrix = self._create_average_reward_matrix(self.bins_dict)
 
         return average_reward_matrix
 
@@ -250,7 +285,7 @@ class StrategicPricingSuggestionMDP(MDP):
             tuple: current state, action, next state, done flag.
         """
         # TODO: input index to find_next_state
-        index = tuple(list(state) + [action])
+        index = tuple(list(state)[:-1] + [action])
 
         reward = self._average_rewards[index]
         next_state, done = self._find_next_state(state, action)
@@ -276,3 +311,30 @@ class StrategicPricingSuggestionMDP(MDP):
             done = True
         
         return next_state, done
+
+    def _create_state_to_action_dict(self, binned):
+        """Create a dictionary mapping states to possible actions from state.
+
+        Args:
+            binned (np.array): Binned state-action pairs.
+
+        Returns:
+            dict: dictionary mapping states to possible actions from state.
+        """
+
+        state_to_action = {}
+        for ix, bin in enumerate(binned):
+            original_state = ",".join(str(e) for e in bin.tolist())
+            if original_state in state_to_action:
+                continue
+            base_state = bin[:-1]
+            possible_actions = range(self.action_dim)
+            for a in possible_actions:
+                new_state = np.append(base_state, a)
+                if any(np.array_equal(new_state, i) for i in binned):
+                    try:
+                        state_to_action[original_state].add(a)
+                    except KeyError:
+                        state_to_action[original_state] = {a}
+
+        return state_to_action
