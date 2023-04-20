@@ -34,6 +34,14 @@ class TestDataHandler(unittest.TestCase):
         result = self.dh.get_actions()
         assert len(result) != 0
 
+    def test_type_get_action_labels(self):
+        result = self.dh.get_action_labels()
+        assert isinstance(result, list)
+
+    def test_len_get_action_labels(self):
+        result = self.dh.get_action_labels()
+        assert len(result) != 0
+
     def test_type_get_rewards(self):
         result = self.dh.get_rewards()
         assert isinstance(result, pd.DataFrame)
