@@ -1,10 +1,22 @@
 def convert_to_string(state):
-    """Convert a state to a string."""
+    """Convert a state to a string.
+
+    Args:
+        state (list): State to convert.
+    Returns:
+        state_str (str): State as a string.
+    """
     return ",".join([str(s) for s in state])
 
 
 def convert_to_list(state_str):
-    """Convert a state string to a list."""
+    """Convert a state string to a list.
+
+    Args:
+        state_str (str): State as a string.
+    Returns:
+        state (list): State as a list.
+    """
     return [int(s) for s in state_str.split(",")]
 
 

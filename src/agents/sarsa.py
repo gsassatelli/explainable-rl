@@ -1,7 +1,10 @@
+# Import functions
 from src.agents.td import TD
 
 
 class SarsaAgent(TD):
+    """Sarsa agent."""
+
     def __init__(self, env, gamma, verbose=False):
         """Initialise the agent class.
 
@@ -13,7 +16,6 @@ class SarsaAgent(TD):
         super().__init__(env, gamma, verbose)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
-
         """Update the Q table using the Bellman equation and SARSA update.
 
         Args:

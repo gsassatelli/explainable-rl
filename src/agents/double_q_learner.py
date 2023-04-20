@@ -1,11 +1,25 @@
+# Import packages
 import copy
 import random
-from src.agents.td import TD
 import numpy as np
+
+# Import functions
+from src.agents.td import TD
 
 
 class DoubleQLearner(TD):
+    """Double Q-Learner agent."""
+
+    __slots__ = ['Q', 'Q_a', 'Q_b', 'state_to_action', 'Q_num_samples',
+                 'state']
+
     def __init__(self, env, gamma, verbose=False):
+        """Initialise the agent class.
+
+        Args:
+            env (MDP): MDP object.
+            gamma (float): Discount factor.
+        """
         super().__init__(env=env, gamma=gamma, verbose=verbose)
         self.Q = None
         self.Q_a = None
@@ -16,6 +30,8 @@ class DoubleQLearner(TD):
 
     def create_tables(self,
                       verbose=False):
+        """Create the Q-tables and state_to_action table."""
+
         self.env.reset()
         if verbose:
             print("Create q-table")
@@ -26,6 +42,12 @@ class DoubleQLearner(TD):
         self.state_to_action = self.env.state_to_action
 
     def _step(self, epsilon, lr):
+        """Take a step in the environment and update the Q-tables.
+
+        Args:
+            epsilon (float): The epsilon value for the epsilon-greedy policy.
+            lr (float): The learning rate.
+        """
         action_a = self._epsilon_greedy_policy(state=self.state,
                                                epsilon=epsilon, Q=self.Q_a)
         action_b = self._epsilon_greedy_policy(state=self.state,
@@ -60,6 +82,17 @@ class DoubleQLearner(TD):
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr,
                          **kwargs):
+        """Update the Q-tables.
+
+        Args:
+            state (tuple): The current state.
+            action (int): The action taken.
+            next_state (tuple): The next state.
+            reward (float): The reward received.
+            epsilon (float): The epsilon value for the epsilon-greedy policy.
+            lr (float): The learning rate.
+            **kwargs (dict): The keyword arguments.
+        """
         Q_a = kwargs["Q_a"]
         Q_b = kwargs["Q_b"]
 

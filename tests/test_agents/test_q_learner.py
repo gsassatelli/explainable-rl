@@ -1,17 +1,24 @@
+# Import functions
 from tests.test_agents.test_td import TestTD
-import copy
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.q_learner import QLearningAgent
 
+# Import packages
+import copy
+
+
 class TestQLearningAgent(TestTD):
+    """Test the QLearningAgent class."""
 
     def setUp(self) -> None:
+        """Set up the test class."""
         self.env = StrategicPricingSuggestionMDP(self.dh)
         self.agent = QLearningAgent(self.env, gamma=0.9)
 
 
     def test_update_q_values(self):
+        """Test the update_q_values method."""
         self.agent._init_q_table()
         self.agent.Q[0, 0, 0, 2] = 1.5
         self.agent.Q[0, 2, 0, 3] = 5
@@ -33,6 +40,8 @@ class TestQLearningAgent(TestTD):
         assert result == target
 
     def test_step(self):
+        """Test the step method."""
+        # TODO: from Giulia, can we remove the print?
         print("testing test_step")
         epsilon = 0
         lr = 0.1
@@ -48,6 +57,7 @@ class TestQLearningAgent(TestTD):
         assert self.agent.Q[0, 0, 0, 2] == 1.5 + lr * (0 + 0.9 * 1.5 - 1.5)
 
     def test_fit(self):
+        """Test the fit method."""
         self.agent.create_tables()
         original_Q = copy.deepcopy(self.agent.Q)
         self.agent.fit(n_episodes=10, n_steps=1)

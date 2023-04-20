@@ -1,9 +1,17 @@
 class Agent:
     """Define the Agent super class which all particular agents (e.g Q-learner, SARSA).
     """
+
     __slots__ = ['env', 'gamma', 'verbose']
 
     def __init__(self, env, gamma, verbose=False):
+        """Initialize the agent.
+
+        Args:
+            env (Environment): Environment object.
+            gamma (float): Discount factor.
+            verbose (bool): Print training information.
+        """
         self.env = env
         self.gamma = gamma
         self.verbose = verbose
@@ -26,6 +34,13 @@ class Agent:
         raise NotImplementedError
 
     def _epsilon_greedy_policy(self, state, epsilon):
+        """Epsilon-greedy policy.
+
+        Args:
+            state (int): State.
+            epsilon (float): Epislon of epislon-greedy policy.
+                Defaults to 0 for pure exploitation.
+        """
         raise NotImplementedError
 
     def predict_actions(self,

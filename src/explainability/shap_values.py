@@ -35,12 +35,15 @@ class ShapValues:
         self.number_of_samples = number_of_samples
         self.binned_sample = None
 
-        # TODO: Check number of bins problem - should be 0-1? >> Clip sample to min max values
         # TODO: how to use shap value function better, no re run of the algorithm >> Save trained agent
         # TODO: improve random sampling - time consuming
 
     def compute_shap_values(self):
         """ Compute the SHAP values for a given sample.
+
+        Returns:
+            shap_values (dict): Dictionary with the shap values for each feature.
+            predicted_action (int): Predicted action.
         """
 
         # Verify if sample length is correct
@@ -115,6 +118,9 @@ class ShapValues:
 
     def verify_sample_length(self):
         """ This function verifies if the sample length is correct.
+
+        Returns:
+            bool: True if the sample length is correct, False otherwise.
         """
         if len(self.sample) != len(self.features):
             return False
@@ -122,6 +128,9 @@ class ShapValues:
 
     def bin_sample(self):
         """ This function bins the sample.
+
+        Returns:
+            binned_sample (np.array): Binned sample.
         """
         state_dims = list(range(len(self.features)))
         binned_sample = self.env._bin_state(self.sample, idxs=state_dims)
@@ -133,6 +142,8 @@ class ShapValues:
 
         Args:
             binned_sample (np.array): Binned sample.
+        Returns:
+            bool: True if the cell has been visited, False otherwise.
         """
         num_actions = self.env.bins[-1]
         # The last element in the bins list is the number of actions
@@ -148,6 +159,8 @@ class ShapValues:
 
         Args:
             binned_sample (np.array): Binned sample.
+        Returns:
+            bool: True if the sample is an outlier, False otherwise.
         """
         for ft in range(len(self.features)):
             if binned_sample[ft] >= self.env.bins[ft] or binned_sample[ft] < 0:
@@ -160,6 +173,9 @@ class ShapValues:
         Args:
             shap_ft (int): Feature to explain.
             num_bins_per_shap_ft (int): Number of bins for the feature to explain.
+        Returns:
+            s_plus (np.array): Plus sample.
+            s_minus (np.array): Minus sample.
         """
         shap_ft_random = random.randrange(num_bins_per_shap_ft)
         s_plus = np.zeros(len(self.sample))
@@ -181,6 +197,8 @@ class ShapValues:
 
         Args:
             actions (list): List of actions.
+        Returns:
+            denorm_actions (list): List of denormalized actions.
         """
         denorm_actions = []
         if len(self.action) == 1:
@@ -201,6 +219,9 @@ class ShapValues:
 
     def normalize_sample(self):
         """Normalize sample.
+
+        Returns:
+            normalized_sample (list): Normalized sample.
         """
         normalized_sample = []
         for idx, ft in enumerate(self.features):
@@ -212,6 +233,9 @@ class ShapValues:
 
     def predict_action(self):
         """Predict action.
+
+        Returns:
+            action (list): Predicted action.
         """
         Q_state = np.zeros(self.env.bins[-1])
         for a in range(self.env.bins[-1]):

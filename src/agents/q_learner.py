@@ -1,10 +1,12 @@
+# Import packages
 import numpy as np
+
+# Import functions
 from src.agents.td import TD
 
 
 class QLearningAgent(TD):
-    """Agent class to store and update q-table.
-    """
+    """Q-Learning agent."""
 
     def __init__(self, env, gamma, verbose=False):
         """Initialise the agent class.

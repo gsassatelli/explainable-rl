@@ -1,17 +1,23 @@
+# Import functions
 from tests.test_agents.test_td import TestTD
-from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.sarsa import SarsaAgent
+
+# Import packages
 import copy
 import numpy as np
 
 
 class TestSarsa(TestTD):
+    """Test the SarsaAgent class."""
+
     def setUp(self) -> None:
+        """Set up the test class."""
         self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = SarsaAgent(self.env, gamma=0.9)
 
     def test_update_q_values(self):
+        """Test the update_q_values method."""
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, 2] = 1.5
         self.agent.Q[3, 0, 0, 3] = 5
@@ -33,6 +39,7 @@ class TestSarsa(TestTD):
         assert result in target
 
     def test_step(self):
+        """Test the step method."""
         epsilon = 0  # epsilon = 0 as this functionality is tested above.
         lr = 0.1
         self.agent.create_tables()
@@ -44,6 +51,7 @@ class TestSarsa(TestTD):
         assert type(self.agent.Q[0, 0, 0, 0]) is np.float64
 
     def test_fit(self):
+        """Test the fit method."""
         self.agent.create_tables()
         original_Q = copy.deepcopy(self.agent.Q)
         self.agent.fit(n_episodes=10, n_steps=1)

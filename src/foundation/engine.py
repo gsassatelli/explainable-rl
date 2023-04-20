@@ -6,8 +6,6 @@ from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
-
-
 # Import packages
 import numpy as np
 import ipdb
@@ -15,13 +13,15 @@ import ipdb
 
 # TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
 class Engine:
+    """Define the Engine class which is responsible for creating the agent and
+    environment instances and running the training loop.
+    """
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", 
                  "q_table", "bins", "train_test_split", "agent_cumrewards",
                  "hist_cumrewards", "_eval_states", "_eval_actions","_eval_rewards",
                  "_eval_b_states","_eval_state_dims","_eval_action_dims", "verbose"]
-    
 
     def __init__(self, 
                  dh,
@@ -62,16 +62,24 @@ class Engine:
         self.env_type = env_type
         self.env = None
         self.verbose = verbose
+        self.bins = bins
 
         # Parameters of the agent
         self.policy = None
         self.q_table = None
 
-        self.bins = bins
+        # Parameters for evaluation
+        self.agent_cumrewards = None
+        self.hist_cumrewards = None
+        self._eval_states = None
+        self._eval_b_states = None
+        self._eval_actions = None
+        self._eval_rewards = None
+        self._eval_state_dims = None
+        self._eval_action_dims = None
 
     def create_world(self):
         """Create the Agent and MDP instances for the given task.
-
         """
         # Create chosen environment
         print("Initialize environment")
@@ -83,7 +91,6 @@ class Engine:
 
     def create_agent(self):
         """Create an agent and store it in Engine.
-
         """
         # Initialize agent
         if self.agent_type == "q_learner":
@@ -112,10 +119,8 @@ class Engine:
 
         self.agent.create_tables()
 
-
     def create_env(self):
         """Create an env and store it in Engine.
-
         """
         # Initialize environment
         if self.env_type == "strategic_pricing_predict":
@@ -148,17 +153,8 @@ class Engine:
                 self.agent_cumrewards.append(self._evaluate_total_agent_reward())
             self.hist_cumrewards = self._evaluate_total_hist_reward()
 
-    def get_results(self):
-        """Get the results of training.
-
-        TODO: Next sprint to compare 2 agents
-              This could be the average return after convergence.
-        """
-        pass
-
     def save_parameters(self):
         """Save the parameters learned during training.
-
         This could be e.g. the q-values, the policy, or any other learned parameters.
 
         TODO: Not sure this function is needed, can call directly agent
@@ -168,7 +164,6 @@ class Engine:
         self.policy = self.agent.policy
         self.q_table = self.agent.q_table
 
-    
     def _inverse_scale_feature(self,
                                values,
                                labels):
@@ -196,6 +191,8 @@ class Engine:
             1).squeeze(-1).tolist()
         return i_values
 
+    # TODO: From Giulia, for when we do the clean up, do we need to keep this here or can we put it in the evaluator?
+    # TODO: Since it's part of the evaluation is better maybe
     def build_evaluation(self):
         """ Save data for evaluation. """
         # Get test data from data handler
@@ -203,10 +200,10 @@ class Engine:
         self._eval_actions = self.dh.get_actions(split='test').to_numpy().tolist()
         self._eval_rewards = self.dh.get_rewards(split='test').to_numpy().tolist()
 
-        # get state and action indexes
+        # Get state and action indexes
         self._eval_state_dims = list(range(self.env.state_dim))
-        self._eval_action_dims = list(range(self.env.state_dim, 
-                                    self.env.state_dim+self.env.action_dim))
+        self._eval_action_dims = list(range(self.env.state_dim,
+                                            self.env.state_dim+self.env.action_dim))
         # Get the binned states
         self._eval_b_states = self.env.bin_states(self._eval_states, idxs=self._eval_state_dims)
 
@@ -293,8 +290,7 @@ class Engine:
         return np.sum(rewards_hist)
 
     def evaluate_agent(self, epsilon=0):
-        """Evaluate the learned policy for the test states
-
+        """Evaluate the learned policy for the test states.
         Rewards are calculated using the average reward matrix.
 
         Args:

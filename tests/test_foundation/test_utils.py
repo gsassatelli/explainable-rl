@@ -1,10 +1,16 @@
+# Import packages
 import unittest
+
+# Import functions
 from src.foundation.utils import *
 
 
 class TestUtils(unittest.TestCase):
+    """Test the utils functions."""
 
     def setUp(self):
+        """Set up the utils for the tests."""
+        # TODO: from Giulia, do we need to keep this for the structure of the class?
         pass
 
     def test_convert_to_string(self):
@@ -29,6 +35,3 @@ class TestUtils(unittest.TestCase):
         min_param = 0.1
         param = decay_param(param, decay, min_param)
         assert param == 0.9
-
-if __name__ == '__main__':
-    unittest.main()

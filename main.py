@@ -1,14 +1,17 @@
+# Import functions
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
 from src.explainability.shap_values import ShapValues
-from datetime import datetime
-import ipdb
 
-def policy_deviation():
-    pass
+# Import packages
+from datetime import datetime
+import numpy as np
+
 
 def run_all(hyperparam_dict, verbose=True, show_plots=True):
+
+    # Load data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
     state_labels = hyperparam_dict['states']
@@ -43,6 +46,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
                     bins=hyperparam_dict['bins'],
                     train_test_split=hyperparam_dict['train_test_split']
                     )
+
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
@@ -68,19 +72,17 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     states, actions, b_actions, rewards_hist, actions_agent, b_actions_agent, rewards_agent = \
         engine.evaluate_agent()
     # Sum obtained reward optimal vs historical policy
-    import numpy as np
     print(f"Return based on historical data: {np.sum(rewards_hist)}")
     print(f"Return based on agent policy: {np.sum(rewards_agent)}")
-    
+
     import matplotlib.pyplot as plt
     plt.scatter(actions, actions_agent)
     plt.savefig('policy.png')
 
-
     ###########################################################
     ################# End of evaluation #######################
     ###########################################################
-    
+
     # Plot PDPs
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
@@ -92,7 +94,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     pdp.plot_pdp(states_names=state_labels, fig_name=fig_name,
                  type_features=type_features, savefig=True, all_states=True)
 
-    # Plot SHAP values
+    # Compute SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Show SHAP values plots")
     shap_values = ShapValues(sample=[8, 1, 1, 1],
@@ -104,10 +106,12 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 
 
 if __name__ == "__main__":
+
+    # Define hyperparameters
     hyperparam_dict_ds_data_suggest = {
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin', 'price'],
-        'actions': [price_bin/10 for price_bin in range(1, 11)],
+        'actions': [price_bin / 10 for price_bin in range(1, 11)],
         'bins': [10, 10, 4, 4, 10, 10],
         # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
@@ -134,7 +138,7 @@ if __name__ == "__main__":
 
     hyperparam_dict_kaggle_data_suggest = {
         'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
-        'actions': [price_bin/10 for price_bin in range(1,11)],
+        'actions': [price_bin / 10 for price_bin in range(1, 11)],
         'rewards': ['revenue'],
         'feature_types': {
             'competitorPrice': "continuous",
@@ -143,7 +147,8 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
+        'bins': [10, 2, 2, 10, 10],
+        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 2000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
@@ -210,4 +215,4 @@ if __name__ == "__main__":
 
     for i in range(1):
         run_all(hyperparam_dict_ds_data_predict)
-        # ran this 10 times to check everything was fine.
+        # Run this 10 times to check everything was fine.

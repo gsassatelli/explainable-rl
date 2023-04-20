@@ -1,15 +1,36 @@
-import copy
+# Import functions
 from src.agents.td import TD
+
+# Import packages
 import sparse
 
 
 class SarsaLambdaAgent(TD):
+    """Sarsa Lambda agent."""
+
+    __slots__ = ['e', 'lambda_']
+
     def __init__(self, env, gamma, verbose=False, lambda_=0.9):
+        """Initialise the agent class.
+
+        Args:
+            env (MDP): MDP object.
+            gamma (float): Discount factor.
+        """
         super().__init__(env=env, gamma=gamma, verbose=verbose)
         self.e = sparse.DOK(self.env.bins)
         self.lambda_ = lambda_
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+        """Update the Q table using the Bellman equation and SARSA update.
+
+        Args:
+            state (list): current state of the agent.
+            action (int): selected action.
+            next_state (list): next state of the agent.
+            reward (float): reward for the selected action.
+            lr (float): learning rate.
+        """
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]
         next_action = self._epsilon_greedy_policy(next_state, epsilon=epsilon)

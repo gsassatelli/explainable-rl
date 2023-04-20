@@ -58,13 +58,3 @@ class TestPDP(unittest.TestCase):
         """Test denormalized states.
         """
         assert isinstance(self.pdp._denorm_states, list)
-
-    def test_build_data_for_plots(self):
-        """Test build data for plots.
-        """
-        pass
-
-    def test_pdp_plot(self):
-        """Test pdp plot.
-        """
-        pass

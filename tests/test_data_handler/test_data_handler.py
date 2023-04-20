@@ -1,14 +1,19 @@
+# Import functions
 from src.data_handler.data_handler import DataHandler
+from sklearn.preprocessing import MinMaxScaler
+
+# Import packages
 import unittest
 import pandas as pd
-from sklearn.preprocessing import MinMaxScaler
 
 
 class TestDataHandler(unittest.TestCase):
+    """Test DataHandler class."""
 
     dh = None
 
     def setUp(self) -> None:
+        """Set up test fixtures, if any."""
         states = ['competitorPrice', 'adFlag', 'availability']
         actions = ['price']
         rewards = ['revenue']
@@ -18,50 +23,62 @@ class TestDataHandler(unittest.TestCase):
         self.target = pd.read_csv('tests/test_env_data.csv').dropna()
 
     def tearDown(self) -> None:
+        """Tear down test fixtures, if any."""
         del self.dh
         del self.target
 
     def test_load_data(self):
+        """Test load_data method."""
         self.dh.load_data(delimiter=',')
         assert isinstance(self.dh.dataset, pd.DataFrame)
 
     def test_type_get_actions(self):
+        """Test get_actions method."""
         result = self.dh.get_actions()
         assert isinstance(result, pd.DataFrame)
 
     def test_len_get_actions(self):
+        """Test get_actions method."""
         result = self.dh.get_actions()
         assert len(result) != 0
 
     def test_type_get_action_labels(self):
+        """Test get_action_labels method."""
         result = self.dh.get_action_labels()
         assert isinstance(result, list)
 
     def test_len_get_action_labels(self):
+        """Test get_action_labels method."""
         result = self.dh.get_action_labels()
         assert len(result) != 0
 
     def test_type_get_rewards(self):
+        """Test get_rewards method."""
         result = self.dh.get_rewards()
         assert isinstance(result, pd.DataFrame)
 
     def test_len_get_rewards(self):
+        """Test get_rewards method."""
         result = self.dh.get_rewards()
         assert len(result) != 0
 
     def test_type_get_states(self):
+        """Test get_states method."""
         result = self.dh.get_states()
         assert isinstance(result, pd.DataFrame)
 
     def test_len_get_states(self):
+        """Test get_states method."""
         result = self.dh.get_states()
         assert len(result) != 0
 
     def test_filter_data(self):
+        """Test filter_data method."""
         self.dh._filter_data()
         assert self.dh.dataset.isnull().values.any() == False
     
     def test_transform_col(self):
+        """Test transform_col method."""
         col_name = 'price'
         scalar = MinMaxScaler()
         target = self.target
@@ -73,6 +90,7 @@ class TestDataHandler(unittest.TestCase):
         assert target.equals(result)
 
     def test_inverse_transform_col(self):
+        """Test inverse_transform_col method."""
         target = self.target['price'].astype('float64')
         self.dh._inverse_transform_col(col_name='price')
         result = self.dh.dataset['price'].sort_index().round(
@@ -81,11 +99,12 @@ class TestDataHandler(unittest.TestCase):
 
 
     def test_fit_standard_scalars(self):
+        """Test fit_standard_scalars method."""
         self.dh._fit_standard_scalars()
         assert len(self.dh.minmax_scalars) == 12
 
-
     def test_prepare_data_for_engine(self):
+        """Test prepare_data_for_engine method."""
         self.dh.prepare_data_for_engine(col_delimiter=',',
                                         cols_to_normalise=['competitorPrice',
                                                            'adFlag',
@@ -103,6 +122,7 @@ class TestDataHandler(unittest.TestCase):
         assert len(self.dh.dataset.columns) == 12
 
     def test_reverse_norm(self):
+        """Test reverse_norm method."""
         target = self.target.round(decimals=2).astype('float64')
         self.dh.reverse_norm()
         result = self.dh.dataset.round(decimals=2).astype('float64').sort_index()

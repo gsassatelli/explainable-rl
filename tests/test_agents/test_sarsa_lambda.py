@@ -1,3 +1,4 @@
+# Import functions
 from tests.test_agents.test_td import TestTD
 from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
@@ -5,12 +6,15 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 
 
 class TestSarsaLambda(TestTD):
+    """Test the SarsaLambda class."""
 
     def setUp(self) -> None:
+        """Set up the test class."""
         self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = SarsaLambdaAgent(self.env, gamma=0.9, lambda_=0.9)
 
     def test_update_q_values(self):
+        """Test the update_q_values method."""
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, 2] = 1.5
         self.agent.Q[3, 0, 0, 3] = 5
@@ -31,7 +35,7 @@ class TestSarsaLambda(TestTD):
         result_Q = self.agent.Q[0, 0, 0, 2]
         result_e = self.agent.e[0, 0, 0, 2]
         target_Q = [1.5 + lr * (10 + 0.9 * 5 - 1.5) * 2,
-                  1.5 + lr * (10 + 0.9 * 0 - 1.5) * 2]
+                    1.5 + lr * (10 + 0.9 * 0 - 1.5) * 2]
         target_e = 0.9 * 0.9 * 2
         assert result_Q in target_Q
         assert result_e == target_e

@@ -38,9 +38,11 @@ class DataHandler:
         self.mdp_data = None
         self.mdp_data_test = None
 
-    def prepare_data_for_engine(self, col_delimiter=',',
+    def prepare_data_for_engine(self,
+                                col_delimiter=',',
                                 cols_to_normalise=None):
         """Prepare data for engine.
+
         Args:
             col_delimiter (str): column delimiter.
             cols_to_normalise (list): list of columns to normalise.
@@ -51,6 +53,7 @@ class DataHandler:
 
     def load_data(self, delimiter=','):
         """Load data from file.
+
         Args:
             delimiter (str): column
         """
@@ -75,6 +78,13 @@ class DataHandler:
         columns_to_normalise (list): Columns on which to apply
         normalisation. if left empty all columns will be normalised.
         TODO: Extension - aggregate over a time period
+
+        Args:
+            normalisation (bool): True if normalisation is to be applied.
+            columns_to_normalise (list): Columns on which to apply
+            normalisation. if left empty all columns will be normalised.
+            train_test_split (float): the fraction of data to be used for
+            training.
         """
         np.random.seed = 1
         self._filter_data()
@@ -99,6 +109,7 @@ class DataHandler:
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
+
         Args:
             cols_to_norm (list): the column names that need normalising
         """
@@ -137,7 +148,6 @@ class DataHandler:
         """
         return self._action_labels
 
-
     def get_rewards(self,
                     split='train'):
         """Get the rewards taken in the dataset.
@@ -167,7 +177,6 @@ class DataHandler:
             return self.mdp_data['s']
         else:
             return self.mdp_data_test['s']
-
 
     def _filter_data(self):
         """Filter the dataset.

@@ -27,7 +27,6 @@ class TD(Agent):
 
     def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
             epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
-
         """Fit agent to the dataset.
 
         Args:
@@ -63,8 +62,7 @@ class TD(Agent):
                   f"Example Q-table for state "
                   f"{[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
 
-    def create_tables(self,
-                      verbose=False):
+    def create_tables(self, verbose=False):
         """Initialize the agent.
 
         This resets the environment, creates the q-table and the state to
@@ -76,7 +74,8 @@ class TD(Agent):
         self.env.reset()
         if verbose:
             print("Create q-table")
-        # create q-table
+
+        # Create q-table
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
 
@@ -152,7 +151,7 @@ class TD(Agent):
                 q_values_weights[possible_action] = self.Q[index_with_action] / sum_possible_q
             
             # Get weights given population for state-action space
-            # N.b. A high value represents a well-known, certain state
+            # N.B. A high value represents a well-known, certain state
             uncertainty_weights = {key: float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
 
             if random.random() > epsilon:  # Exploring
@@ -169,6 +168,14 @@ class TD(Agent):
 
     @staticmethod
     def _convert_to_string(state):
+        """Convert a state to a string.
+
+        Args:
+            state (list): the state to convert.
+
+        Returns:
+            state_str (string): the state as a string.
+        """
         return ",".join(str(s) for s in state)
 
     def _init_q_table(self):
@@ -205,7 +212,6 @@ class TD(Agent):
         return done
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
-
         """Update the Q table.
 
         Args:
