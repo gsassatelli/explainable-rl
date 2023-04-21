@@ -3,6 +3,8 @@ from library import *
 # Import functions
 from src.data_handler.data_handler import DataHandler
 from sklearn.preprocessing import MinMaxScaler
+pd.options.mode.chained_assignment = None 
+
 
 
 class TestDataHandler(unittest.TestCase):
