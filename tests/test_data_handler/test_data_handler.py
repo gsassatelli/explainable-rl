@@ -1,10 +1,8 @@
+from library import *
+
 # Import functions
 from src.data_handler.data_handler import DataHandler
 from sklearn.preprocessing import MinMaxScaler
-
-# Import packages
-import unittest
-import pandas as pd
 
 
 class TestDataHandler(unittest.TestCase):

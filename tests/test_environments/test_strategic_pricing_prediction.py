@@ -1,8 +1,4 @@
-# Import packages
-import unittest
-import pandas as pd
-import numpy as np
-import sparse
+from library import *
 
 # Import functions
 from src.data_handler.data_handler import DataHandler

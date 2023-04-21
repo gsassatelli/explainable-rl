@@ -1,3 +1,5 @@
+from library import *
+
 # Import environment and agent
 from src.agents.q_learner import QLearningAgent
 from src.agents.sarsa import SarsaAgent
@@ -5,10 +7,6 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-
-# Import packages
-import numpy as np
-import ipdb
 
 
 # TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.

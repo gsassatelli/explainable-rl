@@ -1,7 +1,4 @@
-# Import packages
-import pandas as pd
-import numpy as np
-from sklearn.preprocessing import MinMaxScaler
+from library import *
 
 
 # TODO: change normalisation to [0, 1]

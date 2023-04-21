@@ -1,11 +1,9 @@
+from library import *
+
 # Import functions
 from tests.test_agents.test_td import TestTD
-from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.agents.q_learner import QLearningAgent
-
-# Import packages
-import copy
 
 
 class TestQLearningAgent(TestTD):
@@ -13,9 +11,8 @@ class TestQLearningAgent(TestTD):
 
     def setUp(self) -> None:
         """Set up the test class."""
-        self.env = StrategicPricingSuggestionMDP(self.dh)
+        self.env = StrategicPricingPredictionMDP(self.dh)
         self.agent = QLearningAgent(self.env, gamma=0.9)
-
 
     def test_update_q_values(self):
         """Test the update_q_values method."""

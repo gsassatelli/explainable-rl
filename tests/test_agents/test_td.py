@@ -1,10 +1,9 @@
+from library import *
+
 # Import functions
 from src.agents.td import TD
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.data_handler.data_handler import DataHandler
-
-# Import packages
-import unittest
 
 
 class TestTD(unittest.TestCase):

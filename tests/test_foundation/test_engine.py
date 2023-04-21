@@ -1,3 +1,5 @@
+from library import *
+
 # Import functions
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
@@ -7,10 +9,6 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
-
-# Import packages
-import copy
-import unittest
 
 
 class TestEngine(unittest.TestCase):

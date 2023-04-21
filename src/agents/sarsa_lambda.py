@@ -1,8 +1,7 @@
+from library import *
+
 # Import functions
 from src.agents.td import TD
-
-# Import packages
-import sparse
 
 
 class SarsaLambdaAgent(TD):

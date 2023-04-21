@@ -1,6 +1,4 @@
-import numpy as np
-import random
-import pandas as pd
+from library import *
 
 
 class ShapValues:

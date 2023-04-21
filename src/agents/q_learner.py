@@ -1,5 +1,4 @@
-# Import packages
-import numpy as np
+from library import *
 
 # Import functions
 from src.agents.td import TD
