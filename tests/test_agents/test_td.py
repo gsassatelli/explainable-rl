@@ -4,6 +4,7 @@ from library import *
 from src.agents.td import TD
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.data_handler.data_handler import DataHandler
+from tests.test_hyperparams import hyperparam_dict
 
 
 class TestTD(unittest.TestCase):
@@ -14,14 +15,9 @@ class TestTD(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         """Set up the test class."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards,
-                             n_samples=n_samples)
-        cls.dh.prepare_data_for_engine(col_delimiter=',',
-                                       cols_to_normalise=states + actions)
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict)
+        cls.dh.prepare_data_for_engine()
+
 
     def setUp(self) -> None:
         """Set up the test class."""
