@@ -6,6 +6,8 @@ import sparse
 
 
 class StrategicPricing(MDP):
+    """Environment for Strategic Pricing."""
+
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
                  "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim']
 
@@ -36,14 +38,12 @@ class StrategicPricing(MDP):
             self.bins = bins
         # TODO: check this logic
 
-
     def initialise_env(self):
         """Create the environment given the MDP information."""
         self._average_rewards = self._make_rewards_from_data()
 
     def _transform_df_to_numpy(self):
-        """Transform the MDP data from a dataframe to a numpy array
-        """
+        """Transform the MDP data from a dataframe to a numpy array."""
         raise NotImplementedError
 
     def _join_state_action(self):
@@ -66,6 +66,7 @@ class StrategicPricing(MDP):
 
         Args:
             zipped (list): Group of states and actions per datapoint.
+
         Returns:
             np.array: Binned state-action pairs.
         """
@@ -77,11 +78,10 @@ class StrategicPricing(MDP):
         Args:
             states (list[list]): State to bin.
             idxs (list): indexes of the state dimensions. This argument can be used if the state list contains only
-            certain features (e.g. only actions)
+                certain features (e.g. only actions).
 
         Returns:
-            b_states (list): Binned state
-
+            b_states (list): Binned state.
         """
         b_states = []
         for state in states:
@@ -95,11 +95,11 @@ class StrategicPricing(MDP):
 
         Args:
             b_states (list[list]): Binned states to debin.
-            idxs (list): indexes of the state dimensions
-            This argument can be used if the state list contains
-            only certain features (e.g. only actions)
+            idxs (list): indexes of the state dimensions. This argument can be used
+                if the state list contains only certain features (e.g. only actions)
+
         Returns:
-            states (list): Binned state
+            states (list): Binned state.
         """
         states = []
         for b_state in b_states:
@@ -116,12 +116,12 @@ class StrategicPricing(MDP):
 
         Args:
             state (list): State to bin.
-            idxs (list): indexes of the state dimensions
+            idxs (list): indexes of the state dimensions.
                 This argument can be used if the state list contains
-                only certain features (e.g. only actions)
+                only certain features (e.g. only actions).
 
         Returns:
-            binned (list): Binned state
+            binned (list): Binned state.
 
         """
         if idxs == None:
@@ -139,11 +139,13 @@ class StrategicPricing(MDP):
         return binned
 
     def _debin_state(self, b_state, idxs=None):
-        """ Debin a singular states.
-        Returns middle point of the bin.
+        """Debin a singular states.
 
         Args:
-            b_state (list): Binned state to de-bin
+            b_state (list): Binned state to de-bin.
+
+        Returns:
+            list: Debinned state.
         """
         if idxs == None:
             idxs = range(len(b_state))
@@ -163,7 +165,7 @@ class StrategicPricing(MDP):
         Args:
             binned (np.array): Binned state-action pairs.
         Returns:
-            dict: dictionary of counts of datapoints per bin and sums the associated rewards.
+            dict: Counts of datapoints per bin and sums the associated rewards.
         """
         raise NotImplementedError
 
@@ -171,10 +173,10 @@ class StrategicPricing(MDP):
         """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Args:
-            bins_dict (dict): dictionary of counts of datapoints per bin and sum of the associated rewards.
+            bins_dict (dict): Dictionary of counts of datapoints per bin and sum of the associated rewards.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associated average reward.
+            sparse.COO: Sparse matrix of binned state-action pairs and their associated average reward.
         """
 
         raise NotImplementedError
@@ -183,7 +185,7 @@ class StrategicPricing(MDP):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+            sparse.COO: Sparse matrix of binned state-action pairs and their associate average reward.
         """
         raise NotImplementedError
 
@@ -204,7 +206,7 @@ class StrategicPricing(MDP):
         Args:
             binned (np.array): Binned state-action pairs.
         Returns:
-            state_to_action (dict): dictionary of states and their associated actions.
+            state_to_action (dict): States and their associated actions.
         """
         state_to_action = {}
         final_dim = binned.shape[1] - 1

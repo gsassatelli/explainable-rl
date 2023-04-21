@@ -3,8 +3,7 @@ from src.environments.strategic_pricing import StrategicPricing
 
 
 class StrategicPricingPredictionMDP(StrategicPricing):
-    """Defines and instantiates the MDP object for Strategic Pricing.
-    """
+    """Environment for Strategic Pricing (prediction task)."""
 
     def __init__(self, dh, bins=None):
         super().__init__(dh=dh, bins=bins)
@@ -15,8 +14,9 @@ class StrategicPricingPredictionMDP(StrategicPricing):
 
         Args:
             binned (np.array): Binned state-action pairs.
+
         Returns:
-            dict: dictionary of counts of datapoints per bin and sums the associated rewards.
+            dict: Dictionary of counts of datapoints per bin and sums the associated rewards.
         """
 
         bins_dict = {}
@@ -34,7 +34,7 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+            sparse.COO: Sparse matrix of binned state-action pairs and their associate average reward.
         """
         print("Create average rewards matrix")
 
@@ -54,13 +54,17 @@ class StrategicPricingPredictionMDP(StrategicPricing):
 
     def step(self, state, action):
         """Take a step in the environment.
-        Done flags means the environment terminated.
+
+        Note that the last element (the Done flag) of the return tuple is always True
+        as the prediction problem requires single step episodes for which the Done flag
+        is always True.
 
         Args:
             state (list): Current state values of agent.
             action (int): Action for agent to take.
+
         Returns:
-            tuple: current state, action, next state, done flag.
+            tuple: Current state, action, next state, done flag.
         """
         index = tuple(list(state) + [action])
         reward = self._average_rewards[index]
@@ -71,12 +75,11 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Args:
-            bins_dict (dict): dictionary of counts of datapoints per bin and sum of the associated rewards.
+            bins_dict (dict): Counts of datapoints per bin and sum of the associated rewards.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associated average reward.
+            sparse.COO: Sparse matrix of binned state-action pairs and their associated average reward.
         """
-
         coords = []
         data = []
 

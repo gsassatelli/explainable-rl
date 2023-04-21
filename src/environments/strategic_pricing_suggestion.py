@@ -3,8 +3,7 @@ from src.environments.strategic_pricing import StrategicPricing
 
 
 class StrategicPricingSuggestionMDP(StrategicPricing):
-    """Defines and instantiates the MDP object for Strategic Pricing.
-    """
+    """Environment for Strategic Pricing (suggestion task)."""
 
     def __init__(self, dh, bins=None):
         super().__init__(dh=dh, bins=bins)
@@ -16,7 +15,7 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Args:
             binned (np.array): Binned state-action pairs.
         Returns:
-            dict: dictionary of counts of datapoints per bin and sums the associated rewards.
+            dict: Counts of datapoints per bin and sums the associated rewards.
         """
 
         bins_dict = {}
@@ -33,7 +32,7 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associate average reward.
+            sparse.COO: Binned state-action pairs and their associate average reward.
         """
         print("Create average rewards matrix")
 
@@ -53,14 +52,15 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
 
     def step(self, state, action):
         """Take a step in the environment.
-        Done flags means the environment terminated.
+
+        Done flag set to True means that the environment terminated.
 
         Args:
             state (list): Current state values of agent.
             action (int): Action for agent to take.
 
         Returns:
-            tuple: current state, action, next state, done flag.
+            tuple: Current state, action, next state, done flag.
         """
         # TODO: input index to find_next_state
         index = tuple(list(state)[:-1] + [action])
@@ -70,15 +70,15 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         return state, next_state, reward, done
 
     def _find_next_state(self, state, action):
-        """Lookup whether the next state exists in the state-action space matrix
+        """Lookup whether the next state exists in the state-action space matrix.
 
         Args:
             state (list): Current state values of agent.
             action (int): Action for agent to take.
 
         Returns:
-            next_state (list): next state for the agent to visit.
-            done (bool): flag for whether the environment has terminated.
+            next_state (list): Next state for the agent to visit.
+            done (bool): Whether the environment has terminated.
         """
         index = list(state) + [action]
         state_action_str = ",".join(str(e) for e in index)
@@ -95,10 +95,10 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         """Create a sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 
         Args:
-            bins_dict (dict): dictionary of counts of datapoints per bin and sum of the associated rewards.
+            bins_dict (dict): Counts of datapoints per bin and sum of the associated rewards.
 
         Returns:
-            sparse.COO: sparse matrix of binned state-action pairs and their associated average reward.
+            sparse.COO: Binned state-action pairs and their associated average reward.
         """
 
         coords = []

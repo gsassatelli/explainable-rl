@@ -19,7 +19,7 @@ class DataHandler:
                  action_labels,
                  reward_labels,
                  n_samples):
-        """Initialize the DataHandler class.
+        """Initialise the DataHandler.
 
         Args:
             data_path (str): Path to the data file.
@@ -40,7 +40,7 @@ class DataHandler:
         self.mdp_data_test = None
 
     def prepare_data_for_engine(self, col_delimiter=',', cols_to_normalise=None):
-        """Prepare data for engine.
+        """Prepare the data to be given to the engine.
 
         Args:
             col_delimiter (str): Column delimiter.
