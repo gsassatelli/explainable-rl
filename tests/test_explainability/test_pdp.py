@@ -25,8 +25,7 @@ class TestPDP(unittest.TestCase):
         cls.engine.create_world()
         cls.engine.train_agent()
         cls.pdp = PDP(engine=cls.engine)
-        cls.pdp.build_data_for_plots(cls.engine.agent.Q,
-                                     cls.engine.agent.Q_num_samples)
+        cls.pdp.build_data_for_plots()
 
     def test_create_pdp(self):
         """Test creation of PDP object.

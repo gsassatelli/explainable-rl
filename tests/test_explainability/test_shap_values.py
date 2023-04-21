@@ -25,8 +25,7 @@ class TestShapValues(unittest.TestCase):
         cls.engine.create_world()
         cls.engine.train_agent()
         cls.shap_values = ShapValues(sample=[9, 1, 1],
-                                     engine=cls.engine,
-                                     number_of_samples=10)
+                                     engine=cls.engine)
 
     def test_create_shap_values(self):
         """Test creation of ShapValues object.

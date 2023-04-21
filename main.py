@@ -34,7 +34,24 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 
     # Train agent
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    if verbose:
+        print(f"{timestamp}: Train the agent")
     engine.train_agent()
+
+    # PDP plots
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    if verbose:
+        print(f"{timestamp}: PDP plots")
+    pdp = PDP(engine)
+    pdp.build_data_for_plots()
+    pdp.plot_pdp(fig_name="PDP plots", savefig=True)
+
+    # SHAP values
+    timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+    if verbose:
+        print(f"{timestamp}: SHAP values")
+    shap_values = ShapValues(sample=[8, 1, 1, 1, 10], engine=engine)
+    shap_values.compute_shap_values()
 
 
 if __name__ == "__main__":
