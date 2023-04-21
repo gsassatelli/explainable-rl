@@ -104,7 +104,12 @@ class TD(Agent):
         if r > epsilon:
             action = np.argmax(q_values)
         else:
-            action = random.choice(list(self.state_to_action[str(state_str)]))
+            try:
+                action = random.choice(list(self.state_to_action[str(state_str)]))
+            except KeyError:
+                state = state[:-1]
+                state_str = self._convert_to_string(state)
+                action = random.choice(list(self.state_to_action[str(state_str)]))
         return action
     
     def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
