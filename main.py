@@ -105,13 +105,13 @@ if __name__ == "__main__":
                   "learning_rate_decay": 0.1,
                   "learning_rate_minimum": 0.1,
                   "lambda": 0.2,
-                  "use_uncertainty": True,
+                  "use_uncertainty": False,
                   "q_importance": 0.7,
                   },
 
         "explainability": {'shap_num_samples': 1},
 
-        "program_flow": {"verbose": True}
+        "program_flow": {"verbose": False}
     }
 
     for i in range(1):

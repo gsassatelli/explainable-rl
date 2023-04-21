@@ -21,35 +21,27 @@ class TD(Agent):
         self.Q_num_samples = None
         self.state = None
 
-    def fit(self, n_episodes, n_steps, use_uncertainty, lr=0.1, lr_decay=0.05, lr_min=0.01,
-            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
+    def fit(self, agent_hyperparams, training_hyperparams, verbose=False):
         """Fit agent to the dataset.
 
         Args:
-            n_episodes (int): Number of episodes.
-            n_steps (int): Number of steps per episode.
-            use_uncertainty (bool): Use uncertainty in q-table.
-            lr (float): Learning rate.
-            lr_decay (float): Learning rate decay.
-            lr_min (float): Minimum learning rate.
-            epsilon (float): Epsilon-greedy policy parameter.
-            epsilon_decay (float): Epsilon decay.
-            epsilon_min (float): Minimum epsilon.
+            hyperparam_dict (dict): Dictionary of hyperparameters.
             verbose (bool): Print training information.
         """
         if verbose:
             print("Apply q-learning and update q-table")
-
-        for _ in range(n_episodes):
+        lr = agent_hyperparams['learning_rate']
+        epsilon = agent_hyperparams['epsilon']
+        for _ in range(training_hyperparams["num_episodes"]):
 
             self.state = self.env.reset()
 
-            for i in range(n_steps):
-                done = self._step(epsilon=epsilon, lr=lr, use_uncertainty=use_uncertainty)
+            for i in range(training_hyperparams["num_steps"]):
+                done = self._step(epsilon=agent_hyperparams['epsilon'], lr=agent_hyperparams['learning_rate'], use_uncertainty=agent_hyperparams['use_uncertainty'])
                 if done:
                     break
-            lr = decay_param(lr, lr_decay, lr_min)
-            epsilon = decay_param(epsilon, epsilon_decay, epsilon_min)
+            lr = decay_param(lr, agent_hyperparams['learning_rate_decay'], agent_hyperparams['learning_rate_minimum'])
+            epsilon = decay_param(epsilon, agent_hyperparams['epsilon_decay'], agent_hyperparams['epsilon_minimum'])
 
         if verbose:
             timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

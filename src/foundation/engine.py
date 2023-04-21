@@ -119,14 +119,16 @@ class Engine:
         """
         # Fit the agent
         if not evaluate:
-            self.agent.fit(self.num_episodes, self.num_steps,
-                           use_uncertainty=False)
+            self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
+                           training_hyperparams=self.hyperparameters['training'],
+                           verbose=self.verbose)
         
         self.agent_cumrewards = []
         if evaluate:
             self.build_evaluation()
             for i in range(int(self.num_episodes/n_eval_steps)):
-                self.agent.fit(n_eval_steps, self.num_steps, use_uncertainty=False)
+                self.agent.fit(self.hyperparameters['agent'],
+                               verbose=self.verbose)
                 self.agent_cumrewards.append(self._evaluate_total_agent_reward())
             self.hist_cumrewards = self._evaluate_total_hist_reward()
 

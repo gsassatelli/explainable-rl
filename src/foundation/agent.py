@@ -13,8 +13,9 @@ class Agent:
         self.gamma = gamma
         self.verbose = verbose
 
-    def fit(self, n_episodes, n_steps, use_uncertainty, lr=0.1, lr_decay=0.05, lr_min=0.01,
-            epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
+    # def fit(self, n_episodes, n_steps, use_uncertainty, lr=0.1, lr_decay=0.05, lr_min=0.01,
+    #         epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
+    def fit(self, agent_hyperparams, training_hyperparams, verbose=False):
         """Fit agent to the dataset.
 
         Args:
