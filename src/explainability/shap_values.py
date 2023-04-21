@@ -2,8 +2,7 @@ from library import *
 
 
 class ShapValues:
-    """ This class implements the SHAP values algorithm.
-    """
+    """SHAP Values Algorithm Manager."""
 
     __slots__ = ["sample", "features", "env", "Q", "minmax_scalars",
                  "action", "number_of_samples", "binned_sample"]
@@ -12,16 +11,11 @@ class ShapValues:
                  sample,
                  engine,
                  number_of_samples=500):
-
-        """ Initialise the ShapValues class.
+        """Initialise the ShapValues class.
 
         Args:
             sample (np.array): Sample to explain.
-            features (list): List of features.
-            env (MDP): MDP object.
-            Q (np.array): Q-table.
-            minmax_scalars (list): List of minmax scalars.
-            action (int): Action.
+            engine (Engine): Engine object.
             number_of_samples (int): Number of samples to use.
         """
         self.sample = sample
@@ -36,7 +30,7 @@ class ShapValues:
         # TODO: improve random sampling - time consuming
 
     def compute_shap_values(self):
-        """ Compute the SHAP values for a given sample.
+        """Compute the SHAP values for a given sample.
 
         Returns:
             shap_values (dict): Dictionary with the shap values for each feature.
@@ -114,7 +108,7 @@ class ShapValues:
         return shap_values, predicted_action
 
     def verify_sample_length(self):
-        """ This function verifies if the sample length is correct.
+        """Verify whether the sample length is correct.
 
         Returns:
             bool: True if the sample length is correct, False otherwise.
@@ -124,7 +118,7 @@ class ShapValues:
         return True
 
     def bin_sample(self):
-        """ This function bins the sample.
+        """Bin the samples.
 
         Returns:
             binned_sample (np.array): Binned sample.
@@ -135,7 +129,7 @@ class ShapValues:
         return binned_sample
 
     def verify_cell_availability(self, binned_sample):
-        """ This function verifies if the cell has been visited.
+        """Verify whether the cell has been visited.
 
         Args:
             binned_sample (np.array): Binned sample.
@@ -152,10 +146,11 @@ class ShapValues:
         return False
 
     def verify_outliers(self, binned_sample):
-        """ This function verifies if the sample is an outlier.
+        """Verify whether the sample is an outlier.
 
         Args:
             binned_sample (np.array): Binned sample.
+
         Returns:
             bool: True if the sample is an outlier, False otherwise.
         """
@@ -165,11 +160,12 @@ class ShapValues:
         return False
 
     def sample_plus_minus_samples(self, shap_ft, num_bins_per_shap_ft):
-        """ This function samples the plus and minus samples.
+        """Sample the plus and minus samples.
 
         Args:
             shap_ft (int): Feature to explain.
             num_bins_per_shap_ft (int): Number of bins for the feature to explain.
+
         Returns:
             s_plus (np.array): Plus sample.
             s_minus (np.array): Minus sample.
@@ -194,6 +190,7 @@ class ShapValues:
 
         Args:
             actions (list): List of actions.
+
         Returns:
             denorm_actions (list): List of denormalized actions.
         """

@@ -2,13 +2,15 @@ from library import *
 
 
 class PDP:
+    """Partial Dependency Plotting Tool."""
+
     __slots__ = ["_bins", "_minmax_scalars", "_action_labels", "_state_labels",
                  "_dig_state_actions", "_denorm_actions", "_denorm_states", "_Q_array",
                  "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples"]
 
     def __init__(self,
                  engine):
-        """Initialize PDP class.
+        """Initialise PDP class.
 
         Args:
             engine (Engine): Engine object.
@@ -42,6 +44,7 @@ class PDP:
                            Q,
                            Q_num_samples):
         """Compute average Q-value per each state-action pair.
+
         Marginal effect of the state-action pair averaging other state dimensions.
 
         Args:
@@ -80,8 +83,7 @@ class PDP:
             self._dig_state_actions_samples.append(dig_actions_samples)
 
     def _get_denorm_actions(self):
-        """Get actions denormalized values.
-        """
+        """Get actions denormalized values."""
         if len(self._action_labels) == 1:
             # The action column comes from the dataset
             scaler = self._minmax_scalars[self._action_labels[0]]
@@ -99,8 +101,7 @@ class PDP:
                 self._denorm_actions.append(denorm_action)
 
     def _get_denorm_states(self):
-        """Get states denormalized values.
-        """
+        """Get states denormalized values."""
         num_states = len(self._state_labels)
         # num_states = len(self._denorm_actions)
         for i in range(num_states):
@@ -118,13 +119,14 @@ class PDP:
                  savefig=True,
                  all_states=True):
         """Build PDP plots.
+
         One marginalized plot per each state dimension.
 
         Args:
-            states_names (list): list of state dimensions column names
-            fig_name (str): figure name to save plot.
-            savefig (bool): bool to choose whether to save the plot.
-            all_states (bool): bool to choose whether to plot the unvisited states.
+            states_names (list): State dimensions column names
+            fig_name (str): Name to save plot.
+            savefig (bool): Whether to save the plot.
+            all_states (bool): Whether to plot the unvisited states.
         """
         rows = len(self._denorm_actions)
         cols = 1
