@@ -31,6 +31,7 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         assert isinstance(result, sparse.COO)
 
     def test_step(self):
+        """Test step method."""
         state = [1, 2, 3]
         action = 2
         result = self.env.step(state, action)
