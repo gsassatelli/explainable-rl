@@ -13,12 +13,6 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 class Engine:
     """Responsible for creating the agent and environment instances and running the training loop."""
 
-    __slots__ = ["dh", "hyperparameters", "agent_type", "env_type", "agent", "env", "gamma",
-                 "episode_flag", "num_episodes", "num_steps", "policy", 
-                 "q_table", "bins", "train_test_split", "agent_cumrewards",
-                 "hist_cumrewards", "_eval_states", "_eval_actions", "_eval_rewards",
-                 "_eval_b_states", "_eval_state_dims", "_eval_action_dims", "verbose"]
-
     def __init__(self, 
                  dh,
                  hyperparam_dict):

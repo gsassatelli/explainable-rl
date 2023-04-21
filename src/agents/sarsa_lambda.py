@@ -7,8 +7,6 @@ from src.agents.td import TD
 class SarsaLambdaAgent(TD):
     """Sarsa Lambda agent."""
 
-    __slots__ = ['e', 'lambda_']
-
     def __init__(self, env, gamma, verbose=False, lambda_=0.9):
         """Initialise the agent class.
 

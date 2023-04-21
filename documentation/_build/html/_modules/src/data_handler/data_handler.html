@@ -76,11 +76,7 @@
 <div class="viewcode-block" id="DataHandler"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler">[docs]</a><span class="k">class</span> <span class="nc">DataHandler</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Data Handler which stores and preprocesses data needed for training.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;_normalised_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;minmax_scalars&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;state_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;action_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;reward_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;mdp_data&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;mdp_data_test&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_samples&quot;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="DataHandler.__init__"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">data_path</span><span class="p">,</span>
                  <span class="n">state_labels</span><span class="p">,</span>
                  <span class="n">action_labels</span><span class="p">,</span>
@@ -104,7 +100,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span> <span class="o">=</span> <span class="n">action_labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span> <span class="o">=</span> <span class="n">reward_labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare the data to be given to the engine.</span>

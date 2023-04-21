@@ -95,53 +95,19 @@
 <span id="src-explainability-pdp-module"></span><h2>src.explainability.pdp module<a class="headerlink" href="#module-src.explainability.pdp" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.explainability.pdp.</span></span><span class="sig-name descname"><span class="pre">PDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">PDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Partial Dependency Plotting Tool.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._Q_array">
-<span class="sig-name descname"><span class="pre">_Q_array</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._Q_array" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._action_labels">
-<span class="sig-name descname"><span class="pre">_action_labels</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._action_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._bins">
-<span class="sig-name descname"><span class="pre">_bins</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._bins" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._bins_per_dim">
-<span class="sig-name descname"><span class="pre">_bins_per_dim</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._bins_per_dim" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._denorm_actions">
-<span class="sig-name descname"><span class="pre">_denorm_actions</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._denorm_actions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._denorm_states">
-<span class="sig-name descname"><span class="pre">_denorm_states</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._denorm_states" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._dig_state_actions">
-<span class="sig-name descname"><span class="pre">_dig_state_actions</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._dig_state_actions" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._dig_state_actions_samples">
-<span class="sig-name descname"><span class="pre">_dig_state_actions_samples</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._dig_state_actions_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._dig_state_actions_std">
-<span class="sig-name descname"><span class="pre">_dig_state_actions_std</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._dig_state_actions_std" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.explainability.pdp.PDP.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise PDP class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>engine</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.engine.Engine" title="src.foundation.engine.Engine"><em>Engine</em></a>) – Engine object.</p>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP._get_denorm_actions">
@@ -169,16 +135,6 @@
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._minmax_scalars">
-<span class="sig-name descname"><span class="pre">_minmax_scalars</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._minmax_scalars" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.explainability.pdp.PDP._state_labels">
-<span class="sig-name descname"><span class="pre">_state_labels</span></span><a class="headerlink" href="#src.explainability.pdp.PDP._state_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP.build_data_for_plots">

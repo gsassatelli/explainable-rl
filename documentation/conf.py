@@ -55,3 +55,15 @@ autodoc_default_options = {
     "undoc-members": True,
     "private-members": True
 }
+
+# These following functions allow the __init__ functions to be documented
+def skip(app, what, name, obj, would_skip, options):
+    if name == "__init__":
+        return False
+    return would_skip
+
+def setup(app):
+    app.connect("autodoc-skip-member", skip)
+
+# The following line allows not to include the parent class name
+add_module_names = False

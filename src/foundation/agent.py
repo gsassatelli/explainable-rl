@@ -1,8 +1,6 @@
 class Agent:
     """Parent of all child agents (e.g Q-learner, SARSA)."""
 
-    __slots__ = ['env', 'gamma', 'verbose']
-
     def __init__(self, env, gamma, verbose=False):
         """Initialise the agent.
 

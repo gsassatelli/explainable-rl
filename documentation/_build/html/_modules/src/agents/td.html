@@ -75,9 +75,7 @@
 <div class="viewcode-block" id="TD"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD">[docs]</a><span class="k">class</span> <span class="nc">TD</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Agent class to store and update q-table.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;state_to_action&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_num_samples&#39;</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="TD.__init__"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the agent class.</span>
 
@@ -88,15 +86,16 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="TD.fit"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lr_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
+<div class="viewcode-block" id="TD.fit"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lr_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
             <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            n_episodes (int): Number of episodes.</span>
 <span class="sd">            n_steps (int): Number of steps per episode.</span>
+<span class="sd">            use_uncertainty (bool): Use uncertainty in q-table.</span>
 <span class="sd">            lr (float): Learning rate.</span>
 <span class="sd">            lr_decay (float): Learning rate decay.</span>
 <span class="sd">            lr_min (float): Minimum learning rate.</span>
@@ -113,7 +112,7 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
-                <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">)</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="n">use_uncertainty</span><span class="p">)</span>
                 <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
                     <span class="k">break</span>
             <span class="n">lr</span> <span class="o">=</span> <span class="n">decay_param</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">lr_decay</span><span class="p">,</span> <span class="n">lr_min</span><span class="p">)</span>
@@ -222,7 +221,7 @@
             
             <span class="c1"># Get weights given population for state-action space</span>
             <span class="c1"># N.B. A high value represents a well-known, certain state</span>
-            <span class="n">uncertainty_weights</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">state_action_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+            <span class="n">uncertainty_weights</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">state_action_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
                                    <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state_action_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
             <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>  <span class="c1"># Exploring</span>
@@ -255,19 +254,20 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TD._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+<div class="viewcode-block" id="TD._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a step in the environment.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
 <span class="sd">            lr (float): Learning rate.</span>
+<span class="sd">            use_uncertainty (bool): Whether to use uncertainty informed policy.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            bool: Defines whether the episode is finished.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
                                                   <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
-                                                  <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                                                  <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># TODO: readd parameter</span>
                                                   <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
         
         <span class="n">state</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>

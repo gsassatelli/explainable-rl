@@ -4,6 +4,14 @@ src.environments package
 Submodules
 ----------
 
+src.environments.strategic\_pricing module
+------------------------------------------
+
+.. automodule:: src.environments.strategic_pricing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 src.environments.strategic\_pricing\_prediction module
 ------------------------------------------------------
 

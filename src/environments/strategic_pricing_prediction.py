@@ -8,6 +8,11 @@ class StrategicPricingPredictionMDP(StrategicPricing):
     """Environment for Strategic Pricing (prediction task)."""
 
     def __init__(self, dh, bins=None):
+        """Initialise Strategic Pricing Environment.
+
+        Args:
+            dh (DataHandler): Data Handler instance.
+        """
         super().__init__(dh=dh, bins=bins)
         self.initialise_env()
 

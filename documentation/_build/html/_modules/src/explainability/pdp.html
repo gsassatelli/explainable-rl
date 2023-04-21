@@ -71,11 +71,7 @@
 <div class="viewcode-block" id="PDP"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP">[docs]</a><span class="k">class</span> <span class="nc">PDP</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Partial Dependency Plotting Tool.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;_bins&quot;</span><span class="p">,</span> <span class="s2">&quot;_minmax_scalars&quot;</span><span class="p">,</span> <span class="s2">&quot;_action_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;_state_labels&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_dig_state_actions&quot;</span><span class="p">,</span> <span class="s2">&quot;_denorm_actions&quot;</span><span class="p">,</span> <span class="s2">&quot;_denorm_states&quot;</span><span class="p">,</span> <span class="s2">&quot;_Q_array&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_bins_per_dim&quot;</span><span class="p">,</span> <span class="s2">&quot;_dig_state_actions_std&quot;</span><span class="p">,</span> <span class="s2">&quot;_dig_state_actions_samples&quot;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+<div class="viewcode-block" id="PDP.__init__"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                  <span class="n">engine</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise PDP class.</span>
 
@@ -92,7 +88,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_denorm_actions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_denorm_states</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bins_per_dim</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_Q_array</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_Q_array</span> <span class="o">=</span> <span class="p">[]</span></div>
 
 <div class="viewcode-block" id="PDP.build_data_for_plots"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP.build_data_for_plots">[docs]</a>    <span class="k">def</span> <span class="nf">build_data_for_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                              <span class="n">Q</span><span class="p">,</span>

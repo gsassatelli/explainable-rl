@@ -95,28 +95,23 @@
 <span id="src-agents-double-q-learner-module"></span><h2>src.agents.double_q_learner module<a class="headerlink" href="#module-src.agents.double_q_learner" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.double_q_learner.</span></span><span class="sig-name descname"><span class="pre">DoubleQLearner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DoubleQLearner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
 <p>Double Q-Learner agent.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q">
-<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q_a">
-<span class="sig-name descname"><span class="pre">Q_a</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q_a" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q_b">
-<span class="sig-name descname"><span class="pre">Q_b</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q_b" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.Q_num_samples">
-<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.Q_num_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/double_q_learner.html#DoubleQLearner.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.environment.MDP" title="src.foundation.environment.MDP"><em>MDP</em></a>) – MDP object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Defines whether print statements should be called.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner._step">
@@ -162,16 +157,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.state">
-<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.state" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.double_q_learner.DoubleQLearner.state_to_action">
-<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.double_q_learner.DoubleQLearner.state_to_action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -179,18 +164,23 @@
 <span id="src-agents-q-learner-module"></span><h2>src.agents.q_learner module<a class="headerlink" href="#module-src.agents.q_learner" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.q_learner.</span></span><span class="sig-name descname"><span class="pre">QLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/q_learner.html#QLearningAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.q_learner.QLearningAgent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">QLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/q_learner.html#QLearningAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.q_learner.QLearningAgent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
 <p>Q-Learning agent.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.Q">
-<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.Q" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.Q_num_samples">
-<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.Q_num_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/q_learner.html#QLearningAgent.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.environment.MDP" title="src.foundation.environment.MDP"><em>MDP</em></a>) – MDP object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Defines whether print statements should be called.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent._update_q_values">
@@ -211,21 +201,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.state">
-<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.state" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.state_to_action">
-<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.state_to_action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.q_learner.QLearningAgent.verbose">
-<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.q_learner.QLearningAgent.verbose" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -233,18 +208,23 @@
 <span id="src-agents-sarsa-module"></span><h2>src.agents.sarsa module<a class="headerlink" href="#module-src.agents.sarsa" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.sarsa.</span></span><span class="sig-name descname"><span class="pre">SarsaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa.html#SarsaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa.SarsaAgent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SarsaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa.html#SarsaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa.SarsaAgent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
 <p>Sarsa agent.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.Q">
-<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.Q" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.Q_num_samples">
-<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.Q_num_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa.html#SarsaAgent.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.environment.MDP" title="src.foundation.environment.MDP"><em>MDP</em></a>) – MDP object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Defines whether print statements should be called.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent._update_q_values">
@@ -263,21 +243,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.state">
-<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.state" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.state_to_action">
-<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.state_to_action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa.SarsaAgent.verbose">
-<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.sarsa.SarsaAgent.verbose" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -285,9 +250,23 @@
 <span id="src-agents-sarsa-lambda-module"></span><h2>src.agents.sarsa_lambda module<a class="headerlink" href="#module-src.agents.sarsa_lambda" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.sarsa_lambda.</span></span><span class="sig-name descname"><span class="pre">SarsaLambdaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">SarsaLambdaAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="#src.agents.td.TD" title="src.agents.td.TD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TD</span></code></a></p>
 <p>Sarsa Lambda agent.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lambda_</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.environment.MDP" title="src.foundation.environment.MDP"><em>MDP</em></a>) – MDP object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent._update_q_values">
 <span class="sig-name descname"><span class="pre">_update_q_values</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">next_state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/sarsa_lambda.html#SarsaLambdaAgent._update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent._update_q_values" title="Permalink to this definition"></a></dt>
@@ -306,16 +285,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.e">
-<span class="sig-name descname"><span class="pre">e</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.e" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.sarsa_lambda.SarsaLambdaAgent.lambda_">
-<span class="sig-name descname"><span class="pre">lambda_</span></span><a class="headerlink" href="#src.agents.sarsa_lambda.SarsaLambdaAgent.lambda_" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 </dd></dl>
 
 </section>
@@ -323,18 +292,23 @@
 <span id="src-agents-td-module"></span><h2>src.agents.td module<a class="headerlink" href="#module-src.agents.td" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.agents.td.TD">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.agents.td.</span></span><span class="sig-name descname"><span class="pre">TD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <a class="reference internal" href="src.foundation.html#src.foundation.agent.Agent" title="src.foundation.agent.Agent"><code class="xref py py-class docutils literal notranslate"><span class="pre">Agent</span></code></a></p>
 <p>Agent class to store and update q-table.</p>
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.td.TD.Q">
-<span class="sig-name descname"><span class="pre">Q</span></span><a class="headerlink" href="#src.agents.td.TD.Q" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.td.TD.Q_num_samples">
-<span class="sig-name descname"><span class="pre">Q_num_samples</span></span><a class="headerlink" href="#src.agents.td.TD.Q_num_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.agents.td.TD.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<em>Environment</em>) – Environment object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Print training information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.td.TD._convert_to_string">
@@ -382,13 +356,14 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.td.TD._step">
-<span class="sig-name descname"><span class="pre">_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._step" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_uncertainty</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD._step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD._step" title="Permalink to this definition"></a></dt>
 <dd><p>Perform a step in the environment.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon-greedy policy parameter.</p></li>
 <li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – Whether to use uncertainty informed policy.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
@@ -434,13 +409,14 @@ action mapping.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.td.TD.fit">
-<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.fit" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_uncertainty</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lr_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_decay</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon_min</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.01</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/agents/td.html#TD.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.agents.td.TD.fit" title="Permalink to this definition"></a></dt>
 <dd><p>Fit agent to the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>n_episodes</strong> (<em>int</em>) – Number of episodes.</p></li>
 <li><p><strong>n_steps</strong> (<em>int</em>) – Number of steps per episode.</p></li>
+<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – Use uncertainty in q-table.</p></li>
 <li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
 <li><p><strong>lr_decay</strong> (<em>float</em>) – Learning rate decay.</p></li>
 <li><p><strong>lr_min</strong> (<em>float</em>) – Minimum learning rate.</p></li>
@@ -452,16 +428,6 @@ action mapping.</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.td.TD.state">
-<span class="sig-name descname"><span class="pre">state</span></span><a class="headerlink" href="#src.agents.td.TD.state" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.td.TD.state_to_action">
-<span class="sig-name descname"><span class="pre">state_to_action</span></span><a class="headerlink" href="#src.agents.td.TD.state_to_action" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.agents.td.TD.uncertainty_informed_policy">
@@ -484,11 +450,6 @@ action mapping.</p>
 </dd>
 </dl>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.agents.td.TD.verbose">
-<span class="sig-name descname"><span class="pre">verbose</span></span><a class="headerlink" href="#src.agents.td.TD.verbose" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

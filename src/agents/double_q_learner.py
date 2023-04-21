@@ -7,9 +7,6 @@ from src.agents.td import TD
 class DoubleQLearner(TD):
     """Double Q-Learner agent."""
 
-    __slots__ = ['Q', 'Q_a', 'Q_b', 'state_to_action', 'Q_num_samples',
-                 'state']
-
     def __init__(self, env, gamma, verbose=False):
         """Initialise the agent class.
 

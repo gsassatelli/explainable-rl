@@ -4,10 +4,6 @@ from library import *
 class PDP:
     """Partial Dependency Plotting Tool."""
 
-    __slots__ = ["_bins", "_minmax_scalars", "_action_labels", "_state_labels",
-                 "_dig_state_actions", "_denorm_actions", "_denorm_states", "_Q_array",
-                 "_bins_per_dim", "_dig_state_actions_std", "_dig_state_actions_samples"]
-
     def __init__(self,
                  engine):
         """Initialise PDP class.

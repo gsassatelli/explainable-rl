@@ -28,7 +28,7 @@ hyperparam_dict_ds_data_suggest = {
     "verbose": True,
 }
 
-hyperparam_dict_ds_data_suggest = {
+hyperparam_dict = {
     "dimensions": {'states': {'lead_time': 10,
                               'length_of_stay': 10,
                               'competitor_price_difference_bin': 4,

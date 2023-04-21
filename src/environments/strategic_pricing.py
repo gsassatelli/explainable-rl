@@ -7,9 +7,6 @@ from src.foundation.environment import MDP
 class StrategicPricing(MDP):
     """Environment for Strategic Pricing."""
 
-    __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
-                 "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim']
-
     def __init__(self, dh, bins=None):
         """Initialise the Strategic Pricing MDP class.
 

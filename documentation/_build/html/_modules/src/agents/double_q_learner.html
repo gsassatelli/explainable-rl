@@ -74,10 +74,7 @@
 <div class="viewcode-block" id="DoubleQLearner"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner">[docs]</a><span class="k">class</span> <span class="nc">DoubleQLearner</span><span class="p">(</span><span class="n">TD</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Double Q-Learner agent.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_a&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_b&#39;</span><span class="p">,</span> <span class="s1">&#39;state_to_action&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_num_samples&#39;</span><span class="p">,</span>
-                 <span class="s1">&#39;state&#39;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="DoubleQLearner.__init__"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the agent class.</span>
 
 <span class="sd">        Args:</span>
@@ -91,7 +88,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_b</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="DoubleQLearner.create_tables"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the Q-tables and state_to_action table.</span>

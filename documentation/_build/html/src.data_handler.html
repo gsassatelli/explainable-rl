@@ -95,9 +95,26 @@
 <span id="src-data-handler-data-handler-module"></span><h2>src.data_handler.data_handler module<a class="headerlink" href="#module-src.data_handler.data_handler" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.data_handler.data_handler.</span></span><span class="sig-name descname"><span class="pre">DataHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DataHandler</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Data Handler which stores and preprocesses data needed for training.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">state_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">reward_labels</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the DataHandler.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<em>str</em>) – Path to the data file.</p></li>
+<li><p><strong>state_labels</strong> (<em>list</em>) – List of state labels.</p></li>
+<li><p><strong>action_labels</strong> (<em>list</em>) – List of action labels.</p></li>
+<li><p><strong>reward_labels</strong> (<em>list</em>) – List of reward labels.</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples to extract from dataset.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._filter_data">
 <span class="sig-name descname"><span class="pre">_filter_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._filter_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._filter_data" title="Permalink to this definition"></a></dt>
@@ -116,36 +133,11 @@
 <dd><p>Reverse the normalisation of one column of the dataset.</p>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._n_samples">
-<span class="sig-name descname"><span class="pre">_n_samples</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._n_samples" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._normalised_cols">
-<span class="sig-name descname"><span class="pre">_normalised_cols</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._normalised_cols" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._transform_col">
 <span class="sig-name descname"><span class="pre">_transform_col</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._transform_col"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._transform_col" title="Permalink to this definition"></a></dt>
 <dd><p>Normalise one column of the dataset.</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.action_labels">
-<span class="sig-name descname"><span class="pre">action_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.action_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.data_path">
-<span class="sig-name descname"><span class="pre">data_path</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.data_path" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.dataset">
-<span class="sig-name descname"><span class="pre">dataset</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.dataset" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.get_action_labels">
@@ -223,21 +215,6 @@
 </dl>
 </dd></dl>
 
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.mdp_data">
-<span class="sig-name descname"><span class="pre">mdp_data</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.mdp_data" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.mdp_data_test">
-<span class="sig-name descname"><span class="pre">mdp_data_test</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.mdp_data_test" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.minmax_scalars">
-<span class="sig-name descname"><span class="pre">minmax_scalars</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.minmax_scalars" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.normalise_dataset">
 <span class="sig-name descname"><span class="pre">normalise_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cols_to_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.normalise_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.normalise_dataset" title="Permalink to this definition"></a></dt>
@@ -288,16 +265,6 @@ training.</p></li>
 <span class="sig-name descname"><span class="pre">reverse_norm</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.reverse_norm"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.reverse_norm" title="Permalink to this definition"></a></dt>
 <dd><p>Reverse the normalising of the dataset.</p>
 </dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.reward_labels">
-<span class="sig-name descname"><span class="pre">reward_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.reward_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
-
-<dl class="py attribute">
-<dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.state_labels">
-<span class="sig-name descname"><span class="pre">state_labels</span></span><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.state_labels" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
 
 </dd></dl>
 

@@ -4,9 +4,6 @@ from library import *
 class ShapValues:
     """SHAP Values Algorithm Manager."""
 
-    __slots__ = ["sample", "features", "env", "Q", "minmax_scalars",
-                 "action", "number_of_samples", "binned_sample"]
-
     def __init__(self,
                  sample,
                  engine,

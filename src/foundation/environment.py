@@ -2,13 +2,11 @@ class MDP:
     """Define the MDP super class which all particular MDP should inherit from.
     """
 
-    __slots__ = ['dh']
-
     def __init__(self, dh):
         """Initialise the Strategic Pricing MDP class.
 
         Args:
-            DataHandler: Data handler object.
+            dh (DataHandler): Data handler object.
         """
         self.dh = dh
 

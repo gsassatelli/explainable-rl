@@ -8,8 +8,6 @@ from src.data_handler.data_handler import DataHandler
 class Evaluator:
     """Evaluator to perform several experiments and show evaluation graphs."""
 
-    __slots__ = ["hyperparam_dict", "agent_list", "run_path", "n_runs"]
-
     def __init__(self,
                  hyperparam_dict,
                  agent_list,

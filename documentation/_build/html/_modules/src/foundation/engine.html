@@ -80,13 +80,7 @@
 <div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Responsible for creating the agent and environment instances and running the training loop.&quot;&quot;&quot;</span>
 
-    <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dh&quot;</span><span class="p">,</span> <span class="s2">&quot;agent_type&quot;</span><span class="p">,</span> <span class="s2">&quot;env_type&quot;</span><span class="p">,</span> <span class="s2">&quot;agent&quot;</span><span class="p">,</span> <span class="s2">&quot;env&quot;</span><span class="p">,</span> <span class="s2">&quot;gamma&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;episode_flag&quot;</span><span class="p">,</span> <span class="s2">&quot;num_episodes&quot;</span><span class="p">,</span> <span class="s2">&quot;num_steps&quot;</span><span class="p">,</span> <span class="s2">&quot;policy&quot;</span><span class="p">,</span> 
-                 <span class="s2">&quot;q_table&quot;</span><span class="p">,</span> <span class="s2">&quot;bins&quot;</span><span class="p">,</span> <span class="s2">&quot;train_test_split&quot;</span><span class="p">,</span> <span class="s2">&quot;agent_cumrewards&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;hist_cumrewards&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_states&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_actions&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_rewards&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_eval_b_states&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_state_dims&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_action_dims&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">]</span>
-
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
+<div class="viewcode-block" id="Engine.__init__"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">dh</span><span class="p">,</span>
                  <span class="n">agent_type</span><span class="p">,</span>
                  <span class="n">env_type</span><span class="p">,</span>
@@ -137,7 +131,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_actions</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_rewards</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_state_dims</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_action_dims</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_action_dims</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="Engine.create_world"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_world">[docs]</a>    <span class="k">def</span> <span class="nf">create_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the Agent and MDP instances for the given task.&quot;&quot;&quot;</span>
@@ -201,13 +195,14 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Fit the agent</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">evaluate</span><span class="p">:</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span><span class="p">,</span>
+                           <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         
         <span class="bp">self</span><span class="o">.</span><span class="n">agent_cumrewards</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">if</span> <span class="n">evaluate</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">build_evaluation</span><span class="p">()</span>
             <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span><span class="o">/</span><span class="n">n_eval_steps</span><span class="p">)):</span>
-                <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">n_eval_steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">n_eval_steps</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">agent_cumrewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_total_agent_reward</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hist_cumrewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_total_hist_reward</span><span class="p">()</span></div>
 
