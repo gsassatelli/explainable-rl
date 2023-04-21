@@ -11,8 +11,9 @@ class SarsaAgent(TD):
         Args:
             env (MDP): MDP object.
             gamma (float): Discount factor.
-        """
+            verbose (bool): Defines whether print statements should be called.
 
+        """
         super().__init__(env, gamma, verbose)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):

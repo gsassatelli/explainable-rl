@@ -13,8 +13,8 @@ class QLearningAgent(TD):
         Args:
             env (MDP): MDP object.
             gamma (float): Discount factor.
+            verbose (bool): Defines whether print statements should be called.
         """
-
         super().__init__(env, gamma, verbose)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
@@ -27,6 +27,7 @@ class QLearningAgent(TD):
             reward (float): reward for the selected action.
             epsilon (float): the exploration parameter
             lr (float): learning rate.
+            **kwargs (dict): The keyword arguments.
         """
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]

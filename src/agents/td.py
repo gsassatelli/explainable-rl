@@ -6,8 +6,7 @@ from src.foundation.agent import Agent
 
 
 class TD(Agent):
-    """Agent class to store and update q-table.
-    """
+    """Agent class to store and update q-table."""
 
     __slots__ = ['Q', 'state_to_action', 'state', 'Q_num_samples', 'verbose']
 
@@ -183,8 +182,7 @@ class TD(Agent):
         return ",".join(str(s) for s in state)
 
     def _init_q_table(self):
-        """Initialize the q-table with zeros.
-        """
+        """Initialize the q-table with zeros."""
         self.Q = sparse.DOK(self.env.bins)
         self.Q_num_samples = sparse.DOK(self.env.bins)
 
@@ -196,7 +194,7 @@ class TD(Agent):
             lr (float): learning rate.
 
         Returns:
-            done: boolean indicating whether the episode is finished.
+            bool: Defines whether the episode is finished.
         """
         action = self.uncertainty_informed_policy(self.state,
                                                   epsilon=epsilon,
@@ -225,5 +223,6 @@ class TD(Agent):
             reward (float): reward for the selected action.
             epsilon (float): the exploration parameter.
             lr (float): learning rate.
+            **kwargs (dict): The keyword arguments.
         """
         raise NotImplementedError

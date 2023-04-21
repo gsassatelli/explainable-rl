@@ -29,6 +29,7 @@ class SarsaLambdaAgent(TD):
             next_state (list): next state of the agent.
             reward (float): reward for the selected action.
             lr (float): learning rate.
+            **kwargs (dict): The keyword arguments.
         """
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]
