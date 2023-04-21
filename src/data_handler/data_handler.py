@@ -76,7 +76,6 @@ class DataHandler:
             train_test_split (float): The fraction of data to be used for
                 training.
 
-        TODO: Extension - aggregate over a time period
         """
         np.random.seed = 1
         self._filter_data()
@@ -174,7 +173,6 @@ class DataHandler:
 
     def _fit_standard_scalars(self):
         """Train the sklearn MinMaxScaler and store one per column."""
-        # TODO: fit only using train data and not test data
         for col in self.dataset:
             scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
