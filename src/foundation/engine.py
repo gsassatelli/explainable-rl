@@ -85,7 +85,7 @@ class Engine:
             self.agent = SarsaLambdaAgent(env=self.env,
                                           gamma=self.gamma,
                                           verbose=self.verbose,
-                                          lambda_=0.9) # TODO make this a parameter passed by the dictionary.
+                                          lambda_=self.hyperparameters['agent']['lambda'])
 
         elif self.agent_type == "double_q_learner":
             self.agent = DoubleQLearner(env=self.env,
