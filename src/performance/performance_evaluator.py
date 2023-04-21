@@ -328,6 +328,3 @@ class PerformanceEvaluator:
 if __name__ == "__main__":
     performance_evaluator = PerformanceEvaluator()
     performance_evaluator.get_all_performance_evaluations()
-
-# TODO: remove all the print statements from the other classes (environment, agent, etc...) because it clouds the output
-#  here.
