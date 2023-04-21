@@ -1,8 +1,3 @@
-"""
-Todo:
-    * change normalisation to [0, 1]
-    * add flag for next states
-"""
 from library import *
 
 
