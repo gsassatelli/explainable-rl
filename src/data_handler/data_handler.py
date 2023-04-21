@@ -122,8 +122,7 @@ class DataHandler:
         Returns:
             pd.DataFrame: Actions.
         """
-        if split == 'train':
-            return self.mdp_data['a']
+        return self.mdp_data['a']
 
     def get_action_labels(self):
         """Get the action labels.
