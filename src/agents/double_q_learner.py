@@ -74,8 +74,6 @@ class DoubleQLearner(TD):
                                   Q_b=self.Q_a)
         self.Q = (self.Q_a + self.Q_b) / 2
 
-        # Todo: check that this is actually what you're meant to do with the Q tables
-
         self.state = next_state
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):

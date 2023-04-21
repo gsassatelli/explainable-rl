@@ -67,7 +67,7 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Returns:
             tuple: Current state, action, next state, done flag.
         """
-        # TODO: input index to find_next_state
+        
         index = tuple(list(state)[:-1] + [action])
 
         reward = self._average_rewards[index]
