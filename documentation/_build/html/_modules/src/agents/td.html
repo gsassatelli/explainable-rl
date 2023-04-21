@@ -65,17 +65,15 @@
            <div itemprop="articleBody">
              
   <h1>Source code for src.agents.td</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">sparse</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.foundation.utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">src.foundation.agent</span> <span class="kn">import</span> <span class="n">Agent</span>
 
 
 <div class="viewcode-block" id="TD"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD">[docs]</a><span class="k">class</span> <span class="nc">TD</span><span class="p">(</span><span class="n">Agent</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Agent class to store and update q-table.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Agent class to store and update q-table.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Q&#39;</span><span class="p">,</span> <span class="s1">&#39;state_to_action&#39;</span><span class="p">,</span> <span class="s1">&#39;state&#39;</span><span class="p">,</span> <span class="s1">&#39;Q_num_samples&#39;</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
 
@@ -94,19 +92,18 @@
 
 <div class="viewcode-block" id="TD.fit"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lr_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
             <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n_episodes (int): number of episodes.</span>
-<span class="sd">            n_steps (int): number of steps per episode.</span>
-<span class="sd">            lr (float): learning rate.</span>
-<span class="sd">            lr_decay (float): learning rate decay.</span>
-<span class="sd">            lr_min (float): minimum learning rate.</span>
-<span class="sd">            epsilon (float): epsilon-greedy policy parameter.</span>
-<span class="sd">            epsilon_decay (float): epsilon decay.</span>
-<span class="sd">            epsilon_min (float): minimum epsilon.</span>
-<span class="sd">            verbose (bool): print training information.</span>
+<span class="sd">            n_episodes (int): Number of episodes.</span>
+<span class="sd">            n_steps (int): Number of steps per episode.</span>
+<span class="sd">            lr (float): Learning rate.</span>
+<span class="sd">            lr_decay (float): Learning rate decay.</span>
+<span class="sd">            lr_min (float): Minimum learning rate.</span>
+<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
+<span class="sd">            epsilon_decay (float): Epsilon decay.</span>
+<span class="sd">            epsilon_min (float): Minimum epsilon.</span>
+<span class="sd">            verbose (bool): Print training information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Apply q-learning and update q-table&quot;</span><span class="p">)</span>
@@ -130,20 +127,20 @@
                   <span class="sa">f</span><span class="s2">&quot;Example Q-table for state &quot;</span>
                   <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
 
-<div class="viewcode-block" id="TD.create_tables"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                      <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="TD.create_tables"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the agent.</span>
 
 <span class="sd">        This resets the environment, creates the q-table and the state to</span>
 <span class="sd">        action mapping.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            verbose (bool): print information.</span>
+<span class="sd">            verbose (bool): Print information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create q-table&quot;</span><span class="p">)</span>
-        <span class="c1"># create q-table</span>
+
+        <span class="c1"># Create q-table</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_init_q_table</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span></div>
 
@@ -154,12 +151,12 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the epsilon greedy action.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state (list): current state of the agent.</span>
-<span class="sd">            state_str (string): the state as a string.</span>
-<span class="sd">            epsilon (float): the exploration parameter.</span>
+<span class="sd">            state (list): Current state of the agent.</span>
+<span class="sd">            state_str (string): Rhe state as a string.</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            action (int): selected action.</span>
+<span class="sd">            action (int): Selected action.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
@@ -173,17 +170,22 @@
         <span class="k">if</span> <span class="n">r</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>
             <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">q_values</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
-            <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">state_str</span><span class="p">)]))</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">state_str</span><span class="p">)]))</span>
+            <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+                <span class="n">state</span> <span class="o">=</span> <span class="n">state</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="n">state_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">state_str</span><span class="p">)]))</span>
         <span class="k">return</span> <span class="n">action</span></div>
     
 <div class="viewcode-block" id="TD.uncertainty_informed_policy"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.uncertainty_informed_policy">[docs]</a>    <span class="k">def</span> <span class="nf">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Get epsilon greedy policy that favours more densely populated state-action pairs. </span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state (list): current state of the agent.</span>
-<span class="sd">            epsilon (float): the exploration parameter.</span>
-<span class="sd">            use_uncertainty (bool): whether to use uncertainty informed policy.</span>
-<span class="sd">            q_importance (float): the importance of the q value in the policy.</span>
+<span class="sd">            state (list): Current state of the agent.</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
+<span class="sd">            use_uncertainty (bool): Whether to use uncertainty informed policy.</span>
+<span class="sd">            q_importance (float): The importance of the q value in the policy.</span>
 
 <span class="sd">        Returns:</span>
 <span class="sd">            action (int): selected action.</span>
@@ -219,7 +221,7 @@
                 <span class="n">q_values_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_with_action</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_possible_q</span>
             
             <span class="c1"># Get weights given population for state-action space</span>
-            <span class="c1"># N.b. A high value represents a well-known, certain state</span>
+            <span class="c1"># N.B. A high value represents a well-known, certain state</span>
             <span class="n">uncertainty_weights</span> <span class="o">=</span> <span class="p">{</span><span class="n">key</span><span class="p">:</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">state_action_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span> <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state_action_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
 
             <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>  <span class="c1"># Exploring</span>
@@ -236,11 +238,18 @@
 
 <div class="viewcode-block" id="TD._convert_to_string"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._convert_to_string">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a state to a string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): The state to convert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            state_str (string): The state as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TD._init_q_table"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._init_q_table">[docs]</a>    <span class="k">def</span> <span class="nf">_init_q_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the q-table with zeros.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the q-table with zeros.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div>
 
@@ -248,11 +257,11 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a step in the environment.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            epsilon (float): epsilon-greedy policy parameter.</span>
-<span class="sd">            lr (float): learning rate.</span>
+<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
+<span class="sd">            lr (float): Learning rate.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            done: boolean indicating whether the episode is finished.</span>
+<span class="sd">            bool: Defines whether the episode is finished.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
                                                   <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
@@ -272,16 +281,16 @@
         <span class="k">return</span> <span class="n">done</span></div>
 
 <div class="viewcode-block" id="TD._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q table.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state (list): current state of the agent.</span>
-<span class="sd">            action (int): selected action.</span>
-<span class="sd">            next_state (list): next state of the agent.</span>
-<span class="sd">            reward (float): reward for the selected action.</span>
-<span class="sd">            epsilon (float): the exploration parameter.</span>
-<span class="sd">            lr (float): learning rate.</span>
+<span class="sd">            state (list): Current state of the agent.</span>
+<span class="sd">            action (int): Selected action.</span>
+<span class="sd">            next_state (list): Next state of the agent.</span>
+<span class="sd">            reward (float): Reward for the selected action.</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
+<span class="sd">            lr (float): Learning rate.</span>
+<span class="sd">            **kwargs (dict): The keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
 </pre></div>

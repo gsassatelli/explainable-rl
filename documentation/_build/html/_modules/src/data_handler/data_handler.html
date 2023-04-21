@@ -65,61 +65,62 @@
            <div itemprop="articleBody">
              
   <h1>Source code for src.data_handler.data_handler</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Import packages</span>
-<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">Todo:</span>
+<span class="sd">    * change normalisation to [0, 1]</span>
+<span class="sd">    * add flag for next states</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
 
 
-<span class="c1"># TODO: change normalisation to [0, 1]</span>
-<span class="c1"># TODO: add flag for next states</span>
 <div class="viewcode-block" id="DataHandler"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler">[docs]</a><span class="k">class</span> <span class="nc">DataHandler</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data handler class to store and preprocess data needed for training.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Data Handler which stores and preprocesses data needed for training.&quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;data_path&quot;</span><span class="p">,</span> <span class="s2">&quot;dataset&quot;</span><span class="p">,</span> <span class="s2">&quot;_normalised_cols&quot;</span><span class="p">,</span> <span class="s2">&quot;minmax_scalars&quot;</span><span class="p">,</span>
-                 <span class="s2">&quot;_state_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;_action_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;_reward_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;mdp_data&quot;</span><span class="p">,</span>
+                 <span class="s2">&quot;state_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;action_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;reward_labels&quot;</span><span class="p">,</span> <span class="s2">&quot;mdp_data&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;mdp_data_test&quot;</span><span class="p">,</span> <span class="s2">&quot;_n_samples&quot;</span><span class="p">]</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_path</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
+                 <span class="n">data_path</span><span class="p">,</span>
                  <span class="n">state_labels</span><span class="p">,</span>
                  <span class="n">action_labels</span><span class="p">,</span>
                  <span class="n">reward_labels</span><span class="p">,</span>
                  <span class="n">n_samples</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the DataHandler class.</span>
-<span class="sd">        Args:</span>
-<span class="sd">            data_path (str): path to the data file.</span>
-<span class="sd">            state_labels (list): list of state labels.</span>
-<span class="sd">            action_labels (list): list of action labels.</span>
-<span class="sd">            reward_labels (list): list of reward labels.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
 
+<span class="sd">        Args:</span>
+<span class="sd">            data_path (str): Path to the data file.</span>
+<span class="sd">            state_labels (list): List of state labels.</span>
+<span class="sd">            action_labels (list): List of action labels.</span>
+<span class="sd">            reward_labels (list): List of reward labels.</span>
+<span class="sd">            n_samples (int): Number of samples to extract from dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span> <span class="o">=</span> <span class="n">n_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_normalised_cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_state_labels</span> <span class="o">=</span> <span class="n">state_labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span> <span class="o">=</span> <span class="n">action_labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_reward_labels</span> <span class="o">=</span> <span class="n">reward_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_labels</span> <span class="o">=</span> <span class="n">state_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span> <span class="o">=</span> <span class="n">action_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span> <span class="o">=</span> <span class="n">reward_labels</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span> <span class="o">=</span> <span class="kc">None</span>
 
-<div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span>
-                                <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare data for engine.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            col_delimiter (str): column delimiter.</span>
 <span class="sd">            cols_to_normalise (list): list of columns to normalise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">delimiter</span><span class="o">=</span><span class="n">col_delimiter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_data</span><span class="p">(</span><span class="n">normalisation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                             <span class="n">columns_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_data</span><span class="p">(</span><span class="n">normalisation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">columns_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataHandler.load_data"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from file.</span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            delimiter (str): column</span>
+<span class="sd">            delimiter (str): which separates columns.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">file_type</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
         <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
@@ -136,11 +137,17 @@
                         <span class="n">columns_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                         <span class="n">train_test_split</span><span class="o">=</span><span class="mf">0.2</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Preprocess data into state, action and reward spaces.</span>
+
 <span class="sd">        Preprocessing applies shuffling, normalisation (if selected) and</span>
 <span class="sd">        splits the dataset into states, actions and rewards.</span>
-<span class="sd">        Args: normalisation (bool): True if normalisation is to be applied.</span>
-<span class="sd">        columns_to_normalise (list): Columns on which to apply</span>
-<span class="sd">        normalisation. if left empty all columns will be normalised.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            normalisation (bool): True if normalisation is to be applied.</span>
+<span class="sd">            columns_to_normalise (list): Columns on which to apply</span>
+<span class="sd">                normalisation. If left empty all columns will be normalised.</span>
+<span class="sd">            train_test_split (float): the fraction of data to be used for</span>
+<span class="sd">                training.</span>
+
 <span class="sd">        TODO: Extension - aggregate over a time period</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span> <span class="o">=</span> <span class="mi">1</span>
@@ -149,23 +156,24 @@
         <span class="k">if</span> <span class="n">normalisation</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">normalise_dataset</span><span class="p">(</span><span class="n">cols_to_norm</span><span class="o">=</span><span class="n">columns_to_normalise</span><span class="p">)</span>
 
-        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_state_labels</span><span class="p">]</span>
-        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">]</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">state_labels</span><span class="p">]</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">]</span>
         <span class="k">try</span><span class="p">:</span>
-            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span><span class="p">]</span>
+            <span class="n">a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span><span class="p">]</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;a&#39;</span><span class="p">:</span> <span class="n">a</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
         <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">({</span><span class="s1">&#39;s&#39;</span><span class="p">:</span> <span class="n">s</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">:</span> <span class="n">r</span><span class="p">},</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
-    
+
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[:</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span><span class="p">]</span>
 
         <span class="c1"># split into train-test</span>
-        <span class="n">split_indx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span><span class="o">*</span><span class="n">train_test_split</span><span class="p">)</span>
+        <span class="n">split_indx</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span> <span class="o">*</span> <span class="n">train_test_split</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[:</span><span class="n">split_indx</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[</span><span class="n">split_indx</span><span class="p">:]</span></div>
 
 <div class="viewcode-block" id="DataHandler.normalise_dataset"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.normalise_dataset">[docs]</a>    <span class="k">def</span> <span class="nf">normalise_dataset</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cols_to_norm</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalise the dataset to centre with mean zero and variance one.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            cols_to_norm (list): the column names that need normalising</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -202,8 +210,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            list of action labels.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span></div>
-
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span></div>
 
 <div class="viewcode-block" id="DataHandler.get_rewards"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.get_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">get_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                     <span class="n">split</span><span class="o">=</span><span class="s1">&#39;train&#39;</span><span class="p">):</span>
@@ -234,7 +241,6 @@
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span><span class="p">[</span><span class="s1">&#39;s&#39;</span><span class="p">]</span></div>
-
 
 <div class="viewcode-block" id="DataHandler._filter_data"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler._filter_data">[docs]</a>    <span class="k">def</span> <span class="nf">_filter_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Filter the dataset.</span>

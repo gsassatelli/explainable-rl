@@ -65,10 +65,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for src.agents.double_q_learner</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Import packages</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">random</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.agents.td</span> <span class="kn">import</span> <span class="n">TD</span>
@@ -117,9 +114,6 @@
 <span class="sd">        Args:</span>
 <span class="sd">            epsilon (float): The epsilon value for the epsilon-greedy policy.</span>
 <span class="sd">            lr (float): The learning rate.</span>
-
-<span class="sd">        Todo:</span>
-<span class="sd">            * Check that this is actually what you&#39;re meant to do with the two Q tables.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_greedy_policy</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
                                                <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span><span class="p">)</span>
@@ -150,10 +144,11 @@
                                   <span class="n">Q_b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
 
+        <span class="c1"># Todo: check that this is actually what you&#39;re meant to do with the Q tables</span>
+
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span></div>
 
-<div class="viewcode-block" id="DoubleQLearner._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span>
-                         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="DoubleQLearner._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q-tables.</span>
 
 <span class="sd">        Args:</span>

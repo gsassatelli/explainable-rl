@@ -199,12 +199,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
-<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
-<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – Next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – Reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The exploration parameter</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – The keyword arguments.</p></li>
 </ul>
 </dd>
 </dl>
@@ -252,11 +253,11 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
-<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
-<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – Next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – Reward for the selected action.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
 </ul>
 </dd>
 </dl>
@@ -294,11 +295,12 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
-<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
-<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – Next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – Reward for the selected action.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – The keyword arguments.</p></li>
 </ul>
 </dd>
 </dl>
@@ -340,10 +342,10 @@
 <dd><p>Convert a state to a string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>state</strong> (<em>list</em>) – the state to convert.</p>
+<dd class="field-odd"><p><strong>state</strong> (<em>list</em>) – The state to convert.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>the state as a string.</p>
+<dd class="field-even"><p>The state as a string.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>state_str (string)</p>
@@ -358,13 +360,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>state_str</strong> (<em>string</em>) – the state as a string.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>state_str</strong> (<em>string</em>) – Rhe state as a string.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The exploration parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>selected action.</p>
+<dd class="field-even"><p>Selected action.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
 <dd class="field-odd"><p>action (int)</p>
@@ -385,15 +387,15 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon-greedy policy parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>boolean indicating whether the episode is finished.</p>
+<dd class="field-even"><p>Defines whether the episode is finished.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>done</p>
+<dd class="field-odd"><p>bool</p>
 </dd>
 </dl>
 </dd></dl>
@@ -405,12 +407,13 @@
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>action</strong> (<em>int</em>) – selected action.</p></li>
-<li><p><strong>next_state</strong> (<em>list</em>) – next state of the agent.</p></li>
-<li><p><strong>reward</strong> (<em>float</em>) – reward for the selected action.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Selected action.</p></li>
+<li><p><strong>next_state</strong> (<em>list</em>) – Next state of the agent.</p></li>
+<li><p><strong>reward</strong> (<em>float</em>) – Reward for the selected action.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The exploration parameter.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>**kwargs</strong> (<em>dict</em>) – The keyword arguments.</p></li>
 </ul>
 </dd>
 </dl>
@@ -424,7 +427,7 @@
 action mapping.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em>) – print information.</p>
+<dd class="field-odd"><p><strong>verbose</strong> (<em>bool</em>) – Print information.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -436,15 +439,15 @@ action mapping.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_episodes</strong> (<em>int</em>) – number of episodes.</p></li>
-<li><p><strong>n_steps</strong> (<em>int</em>) – number of steps per episode.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
-<li><p><strong>lr_decay</strong> (<em>float</em>) – learning rate decay.</p></li>
-<li><p><strong>lr_min</strong> (<em>float</em>) – minimum learning rate.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
-<li><p><strong>epsilon_decay</strong> (<em>float</em>) – epsilon decay.</p></li>
-<li><p><strong>epsilon_min</strong> (<em>float</em>) – minimum epsilon.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – print training information.</p></li>
+<li><p><strong>n_episodes</strong> (<em>int</em>) – Number of episodes.</p></li>
+<li><p><strong>n_steps</strong> (<em>int</em>) – Number of steps per episode.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lr_decay</strong> (<em>float</em>) – Learning rate decay.</p></li>
+<li><p><strong>lr_min</strong> (<em>float</em>) – Minimum learning rate.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon-greedy policy parameter.</p></li>
+<li><p><strong>epsilon_decay</strong> (<em>float</em>) – Epsilon decay.</p></li>
+<li><p><strong>epsilon_min</strong> (<em>float</em>) – Minimum epsilon.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Print training information.</p></li>
 </ul>
 </dd>
 </dl>
@@ -467,10 +470,10 @@ action mapping.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>state</strong> (<em>list</em>) – current state of the agent.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – the exploration parameter.</p></li>
-<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – whether to use uncertainty informed policy.</p></li>
-<li><p><strong>q_importance</strong> (<em>float</em>) – the importance of the q value in the policy.</p></li>
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The exploration parameter.</p></li>
+<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – Whether to use uncertainty informed policy.</p></li>
+<li><p><strong>q_importance</strong> (<em>float</em>) – The importance of the q value in the policy.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>

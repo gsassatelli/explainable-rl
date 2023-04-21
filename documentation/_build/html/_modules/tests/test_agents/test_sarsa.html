@@ -65,20 +65,24 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tests.test_agents.test_sarsa</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">tests.test_agents.test_td</span> <span class="kn">import</span> <span class="n">TestTD</span>
-<span class="kn">from</span> <span class="nn">src.environments.strategic_pricing_suggestion</span> <span class="kn">import</span> <span class="n">StrategicPricingSuggestionMDP</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
+<span class="kn">from</span> <span class="nn">tests.test_agents.test_td</span> <span class="kn">import</span> <span class="n">TestTD</span>
 <span class="kn">from</span> <span class="nn">src.environments.strategic_pricing_prediction</span> <span class="kn">import</span> <span class="n">StrategicPricingPredictionMDP</span>
 <span class="kn">from</span> <span class="nn">src.agents.sarsa</span> <span class="kn">import</span> <span class="n">SarsaAgent</span>
-<span class="kn">import</span> <span class="nn">copy</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="TestSarsa"><a class="viewcode-back" href="../../../tests.test_agents.html#tests.test_agents.test_sarsa.TestSarsa">[docs]</a><span class="k">class</span> <span class="nc">TestSarsa</span><span class="p">(</span><span class="n">TestTD</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the SarsaAgent class.&quot;&quot;&quot;</span>
+
 <div class="viewcode-block" id="TestSarsa.setUp"><a class="viewcode-back" href="../../../tests.test_agents.html#tests.test_agents.test_sarsa.TestSarsa.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the test class.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">StrategicPricingPredictionMDP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="n">SarsaAgent</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestSarsa.test_update_q_values"><a class="viewcode-back" href="../../../tests.test_agents.html#tests.test_agents.test_sarsa.TestSarsa.test_update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">test_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the update_q_values method.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.5</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5</span>
@@ -100,6 +104,7 @@
         <span class="k">assert</span> <span class="n">result</span> <span class="ow">in</span> <span class="n">target</span></div>
 
 <div class="viewcode-block" id="TestSarsa.test_step"><a class="viewcode-back" href="../../../tests.test_agents.html#tests.test_agents.test_sarsa.TestSarsa.test_step">[docs]</a>    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the step method.&quot;&quot;&quot;</span>
         <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># epsilon = 0 as this functionality is tested above.</span>
         <span class="n">lr</span> <span class="o">=</span> <span class="mf">0.1</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span>
@@ -111,6 +116,7 @@
         <span class="k">assert</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="n">np</span><span class="o">.</span><span class="n">float64</span></div>
 
 <div class="viewcode-block" id="TestSarsa.test_fit"><a class="viewcode-back" href="../../../tests.test_agents.html#tests.test_agents.test_sarsa.TestSarsa.test_fit">[docs]</a>    <span class="k">def</span> <span class="nf">test_fit</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the fit method.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span>
         <span class="n">original_Q</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">n_episodes</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">n_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>

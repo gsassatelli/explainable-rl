@@ -1,5 +1,9 @@
+"""
+Todo:
+    * change normalisation to [0, 1]
+    * add flag for next states
+"""
 from library import *
-
 
 
 class DataHandler:
@@ -18,13 +22,12 @@ class DataHandler:
         """Initialize the DataHandler class.
 
         Args:
-            data_path (str): path to the data file.
-            state_labels (list): list of state labels.
-            action_labels (list): list of action labels.
-            reward_labels (list): list of reward labels.
-            n_samples (int): number of samples to extract from dataset.
+            data_path (str): Path to the data file.
+            state_labels (list): List of state labels.
+            action_labels (list): List of action labels.
+            reward_labels (list): List of reward labels.
+            n_samples (int): Number of samples to extract from dataset.
         """
-
         self.data_path = data_path
         self._n_samples = n_samples
         self.dataset = None
@@ -36,24 +39,21 @@ class DataHandler:
         self.mdp_data = None
         self.mdp_data_test = None
 
-    def prepare_data_for_engine(self,
-                                col_delimiter=',',
-                                cols_to_normalise=None):
+    def prepare_data_for_engine(self, col_delimiter=',', cols_to_normalise=None):
         """Prepare data for engine.
 
         Args:
-            col_delimiter (str): column delimiter.
-            cols_to_normalise (list): list of columns to normalise.
+            col_delimiter (str): Column delimiter.
+            cols_to_normalise (list): List of columns to normalise.
         """
         self.load_data(delimiter=col_delimiter)
-        self.preprocess_data(normalisation=True,
-                             columns_to_normalise=cols_to_normalise)
+        self.preprocess_data(normalisation=True, columns_to_normalise=cols_to_normalise)
 
     def load_data(self, delimiter=','):
         """Load data from file.
 
         Args:
-            delimiter (str): which separates columns.
+            delimiter (str): Which separates columns.
         """
         file_type = self.data_path.split('.')[-1]
         if file_type == 'csv':
@@ -70,19 +70,18 @@ class DataHandler:
                         columns_to_normalise=None,
                         train_test_split=0.2):
         """Preprocess data into state, action and reward spaces.
+
         Preprocessing applies shuffling, normalisation (if selected) and
         splits the dataset into states, actions and rewards.
-        Args: normalisation (bool): True if normalisation is to be applied.
-        columns_to_normalise (list): Columns on which to apply
-        normalisation. if left empty all columns will be normalised.
-        TODO: Extension - aggregate over a time period
 
         Args:
             normalisation (bool): True if normalisation is to be applied.
             columns_to_normalise (list): Columns on which to apply
-            normalisation. if left empty all columns will be normalised.
-            train_test_split (float): the fraction of data to be used for
-            training.
+                normalisation. If left empty all columns will be normalised.
+            train_test_split (float): The fraction of data to be used for
+                training.
+
+        TODO: Extension - aggregate over a time period
         """
         np.random.seed = 1
         self._filter_data()
@@ -97,11 +96,11 @@ class DataHandler:
             self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
         except KeyError:
             self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
-    
+
         self.mdp_data = self.mdp_data[:self._n_samples]
 
         # split into train-test
-        split_indx = int(self._n_samples*train_test_split)
+        split_indx = int(self._n_samples * train_test_split)
         self.mdp_data_test = self.mdp_data[:split_indx]
         self.mdp_data = self.mdp_data[split_indx:]
 
@@ -109,7 +108,7 @@ class DataHandler:
         """Normalise the dataset to centre with mean zero and variance one.
 
         Args:
-            cols_to_norm (list): the column names that need normalising
+            cols_to_norm (list): The column names that need normalising.
         """
         self._fit_standard_scalars()
         if cols_to_norm is None:
@@ -119,20 +118,18 @@ class DataHandler:
             self._normalised_cols.append(col)
 
     def reverse_norm(self):
-        """Reverse the normalising of the dataset.
-        """
+        """Reverse the normalising of the dataset."""
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self,
-                    split='train'):
+    def get_actions(self, split='train'):
         """Get the actions taken in the dataset.
 
         Args:
-            split (str): specifies train or test split
+            split (str): Specifies train or test split.
 
         Returns:
-            pd.DataFrame of the actions.
+            pd.DataFrame: Actions.
         """
         if split == 'train':
             return self.mdp_data['a']
@@ -142,34 +139,32 @@ class DataHandler:
         """Get the action labels.
 
         Returns:
-            list of action labels.
+            list: Action labels.
         """
         return self.action_labels
 
-    def get_rewards(self,
-                    split='train'):
+    def get_rewards(self, split='train'):
         """Get the rewards taken in the dataset.
 
         Args:
-            split (str): specifies train or test split
+            split (str): Specifies train or test split.
         
         Returns:
-            pd.DataFrame of the rewards.
+            pd.DataFrame: The rewards.
         """
         if split == 'train':
             return self.mdp_data['r']
         else:
             return self.mdp_data_test['r']
 
-    def get_states(self,
-                   split='train'):
+    def get_states(self, split='train'):
         """Get the states taken in the dataset.
 
         Args:
-            split (str): specifies train or test split
+            split (str): Specifies train or test split.
         
         Returns:
-            pd.DataFrame of the states.
+            pd.DataFrame: The states.
         """
         if split == 'train':
             return self.mdp_data['s']
@@ -177,29 +172,24 @@ class DataHandler:
             return self.mdp_data_test['s']
 
     def _filter_data(self):
-        """Filter the dataset.
-        """
+        """Filter the dataset."""
         self.dataset = self.dataset.dropna()
 
     def _transform_col(self, col_name: str):
-        """Normalise one column of the dataset.
-        """
+        """Normalise one column of the dataset."""
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
 
     def _inverse_transform_col(self, col_name: str):
-        """Reverse the normalisation of one column of the dataset.
-        """
+        """Reverse the normalisation of one column of the dataset."""
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
             pd.DataFrame(self.dataset[col_name]))
 
     def _fit_standard_scalars(self):
-        """Train the sklearn MinMaxScaler and store one per column.
-
-        TODO: fit only using train data and not test data
-        """
+        """Train the sklearn MinMaxScaler and store one per column."""
+        # TODO: fit only using train data and not test data
         for col in self.dataset:
             scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))

@@ -65,8 +65,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tests.test_explainability.test_shap_values</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">unittest</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.explainability.shap_values</span> <span class="kn">import</span> <span class="n">ShapValues</span>
 <span class="kn">from</span> <span class="nn">src.foundation.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
 <span class="kn">from</span> <span class="nn">src.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
@@ -106,16 +107,6 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Test creation of ShapValues object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">shap_values</span><span class="p">,</span> <span class="n">ShapValues</span><span class="p">)</span></div>
-
-    <span class="c1"># TODO not possible to add test since the sample may not be visited by the agent (ValueError)</span>
-    <span class="c1"># def test_compute_shap_values(self):</span>
-    <span class="c1">#     &quot;&quot;&quot;Test compute_shap_values method.</span>
-    <span class="c1">#     &quot;&quot;&quot;</span>
-    <span class="c1">#     shaps, predicted_action = self.shap_values.compute_shap_values()</span>
-    <span class="c1">#</span>
-    <span class="c1">#     assert isinstance(shaps, dict)</span>
-    <span class="c1">#     assert isinstance(predicted_action, float)</span>
-    <span class="c1">#     assert len(shaps) == len(self.shap_values.features)</span>
 
 <div class="viewcode-block" id="TestShapValues.test_verify_sample_length"><a class="viewcode-back" href="../../../tests.test_explainability.html#tests.test_explainability.test_shap_values.TestShapValues.test_verify_sample_length">[docs]</a>    <span class="k">def</span> <span class="nf">test_verify_sample_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Test verify_sample_length method.</span>

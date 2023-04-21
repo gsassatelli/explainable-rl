@@ -65,15 +65,13 @@
            <div itemprop="articleBody">
              
   <h1>Source code for main</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Import functions</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.foundation.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
 <span class="kn">from</span> <span class="nn">src.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
 <span class="kn">from</span> <span class="nn">src.explainability.pdp</span> <span class="kn">import</span> <span class="n">PDP</span>
 <span class="kn">from</span> <span class="nn">src.explainability.shap_values</span> <span class="kn">import</span> <span class="n">ShapValues</span>
-
-<span class="c1"># Import packages</span>
-<span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
 
 <div class="viewcode-block" id="run_all"><a class="viewcode-back" href="../main.html#main.run_all">[docs]</a><span class="k">def</span> <span class="nf">run_all</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plots</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
@@ -180,7 +178,6 @@
                    <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">],</span>
         <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">price_bin</span> <span class="o">/</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">price_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)],</span>
         <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="c1"># TODO: these correspond to the states and actions. Probably should change to a dict.</span>
         <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">],</span>
         <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
             <span class="s1">&#39;lead_time&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
@@ -215,7 +212,6 @@
             <span class="s1">&#39;revenue&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
         <span class="p">},</span>
         <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="c1"># TODO: these correspond to the states and actions. Probably should change to a dict.</span>
         <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
         <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/kaggle-dummy-dataset/train.csv&#39;</span><span class="p">,</span>
         <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
@@ -232,7 +228,6 @@
         <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>
                    <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">],</span>
         <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="c1"># TODO: these correspond to the states and actions. Probably should change to a dict.</span>
         <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">],</span>
         <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
         <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
@@ -267,7 +262,7 @@
             <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
             <span class="s1">&#39;revenue&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
         <span class="p">},</span>
-        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>  <span class="c1"># TODO: these correspond to the states and actions. Probably should change to a dict.</span>
+        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
         <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">,</span>
         <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/kaggle-dummy-dataset/train.csv&#39;</span><span class="p">,</span>
         <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
@@ -281,7 +276,7 @@
     <span class="p">}</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">run_all</span><span class="p">(</span><span class="n">hyperparam_dict_ds_data_predict</span><span class="p">)</span>
+        <span class="n">run_all</span><span class="p">(</span><span class="n">hyperparam_dict_ds_data_suggest</span><span class="p">)</span>
         <span class="c1"># Run this 10 times to check everything was fine.</span>
 </pre></div>
 

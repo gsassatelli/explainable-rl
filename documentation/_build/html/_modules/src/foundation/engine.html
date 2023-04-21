@@ -65,7 +65,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for src.foundation.engine</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Import environment and agent</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import environment and agent</span>
 <span class="kn">from</span> <span class="nn">src.agents.q_learner</span> <span class="kn">import</span> <span class="n">QLearningAgent</span>
 <span class="kn">from</span> <span class="nn">src.agents.sarsa</span> <span class="kn">import</span> <span class="n">SarsaAgent</span>
 <span class="kn">from</span> <span class="nn">src.agents.sarsa_lambda</span> <span class="kn">import</span> <span class="n">SarsaLambdaAgent</span>
@@ -74,21 +76,17 @@
 <span class="kn">from</span> <span class="nn">src.environments.strategic_pricing_prediction</span> <span class="kn">import</span> <span class="n">StrategicPricingPredictionMDP</span>
 
 
-
-<span class="c1"># Import packages</span>
-<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">ipdb</span>
-
-
 <span class="c1"># TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.</span>
 <div class="viewcode-block" id="Engine"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine">[docs]</a><span class="k">class</span> <span class="nc">Engine</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define the Engine class which is responsible for creating the agent and</span>
+<span class="sd">    environment instances and running the training loop.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
 
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;dh&quot;</span><span class="p">,</span> <span class="s2">&quot;agent_type&quot;</span><span class="p">,</span> <span class="s2">&quot;env_type&quot;</span><span class="p">,</span> <span class="s2">&quot;agent&quot;</span><span class="p">,</span> <span class="s2">&quot;env&quot;</span><span class="p">,</span> <span class="s2">&quot;gamma&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;episode_flag&quot;</span><span class="p">,</span> <span class="s2">&quot;num_episodes&quot;</span><span class="p">,</span> <span class="s2">&quot;num_steps&quot;</span><span class="p">,</span> <span class="s2">&quot;policy&quot;</span><span class="p">,</span> 
                  <span class="s2">&quot;q_table&quot;</span><span class="p">,</span> <span class="s2">&quot;bins&quot;</span><span class="p">,</span> <span class="s2">&quot;train_test_split&quot;</span><span class="p">,</span> <span class="s2">&quot;agent_cumrewards&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;hist_cumrewards&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_states&quot;</span><span class="p">,</span> <span class="s2">&quot;_eval_actions&quot;</span><span class="p">,</span><span class="s2">&quot;_eval_rewards&quot;</span><span class="p">,</span>
                  <span class="s2">&quot;_eval_b_states&quot;</span><span class="p">,</span><span class="s2">&quot;_eval_state_dims&quot;</span><span class="p">,</span><span class="s2">&quot;_eval_action_dims&quot;</span><span class="p">,</span> <span class="s2">&quot;verbose&quot;</span><span class="p">]</span>
-    
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">dh</span><span class="p">,</span>
@@ -129,16 +127,24 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">=</span> <span class="n">env_type</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
 
         <span class="c1"># Parameters of the agent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span> <span class="o">=</span> <span class="kc">None</span>
 
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
+        <span class="c1"># Parameters for evaluation</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_cumrewards</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hist_cumrewards</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_states</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_b_states</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_actions</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_rewards</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_state_dims</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_action_dims</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="Engine.create_world"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_world">[docs]</a>    <span class="k">def</span> <span class="nf">create_world</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the Agent and MDP instances for the given task.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Create chosen environment</span>
         <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Initialize environment&quot;</span><span class="p">)</span>
@@ -150,7 +156,6 @@
 
 <div class="viewcode-block" id="Engine.create_agent"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_agent">[docs]</a>    <span class="k">def</span> <span class="nf">create_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an agent and store it in Engine.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Initialize agent</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent_type</span> <span class="o">==</span> <span class="s2">&quot;q_learner&quot;</span><span class="p">:</span>
@@ -179,10 +184,8 @@
 
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">create_tables</span><span class="p">()</span></div>
 
-
 <div class="viewcode-block" id="Engine.create_env"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.create_env">[docs]</a>    <span class="k">def</span> <span class="nf">create_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create an env and store it in Engine.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Initialize environment</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">==</span> <span class="s2">&quot;strategic_pricing_predict&quot;</span><span class="p">:</span>
@@ -215,17 +218,8 @@
                 <span class="bp">self</span><span class="o">.</span><span class="n">agent_cumrewards</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_total_agent_reward</span><span class="p">())</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">hist_cumrewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_evaluate_total_hist_reward</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Engine.get_results"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.get_results">[docs]</a>    <span class="k">def</span> <span class="nf">get_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the results of training.</span>
-
-<span class="sd">        TODO: Next sprint to compare 2 agents</span>
-<span class="sd">              This could be the average return after convergence.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">pass</span></div>
-
 <div class="viewcode-block" id="Engine.save_parameters"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.save_parameters">[docs]</a>    <span class="k">def</span> <span class="nf">save_parameters</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Save the parameters learned during training.</span>
-
 <span class="sd">        This could be e.g. the q-values, the policy, or any other learned parameters.</span>
 
 <span class="sd">        TODO: Not sure this function is needed, can call directly agent</span>
@@ -235,7 +229,6 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">policy</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">q_table</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">q_table</span></div>
 
-    
 <div class="viewcode-block" id="Engine._inverse_scale_feature"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine._inverse_scale_feature">[docs]</a>    <span class="k">def</span> <span class="nf">_inverse_scale_feature</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                                <span class="n">values</span><span class="p">,</span>
                                <span class="n">labels</span><span class="p">):</span>
@@ -263,6 +256,8 @@
             <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">squeeze</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">i_values</span></div>
 
+    <span class="c1"># TODO: From Giulia, for when we do the clean up, do we need to keep this here or can we put it in the evaluator?</span>
+    <span class="c1"># TODO: Since it&#39;s part of the evaluation is better maybe</span>
 <div class="viewcode-block" id="Engine.build_evaluation"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.build_evaluation">[docs]</a>    <span class="k">def</span> <span class="nf">build_evaluation</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot; Save data for evaluation. &quot;&quot;&quot;</span>
         <span class="c1"># Get test data from data handler</span>
@@ -270,10 +265,10 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_actions</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_rewards</span><span class="p">(</span><span class="n">split</span><span class="o">=</span><span class="s1">&#39;test&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
-        <span class="c1"># get state and action indexes</span>
+        <span class="c1"># Get state and action indexes</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_state_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_dim</span><span class="p">))</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_action_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_dim</span><span class="p">,</span> 
-                                    <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_dim</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">action_dim</span><span class="p">))</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_eval_action_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_dim</span><span class="p">,</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_dim</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">action_dim</span><span class="p">))</span>
         <span class="c1"># Get the binned states</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_eval_b_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bin_states</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_states</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">_eval_state_dims</span><span class="p">)</span></div>
 
@@ -295,7 +290,7 @@
         
         <span class="c1"># Inverse scale agent rewards</span>
         <span class="n">rewards_agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">)</span>
     
@@ -314,7 +309,7 @@
 
         <span class="c1"># Inverse scale agent rewards</span>
         <span class="n">rewards_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">)</span>
 
@@ -336,7 +331,7 @@
         
         <span class="c1"># Inverse scale agent rewards</span>
         <span class="n">rewards_agent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">)</span></div>
     
@@ -355,13 +350,12 @@
 
         <span class="c1"># Inverse scale agent rewards</span>
         <span class="n">rewards_hist</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
 
         <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="Engine.evaluate_agent"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.evaluate_agent">[docs]</a>    <span class="k">def</span> <span class="nf">evaluate_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the learned policy for the test states</span>
-
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Evaluate the learned policy for the test states.</span>
 <span class="sd">        Rewards are calculated using the average reward matrix.</span>
 
 <span class="sd">        Args:</span>
@@ -393,7 +387,7 @@
         <span class="c1"># Get the binned states</span>
         <span class="n">b_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bin_states</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">state_dims</span><span class="p">)</span>
         <span class="c1"># Inverse scaling</span>
-        <span class="n">states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_state_labels</span><span class="p">)</span>
+        <span class="n">states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">state_labels</span><span class="p">)</span>
 
         <span class="c1"># Get the binned actions</span>
         <span class="n">b_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bin_states</span><span class="p">(</span><span class="n">actions</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">action_dims</span><span class="p">)</span>
@@ -412,15 +406,15 @@
 
         <span class="c1">#  Apply inverse scaling to actions, states, and rewards</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">states</span><span class="p">,</span>
-                                            <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_state_labels</span><span class="p">)</span>
+                                            <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">state_labels</span><span class="p">)</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;actions_hist&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">actions</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_action_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">action_labels</span><span class="p">)</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;actions_agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">actions_agent</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_action_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">action_labels</span><span class="p">)</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;rewards_hist&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;rewards_agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_inverse_scale_feature</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">,</span>
-                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">_reward_labels</span><span class="p">)</span>
+                                                    <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">)</span>
         
         <span class="c1"># Save additional arrays</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;b_actions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b_actions</span>

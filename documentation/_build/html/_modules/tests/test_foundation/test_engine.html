@@ -65,7 +65,9 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tests.test_foundation.test_engine</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">unittest</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.foundation.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
 <span class="kn">from</span> <span class="nn">src.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
 <span class="kn">from</span> <span class="nn">src.agents.q_learner</span> <span class="kn">import</span> <span class="n">QLearningAgent</span>
@@ -74,14 +76,16 @@
 <span class="kn">from</span> <span class="nn">src.agents.double_q_learner</span> <span class="kn">import</span> <span class="n">DoubleQLearner</span>
 <span class="kn">from</span> <span class="nn">src.environments.strategic_pricing_prediction</span> <span class="kn">import</span> <span class="n">StrategicPricingPredictionMDP</span>
 <span class="kn">from</span> <span class="nn">src.environments.strategic_pricing_suggestion</span> <span class="kn">import</span> <span class="n">StrategicPricingSuggestionMDP</span>
-<span class="kn">import</span> <span class="nn">copy</span>
+
 
 <div class="viewcode-block" id="TestEngine"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine">[docs]</a><span class="k">class</span> <span class="nc">TestEngine</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test the Engine class.&quot;&quot;&quot;</span>
 
     <span class="n">dh</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="TestEngine.setUpClass"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.setUpClass">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the data handler for the tests.&quot;&quot;&quot;</span>
         <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">]</span>
         <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span>
         <span class="n">rewards</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;revenue&#39;</span><span class="p">]</span>
@@ -90,6 +94,7 @@
         <span class="bp">cls</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">prepare_data_for_engine</span><span class="p">(</span><span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">cols_to_normalise</span><span class="o">=</span><span class="n">states</span> <span class="o">+</span> <span class="n">actions</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestEngine.setUp"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up the engine for the tests.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="p">,</span>
                              <span class="n">agent_type</span><span class="o">=</span><span class="s2">&quot;q_learner&quot;</span><span class="p">,</span>
                              <span class="n">env_type</span><span class="o">=</span><span class="s2">&quot;strategic_pricing_predict&quot;</span><span class="p">,</span>
@@ -98,9 +103,11 @@
                              <span class="n">num_steps</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestEngine.tearDown"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tear down the engine after the tests.&quot;&quot;&quot;</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">engine</span></div>
 
 <div class="viewcode-block" id="TestEngine.test_create_world_agents"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.test_create_world_agents">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_world_agents</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the create_world method with different agent types.&quot;&quot;&quot;</span>
         <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;q_learner&quot;</span><span class="p">,</span> <span class="s2">&quot;sarsa&quot;</span><span class="p">,</span> <span class="s2">&quot;sarsa_lambda&quot;</span><span class="p">,</span> <span class="s2">&quot;double_q_learner&quot;</span><span class="p">]</span>
         <span class="n">types_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q_learner&quot;</span><span class="p">:</span> <span class="n">QLearningAgent</span><span class="p">,</span>
                         <span class="s2">&quot;sarsa&quot;</span><span class="p">:</span> <span class="n">SarsaAgent</span><span class="p">,</span>
@@ -114,6 +121,7 @@
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">StrategicPricingPredictionMDP</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestEngine.test_create_agent"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.test_create_agent">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the create_agent method with different agent types.&quot;&quot;&quot;</span>
         <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;q_learner&quot;</span><span class="p">,</span> <span class="s2">&quot;sarsa&quot;</span><span class="p">,</span> <span class="s2">&quot;sarsa_lambda&quot;</span><span class="p">,</span> <span class="s2">&quot;double_q_learner&quot;</span><span class="p">]</span>
         <span class="n">types_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;q_learner&quot;</span><span class="p">:</span> <span class="n">QLearningAgent</span><span class="p">,</span>
                       <span class="s2">&quot;sarsa&quot;</span><span class="p">:</span> <span class="n">SarsaAgent</span><span class="p">,</span>
@@ -128,6 +136,7 @@
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">StrategicPricingPredictionMDP</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestEngine.test_create_env"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.test_create_env">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the create_env method with different env types.&quot;&quot;&quot;</span>
         <span class="n">types</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;strategic_pricing_predict&quot;</span><span class="p">,</span> <span class="s2">&quot;strategic_pricing_suggest&quot;</span><span class="p">]</span>
         <span class="n">types_dict</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;strategic_pricing_predict&quot;</span><span class="p">:</span> <span class="n">StrategicPricingPredictionMDP</span><span class="p">,</span>
                       <span class="s2">&quot;strategic_pricing_suggest&quot;</span><span class="p">:</span> <span class="n">StrategicPricingSuggestionMDP</span><span class="p">}</span>
@@ -140,6 +149,7 @@
             <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="p">,</span> <span class="n">QLearningAgent</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestEngine.test_train_agent"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.test_train_agent">[docs]</a>    <span class="k">def</span> <span class="nf">test_train_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test the train_agent method.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">create_world</span><span class="p">()</span>
         <span class="n">original_q</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">engine</span><span class="o">.</span><span class="n">train_agent</span><span class="p">()</span>
@@ -166,6 +176,8 @@
 
 <div class="viewcode-block" id="TestEngine.test_evaluate_agent"><a class="viewcode-back" href="../../../tests.test_foundation.html#tests.test_foundation.test_engine.TestEngine.test_evaluate_agent">[docs]</a>    <span class="k">def</span> <span class="nf">test_evaluate_agent</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">pass</span></div></div>
+
+    <span class="c1"># TODO: from Giulia, do we need to test this?</span>
 
 
 

@@ -65,8 +65,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for tests.test_environments.test_strategic_pricing_suggestion</h1><div class="highlight"><pre>
-<span></span><span class="c1"># Import package</span>
-<span class="kn">import</span> <span class="nn">unittest</span>
+<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
 
 <span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
@@ -74,11 +73,13 @@
 
 
 <div class="viewcode-block" id="TestStrategicPricingSuggestionMDP"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP">[docs]</a><span class="k">class</span> <span class="nc">TestStrategicPricingSuggestionMDP</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test StrategicPricingSuggestionMDP class.&quot;&quot;&quot;</span>
 
     <span class="n">dh</span> <span class="o">=</span> <span class="kc">None</span>
 
 <div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.setUpClass"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.setUpClass">[docs]</a>    <span class="nd">@classmethod</span>
     <span class="k">def</span> <span class="nf">setUpClass</span><span class="p">(</span><span class="bp">cls</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up test fixtures, if any.&quot;&quot;&quot;</span>
         <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">]</span>
         <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">price_bin</span><span class="o">/</span><span class="mi">10</span> <span class="k">for</span> <span class="n">price_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)]</span>
         <span class="n">rewards</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;revenue&#39;</span><span class="p">]</span>
@@ -88,13 +89,18 @@
                                        <span class="n">cols_to_normalise</span><span class="o">=</span><span class="n">states</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.setUp"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up test fixtures, if any.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">StrategicPricingSuggestionMDP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.tearDown"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tear down test fixtures, if any.&quot;&quot;&quot;</span>
         <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span></div>
 
 <div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_type"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_type">[docs]</a>    <span class="k">def</span> <span class="nf">test_type</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test type of StrategicPricingSuggestionMDP.&quot;&quot;&quot;</span>
         <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="p">,</span> <span class="n">StrategicPricingSuggestionMDP</span><span class="p">)</span></div></div>
+
+    <span class="c1"># TODO: From Giulia, maybe we need to add more tests here</span>
         
 </pre></div>
 
