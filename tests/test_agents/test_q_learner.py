@@ -54,4 +54,3 @@ class TestQLearningAgent(TestTD):
         self.agent.fit(n_episodes=1, n_steps=1)
         assert self.agent.Q.shape == original_Q.shape
         assert self.agent.Q != original_Q
-

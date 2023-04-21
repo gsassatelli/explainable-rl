@@ -84,9 +84,9 @@ class TD(Agent):
         """Get the epsilon greedy action.
 
         Args:
-            state (list): Current state of the agent.
-            state_str (string): Rhe state as a string.
-            epsilon (float): The exploration parameter.
+            state (list): current state of the agent.
+            epsilon (float): the exploration parameter.
+            Q (np.array): q-table.
 
         Returns:
             action (int): Selected action.
@@ -155,13 +155,15 @@ class TD(Agent):
             
             # Get weights given population for state-action space
             # N.B. A high value represents a well-known, certain state
-            uncertainty_weights = {key: float(value)/sum(state_action_counts.values()) for (key, value) in state_action_counts.items()}
+            uncertainty_weights = {key: float(value)/sum(state_action_counts.values())
+                                   for (key, value) in state_action_counts.items()}
 
             if random.random() > epsilon:  # Exploring
                 action = np.random.choice(list(possible_actions))
             else:  # Exploiting
                 for possible_action in possible_actions:
-                    score = q_importance * q_values_weights[possible_action] + (1 - q_importance) * uncertainty_weights[possible_action]
+                    score = q_importance * q_values_weights[possible_action] + \
+                            (1 - q_importance) * uncertainty_weights[possible_action]
                     action_scores = {possible_action: score}
                 action = np.argmax(list(action_scores.values()))
         else:
@@ -200,10 +202,8 @@ class TD(Agent):
                                                   epsilon=epsilon,
                                                   use_uncertainty=False,
                                                   q_importance=0.7)
-
         
-        state, next_state, reward, done = self.env.step(self.state,
-                                                        action)
+        state, next_state, reward, done = self.env.step(self.state, action)
         self._update_q_values(state=state,
                               action=action,
                               next_state=next_state,

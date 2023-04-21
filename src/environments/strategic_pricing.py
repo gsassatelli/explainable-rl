@@ -6,7 +6,6 @@ import sparse
 
 
 class StrategicPricing(MDP):
-
     __slots__ = ["dh", "_average_rewards", "num_bins", "state_to_action", "bins_dict", "ix", "_state_mdp_data",
                  "_action_mdp_data", "_reward_mdp_data", "bins", 'state_dim', 'action_dim']
 
@@ -25,6 +24,7 @@ class StrategicPricing(MDP):
         self._state_mdp_data = None
         self._action_mdp_data = None
         self._reward_mdp_data = None
+        self._average_rewards = None
         self.bins_dict = None
 
         self.state_dim = self.dh.get_states().shape[1]

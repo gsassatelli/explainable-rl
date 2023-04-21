@@ -48,8 +48,3 @@ class SarsaLambdaAgent(TD):
         for index in indices:
             self.Q[index] += lr * delta * self.e[index]
             self.e[index] *= self.gamma * self.lambda_
-
-
-
-
-

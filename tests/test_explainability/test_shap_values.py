@@ -109,4 +109,3 @@ class TestShapValues(unittest.TestCase):
         assert isinstance(result_wrong, bool)
         assert result_correct == False
         assert result_wrong == True
-

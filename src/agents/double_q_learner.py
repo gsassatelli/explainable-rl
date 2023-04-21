@@ -104,4 +104,3 @@ class DoubleQLearner(TD):
 
         Q_a[index_current] += lr * (reward + self.gamma * q_next - q_current)
         self.Q_num_samples[index_current] += 1
-

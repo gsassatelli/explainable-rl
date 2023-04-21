@@ -38,7 +38,7 @@ class Agent:
 
         Args:
             state (int): State.
-            epsilon (float): Epislon of epislon-greedy policy.
+            epsilon (float): Epsilon of epsilon-greedy policy.
                 Defaults to 0 for pure exploitation.
         """
         raise NotImplementedError
@@ -46,11 +46,11 @@ class Agent:
     def predict_actions(self,
                         states,
                         epsilon=0):
-        """ Predict action for a list of states using epislon-greedy policy.
+        """ Predict action for a list of states using epsilon-greedy policy.
 
         Args:
             states (list): States (binned).
-            epislon (float): Epislon of epislon-greedy policy.
+            epsilon (float): Epsilon of epsilon-greedy policy.
                 Defaults to 0 for pure exploitation.
 
         Returns:

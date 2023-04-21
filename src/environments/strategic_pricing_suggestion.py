@@ -29,8 +29,6 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
 
         return bins_dict
 
-
-
     def _make_rewards_from_data(self):
         """Create sparse matrix of the state-action pairs and associated rewards from the inputted dataset.
 

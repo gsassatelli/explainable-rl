@@ -95,7 +95,6 @@ class TestDataHandler(unittest.TestCase):
             decimals=2).astype('float64')
         assert target.equals(result)
 
-
     def test_fit_standard_scalars(self):
         """Test fit_standard_scalars method."""
         self.dh._fit_standard_scalars()

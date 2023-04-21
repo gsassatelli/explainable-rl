@@ -94,5 +94,3 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         self._state_mdp_data = self.dh.get_states().to_numpy()
         self._action_mdp_data = self.dh.get_actions().to_numpy()
         self._reward_mdp_data = self.dh.get_rewards().to_numpy()
-
-

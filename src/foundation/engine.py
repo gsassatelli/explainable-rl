@@ -18,8 +18,8 @@ class Engine:
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", 
                  "q_table", "bins", "train_test_split", "agent_cumrewards",
-                 "hist_cumrewards", "_eval_states", "_eval_actions","_eval_rewards",
-                 "_eval_b_states","_eval_state_dims","_eval_action_dims", "verbose"]
+                 "hist_cumrewards", "_eval_states", "_eval_actions", "_eval_rewards",
+                 "_eval_b_states", "_eval_state_dims", "_eval_action_dims", "verbose"]
 
     def __init__(self, 
                  dh,
@@ -28,7 +28,6 @@ class Engine:
                  num_episodes,
                  num_steps,
                  bins,
-                 train_test_split=0.2,
                  gamma=0.9,
                  verbose=False):
         """Initilize engine class.
@@ -42,7 +41,6 @@ class Engine:
             bins (list): List of bins per state/action to discretize the state
                         space.
             gamma (float): Discount factor
-            train_test_split (float): proportion of test data
         """
         # Save data handler
         self.dh = dh

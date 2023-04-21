@@ -36,4 +36,3 @@ class QLearningAgent(TD):
         self.Q[index_current] = \
             q_current + lr * (reward + self.gamma * q_next - q_current)
         self.Q_num_samples[index_current] += 1
-

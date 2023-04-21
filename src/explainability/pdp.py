@@ -115,7 +115,6 @@ class PDP:
     def plot_pdp(self,
                  states_names,
                  fig_name,
-                 type_features,
                  savefig=True,
                  all_states=True):
         """Build PDP plots.
@@ -124,8 +123,6 @@ class PDP:
         Args:
             states_names (list): list of state dimensions column names
             fig_name (str): figure name to save plot.
-            type_features (dict): type of variable per each state dimension.
-                Information used to choose how to plot each PDP.
             savefig (bool): bool to choose whether to save the plot.
             all_states (bool): bool to choose whether to plot the unvisited states.
         """
@@ -150,11 +147,7 @@ class PDP:
                 samples = np.array([samples[idx] for idx, s in enumerate(total_samples) if s > 0])
 
             axis[0].grid(zorder=0)
-            # if type_features[state] == "continuous":
-            if True:
-                axis[0].plot(states, actions, marker="o", color='b', zorder=3)
-            else:
-                axis[0].bar(x=states, height=actions, color='b', zorder=3)
+            axis[0].plot(states, actions, marker="o", color='b', zorder=3)
             axis[0].set(xlabel=f"State dimension {state}", ylabel="Actions")
 
             # Super-impose number of samples plot
@@ -162,12 +155,6 @@ class PDP:
             axis[1].bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
             axis[1].set(ylabel='Num. of samples')
             axis[1].legend()
-            # Super-impose the distribution over the actions
-            """
-            ipdb.set_trace()
-            for i, txt in enumerate(len):
-                ax.annotate(txt, (z[i], y[i]))
-            """
 
         plt.subplots_adjust(top=0.99, bottom=0.1, hspace=0.5, wspace=0.4)
 
