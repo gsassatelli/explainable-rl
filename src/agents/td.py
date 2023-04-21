@@ -202,7 +202,7 @@ class TD(Agent):
         """
         action = self.uncertainty_informed_policy(self.state,
                                                   epsilon=epsilon,
-                                                  use_uncertainty=True, # TODO: readd parameter
+                                                  use_uncertainty=False, # TODO: readd parameter
                                                   q_importance=0.7)
         
         state, next_state, reward, done = self.env.step(self.state, action)

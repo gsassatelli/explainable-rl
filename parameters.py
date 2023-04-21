@@ -2,6 +2,7 @@ hyperparam_dict_ds_data_suggest = {
     'states': ['lead_time', 'length_of_stay',
                'competitor_price_difference_bin', 'demand_bin', 'price'],
     'actions': [price_bin / 10 for price_bin in range(1, 11)],
+    'actions': ['price'],
     'bins': [10, 10, 4, 4, 10, 10],
     'rewards': ['reward'],
     'n_samples': 1000,
@@ -31,8 +32,6 @@ hyperparam_dict_ds_data_suggest = {
     "normalisation": True,
     "verbose": True,
 }
-
-# TODO: add all hyperparameters in the code
 
 # TODO: change actions so that they are always e.g. 'price' and if env_type == suggest then action is the price bins.
 # TODO: state definitions become a dictionary with state: number of bins, then in Engine we convert this into lists.

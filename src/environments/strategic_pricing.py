@@ -32,6 +32,8 @@ class StrategicPricing(MDP):
         self.action_dim = len(self.dh.get_action_labels())
 
         if len(bins) != self.state_dim + 1:
+            print("Warning: bins not equal to state_dim + 1. "
+                  "Setting bins to [10] * (state_dim + 1)")
             self.bins = [10] * (self.state_dim + 1)
         else:
             self.bins = bins
