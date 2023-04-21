@@ -1,16 +1,10 @@
 hyperparam_dict_ds_data_suggest = {
-    'states': ['lead_time', 'length_of_stay',
-               'competitor_price_difference_bin', 'demand_bin', 'price'],
-    'actions': [price_bin / 10 for price_bin in range(1, 11)],
-    'actions': ['price'],
-    'bins': [10, 10, 4, 4, 10, 10],
+    'states': {'lead_time': 10, 'length_of_stay': 10, 'competitor_price_difference_bin': 4, 'demand_bin': 4, 'price': 4},
+    'actions': {'price': 10},
     'rewards': ['reward'],
     'n_samples': 1000,
     'data_path': 'data/ds-data/my_example_data.parquet',
     'col_delimiter': '|',
-    'cols_to_normalise': ['lead_time', 'length_of_stay',
-                          'competitor_price_difference_bin', 'demand_bin',
-                          'price', 'reward'],  # TODO: remove this and normalise everything
     'agent_type': 'q_learner',
     'env_type': 'strategic_pricing_suggest',
     'num_episodes': 500,
@@ -32,9 +26,6 @@ hyperparam_dict_ds_data_suggest = {
     "normalisation": True,
     "verbose": True,
 }
-
-# TODO: change actions so that they are always e.g. 'price' and if env_type == suggest then action is the price bins.
-# TODO: state definitions become a dictionary with state: number of bins, then in Engine we convert this into lists.
 
 # TODO: change the datahandler and engine so they just take the hyperparam dict as an argument
 
