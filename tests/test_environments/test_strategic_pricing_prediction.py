@@ -1,25 +1,11 @@
 from library import *
+from tests.test_environments.test_strategic_pricing import TestStrategicPricing
+from src.environments.strategic_pricing_prediction import \
+    StrategicPricingPredictionMDP
 
-# Import functions
-from src.data_handler.data_handler import DataHandler
-from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
-
-class TestStrategicPricingPredictionMDP(unittest.TestCase):
+class TestStrategicPricingPredictionMDP(TestStrategicPricing):
     """Test StrategicPricingPredictionMDP class."""
-
-    dh = None
-
-    @classmethod
-    def setUpClass(cls) -> None:
-        """Set up test fixtures, if any."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        cls.dh.prepare_data_for_engine(col_delimiter=',',
-                                       cols_to_normalise=states+actions)
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
@@ -28,10 +14,6 @@ class TestStrategicPricingPredictionMDP(unittest.TestCase):
     def tearDown(self) -> None:
         """Tear down test fixtures, if any."""
         del self.env
-
-    def test_type(self):
-        """Test type of StrategicPricingPredictionMDP."""
-        assert isinstance(self.env, StrategicPricingPredictionMDP)
 
     def test_transform_df_to_numpy(self):
         """Test transform_df_to_numpy method."""
@@ -45,15 +27,6 @@ class TestStrategicPricingPredictionMDP(unittest.TestCase):
         assert np.array_equal(target_states, result_states)
         assert np.array_equal(target_actions, result_actions)
         assert np.array_equal(target_rewards, result_reward)
-
-    def test_join_state_action(self):
-        """Test join_state_action method."""
-        self.env._state_mdp_data = np.array([[1, 2, 3], [4, 5, 6]])
-        self.env._action_mdp_data = np.array([[1], [2]])
-        self.env._reward_mdp_data = np.array([[1], [2]])
-        result = self.env._join_state_action()
-        target = np.array([[1, 2, 3, 1], [4, 5, 6, 2]])
-        assert np.array_equal(result, target)
 
     def test_bin_state_action_space(self):
         """Test bin_state_action_space method."""

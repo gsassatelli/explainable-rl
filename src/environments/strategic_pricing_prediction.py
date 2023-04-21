@@ -6,6 +6,10 @@ class StrategicPricingPredictionMDP(StrategicPricing):
     """Defines and instantiates the MDP object for Strategic Pricing.
     """
 
+    def __init__(self, dh, bins=None):
+        super().__init__(self, dh=dh, bins=bins)
+        self.initialise_env()
+
     def _get_counts_and_rewards_per_bin(self, binned):
         """Create a dictionary of counts of datapoints per bin and sum the associated rewards.
 
