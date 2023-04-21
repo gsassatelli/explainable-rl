@@ -42,7 +42,6 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
                     bins=hyperparam_dict['bins'],
-                    train_test_split=hyperparam_dict['train_test_split']
                     )
 
     # Create world
@@ -209,5 +208,5 @@ if __name__ == "__main__":
     }
 
     for i in range(1):
-        run_all(hyperparam_dict_ds_data_suggest)
+        run_all(hyperparam_dict_ds_data_predict)
         # Run this 10 times to check everything was fine.

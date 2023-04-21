@@ -23,13 +23,14 @@ class TD(Agent):
         self.Q_num_samples = None
         self.state = None
 
-    def fit(self, n_episodes, n_steps, lr=0.1, lr_decay=0.05, lr_min=0.01,
+    def fit(self, n_episodes, n_steps, use_uncertainty, lr=0.1, lr_decay=0.05, lr_min=0.01,
             epsilon=0.1, epsilon_decay=0.05, epsilon_min=0.01, verbose=False):
         """Fit agent to the dataset.
 
         Args:
             n_episodes (int): Number of episodes.
             n_steps (int): Number of steps per episode.
+            use_uncertainty (bool): Use uncertainty in q-table.
             lr (float): Learning rate.
             lr_decay (float): Learning rate decay.
             lr_min (float): Minimum learning rate.
@@ -46,7 +47,7 @@ class TD(Agent):
             self.state = self.env.reset()
 
             for i in range(n_steps):
-                done = self._step(epsilon=epsilon, lr=lr)
+                done = self._step(epsilon=epsilon, lr=lr, use_uncertainty=use_uncertainty)
                 if done:
                     break
             lr = decay_param(lr, lr_decay, lr_min)
@@ -188,19 +189,20 @@ class TD(Agent):
         self.Q = sparse.DOK(self.env.bins)
         self.Q_num_samples = sparse.DOK(self.env.bins)
 
-    def _step(self, epsilon, lr):
+    def _step(self, epsilon, lr, use_uncertainty):
         """Perform a step in the environment.
 
         Args:
             epsilon (float): Epsilon-greedy policy parameter.
             lr (float): Learning rate.
+            use_uncertainty (bool): Whether to use uncertainty informed policy.
 
         Returns:
             bool: Defines whether the episode is finished.
         """
         action = self.uncertainty_informed_policy(self.state,
                                                   epsilon=epsilon,
-                                                  use_uncertainty=False,
+                                                  use_uncertainty=use_uncertainty,
                                                   q_importance=0.7)
         
         state, next_state, reward, done = self.env.step(self.state, action)
