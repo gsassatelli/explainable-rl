@@ -29,8 +29,12 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         pass
 
     def test_step(self):
-        pass
-    
+        state = [1, 2, 3]
+        action = 2
+        result = self.env.step(state, action)
+        assert len(result) == 4
+        assert result == (state, [1, 2, 3], 0.0, True)
+
     def test_find_next_state(self):
         state = [1, 2, 3]
         action = 2
