@@ -7,12 +7,33 @@ from src.explainability.pdp import PDP
 from src.explainability.shap_values import ShapValues
 
 
+def load_data(path, delimiter=','):
+    """Load data from file.
+
+    Args:
+        delimiter (str): Which separates columns.
+    """
+    file_type = path.split('.')[-1]
+    if file_type == 'csv':
+        dataset = pd.read_csv(path, sep=delimiter)
+    elif file_type == 'xlsx':
+        dataset = pd.read_excel(path)
+    elif file_type == 'parquet':
+        dataset = pd.read_parquet(path)
+    else:
+        raise ValueError("File type not supported")
+
+    return dataset
+
+
 def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Load data
+    dataset = load_data(hyperparam_dict['dataset']['data_path'],
+                        delimiter=hyperparam_dict['dataset']['col_delimiter'])
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
 
-    dh = DataHandler(hyperparam_dict=hyperparam_dict)
+    dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
 
     # Preprocess the data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")

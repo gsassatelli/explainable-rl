@@ -5,6 +5,7 @@ class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
     def __init__(self,
+                 dataset,
                  hyperparam_dict):
         """Initialise the DataHandler.
 
@@ -15,10 +16,10 @@ class DataHandler:
             reward_labels (list): List of reward labels.
             n_samples (int): Number of samples to extract from dataset.
         """
+        self.dataset = dataset
         self.hyperparam_dict = hyperparam_dict
         self.data_path = hyperparam_dict['dataset']['data_path']
         self._n_samples = hyperparam_dict['dataset']['n_samples']
-        self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
         self.state_labels = self._get_labels(hyperparam_dict['dimensions']['states'])
@@ -40,26 +41,26 @@ class DataHandler:
                 self.reward_labels))
         if col_delimiter is None:
             col_delimiter = self.hyperparam_dict['dataset']['col_delimiter']
-        self.load_data(delimiter=col_delimiter)
+        # self.load_data(delimiter=col_delimiter)
 
         self.preprocess_data(normalisation=self.hyperparam_dict['dataset']['normalisation'],
                              columns_to_normalise=cols_to_normalise)
 
-    def load_data(self, delimiter=','):
-        """Load data from file.
-
-        Args:
-            delimiter (str): Which separates columns.
-        """
-        file_type = self.data_path.split('.')[-1]
-        if file_type == 'csv':
-            self.dataset = pd.read_csv(self.data_path, sep=delimiter)
-        elif file_type == 'xlsx':
-            self.dataset = pd.read_excel(self.data_path)
-        elif file_type == 'parquet':
-            self.dataset = pd.read_parquet(self.data_path)
-        else:
-            raise ValueError("File type not supported")
+    # def load_data(self, delimiter=','):
+    #     """Load data from file.
+    #
+    #     Args:
+    #         delimiter (str): Which separates columns.
+    #     """
+    #     file_type = self.data_path.split('.')[-1]
+    #     if file_type == 'csv':
+    #         self.dataset = pd.read_csv(self.data_path, sep=delimiter)
+    #     elif file_type == 'xlsx':
+    #         self.dataset = pd.read_excel(self.data_path)
+    #     elif file_type == 'parquet':
+    #         self.dataset = pd.read_parquet(self.data_path)
+    #     else:
+    #         raise ValueError("File type not supported")
 
     def preprocess_data(self,
                         normalisation=True,
