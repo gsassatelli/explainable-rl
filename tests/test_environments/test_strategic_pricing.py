@@ -1,6 +1,8 @@
+from library import *
+
+# Import functions
 from src.data_handler.data_handler import DataHandler
 from src.environments.strategic_pricing import StrategicPricing
-from library import *
 
 
 class TestStrategicPricing(unittest.TestCase):
@@ -16,6 +18,7 @@ class TestStrategicPricing(unittest.TestCase):
         cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
         cls.dh.prepare_data_for_engine(col_delimiter=',',
                                        cols_to_normalise=states+actions)
+
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
         self.env = StrategicPricing(self.dh)
@@ -80,9 +83,3 @@ class TestStrategicPricing(unittest.TestCase):
 
     def test_get_state_to_action(self):
         pass
-
-
-
-
-
-

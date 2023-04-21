@@ -1,4 +1,6 @@
 from library import *
+
+# Import functions
 from src.environments.strategic_pricing import StrategicPricing
 
 
