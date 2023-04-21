@@ -6,7 +6,7 @@ from src.data_handler.data_handler import DataHandler
 
 
 class Evaluator:
-    """ Evaluator class to perform several experiements and show evaluation graphs."""
+    """Evaluator to perform several experiments and show evaluation graphs."""
 
     __slots__ = ["hyperparam_dict", "agent_list", "run_path", "n_runs"]
 
@@ -15,14 +15,14 @@ class Evaluator:
                  agent_list,
                  run_path,
                  n_runs=3):
-        """
-        Args:
-            hyperparam_dict: hyperparameter settings
-            agent_list (list): agents to test
-            n_runs: number of experiments to perform for each agent
-            run_path: directory to save the results
-        """
+        """Initialise the Evaluator.
 
+        Args:
+            hyperparam_dict (dict): Hyperparameter settings.
+            agent_list (list): Agents to test.
+            n_runs (int): Number of experiments to perform for each agent.
+            run_path (str): Directory to save the results.
+        """
         self.hyperparam_dict = hyperparam_dict
         self.agent_list = agent_list
         self.n_runs = n_runs
@@ -31,14 +31,14 @@ class Evaluator:
     def train_evaluate_agent(self,
                              hyperparam_dict,
                              verbose=True):
-        """ Train and evaluate agent specified by hyperparam_dict.
+        """Train and evaluate agent specified by hyperparam_dict.
 
         Args:
-            hyperparam_dict: hyperparameter settings
-            verbose: verbose flag
+            hyperparam_dict (dict): hyperparameter settings.
+            verbose (bool): Whether to print descriptive statements.
 
         Returns:
-            eval_results (dict): dictionary containing evaluation results
+            dict: Containing evaluation results.
         """
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         print(f"{timestamp}: Load data")
@@ -95,8 +95,7 @@ class Evaluator:
         return eval_results
 
     def run_all(self, verbose=False):
-        """ Trains and evaluates agents for a number of runs.
-        """
+        """ Train and evaluate agents for a number of runs."""
         # Create run directory
         run_path = self.run_path
         if not os.path.exists(run_path):
@@ -119,11 +118,10 @@ class Evaluator:
                     pickle.dump(eval_results, f)
 
     def _get_all_experiments_results(self):
-        """ Retrieves all experiment results from run path.
+        """Retrieve all experiment results from run path.
         
         Returns:
-            eval_list (list[dict]): list containing evaluation dict results
-        
+            list[dict]: Contains evaluation dict results.
         """
         eval_list = []
         files = os.listdir(self.run_path)
@@ -134,9 +132,7 @@ class Evaluator:
         return eval_list
 
     def plot_training_curve(self):
-        """ Plot the training reward for a list of runs.
-  
-        """
+        """Plot the training reward for a list of runs."""
         eval_list = self._get_all_experiments_results()
         n_eval_steps = self.hyperparam_dict['n_eval_steps']
         train_agent_reward = []
@@ -177,8 +173,7 @@ class Evaluator:
         # plt.show()
 
     def plot_reward_distribution(self):
-        """ Plot the distribution of rewards on the evaluation set.
-        """
+        """Plot the distribution of rewards on the evaluation set."""
 
         eval_list = self._get_all_experiments_results()
         n_eval_steps = self.hyperparam_dict['n_eval_steps']
