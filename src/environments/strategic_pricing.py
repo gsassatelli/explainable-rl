@@ -87,7 +87,7 @@ class StrategicPricing(MDP):
         b_states = []
         for state in states:
             b_states.append(
-                self._bin_state(state, idxs=idxs)
+                self.bin_state(state, idxs=idxs)
             )
         return b_states
 
@@ -109,7 +109,7 @@ class StrategicPricing(MDP):
             )
         return states
 
-    def _bin_state(self, state, idxs=None):
+    def bin_state(self, state, idxs=None):
         """Bin a singular state.
 
         The states are binned according to the number of bins
@@ -196,7 +196,7 @@ class StrategicPricing(MDP):
         """
         sample_ix_point = np.random.choice(np.arange(len(self._state_mdp_data)))
         state = self._state_mdp_data[sample_ix_point].tolist()
-        binned_state = self._bin_state(state)
+        binned_state = self.bin_state(state)
         return binned_state
 
     def _get_state_to_action(self, binned):
