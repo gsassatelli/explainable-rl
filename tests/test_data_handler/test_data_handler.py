@@ -6,10 +6,6 @@ from sklearn.preprocessing import MinMaxScaler
 from tests.test_hyperparams import hyperparam_dict
 
 
-pd.options.mode.chained_assignment = None 
-
-
-
 class TestDataHandler(unittest.TestCase):
     """Test DataHandler class."""
 
@@ -77,7 +73,7 @@ class TestDataHandler(unittest.TestCase):
         col_name = 'price'
         scalar = MinMaxScaler()
         target = self.target
-        target[col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
+        target.loc[:,col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
         target = target.round(decimals=2).astype('float64')[col_name]
         self.dh._fit_standard_scalars()
         self.dh._transform_col(col_name='price')
