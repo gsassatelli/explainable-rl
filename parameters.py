@@ -15,15 +15,32 @@ hyperparam_dict_ds_data_suggest = {
     'num_episodes': 500,
     'num_steps': 1,
     'train_test_split': 0.2,
-    'shap_num_samples': 1
+    'shap_num_samples': 1,
+
+    # new hyper-parameters
+    "gamma": 0.3,
+    "epsilon": 0.4,
+    "epsilon_decay": 0.1,
+    "epsilon_minimum": 0.1,
+    "learning_rate": 0.1,
+    "learning_rate_decay": 0.1,
+    "learning_rate_minimum": 0.1,
+    "lambda": 0.2,
+    "use_uncertainty": True,
+    "q_importance": 0.7,
+    "normalisation": True,
+    "verbose": True,
 }
 
-# TODO: group parameters by type into dictionary. E.g. all of the agent params in one dict.
 # TODO: add all hyperparameters in the code
+
 # TODO: change actions so that they are always e.g. 'price' and if env_type == suggest then action is the price bins.
 # TODO: state definitions become a dictionary with state: number of bins, then in Engine we convert this into lists.
+
 # TODO: change the datahandler and engine so they just take the hyperparam dict as an argument
-# TODO:
+
+# TODO: group parameters by type into dictionary. E.g. all of the agent params in one dict.
+
 
 
 hyperparam_dict_kaggle_data_suggest = {
