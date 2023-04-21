@@ -20,7 +20,8 @@ class TestEngine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the data handler for the tests."""
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
         cls.dh.prepare_data_for_engine()
 
     def setUp(self) -> None:
@@ -81,29 +82,3 @@ class TestEngine(unittest.TestCase):
         self.engine.train_agent()
         assert self.engine.agent.Q is not None
         assert self.engine.agent.Q is not original_q
-
-    def test_get_results(self):
-        pass
-
-    def test_save_parameters(self):
-        pass
-
-    def test_inverse_scale_features(self):
-        pass
-
-    def test_build_evaluation(self):
-        pass
-
-    def test_evaluate_total_agent_reward(self):
-        pass
-
-    def test_evaluate_total_hist_reward(self):
-        pass
-
-    def test_evaluate_agent(self):
-        pass
-
-    # TODO: from Giulia, do we need to test this?
-
-
-

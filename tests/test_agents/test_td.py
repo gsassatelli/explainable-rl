@@ -19,7 +19,6 @@ class TestTD(unittest.TestCase):
         cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
         cls.dh.prepare_data_for_engine()
 
-
     def setUp(self) -> None:
         """Set up the test class."""
         self.env = StrategicPricingPredictionMDP(self.dh)
