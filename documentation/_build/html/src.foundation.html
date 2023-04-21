@@ -198,24 +198,18 @@ Defaults to 0 for pure exploitation.</p></li>
 <span id="src-foundation-engine-module"></span><h2>src.foundation.engine module<a class="headerlink" href="#module-src.foundation.engine" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparam_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Responsible for creating the agent and environment instances and running the training loop.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparam_dict</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise engine class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>dh</strong> (<a class="reference internal" href="src.data_handler.html#src.data_handler.data_handler.DataHandler" title="src.data_handler.data_handler.DataHandler"><em>DataHandler</em></a>) – DataHandler to be given to the Environment.</p></li>
-<li><p><strong>agent_type</strong> (<em>str</em>) – Type of agent to initialize.</p></li>
-<li><p><strong>env_type</strong> (<em>str</em>) – Type of environment to initialize.</p></li>
-<li><p><strong>num_episodes</strong> (<em>int</em>) – Number of episodes to train the agent for.</p></li>
-<li><p><strong>num_steps</strong> (<em>int</em>) – Number of steps per episode.</p></li>
-<li><p><strong>bins</strong> (<em>list</em>) – List of bins per state/action to discretize the state.
-space.</p></li>
-<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>dh</strong> (<em>DataHandler</em>) – DataHandler to be given to the Environment.</p></li>
+<li><p><strong>hyperparam_dict</strong> (<em>dict</em>) – Dictionary containing all hyperparameters.</p></li>
 </ul>
 </dd>
 </dl>
@@ -247,6 +241,12 @@ space.</p></li>
 <dd class="field-even"><p>cumreward (float)</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="src.foundation.engine.Engine._get_bins">
+<span class="sig-name descname"><span class="pre">_get_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine._get_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine._get_bins" title="Permalink to this definition"></a></dt>
+<dd><p>Get the bins for the states and actions.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -353,7 +353,7 @@ rewards_agent (list): list of rewards obtained by agent (calculated)</p>
 <dd><p>Initialise the Strategic Pricing MDP class.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>DataHandler</strong> – Data handler object.</p>
+<dd class="field-odd"><p><strong>dh</strong> (<em>DataHandler</em>) – Data handler object.</p>
 </dd>
 </dl>
 </dd></dl>

@@ -9,13 +9,6 @@ from library import *
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
-<<<<<<< Updated upstream
-    __slots__ = ["hyperparam_dict", "data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "state_labels", "action_labels", "reward_labels", "mdp_data",
-                 "mdp_data_test", "_n_samples"]
-
-=======
->>>>>>> Stashed changes
     def __init__(self,
                  hyperparam_dict):
         """Initialise the DataHandler.

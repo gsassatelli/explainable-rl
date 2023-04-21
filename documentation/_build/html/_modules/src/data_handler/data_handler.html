@@ -77,11 +77,7 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Data Handler which stores and preprocesses data needed for training.&quot;&quot;&quot;</span>
 
 <div class="viewcode-block" id="DataHandler.__init__"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">data_path</span><span class="p">,</span>
-                 <span class="n">state_labels</span><span class="p">,</span>
-                 <span class="n">action_labels</span><span class="p">,</span>
-                 <span class="n">reward_labels</span><span class="p">,</span>
-                 <span class="n">n_samples</span><span class="p">):</span>
+                 <span class="n">hyperparam_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the DataHandler.</span>
 
 <span class="sd">        Args:</span>
@@ -91,26 +87,35 @@
 <span class="sd">            reward_labels (list): List of reward labels.</span>
 <span class="sd">            n_samples (int): Number of samples to extract from dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">data_path</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span> <span class="o">=</span> <span class="n">n_samples</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparam_dict</span> <span class="o">=</span> <span class="n">hyperparam_dict</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">data_path</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;data_path&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_n_samples</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_normalised_cols</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span> <span class="o">=</span> <span class="p">{}</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">state_labels</span> <span class="o">=</span> <span class="n">state_labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span> <span class="o">=</span> <span class="n">action_labels</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span> <span class="o">=</span> <span class="n">reward_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">state_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="s1">&#39;states&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="s1">&#39;actions&#39;</span><span class="p">])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_labels</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="s1">&#39;rewards&#39;</span><span class="p">])</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">mdp_data_test</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">,</span> <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="DataHandler.prepare_data_for_engine"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.prepare_data_for_engine">[docs]</a>    <span class="k">def</span> <span class="nf">prepare_data_for_engine</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">col_delimiter</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">cols_to_normalise</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare the data to be given to the engine.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            col_delimiter (str): Column delimiter.</span>
 <span class="sd">            cols_to_normalise (list): List of columns to normalise.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="n">cols_to_normalise</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">cols_to_normalise</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">state_labels</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">action_labels</span> <span class="o">+</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">reward_labels</span><span class="p">))</span>
+        <span class="k">if</span> <span class="n">col_delimiter</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">col_delimiter</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;col_delimiter&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span><span class="n">delimiter</span><span class="o">=</span><span class="n">col_delimiter</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_data</span><span class="p">(</span><span class="n">normalisation</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">columns_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span></div>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">preprocess_data</span><span class="p">(</span><span class="n">normalisation</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;normalisation&#39;</span><span class="p">],</span>
+                             <span class="n">columns_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="DataHandler.load_data"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler.load_data">[docs]</a>    <span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from file.</span>
@@ -256,7 +261,21 @@
         <span class="k">for</span> <span class="n">col</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">:</span>
             <span class="n">scalar</span> <span class="o">=</span> <span class="n">MinMaxScaler</span><span class="p">()</span>
             <span class="n">scalar</span> <span class="o">=</span> <span class="n">scalar</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="n">col</span><span class="p">]))</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar</span></div></div>
+            <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">scalar</span></div>
+
+<div class="viewcode-block" id="DataHandler._get_labels"><a class="viewcode-back" href="../../../src.data_handler.html#src.data_handler.data_handler.DataHandler._get_labels">[docs]</a>    <span class="k">def</span> <span class="nf">_get_labels</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">label_dict</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the labels from the label dictionary.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            label_dict (dict): The label dictionary.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: The labels.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">labels</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">label_dict</span><span class="p">:</span>
+            <span class="n">labels</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">labels</span></div></div>
 </pre></div>
 
            </div>

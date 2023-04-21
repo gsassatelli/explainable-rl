@@ -82,42 +82,31 @@
 
 <div class="viewcode-block" id="Engine.__init__"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> 
                  <span class="n">dh</span><span class="p">,</span>
-                 <span class="n">agent_type</span><span class="p">,</span>
-                 <span class="n">env_type</span><span class="p">,</span>
-                 <span class="n">num_episodes</span><span class="p">,</span>
-                 <span class="n">num_steps</span><span class="p">,</span>
-                 <span class="n">bins</span><span class="p">,</span>
-                 <span class="n">gamma</span><span class="o">=</span><span class="mf">0.9</span><span class="p">,</span>
-                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+                 <span class="n">hyperparam_dict</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise engine class.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dh (DataHandler): DataHandler to be given to the Environment.</span>
-<span class="sd">            agent_type (str): Type of agent to initialize.</span>
-<span class="sd">            env_type (str): Type of environment to initialize.</span>
-<span class="sd">            num_episodes (int): Number of episodes to train the agent for.</span>
-<span class="sd">            num_steps (int): Number of steps per episode.</span>
-<span class="sd">            bins (list): List of bins per state/action to discretize the state.</span>
-<span class="sd">                        space.</span>
-<span class="sd">            gamma (float): Discount factor.</span>
+<span class="sd">            hyperparam_dict (dict): Dictionary containing all hyperparameters.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="c1"># Save data handler</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dh</span> <span class="o">=</span> <span class="n">dh</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span> <span class="o">=</span> <span class="n">hyperparam_dict</span>
 
         <span class="c1"># Hyperparameters</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span> <span class="o">=</span> <span class="n">num_episodes</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">=</span> <span class="n">num_steps</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_episodes</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">][</span><span class="s1">&#39;num_episodes&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_steps</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">][</span><span class="s1">&#39;num_steps&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;agent&#39;</span><span class="p">][</span><span class="s1">&#39;gamma&#39;</span><span class="p">]</span>
 
         <span class="c1"># Initialize agent</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">agent_type</span> <span class="o">=</span> <span class="n">agent_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">agent_type</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;agent&#39;</span><span class="p">][</span><span class="s1">&#39;agent_type&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">agent</span> <span class="o">=</span> <span class="kc">None</span>
 
         <span class="c1"># Initialize environment</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">=</span> <span class="n">env_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env_type</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;training&#39;</span><span class="p">][</span><span class="s1">&#39;env_type&#39;</span><span class="p">]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="kc">None</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;program_flow&#39;</span><span class="p">][</span><span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_bins</span><span class="p">()</span>
 
         <span class="c1"># Parameters of the agent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">policy</span> <span class="o">=</span> <span class="kc">None</span>
@@ -405,7 +394,20 @@
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;b_actions&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b_actions</span>
         <span class="n">eval_results</span><span class="p">[</span><span class="s1">&#39;b_actions_agent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">b_actions_agent</span>
         
-        <span class="k">return</span> <span class="n">eval_results</span></div></div>
+        <span class="k">return</span> <span class="n">eval_results</span></div>
+
+<div class="viewcode-block" id="Engine._get_bins"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.engine.Engine._get_bins">[docs]</a>    <span class="k">def</span> <span class="nf">_get_bins</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the bins for the states and actions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">state_labels</span>
+        <span class="n">action_labels</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">action_labels</span>
+
+        <span class="n">bins</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">state_labels</span><span class="p">:</span>
+            <span class="n">bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="s1">&#39;states&#39;</span><span class="p">][</span><span class="n">label</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">action_labels</span><span class="p">:</span>
+            <span class="n">bins</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s1">&#39;dimensions&#39;</span><span class="p">][</span><span class="s1">&#39;actions&#39;</span><span class="p">][</span><span class="n">label</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">bins</span></div></div>
 </pre></div>
 
            </div>
