@@ -7,7 +7,7 @@ class StrategicPricingPredictionMDP(StrategicPricing):
     """
 
     def __init__(self, dh, bins=None):
-        super().__init__(self, dh=dh, bins=bins)
+        super().__init__(dh=dh, bins=bins)
         self.initialise_env()
 
     def _get_counts_and_rewards_per_bin(self, binned):
