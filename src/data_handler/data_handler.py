@@ -92,7 +92,7 @@ class DataHandler:
         s = self.dataset[self.state_labels]
         r = self.dataset[self.reward_labels]
         try:
-            a = self.dataset[self._action_labels]
+            a = self.dataset[self.action_labels]
             self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
         except KeyError:
             self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
@@ -143,7 +143,7 @@ class DataHandler:
         Returns:
             list of action labels.
         """
-        return self._action_labels
+        return self.action_labels
 
     def get_rewards(self,
                     split='train'):
