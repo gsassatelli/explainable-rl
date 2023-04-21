@@ -7,11 +7,6 @@ from src.foundation.utils import *
 class TestUtils(unittest.TestCase):
     """Test the utils functions."""
 
-    def setUp(self):
-        """Set up the utils for the tests."""
-        # TODO: from Giulia, do we need to keep this for the structure of the class?
-        pass
-
     def test_convert_to_string(self):
         """Test convert_to_string function.
         """

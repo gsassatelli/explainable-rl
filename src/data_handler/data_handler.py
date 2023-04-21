@@ -1,8 +1,7 @@
 from library import *
 
 
-# TODO: change normalisation to [0, 1]
-# TODO: add flag for next states
+
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
