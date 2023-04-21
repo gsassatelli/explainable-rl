@@ -26,7 +26,6 @@ class DataHandler:
         self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
         self.reward_labels = self._get_labels(hyperparam_dict['dimensions']['rewards'])
         self.mdp_data = None
-        self.mdp_data_test = None
 
     def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
@@ -64,8 +63,7 @@ class DataHandler:
 
     def preprocess_data(self,
                         normalisation=True,
-                        columns_to_normalise=None,
-                        train_test_split=0.2):
+                        columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
@@ -96,10 +94,6 @@ class DataHandler:
 
         self.mdp_data = self.mdp_data[:self._n_samples]
 
-        # split into train-test
-        split_indx = int(self._n_samples * train_test_split)
-        self.mdp_data_test = self.mdp_data[:split_indx]
-        self.mdp_data = self.mdp_data[split_indx:]
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -119,7 +113,7 @@ class DataHandler:
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self, split='train'):
+    def get_actions(self):
         """Get the actions taken in the dataset.
 
         Args:
@@ -130,7 +124,6 @@ class DataHandler:
         """
         if split == 'train':
             return self.mdp_data['a']
-        return self.mdp_data_test['a']
 
     def get_action_labels(self):
         """Get the action labels.
@@ -140,7 +133,7 @@ class DataHandler:
         """
         return self.action_labels
 
-    def get_rewards(self, split='train'):
+    def get_rewards(self):
         """Get the rewards taken in the dataset.
 
         Args:
@@ -149,12 +142,10 @@ class DataHandler:
         Returns:
             pd.DataFrame: The rewards.
         """
-        if split == 'train':
-            return self.mdp_data['r']
-        else:
-            return self.mdp_data_test['r']
+        return self.mdp_data['r']
 
-    def get_states(self, split='train'):
+
+    def get_states(self):
         """Get the states taken in the dataset.
 
         Args:
@@ -163,10 +154,8 @@ class DataHandler:
         Returns:
             pd.DataFrame: The states.
         """
-        if split == 'train':
-            return self.mdp_data['s']
-        else:
-            return self.mdp_data_test['s']
+
+        return self.mdp_data['s']
 
     def _filter_data(self):
         """Filter the dataset."""
