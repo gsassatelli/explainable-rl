@@ -21,12 +21,12 @@ class QLearningAgent(TD):
         """Update the Q table using the Bellman equation and q_learning update.
 
         Args:
-            state (list): current state of the agent.
-            action (int): selected action.
-            next_state (list): next state of the agent.
-            reward (float): reward for the selected action.
-            epsilon (float): the exploration parameter
-            lr (float): learning rate.
+            state (list): Current state of the agent.
+            action (int): Selected action.
+            next_state (list): Next state of the agent.
+            reward (float): Reward for the selected action.
+            epsilon (float): The exploration parameter
+            lr (float): Learning rate.
             **kwargs (dict): The keyword arguments.
         """
         index_current = tuple(list(state) + [action])

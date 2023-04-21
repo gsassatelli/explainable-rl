@@ -28,15 +28,15 @@ class TD(Agent):
         """Fit agent to the dataset.
 
         Args:
-            n_episodes (int): number of episodes.
-            n_steps (int): number of steps per episode.
-            lr (float): learning rate.
-            lr_decay (float): learning rate decay.
-            lr_min (float): minimum learning rate.
-            epsilon (float): epsilon-greedy policy parameter.
-            epsilon_decay (float): epsilon decay.
-            epsilon_min (float): minimum epsilon.
-            verbose (bool): print training information.
+            n_episodes (int): Number of episodes.
+            n_steps (int): Number of steps per episode.
+            lr (float): Learning rate.
+            lr_decay (float): Learning rate decay.
+            lr_min (float): Minimum learning rate.
+            epsilon (float): Epsilon-greedy policy parameter.
+            epsilon_decay (float): Epsilon decay.
+            epsilon_min (float): Minimum epsilon.
+            verbose (bool): Print training information.
         """
         if verbose:
             print("Apply q-learning and update q-table")
@@ -67,7 +67,7 @@ class TD(Agent):
         action mapping.
 
         Args:
-            verbose (bool): print information.
+            verbose (bool): Print information.
         """
         self.env.reset()
         if verbose:
@@ -84,12 +84,12 @@ class TD(Agent):
         """Get the epsilon greedy action.
 
         Args:
-            state (list): current state of the agent.
-            state_str (string): the state as a string.
-            epsilon (float): the exploration parameter.
+            state (list): Current state of the agent.
+            state_str (string): Rhe state as a string.
+            epsilon (float): The exploration parameter.
 
         Returns:
-            action (int): selected action.
+            action (int): Selected action.
         """
         if state is None:
             state = self.state
@@ -115,10 +115,10 @@ class TD(Agent):
         """Get epsilon greedy policy that favours more densely populated state-action pairs. 
 
         Args:
-            state (list): current state of the agent.
-            epsilon (float): the exploration parameter.
-            use_uncertainty (bool): whether to use uncertainty informed policy.
-            q_importance (float): the importance of the q value in the policy.
+            state (list): Current state of the agent.
+            epsilon (float): The exploration parameter.
+            use_uncertainty (bool): Whether to use uncertainty informed policy.
+            q_importance (float): The importance of the q value in the policy.
 
         Returns:
             action (int): selected action.
@@ -174,10 +174,10 @@ class TD(Agent):
         """Convert a state to a string.
 
         Args:
-            state (list): the state to convert.
+            state (list): The state to convert.
 
         Returns:
-            state_str (string): the state as a string.
+            state_str (string): The state as a string.
         """
         return ",".join(str(s) for s in state)
 
@@ -190,8 +190,8 @@ class TD(Agent):
         """Perform a step in the environment.
 
         Args:
-            epsilon (float): epsilon-greedy policy parameter.
-            lr (float): learning rate.
+            epsilon (float): Epsilon-greedy policy parameter.
+            lr (float): Learning rate.
 
         Returns:
             bool: Defines whether the episode is finished.
@@ -217,12 +217,12 @@ class TD(Agent):
         """Update the Q table.
 
         Args:
-            state (list): current state of the agent.
-            action (int): selected action.
-            next_state (list): next state of the agent.
-            reward (float): reward for the selected action.
-            epsilon (float): the exploration parameter.
-            lr (float): learning rate.
+            state (list): Current state of the agent.
+            action (int): Selected action.
+            next_state (list): Next state of the agent.
+            reward (float): Reward for the selected action.
+            epsilon (float): The exploration parameter.
+            lr (float): Learning rate.
             **kwargs (dict): The keyword arguments.
         """
         raise NotImplementedError

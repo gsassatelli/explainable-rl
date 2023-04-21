@@ -4,24 +4,26 @@ from library import *
 # TODO: change normalisation to [0, 1]
 # TODO: add flag for next states
 class DataHandler:
-    """Data handler class to store and preprocess data needed for training.
-    """
+    """Data Handler which stores and preprocesses data needed for training."""
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
                  "state_labels", "action_labels", "reward_labels", "mdp_data",
                  "mdp_data_test", "_n_samples"]
 
-    def __init__(self, data_path,
+    def __init__(self,
+                 data_path,
                  state_labels,
                  action_labels,
                  reward_labels,
                  n_samples):
         """Initialize the DataHandler class.
+
         Args:
             data_path (str): path to the data file.
             state_labels (list): list of state labels.
             action_labels (list): list of action labels.
             reward_labels (list): list of reward labels.
+            n_samples (int): number of samples to extract from dataset.
         """
 
         self.data_path = data_path
@@ -52,7 +54,7 @@ class DataHandler:
         """Load data from file.
 
         Args:
-            delimiter (str): column
+            delimiter (str): which separates columns.
         """
         file_type = self.data_path.split('.')[-1]
         if file_type == 'csv':
