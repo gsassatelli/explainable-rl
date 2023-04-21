@@ -16,6 +16,7 @@ class DoubleQLearner(TD):
         Args:
             env (MDP): MDP object.
             gamma (float): Discount factor.
+            verbose (bool): Defines whether print statements should be called.
         """
         super().__init__(env=env, gamma=gamma, verbose=verbose)
         self.Q = None
@@ -25,10 +26,12 @@ class DoubleQLearner(TD):
         self.Q_num_samples = None
         self.state = None
 
-    def create_tables(self,
-                      verbose=False):
-        """Create the Q-tables and state_to_action table."""
+    def create_tables(self, verbose=False):
+        """Create the Q-tables and state_to_action table.
 
+        Args:
+            verbose (bool): Defines whether print statements should be called.
+        """
         self.env.reset()
         if verbose:
             print("Create q-table")
@@ -73,7 +76,8 @@ class DoubleQLearner(TD):
                                   Q_a=self.Q_b,
                                   Q_b=self.Q_a)
         self.Q = (self.Q_a + self.Q_b) / 2
-        # TODO: check that this is actually what you're meant to do with the two Q tables.
+
+        # Todo: check that this is actually what you're meant to do with the Q tables
 
         self.state = next_state
 

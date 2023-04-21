@@ -214,9 +214,12 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.load_data">
 <span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.load_data" title="Permalink to this definition"></a></dt>
-<dd><p>Load data from file.
-:param delimiter: column
-:type delimiter: str</p>
+<dd><p>Load data from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>delimiter</strong> (<em>str</em>) – column</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py attribute">
@@ -237,19 +240,26 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.normalise_dataset">
 <span class="sig-name descname"><span class="pre">normalise_dataset</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cols_to_norm</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.normalise_dataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.normalise_dataset" title="Permalink to this definition"></a></dt>
-<dd><p>Normalise the dataset to centre with mean zero and variance one.
-:param cols_to_norm: the column names that need normalising
-:type cols_to_norm: list</p>
+<dd><p>Normalise the dataset to centre with mean zero and variance one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>cols_to_norm</strong> (<em>list</em>) – the column names that need normalising</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.prepare_data_for_engine">
 <span class="sig-name descname"><span class="pre">prepare_data_for_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols_to_normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.prepare_data_for_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.prepare_data_for_engine" title="Permalink to this definition"></a></dt>
-<dd><p>Prepare data for engine.
-:param col_delimiter: column delimiter.
-:type col_delimiter: str
-:param cols_to_normalise: list of columns to normalise.
-:type cols_to_normalise: list</p>
+<dd><p>Prepare data for engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>col_delimiter</strong> (<em>str</em>) – column delimiter.</p></li>
+<li><p><strong>cols_to_normalise</strong> (<em>list</em>) – list of columns to normalise.</p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -262,6 +272,17 @@ Args: normalisation (bool): True if normalisation is to be applied.
 columns_to_normalise (list): Columns on which to apply
 normalisation. if left empty all columns will be normalised.
 TODO: Extension - aggregate over a time period</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>normalisation</strong> (<em>bool</em>) – True if normalisation is to be applied.</p></li>
+<li><p><strong>columns_to_normalise</strong> (<em>list</em>) – Columns on which to apply</p></li>
+<li><p><strong>normalised.</strong> (<em>normalisation. if left empty all columns will be</em>) – </p></li>
+<li><p><strong>train_test_split</strong> (<em>float</em>) – the fraction of data to be used for</p></li>
+<li><p><strong>training.</strong> – </p></li>
+</ul>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">

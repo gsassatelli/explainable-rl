@@ -95,6 +95,7 @@
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.test_foundation.test_engine.</span></span><span class="sig-name descname"><span class="pre">TestEngine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>Test the Engine class.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.dh">
 <span class="sig-name descname"><span class="pre">dh</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.dh" title="Permalink to this definition"></a></dt>
@@ -103,19 +104,19 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.setUp">
 <span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+<dd><p>Set up the engine for the tests.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.setUpClass">
 <em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.setUpClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.setUpClass" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up class fixture before running tests in the class.</p>
+<dd><p>Set up the data handler for the tests.</p>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.tearDown">
 <span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.tearDown" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for deconstructing the test fixture after testing it.</p>
+<dd><p>Tear down the engine after the tests.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -126,17 +127,20 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.test_create_agent">
 <span class="sig-name descname"><span class="pre">test_create_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.test_create_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.test_create_agent" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the create_agent method with different agent types.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.test_create_env">
 <span class="sig-name descname"><span class="pre">test_create_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.test_create_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.test_create_env" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the create_env method with different env types.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.test_create_world_agents">
 <span class="sig-name descname"><span class="pre">test_create_world_agents</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.test_create_world_agents"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.test_create_world_agents" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the create_world method with different agent types.</p>
+</dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.test_evaluate_agent">
@@ -171,7 +175,8 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_engine.TestEngine.test_train_agent">
 <span class="sig-name descname"><span class="pre">test_train_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_engine.html#TestEngine.test_train_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_engine.TestEngine.test_train_agent" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Test the train_agent method.</p>
+</dd></dl>
 
 </dd></dl>
 
@@ -182,10 +187,11 @@
 <dt class="sig sig-object py" id="tests.test_foundation.test_utils.TestUtils">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tests.test_foundation.test_utils.</span></span><span class="sig-name descname"><span class="pre">TestUtils</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_utils.html#TestUtils"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_utils.TestUtils" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>Test the utils functions.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="tests.test_foundation.test_utils.TestUtils.setUp">
 <span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_foundation/test_utils.html#TestUtils.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_foundation.test_utils.TestUtils.setUp" title="Permalink to this definition"></a></dt>
-<dd><p>Hook method for setting up the test fixture before exercising it.</p>
+<dd><p>Set up the utils for the tests.</p>
 </dd></dl>
 
 <dl class="py method">
