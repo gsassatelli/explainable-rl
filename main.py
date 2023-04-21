@@ -1,12 +1,10 @@
+from library import *
+
 # Import functions
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from src.explainability.pdp import PDP
 from src.explainability.shap_values import ShapValues
-
-# Import packages
-from datetime import datetime
-import numpy as np
 
 
 def run_all(hyperparam_dict, verbose=True, show_plots=True):
@@ -113,7 +111,6 @@ if __name__ == "__main__":
                    'competitor_price_difference_bin', 'demand_bin', 'price'],
         'actions': [price_bin / 10 for price_bin in range(1, 11)],
         'bins': [10, 10, 4, 4, 10, 10],
-        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'feature_types': {
             'lead_time': "continuous",
@@ -148,7 +145,6 @@ if __name__ == "__main__":
             'revenue': "continuous"
         },
         'bins': [10, 2, 2, 10, 10],
-        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'n_samples': 2000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',
@@ -165,7 +161,6 @@ if __name__ == "__main__":
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin'],
         'actions': ['price'],
-        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'bins': [10, 10, 4, 4, 10],
         'feature_types': {
@@ -200,7 +195,7 @@ if __name__ == "__main__":
             'price': "continuous",
             'revenue': "continuous"
         },
-        'bins': [10, 2, 2, 10],  # TODO: these correspond to the states and actions. Probably should change to a dict.
+        'bins': [10, 2, 2, 10],
         'n_samples': 20000,
         'data_path': 'data/kaggle-dummy-dataset/train.csv',
         'col_delimiter': '|',

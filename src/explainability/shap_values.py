@@ -33,7 +33,6 @@ class ShapValues:
         self.number_of_samples = number_of_samples
         self.binned_sample = None
 
-        # TODO: how to use shap value function better, no re run of the algorithm >> Save trained agent
         # TODO: improve random sampling - time consuming
 
     def compute_shap_values(self):
