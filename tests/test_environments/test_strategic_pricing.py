@@ -82,4 +82,8 @@ class TestStrategicPricing(unittest.TestCase):
         assert result in [[1, 2, 4], [5, 6, 7]]
 
     def test_get_state_to_action(self):
-        pass
+        binned = np.array([[1,2,3,4], [5,6,7,8], [1,2,3,2]])
+        target = {'1,2,3': {4, 2},
+                  '5,6,7': {8}}
+        result = self.env._get_state_to_action(binned)
+        assert result == target
