@@ -87,7 +87,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     type_features = hyperparam_dict['feature_types']
     fig_name = "PDP plots - All states"
     pdp.plot_pdp(states_names=state_labels, fig_name=fig_name,
-                 type_features=type_features, savefig=True, all_states=True)
+                 savefig=True, all_states=True)
 
     # Compute SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
