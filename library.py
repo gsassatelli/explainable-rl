@@ -11,6 +11,7 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 import os
+from src.environments.strategic_pricing import StrategicPricing
 from tqdm import tqdm
 import unittest
 
