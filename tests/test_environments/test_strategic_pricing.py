@@ -72,6 +72,15 @@ class TestStrategicPricing(unittest.TestCase):
         target = [0.35, 0.15, 0.7]
         assert result == target
 
+    def test_reset(self):
+        """Test reset method."""
+        self.env._state_mdp_data = np.array([[0.1, 0.23, 0.4], [0.5, 0.6, 0.7]])
+        result = self.env.reset()
+        assert result in [[1, 2, 4], [5, 6, 7]]
+
+    def test_get_state_to_action(self):
+        pass
+
 
 
 

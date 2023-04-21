@@ -60,12 +60,6 @@ class TestStrategicPricingPredictionMDP(TestStrategicPricing):
         target = sparse.COO(target)
         assert result == target
 
-    def test_reset(self):
-        """Test reset method."""
-        self.env._state_mdp_data = np.array([[0.1, 0.23, 0.4], [0.5, 0.6, 0.7]])
-        result = self.env.reset()
-        assert result in [[1, 2, 4], [5, 6, 7]]
-
     def test_step(self):
         """Test step method."""
         self.env._state_mdp_data = pd.DataFrame(
