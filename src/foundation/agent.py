@@ -1,11 +1,10 @@
 class Agent:
-    """Define the Agent super class which all particular agents (e.g Q-learner, SARSA).
-    """
+    """Parent of all child agents (e.g Q-learner, SARSA)."""
 
     __slots__ = ['env', 'gamma', 'verbose']
 
     def __init__(self, env, gamma, verbose=False):
-        """Initialize the agent.
+        """Initialise the agent.
 
         Args:
             env (Environment): Environment object.
@@ -21,15 +20,15 @@ class Agent:
         """Fit agent to the dataset.
 
         Args:
-            n_episodes (int): number of episodes.
-            n_steps (int): number of steps per episode.
-            lr (float): learning rate.
-            lr_decay (float): learning rate decay.
-            lr_min (float): minimum learning rate.
-            epsilon (float): epsilon-greedy policy parameter.
-            epsilon_decay (float): epsilon decay.
-            epsilon_min (float): minimum epsilon.
-            verbose (bool): print training information.
+            n_episodes (int): Number of episodes.
+            n_steps (int): Number of steps per episode.
+            lr (float): Learning rate.
+            lr_decay (float): Learning rate decay.
+            lr_min (float): Minimum learning rate.
+            epsilon (float): Epsilon-greedy policy parameter.
+            epsilon_decay (float): Epsilon decay.
+            epsilon_min (float): Minimum epsilon.
+            verbose (bool): Print training information.
         """
         raise NotImplementedError
 
@@ -46,7 +45,7 @@ class Agent:
     def predict_actions(self,
                         states,
                         epsilon=0):
-        """ Predict action for a list of states using epsilon-greedy policy.
+        """Predict action for a list of states using epsilon-greedy policy.
 
         Args:
             states (list): States (binned).
@@ -54,7 +53,7 @@ class Agent:
                 Defaults to 0 for pure exploitation.
 
         Returns:
-            actions (list): List of recommended actions
+            list: List of recommended actions.
         """
         actions = []
         for state in states:
@@ -66,16 +65,16 @@ class Agent:
     def predict_rewards(self,
                         states,
                         actions):
-        """ Predict reward for a list of state-actions.
+        """Predict reward for a list of state-actions.
 
-        This function uses the avg reward matrix (which simulates a real-life scenario)
+        This function uses the avg reward matrix (which simulates a real-life scenario).
 
         Args:
             states (list): States (binned).
             actions (list): Actions (binned).
 
         Returns:
-            rewards (list): List of recommended actions
+            list: List of recommended actions.
         """
 
         rewards = []

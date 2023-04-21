@@ -66,11 +66,18 @@
              
   <h1>Source code for src.foundation.agent</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent">[docs]</a><span></span><span class="k">class</span> <span class="nc">Agent</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Define the Agent super class which all particular agents (e.g Q-learner, SARSA).</span>
-<span class="sd">    &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parent of all child agents (e.g Q-learner, SARSA).&quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;env&#39;</span><span class="p">,</span> <span class="s1">&#39;gamma&#39;</span><span class="p">,</span> <span class="s1">&#39;verbose&#39;</span><span class="p">]</span>
 
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (Environment): Environment object.</span>
+<span class="sd">            gamma (float): Discount factor.</span>
+<span class="sd">            verbose (bool): Print training information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
@@ -80,33 +87,40 @@
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n_episodes (int): number of episodes.</span>
-<span class="sd">            n_steps (int): number of steps per episode.</span>
-<span class="sd">            lr (float): learning rate.</span>
-<span class="sd">            lr_decay (float): learning rate decay.</span>
-<span class="sd">            lr_min (float): minimum learning rate.</span>
-<span class="sd">            epsilon (float): epsilon-greedy policy parameter.</span>
-<span class="sd">            epsilon_decay (float): epsilon decay.</span>
-<span class="sd">            epsilon_min (float): minimum epsilon.</span>
-<span class="sd">            verbose (bool): print training information.</span>
+<span class="sd">            n_episodes (int): Number of episodes.</span>
+<span class="sd">            n_steps (int): Number of steps per episode.</span>
+<span class="sd">            lr (float): Learning rate.</span>
+<span class="sd">            lr_decay (float): Learning rate decay.</span>
+<span class="sd">            lr_min (float): Minimum learning rate.</span>
+<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
+<span class="sd">            epsilon_decay (float): Epsilon decay.</span>
+<span class="sd">            epsilon_min (float): Minimum epsilon.</span>
+<span class="sd">            verbose (bool): Print training information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Agent._epsilon_greedy_policy"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent._epsilon_greedy_policy">[docs]</a>    <span class="k">def</span> <span class="nf">_epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Epsilon-greedy policy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (int): State.</span>
+<span class="sd">            epsilon (float): Epsilon of epsilon-greedy policy.</span>
+<span class="sd">                Defaults to 0 for pure exploitation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="Agent.predict_actions"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent.predict_actions">[docs]</a>    <span class="k">def</span> <span class="nf">predict_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">states</span><span class="p">,</span>
                         <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Predict action for a list of states using epislon-greedy policy.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict action for a list of states using epsilon-greedy policy.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            states (list): States (binned).</span>
-<span class="sd">            epislon (float): Epislon of epislon-greedy policy.</span>
+<span class="sd">            epsilon (float): Epsilon of epsilon-greedy policy.</span>
 <span class="sd">                Defaults to 0 for pure exploitation.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            actions (list): List of recommended actions</span>
+<span class="sd">            list: List of recommended actions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
@@ -118,16 +132,16 @@
 <div class="viewcode-block" id="Agent.predict_rewards"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent.predict_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">predict_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
                         <span class="n">states</span><span class="p">,</span>
                         <span class="n">actions</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Predict reward for a list of state-actions.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict reward for a list of state-actions.</span>
 
-<span class="sd">        This function uses the avg reward matrix (which simulates a real-life scenario)</span>
+<span class="sd">        This function uses the avg reward matrix (which simulates a real-life scenario).</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            states (list): States (binned).</span>
 <span class="sd">            actions (list): Actions (binned).</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            rewards (list): List of recommended actions</span>
+<span class="sd">            list: List of recommended actions.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
 
         <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>

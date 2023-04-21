@@ -66,12 +66,26 @@
              
   <h1>Source code for src.foundation.utils</h1><div class="highlight"><pre>
 <div class="viewcode-block" id="convert_to_string"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.utils.convert_to_string">[docs]</a><span></span><span class="k">def</span> <span class="nf">convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a state to a string.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a state to a string.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        state (list): State to convert.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: State as a string.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">([</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">])</span></div>
 
 
 <div class="viewcode-block" id="convert_to_list"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.utils.convert_to_list">[docs]</a><span class="k">def</span> <span class="nf">convert_to_list</span><span class="p">(</span><span class="n">state_str</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a state string to a list.&quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Convert a state string to a list.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        state_str (str): State as a string.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        list: State as a list.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state_str</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">)]</span></div>
 
 
@@ -81,12 +95,12 @@
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Decay a parameter.</span>
 
 <span class="sd">    Args:</span>
-<span class="sd">        param (float): parameter to decay.</span>
-<span class="sd">        decay (float): decay rate.</span>
-<span class="sd">        min_param (float): minimum value of the parameter.</span>
+<span class="sd">        param (float): Parameter to decay.</span>
+<span class="sd">        decay (float): Decay rate.</span>
+<span class="sd">        min_param (float): Minimum value of the parameter.</span>
 
 <span class="sd">    Returns:</span>
-<span class="sd">        param (float): updated parameter.</span>
+<span class="sd">        float: Updated parameter.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="nb">max</span><span class="p">(</span><span class="n">param</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">decay</span><span class="p">),</span> <span class="n">min_param</span><span class="p">)</span></div>
 </pre></div>

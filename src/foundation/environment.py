@@ -6,18 +6,19 @@ class MDP:
 
     def __init__(self, dh):
         """Initialise the Strategic Pricing MDP class.
+
         Args:
-            dh (DataHandler): Data handler object.
+            DataHandler: Data handler object.
         """
         self.dh = dh
 
     def initialise_env(self):
-        """Create the environment given the MDP information.
-        """
+        """Create the environment given the MDP information."""
         raise NotImplementedError
 
     def reset(self):
         """Reset environment.
+
         Returns:
             list: Randomised initial state.
         """
@@ -25,7 +26,9 @@ class MDP:
 
     def step(self, state, action):
         """Take a step in the environment.
+
         A True done flag indicates that the environment terminated.
+
         Args:
             state (list): Current state values of agent.
             action (int): Action for agent to take.
