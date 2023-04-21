@@ -8,7 +8,6 @@ from src.explainability.shap_values import ShapValues
 
 
 def run_all(hyperparam_dict, verbose=True, show_plots=True):
-
     # Load data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
@@ -28,9 +27,9 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
         print(f"{timestamp}: Preprocess data")
+    cols_to_normalise = list(set(hyperparam_dict['states'] + hyperparam_dict['actions'] + hyperparam_dict['rewards']))
     dh.prepare_data_for_engine(col_delimiter=hyperparam_dict['col_delimiter'],
-                               cols_to_normalise=hyperparam_dict[
-                                   'cols_to_normalise'])
+                               cols_to_normalise=cols_to_normalise)
 
     # Create engine
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -41,9 +40,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
                     env_type=hyperparam_dict['env_type'],
                     num_episodes=hyperparam_dict['num_episodes'],
                     num_steps=hyperparam_dict['num_steps'],
-                    bins=hyperparam_dict['bins'],
-                    train_test_split=hyperparam_dict['train_test_split']
-                    )
+                    bins=hyperparam_dict['bins'])
 
     # Create world
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -209,5 +206,5 @@ if __name__ == "__main__":
     }
 
     for i in range(1):
-        run_all(hyperparam_dict_ds_data_suggest)
+        run_all(hyperparam_dict_ds_data_predict)
         # Run this 10 times to check everything was fine.
