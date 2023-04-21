@@ -3,8 +3,9 @@ def convert_to_string(state):
 
     Args:
         state (list): State to convert.
+
     Returns:
-        state_str (str): State as a string.
+        str: State as a string.
     """
     return ",".join([str(s) for s in state])
 
@@ -14,8 +15,9 @@ def convert_to_list(state_str):
 
     Args:
         state_str (str): State as a string.
+
     Returns:
-        state (list): State as a list.
+        list: State as a list.
     """
     return [int(s) for s in state_str.split(",")]
 
@@ -26,11 +28,11 @@ def decay_param(param,
     """Decay a parameter.
 
     Args:
-        param (float): parameter to decay.
-        decay (float): decay rate.
-        min_param (float): minimum value of the parameter.
+        param (float): Parameter to decay.
+        decay (float): Decay rate.
+        min_param (float): Minimum value of the parameter.
 
     Returns:
-        param (float): updated parameter.
+        float: Updated parameter.
     """
     return max(param * (1 - decay), min_param)

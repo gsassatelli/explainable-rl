@@ -97,6 +97,7 @@
 <dt class="sig sig-object py" id="src.performance.performance_evaluator.PerformanceEvaluator">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.performance.performance_evaluator.</span></span><span class="sig-name descname"><span class="pre">PerformanceEvaluator</span></span><a class="reference internal" href="_modules/src/performance/performance_evaluator.html#PerformanceEvaluator"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.performance.performance_evaluator.PerformanceEvaluator" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Time and Memory Evaluator.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.performance.performance_evaluator.PerformanceEvaluator.do_pre_benchmark_run_configuration">
 <span class="sig-name descname"><span class="pre">do_pre_benchmark_run_configuration</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/performance/performance_evaluator.html#PerformanceEvaluator.do_pre_benchmark_run_configuration"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.performance.performance_evaluator.PerformanceEvaluator.do_pre_benchmark_run_configuration" title="Permalink to this definition"></a></dt>
@@ -134,7 +135,7 @@ by running them many times.</p>
 <dd class="field-even"><p>Hyperparameter dictionary specific to the Datasparq dataset.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(dict)</p>
+<dd class="field-odd"><p>dict</p>
 </dd>
 </dl>
 </dd></dl>
@@ -184,7 +185,7 @@ And: <a class="reference external" href="https://stackoverflow.com/questions/515
 <dd class="field-even"><p>Time and memory recordings for the different parameter values in x.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>(list[float], list[float])</p>
+<dd class="field-odd"><p>list[float], list[float]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -209,9 +210,7 @@ And: <a class="reference external" href="https://stackoverflow.com/questions/515
 <dt class="sig sig-object py" id="src.performance.performance_evaluator.PerformanceEvaluator.run_training_loop">
 <span class="sig-name descname"><span class="pre">run_training_loop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/performance/performance_evaluator.html#PerformanceEvaluator.run_training_loop"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.performance.performance_evaluator.PerformanceEvaluator.run_training_loop" title="Permalink to this definition"></a></dt>
 <dd><p>Run an example main.py.</p>
-<blockquote>
-<div><p>Eventually, may load the hyperparameter data from a user-facing file.</p>
-</div></blockquote>
+<p>Eventually, may load the hyperparameter data from a user-facing file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">

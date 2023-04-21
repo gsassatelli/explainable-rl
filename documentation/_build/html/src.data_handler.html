@@ -108,7 +108,6 @@
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler._fit_standard_scalars">
 <span class="sig-name descname"><span class="pre">_fit_standard_scalars</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler._fit_standard_scalars"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler._fit_standard_scalars" title="Permalink to this definition"></a></dt>
 <dd><p>Train the sklearn MinMaxScaler and store one per column.</p>
-<p>TODO: fit only using train data and not test data</p>
 </dd></dl>
 
 <dl class="py method">
@@ -154,7 +153,10 @@
 <dd><p>Get the action labels.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>list of action labels.</p>
+<dd class="field-odd"><p>Action labels.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -165,10 +167,13 @@
 <dd><p>Get the actions taken in the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – Specifies train or test split.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame of the actions.</p>
+<dd class="field-even"><p>Actions.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -179,10 +184,13 @@
 <dd><p>Get the rewards taken in the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – Specifies train or test split.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame of the rewards.</p>
+<dd class="field-even"><p>The rewards.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -193,10 +201,13 @@
 <dd><p>Get the states taken in the dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – specifies train or test split</p>
+<dd class="field-odd"><p><strong>split</strong> (<em>str</em>) – Specifies train or test split.</p>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>pd.DataFrame of the states.</p>
+<dd class="field-even"><p>The states.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
 </dd>
 </dl>
 </dd></dl>
@@ -207,7 +218,7 @@
 <dd><p>Load data from file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>delimiter</strong> (<em>str</em>) – which separates columns.</p>
+<dd class="field-odd"><p><strong>delimiter</strong> (<em>str</em>) – Which separates columns.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -233,7 +244,7 @@
 <dd><p>Normalise the dataset to centre with mean zero and variance one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><p><strong>cols_to_norm</strong> (<em>list</em>) – the column names that need normalising</p>
+<dd class="field-odd"><p><strong>cols_to_norm</strong> (<em>list</em>) – The column names that need normalising.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -241,12 +252,12 @@
 <dl class="py method">
 <dt class="sig sig-object py" id="src.data_handler.data_handler.DataHandler.prepare_data_for_engine">
 <span class="sig-name descname"><span class="pre">prepare_data_for_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">col_delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cols_to_normalise</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/data_handler/data_handler.html#DataHandler.prepare_data_for_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.data_handler.data_handler.DataHandler.prepare_data_for_engine" title="Permalink to this definition"></a></dt>
-<dd><p>Prepare data for engine.</p>
+<dd><p>Prepare the data to be given to the engine.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>col_delimiter</strong> (<em>str</em>) – column delimiter.</p></li>
-<li><p><strong>cols_to_normalise</strong> (<em>list</em>) – list of columns to normalise.</p></li>
+<li><p><strong>col_delimiter</strong> (<em>str</em>) – Column delimiter.</p></li>
+<li><p><strong>cols_to_normalise</strong> (<em>list</em>) – List of columns to normalise.</p></li>
 </ul>
 </dd>
 </dl>
@@ -264,7 +275,7 @@ splits the dataset into states, actions and rewards.</p>
 <li><p><strong>normalisation</strong> (<em>bool</em>) – True if normalisation is to be applied.</p></li>
 <li><p><strong>columns_to_normalise</strong> (<em>list</em>) – Columns on which to apply
 normalisation. If left empty all columns will be normalised.</p></li>
-<li><p><strong>train_test_split</strong> (<em>float</em>) – the fraction of data to be used for
+<li><p><strong>train_test_split</strong> (<em>float</em>) – The fraction of data to be used for
 training.</p></li>
 </ul>
 </dd>

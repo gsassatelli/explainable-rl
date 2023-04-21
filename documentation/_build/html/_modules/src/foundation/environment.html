@@ -68,21 +68,24 @@
 <div class="viewcode-block" id="MDP"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.environment.MDP">[docs]</a><span></span><span class="k">class</span> <span class="nc">MDP</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Define the MDP super class which all particular MDP should inherit from.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+
     <span class="vm">__slots__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;dh&#39;</span><span class="p">]</span>
+
     <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the Strategic Pricing MDP class.</span>
+
 <span class="sd">        Args:</span>
-<span class="sd">            dh (DataHandler): Data handler object.</span>
+<span class="sd">            DataHandler: Data handler object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">dh</span> <span class="o">=</span> <span class="n">dh</span>
 
 <div class="viewcode-block" id="MDP.initialise_env"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.environment.MDP.initialise_env">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the environment given the MDP information.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the environment given the MDP information.&quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 
 <div class="viewcode-block" id="MDP.reset"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.environment.MDP.reset">[docs]</a>    <span class="k">def</span> <span class="nf">reset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Reset environment.</span>
+
 <span class="sd">        Returns:</span>
 <span class="sd">            list: Randomised initial state.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
@@ -90,7 +93,9 @@
 
 <div class="viewcode-block" id="MDP.step"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.environment.MDP.step">[docs]</a>    <span class="k">def</span> <span class="nf">step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Take a step in the environment.</span>
+
 <span class="sd">        A True done flag indicates that the environment terminated.</span>
+
 <span class="sd">        Args:</span>
 <span class="sd">            state (list): Current state values of agent.</span>
 <span class="sd">            action (int): Action for agent to take.</span>
@@ -99,7 +104,6 @@
 <span class="sd">            tuple: current state, action, next state, done flag.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
-
 </pre></div>
 
            </div>

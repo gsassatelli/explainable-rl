@@ -11,9 +11,7 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 
 # TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
 class Engine:
-    """Define the Engine class which is responsible for creating the agent and
-    environment instances and running the training loop.
-    """
+    """Responsible for creating the agent and environment instances and running the training loop."""
 
     __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", 
@@ -30,17 +28,17 @@ class Engine:
                  bins,
                  gamma=0.9,
                  verbose=False):
-        """Initilize engine class.
+        """Initialise engine class.
 
         Args:
-            dh (DataHandler): DataHandler to be given to the Environment
-            agent_type (str): Type of agent to initialize
-            env_type (str): Type of environment to initialize
-            num_episodes (int): Number of episodes to train the agent for
-            num_steps (int): Number of steps per episode
-            bins (list): List of bins per state/action to discretize the state
+            dh (DataHandler): DataHandler to be given to the Environment.
+            agent_type (str): Type of agent to initialize.
+            env_type (str): Type of environment to initialize.
+            num_episodes (int): Number of episodes to train the agent for.
+            num_steps (int): Number of steps per episode.
+            bins (list): List of bins per state/action to discretize the state.
                         space.
-            gamma (float): Discount factor
+            gamma (float): Discount factor.
         """
         # Save data handler
         self.dh = dh
@@ -75,8 +73,7 @@ class Engine:
         self._eval_action_dims = None
 
     def create_world(self):
-        """Create the Agent and MDP instances for the given task.
-        """
+        """Create the Agent and MDP instances for the given task."""
         # Create chosen environment
         print("Initialize environment")
         self.create_env()
@@ -86,8 +83,7 @@ class Engine:
         self.create_agent()
 
     def create_agent(self):
-        """Create an agent and store it in Engine.
-        """
+        """Create an agent and store it in Engine."""
         # Initialize agent
         if self.agent_type == "q_learner":
             self.agent = QLearningAgent(self.env,
@@ -116,8 +112,7 @@ class Engine:
         self.agent.create_tables()
 
     def create_env(self):
-        """Create an env and store it in Engine.
-        """
+        """Create an env and store it in Engine."""
         # Initialize environment
         if self.env_type == "strategic_pricing_predict":
             self.env = StrategicPricingPredictionMDP(self.dh, self.bins)
@@ -134,8 +129,8 @@ class Engine:
         """Train the agent for a chosen number of steps and episodes.
 
         Args:
-            evaluate (bool): whether to evaluate agent
-            n_eval_steps (int): number of evaluation steps
+            evaluate (bool): Whether to evaluate agent.
+            n_eval_steps (int): Number of evaluation steps.
         """
         # Fit the agent
         if not evaluate:
@@ -151,11 +146,11 @@ class Engine:
 
     def save_parameters(self):
         """Save the parameters learned during training.
-        This could be e.g. the q-values, the policy, or any other learned parameters.
 
-        TODO: Not sure this function is needed, can call directly agent
-        TODO: Epsilon greedy policy already contains q-values, remove it?
+        This could be e.g. the q-values, the policy, or any other learned parameters.
         """
+        # TODO: Not sure this function is needed, can call directly agent
+        # TODO: Epsilon greedy policy already contains q-values, remove it?
         # Save parameters of the trained agent to predict
         self.policy = self.agent.policy
         self.q_table = self.agent.q_table
@@ -166,10 +161,11 @@ class Engine:
         """De-bin and de-normalize feature values.
 
         Args:
-            labels (list): list of feature labels
-            values (list): list of (scaled) feature values
+            labels (list): list of feature labels.
+            values (list): list of (scaled) feature values.
         
         Returns:
+            list: Inverse transformation coefficient for all feature labels.
         """
         i_values = []
         for i, label in enumerate(labels):
@@ -190,7 +186,7 @@ class Engine:
     # TODO: From Giulia, for when we do the clean up, do we need to keep this here or can we put it in the evaluator?
     # TODO: Since it's part of the evaluation is better maybe
     def build_evaluation(self):
-        """ Save data for evaluation. """
+        """Save data for evaluation."""
         # Get test data from data handler
         self._eval_states = self.dh.get_states(split='test').to_numpy().tolist()
         self._eval_actions = self.dh.get_actions(split='test').to_numpy().tolist()
@@ -204,11 +200,10 @@ class Engine:
         self._eval_b_states = self.env.bin_states(self._eval_states, idxs=self._eval_state_dims)
 
     def _evaluate_total_agent_reward(self):
-        """ Calculate the total reward obtained on the evaluation states using
-            the agent's policy.
+        """Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
-            cumreward (float): total (not scaled) cumulative reward
+            float: Total (not scaled) cumulative reward.
         """
         # Get actions corresponding to agent's learned policy
         b_actions_agent = self.agent.predict_actions(self._eval_b_states)
@@ -226,11 +221,10 @@ class Engine:
         return np.sum(rewards_agent)
     
     def _evaluate_total_hist_reward(self):
-        """ Calculate the total reward obtained on the evaluation states using
-            the agent's policy.
+        """Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
-            cumreward (float): total (not scaled) cumulative based on historical data
+            float: Total (not scaled) cumulative based on historical data.
         """
         # Get the binned actions
         b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
@@ -245,11 +239,10 @@ class Engine:
         return np.sum(rewards_hist)
 
     def _evaluate_total_agent_reward(self):
-        """ Calculate the total reward obtained on the evaluation states using
-            the agent's policy.
+        """Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
-            cumreward (float): total (not scaled) cumulative reward
+            float: Total (not scaled) cumulative reward.
         """
         # Get actions corresponding to agent's learned policy
         b_actions_agent = self.agent.predict_actions(self._eval_b_states)
@@ -267,8 +260,7 @@ class Engine:
         return np.sum(rewards_agent)
     
     def _evaluate_total_hist_reward(self):
-        """ Calculate the total reward obtained on the evaluation states using
-            the agent's policy.
+        """ Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
             cumreward (float): total (not scaled) cumulative based on historical data

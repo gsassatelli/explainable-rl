@@ -70,6 +70,8 @@
 <span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
 <span class="kn">from</span> <span class="nn">sklearn.preprocessing</span> <span class="kn">import</span> <span class="n">MinMaxScaler</span>
+<span class="n">pd</span><span class="o">.</span><span class="n">options</span><span class="o">.</span><span class="n">mode</span><span class="o">.</span><span class="n">chained_assignment</span> <span class="o">=</span> <span class="kc">None</span> 
+
 
 
 <div class="viewcode-block" id="TestDataHandler"><a class="viewcode-back" href="../../../tests.test_data_handler.html#tests.test_data_handler.test_data_handler.TestDataHandler">[docs]</a><span class="k">class</span> <span class="nc">TestDataHandler</span><span class="p">(</span><span class="n">unittest</span><span class="o">.</span><span class="n">TestCase</span><span class="p">):</span>
@@ -161,7 +163,6 @@
         <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">dataset</span><span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">sort_index</span><span class="p">()</span><span class="o">.</span><span class="n">round</span><span class="p">(</span>
             <span class="n">decimals</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="s1">&#39;float64&#39;</span><span class="p">)</span>
         <span class="k">assert</span> <span class="n">target</span><span class="o">.</span><span class="n">equals</span><span class="p">(</span><span class="n">result</span><span class="p">)</span></div>
-
 
 <div class="viewcode-block" id="TestDataHandler.test_fit_standard_scalars"><a class="viewcode-back" href="../../../tests.test_data_handler.html#tests.test_data_handler.test_data_handler.TestDataHandler.test_fit_standard_scalars">[docs]</a>    <span class="k">def</span> <span class="nf">test_fit_standard_scalars</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Test fit_standard_scalars method.&quot;&quot;&quot;</span>

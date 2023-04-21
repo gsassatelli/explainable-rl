@@ -80,10 +80,10 @@
 
 
 <div class="viewcode-block" id="PerformanceEvaluator"><a class="viewcode-back" href="../../../src.performance.html#src.performance.performance_evaluator.PerformanceEvaluator">[docs]</a><span class="k">class</span> <span class="nc">PerformanceEvaluator</span><span class="p">:</span>
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a PerformanceEvaluator.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time and Memory Evaluator.&quot;&quot;&quot;</span>
 
-<span class="sd">        &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a PerformanceEvaluator.&quot;&quot;&quot;</span>
         <span class="c1"># Define the directory containing all the evaluations of this performance evaluator</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">init_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">-%H:%M:%S&quot;</span><span class="p">)</span>
         <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;evaluations/performance-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">init_time</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
@@ -116,7 +116,6 @@
 <span class="sd">        Note, the reason the timeit module is not used is because the piece of code being profiled</span>
 <span class="sd">        is lengthy (whole training flow); timeit is designed to test small snippets of code</span>
 <span class="sd">        by running them many times.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING BENCHMARK PERFORMANCE&quot;</span><span class="p">)</span>
@@ -172,7 +171,6 @@
 <span class="sd">            - Number of samples</span>
 <span class="sd">            - Number of episodes</span>
 <span class="sd">            - Number of bins (held constant for all dimensions)</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING PERFORMANCE GRAPHS&quot;</span><span class="p">)</span>
@@ -206,8 +204,7 @@
 <span class="sd">            x (list[int]): Range of values to vary the parameter.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            (list[float], list[float]): Time and memory recordings for the different parameter values in x.</span>
-
+<span class="sd">            list[float], list[float]: Time and memory recordings for the different parameter values in x.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">memory</span> <span class="o">=</span> <span class="p">[]</span>
@@ -240,7 +237,6 @@
 <span class="sd">            x (list[int]): Range of the x parameter across which time and memory have been recorded.</span>
 <span class="sd">            times (list[int]): Results of time complexity recording for different values of x.</span>
 <span class="sd">            memory (list[int]): Results of memory complexity recording for different values of x.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-darkgrid&quot;</span><span class="p">)</span>
 
@@ -263,7 +259,6 @@
 
 <span class="sd">            See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.</span>
 <span class="sd">            And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING TIME BREAKDOWN PER FUNCTION&quot;</span><span class="p">)</span>
@@ -282,9 +277,7 @@
             <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span></div>
 
 <div class="viewcode-block" id="PerformanceEvaluator.get_space_breakdown_per_function"><a class="viewcode-back" href="../../../src.performance.html#src.performance.performance_evaluator.PerformanceEvaluator.get_space_breakdown_per_function">[docs]</a>    <span class="k">def</span> <span class="nf">get_space_breakdown_per_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a per-function breakdown of space complexity.</span>
-
-<span class="sd">        &quot;&quot;&quot;</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a per-function breakdown of space complexity.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING SPACE BREAKDOWN PER FUNCTION&quot;</span><span class="p">)</span>
 
@@ -307,13 +300,12 @@
 <div class="viewcode-block" id="PerformanceEvaluator.run_training_loop"><a class="viewcode-back" href="../../../src.performance.html#src.performance.performance_evaluator.PerformanceEvaluator.run_training_loop">[docs]</a>    <span class="k">def</span> <span class="nf">run_training_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">num_bins</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Run an example main.py.</span>
 
-<span class="sd">            Eventually, may load the hyperparameter data from a user-facing file.</span>
+<span class="sd">        Eventually, may load the hyperparameter data from a user-facing file.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            num_episodes (int): Number of episodes in the training loop.</span>
 <span class="sd">            num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).</span>
 <span class="sd">            num_samples (int): Number of datapoint samples used for training.</span>
-
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;-&gt; Running training loop for </span><span class="si">{</span><span class="n">num_episodes</span><span class="si">}</span><span class="s2"> episodes, </span><span class="si">{</span><span class="n">num_bins</span><span class="si">}</span><span class="s2"> bins, </span><span class="si">{</span><span class="n">num_samples</span><span class="si">}</span><span class="s2"> samples&quot;</span><span class="p">)</span>
@@ -332,8 +324,7 @@
 <span class="sd">            num_samples (int): Number of datapoint samples used for training.</span>
 
 <span class="sd">        Returns:</span>
-<span class="sd">            (dict): Hyperparameter dictionary specific to the Datasparq dataset.</span>
-
+<span class="sd">            dict: Hyperparameter dictionary specific to the Datasparq dataset.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">hyperparam_dict_ds_data</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>

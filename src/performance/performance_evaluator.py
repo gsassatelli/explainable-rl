@@ -13,10 +13,10 @@ from main import run_all
 
 
 class PerformanceEvaluator:
-    def __init__(self):
-        """Initialise a PerformanceEvaluator.
+    """Time and Memory Evaluator."""
 
-        """
+    def __init__(self):
+        """Initialise a PerformanceEvaluator."""
         # Define the directory containing all the evaluations of this performance evaluator
         self.init_time = time.strftime("%Y%m%d-%H:%M:%S")
         os.mkdir(f"evaluations/performance-{self.init_time}")
@@ -49,7 +49,6 @@ class PerformanceEvaluator:
         Note, the reason the timeit module is not used is because the piece of code being profiled
         is lengthy (whole training flow); timeit is designed to test small snippets of code
         by running them many times.
-
         """
         if self.verbose:
             print("\nGETTING BENCHMARK PERFORMANCE")
@@ -105,7 +104,6 @@ class PerformanceEvaluator:
             - Number of samples
             - Number of episodes
             - Number of bins (held constant for all dimensions)
-
         """
         if self.verbose:
             print("\nGETTING PERFORMANCE GRAPHS")
@@ -139,8 +137,7 @@ class PerformanceEvaluator:
             x (list[int]): Range of values to vary the parameter.
 
         Returns:
-            (list[float], list[float]): Time and memory recordings for the different parameter values in x.
-
+            list[float], list[float]: Time and memory recordings for the different parameter values in x.
         """
         times = []
         memory = []
@@ -173,7 +170,6 @@ class PerformanceEvaluator:
             x (list[int]): Range of the x parameter across which time and memory have been recorded.
             times (list[int]): Results of time complexity recording for different values of x.
             memory (list[int]): Results of memory complexity recording for different values of x.
-
         """
         plt.style.use("seaborn-v0_8-darkgrid")
 
@@ -196,7 +192,6 @@ class PerformanceEvaluator:
 
             See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.
             And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.
-
         """
         if self.verbose:
             print("\nGETTING TIME BREAKDOWN PER FUNCTION")
@@ -215,9 +210,7 @@ class PerformanceEvaluator:
             outfile.write(stream.getvalue())
 
     def get_space_breakdown_per_function(self):
-        """Get a per-function breakdown of space complexity.
-
-        """
+        """Get a per-function breakdown of space complexity."""
         if self.verbose:
             print("\nGETTING SPACE BREAKDOWN PER FUNCTION")
 
@@ -240,13 +233,12 @@ class PerformanceEvaluator:
     def run_training_loop(self, num_episodes, num_bins, num_samples):
         """Run an example main.py.
 
-            Eventually, may load the hyperparameter data from a user-facing file.
+        Eventually, may load the hyperparameter data from a user-facing file.
 
         Args:
             num_episodes (int): Number of episodes in the training loop.
             num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).
             num_samples (int): Number of datapoint samples used for training.
-
         """
         if self.verbose:
             print(f"-> Running training loop for {num_episodes} episodes, {num_bins} bins, {num_samples} samples")
@@ -265,8 +257,7 @@ class PerformanceEvaluator:
             num_samples (int): Number of datapoint samples used for training.
 
         Returns:
-            (dict): Hyperparameter dictionary specific to the Datasparq dataset.
-
+            dict: Hyperparameter dictionary specific to the Datasparq dataset.
         """
         hyperparam_dict_ds_data = {
             'states': ['lead_time', 'length_of_stay',

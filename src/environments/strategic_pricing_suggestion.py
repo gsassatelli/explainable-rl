@@ -79,8 +79,8 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
             action (int): Action for agent to take.
 
         Returns:
-            next_state (list): Next state for the agent to visit.
-            done (bool): Whether the environment has terminated.
+            list: Next state for the agent to visit.
+            bool: Whether the environment has terminated.
         """
         index = list(state) + [action]
         state_action_str = ",".join(str(e) for e in index)

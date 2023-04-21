@@ -97,7 +97,7 @@
 <dt class="sig sig-object py" id="src.foundation.agent.Agent">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.foundation.agent.</span></span><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/agent.html#Agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.agent.Agent" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Define the Agent super class which all particular agents (e.g Q-learner, SARSA).</p>
+<p>Parent of all child agents (e.g Q-learner, SARSA).</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.agent.Agent._epsilon_greedy_policy">
 <span class="sig-name descname"><span class="pre">_epsilon_greedy_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/agent.html#Agent._epsilon_greedy_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.agent.Agent._epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
@@ -106,7 +106,7 @@
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>state</strong> (<em>int</em>) – State.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – Epislon of epislon-greedy policy.
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon of epsilon-greedy policy.
 Defaults to 0 for pure exploitation.</p></li>
 </ul>
 </dd>
@@ -125,15 +125,15 @@ Defaults to 0 for pure exploitation.</p></li>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>n_episodes</strong> (<em>int</em>) – number of episodes.</p></li>
-<li><p><strong>n_steps</strong> (<em>int</em>) – number of steps per episode.</p></li>
-<li><p><strong>lr</strong> (<em>float</em>) – learning rate.</p></li>
-<li><p><strong>lr_decay</strong> (<em>float</em>) – learning rate decay.</p></li>
-<li><p><strong>lr_min</strong> (<em>float</em>) – minimum learning rate.</p></li>
-<li><p><strong>epsilon</strong> (<em>float</em>) – epsilon-greedy policy parameter.</p></li>
-<li><p><strong>epsilon_decay</strong> (<em>float</em>) – epsilon decay.</p></li>
-<li><p><strong>epsilon_min</strong> (<em>float</em>) – minimum epsilon.</p></li>
-<li><p><strong>verbose</strong> (<em>bool</em>) – print training information.</p></li>
+<li><p><strong>n_episodes</strong> (<em>int</em>) – Number of episodes.</p></li>
+<li><p><strong>n_steps</strong> (<em>int</em>) – Number of steps per episode.</p></li>
+<li><p><strong>lr</strong> (<em>float</em>) – Learning rate.</p></li>
+<li><p><strong>lr_decay</strong> (<em>float</em>) – Learning rate decay.</p></li>
+<li><p><strong>lr_min</strong> (<em>float</em>) – Minimum learning rate.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon-greedy policy parameter.</p></li>
+<li><p><strong>epsilon_decay</strong> (<em>float</em>) – Epsilon decay.</p></li>
+<li><p><strong>epsilon_min</strong> (<em>float</em>) – Minimum epsilon.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Print training information.</p></li>
 </ul>
 </dd>
 </dl>
@@ -147,20 +147,20 @@ Defaults to 0 for pure exploitation.</p></li>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.agent.Agent.predict_actions">
 <span class="sig-name descname"><span class="pre">predict_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/agent.html#Agent.predict_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.agent.Agent.predict_actions" title="Permalink to this definition"></a></dt>
-<dd><p>Predict action for a list of states using epislon-greedy policy.</p>
+<dd><p>Predict action for a list of states using epsilon-greedy policy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>states</strong> (<em>list</em>) – States (binned).</p></li>
-<li><p><strong>epislon</strong> (<em>float</em>) – Epislon of epislon-greedy policy.
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon of epsilon-greedy policy.
 Defaults to 0 for pure exploitation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of recommended actions</p>
+<dd class="field-even"><p>List of recommended actions.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>actions (list)</p>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -169,7 +169,7 @@ Defaults to 0 for pure exploitation.</p></li>
 <dt class="sig sig-object py" id="src.foundation.agent.Agent.predict_rewards">
 <span class="sig-name descname"><span class="pre">predict_rewards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/agent.html#Agent.predict_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.agent.Agent.predict_rewards" title="Permalink to this definition"></a></dt>
 <dd><p>Predict reward for a list of state-actions.</p>
-<p>This function uses the avg reward matrix (which simulates a real-life scenario)</p>
+<p>This function uses the avg reward matrix (which simulates a real-life scenario).</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -178,10 +178,10 @@ Defaults to 0 for pure exploitation.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>List of recommended actions</p>
+<dd class="field-even"><p>List of recommended actions.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>rewards (list)</p>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -198,10 +198,9 @@ Defaults to 0 for pure exploitation.</p></li>
 <span id="src-foundation-engine-module"></span><h2>src.foundation.engine module<a class="headerlink" href="#module-src.foundation.engine" title="Permalink to this heading"></a></h2>
 <dl class="py class">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.foundation.engine.</span></span><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_test_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">src.foundation.engine.</span></span><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">agent_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">env_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_episodes</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">num_steps</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">bins</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.9</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Define the Engine class which is responsible for creating the agent and
-environment instances and running the training loop.</p>
+<p>Responsible for creating the agent and environment instances and running the training loop.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine._eval_action_dims">
 <span class="sig-name descname"><span class="pre">_eval_action_dims</span></span><a class="headerlink" href="#src.foundation.engine.Engine._eval_action_dims" title="Permalink to this definition"></a></dt>
@@ -235,16 +234,13 @@ environment instances and running the training loop.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine._evaluate_total_agent_reward">
 <span class="sig-name descname"><span class="pre">_evaluate_total_agent_reward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine._evaluate_total_agent_reward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine._evaluate_total_agent_reward" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Calculate the total reward obtained on the evaluation states using</dt><dd><p>the agent’s policy.</p>
-</dd>
-</dl>
+<dd><p>Calculate the total reward obtained on the evaluation states using the agent’s policy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>total (not scaled) cumulative reward</p>
+<dd class="field-odd"><p>Total (not scaled) cumulative reward.</p>
 </dd>
 <dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>cumreward (float)</p>
+<dd class="field-even"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
@@ -252,10 +248,7 @@ environment instances and running the training loop.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine._evaluate_total_hist_reward">
 <span class="sig-name descname"><span class="pre">_evaluate_total_hist_reward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine._evaluate_total_hist_reward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine._evaluate_total_hist_reward" title="Permalink to this definition"></a></dt>
-<dd><dl class="simple">
-<dt>Calculate the total reward obtained on the evaluation states using</dt><dd><p>the agent’s policy.</p>
-</dd>
-</dl>
+<dd><p>Calculate the total reward obtained on the evaluation states using the agent’s policy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
 <dd class="field-odd"><p>total (not scaled) cumulative based on historical data</p>
@@ -273,12 +266,17 @@ environment instances and running the training loop.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>labels</strong> (<em>list</em>) – list of feature labels</p></li>
-<li><p><strong>values</strong> (<em>list</em>) – list of (scaled) feature values</p></li>
+<li><p><strong>labels</strong> (<em>list</em>) – list of feature labels.</p></li>
+<li><p><strong>values</strong> (<em>list</em>) – list of (scaled) feature values.</p></li>
 </ul>
 </dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>Inverse transformation coefficient for all feature labels.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
 </dl>
-<p>Returns:</p>
 </dd></dl>
 
 <dl class="py attribute">
@@ -401,10 +399,8 @@ rewards_agent (list): list of rewards obtained by agent (calculated)</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.engine.Engine.save_parameters">
 <span class="sig-name descname"><span class="pre">save_parameters</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/engine.html#Engine.save_parameters"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.engine.Engine.save_parameters" title="Permalink to this definition"></a></dt>
-<dd><p>Save the parameters learned during training.
-This could be e.g. the q-values, the policy, or any other learned parameters.</p>
-<p>TODO: Not sure this function is needed, can call directly agent
-TODO: Epsilon greedy policy already contains q-values, remove it?</p>
+<dd><p>Save the parameters learned during training.</p>
+<p>This could be e.g. the q-values, the policy, or any other learned parameters.</p>
 </dd></dl>
 
 <dl class="py method">
@@ -414,8 +410,8 @@ TODO: Epsilon greedy policy already contains q-values, remove it?</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>evaluate</strong> (<em>bool</em>) – whether to evaluate agent</p></li>
-<li><p><strong>n_eval_steps</strong> (<em>int</em>) – number of evaluation steps</p></li>
+<li><p><strong>evaluate</strong> (<em>bool</em>) – Whether to evaluate agent.</p></li>
+<li><p><strong>n_eval_steps</strong> (<em>int</em>) – Number of evaluation steps.</p></li>
 </ul>
 </dd>
 </dl>
@@ -455,26 +451,34 @@ TODO: Epsilon greedy policy already contains q-values, remove it?</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.environment.MDP.reset">
 <span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/environment.html#MDP.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.environment.MDP.reset" title="Permalink to this definition"></a></dt>
-<dd><p>Reset environment.
-:returns: Randomised initial state.
-:rtype: list</p>
+<dd><p>Reset environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Randomised initial state.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.foundation.environment.MDP.step">
 <span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/foundation/environment.html#MDP.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.foundation.environment.MDP.step" title="Permalink to this definition"></a></dt>
-<dd><p>Take a step in the environment.
-A True done flag indicates that the environment terminated.
-:param state: Current state values of agent.
-:type state: list
-:param action: Action for agent to take.
-:type action: int</p>
+<dd><p>Take a step in the environment.</p>
+<p>A True done flag indicates that the environment terminated.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns<span class="colon">:</span></dt>
-<dd class="field-odd"><p>current state, action, next state, done flag.</p>
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – Current state values of agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Action for agent to take.</p></li>
+</ul>
 </dd>
-<dt class="field-even">Return type<span class="colon">:</span></dt>
-<dd class="field-even"><p>tuple</p>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>current state, action, next state, done flag.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
 </dd>
 </dl>
 </dd></dl>
@@ -496,7 +500,7 @@ A True done flag indicates that the environment terminated.
 <dd class="field-even"><p>State as a list.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>state (list)</p>
+<dd class="field-odd"><p>list</p>
 </dd>
 </dl>
 </dd></dl>
@@ -513,7 +517,7 @@ A True done flag indicates that the environment terminated.
 <dd class="field-even"><p>State as a string.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>state_str (str)</p>
+<dd class="field-odd"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -525,16 +529,16 @@ A True done flag indicates that the environment terminated.
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>param</strong> (<em>float</em>) – parameter to decay.</p></li>
-<li><p><strong>decay</strong> (<em>float</em>) – decay rate.</p></li>
-<li><p><strong>min_param</strong> (<em>float</em>) – minimum value of the parameter.</p></li>
+<li><p><strong>param</strong> (<em>float</em>) – Parameter to decay.</p></li>
+<li><p><strong>decay</strong> (<em>float</em>) – Decay rate.</p></li>
+<li><p><strong>min_param</strong> (<em>float</em>) – Minimum value of the parameter.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p>updated parameter.</p>
+<dd class="field-even"><p>Updated parameter.</p>
 </dd>
 <dt class="field-odd">Return type<span class="colon">:</span></dt>
-<dd class="field-odd"><p>param (float)</p>
+<dd class="field-odd"><p>float</p>
 </dd>
 </dl>
 </dd></dl>
