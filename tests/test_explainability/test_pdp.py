@@ -47,9 +47,9 @@ class TestPDP(unittest.TestCase):
         assert isinstance(self.pdp._dig_state_actions, list)
         assert isinstance(self.pdp._dig_state_actions_std, list)
         assert isinstance(self.pdp._dig_state_actions_samples, list)
-        assert len(self.pdp._dig_state_actions) == len(self.dh._state_labels)
-        assert len(self.pdp._dig_state_actions_std) == len(self.dh._state_labels)
-        assert len(self.pdp._dig_state_actions_samples) == len(self.dh._state_labels)
+        assert len(self.pdp._dig_state_actions) == len(self.dh.state_labels)
+        assert len(self.pdp._dig_state_actions_std) == len(self.dh.state_labels)
+        assert len(self.pdp._dig_state_actions_samples) == len(self.dh.state_labels)
 
     def test_get_denorm_actions(self):
         """Test denormalized actions.

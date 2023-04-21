@@ -25,11 +25,11 @@ class ShapValues:
             number_of_samples (int): Number of samples to use.
         """
         self.sample = sample
-        self.features = engine.dh._state_labels
+        self.features = engine.dh.state_labels
         self.env = engine.env
         self.Q = engine.agent.Q
         self.minmax_scalars = engine.dh.minmax_scalars
-        self.action = engine.dh._action_labels
+        self.action = engine.dh.action_labels
         self.number_of_samples = number_of_samples
         self.binned_sample = None
 
@@ -131,7 +131,7 @@ class ShapValues:
             binned_sample (np.array): Binned sample.
         """
         state_dims = list(range(len(self.features)))
-        binned_sample = self.env._bin_state(self.sample, idxs=state_dims)
+        binned_sample = self.env.bin_state(self.sample, idxs=state_dims)
         # binned_sample = [i-1 for i in binned_sample]
         return binned_sample
 

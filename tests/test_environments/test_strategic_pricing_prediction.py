@@ -59,7 +59,7 @@ class TestStrategicPricingPredictionMDP(unittest.TestCase):
         """Test bin_state_action_space method."""
         zipped = np.array([[0.1, 0.2, 0.3, 0.4], [0.5, 0.6, 0.7, 0.8]])
         self.env.bins = [10, 10, 5, 5]
-        result = self.env._bin_state_action_space(zipped)
+        result = self.env.bin_state_action_space(zipped)
         target = np.array([[1, 2, 1, 2], [5, 6, 3, 4]])
         assert np.array_equal(result, target)
 
@@ -83,7 +83,7 @@ class TestStrategicPricingPredictionMDP(unittest.TestCase):
         """Test bin_state method."""
         state = np.array([0.34, 0.19, 0.79])
         self.env.bins = [10, 10, 5]
-        result = self.env._bin_state(state)
+        result = self.env.bin_state(state)
         target = [3, 1, 3]
         assert result == target
 

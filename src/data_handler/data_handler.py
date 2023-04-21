@@ -8,7 +8,7 @@ class DataHandler:
     """
 
     __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
-                 "_state_labels", "_action_labels", "_reward_labels", "mdp_data",
+                 "state_labels", "action_labels", "reward_labels", "mdp_data",
                  "mdp_data_test", "_n_samples"]
 
     def __init__(self, data_path,
@@ -29,9 +29,9 @@ class DataHandler:
         self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self._state_labels = state_labels
-        self._action_labels = action_labels
-        self._reward_labels = reward_labels
+        self.state_labels = state_labels
+        self.action_labels = action_labels
+        self.reward_labels = reward_labels
         self.mdp_data = None
         self.mdp_data_test = None
 
@@ -89,8 +89,8 @@ class DataHandler:
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
-        s = self.dataset[self._state_labels]
-        r = self.dataset[self._reward_labels]
+        s = self.dataset[self.state_labels]
+        r = self.dataset[self.reward_labels]
         try:
             a = self.dataset[self._action_labels]
             self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)

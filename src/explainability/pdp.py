@@ -15,8 +15,8 @@ class PDP:
         """
         self._bins = engine.env.bins
         self._minmax_scalars = engine.dh.minmax_scalars
-        self._action_labels = engine.dh._action_labels
-        self._state_labels = engine.dh._state_labels
+        self._action_labels = engine.dh.action_labels
+        self._state_labels = engine.dh.state_labels
         self._dig_state_actions = []
         self._dig_state_actions_std = []
         self._dig_state_actions_samples = []

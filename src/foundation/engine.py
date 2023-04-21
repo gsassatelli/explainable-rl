@@ -223,7 +223,7 @@ class Engine:
         
         # Inverse scale agent rewards
         rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
 
         return np.sum(rewards_agent)
     
@@ -242,7 +242,7 @@ class Engine:
 
         # Inverse scale agent rewards
         rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
 
         return np.sum(rewards_hist)
 
@@ -264,7 +264,7 @@ class Engine:
         
         # Inverse scale agent rewards
         rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
 
         return np.sum(rewards_agent)
     
@@ -283,7 +283,7 @@ class Engine:
 
         # Inverse scale agent rewards
         rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
 
         return np.sum(rewards_hist)
 
@@ -320,7 +320,7 @@ class Engine:
         # Get the binned states
         b_states = self.env.bin_states(states, idxs=state_dims)
         # Inverse scaling
-        states = self._inverse_scale_feature(states, self.dh._state_labels)
+        states = self._inverse_scale_feature(states, self.dh.state_labels)
 
         # Get the binned actions
         b_actions = self.env.bin_states(actions, idxs=action_dims)
@@ -339,15 +339,15 @@ class Engine:
 
         #  Apply inverse scaling to actions, states, and rewards
         eval_results['states'] = self._inverse_scale_feature(states,
-                                            self.dh._state_labels)
+                                            self.dh.state_labels)
         eval_results['actions_hist'] = self._inverse_scale_feature(actions,
-                                                    self.dh._action_labels)
+                                                    self.dh.action_labels)
         eval_results['actions_agent'] = self._inverse_scale_feature(actions_agent,
-                                                    self.dh._action_labels)
+                                                    self.dh.action_labels)
         eval_results['rewards_hist'] = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
         eval_results['rewards_agent'] = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh._reward_labels)
+                                                    self.dh.reward_labels)
         
         # Save additional arrays
         eval_results['b_actions'] = b_actions
