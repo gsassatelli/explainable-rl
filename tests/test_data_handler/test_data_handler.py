@@ -3,6 +3,9 @@ from library import *
 # Import functions
 from src.data_handler.data_handler import DataHandler
 from sklearn.preprocessing import MinMaxScaler
+from tests.test_hyperparams import hyperparam_dict
+
+
 pd.options.mode.chained_assignment = None 
 
 
@@ -14,12 +17,8 @@ class TestDataHandler(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        self.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        self.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
+        self.dh = DataHandler(hyperparam_dict=hyperparam_dict)
+        self.dh.prepare_data_for_engine()
         self.target = pd.read_csv('tests/test_env_data.csv').dropna()
 
     def tearDown(self) -> None:

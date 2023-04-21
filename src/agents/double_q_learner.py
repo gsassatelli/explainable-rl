@@ -38,7 +38,7 @@ class DoubleQLearner(TD):
         self.Q_b = copy.deepcopy(self.Q)
         self.state_to_action = self.env.state_to_action
 
-    def _step(self, epsilon, lr):
+    def _step(self, epsilon, lr, use_uncertainty=False):
         """Take a step in the environment and update the Q-tables.
 
         Args:

@@ -43,7 +43,7 @@ class TestSarsa(TestTD):
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, 0] = 1.5
         self.agent.state = [0, 0, 0]
-        self.agent._step(epsilon, lr)
+        self.agent._step(epsilon, lr, use_uncertainty=False)
 
         assert self.agent.state == [0, 0, 0]
         assert type(self.agent.Q[0, 0, 0, 0]) is np.float64
@@ -52,6 +52,6 @@ class TestSarsa(TestTD):
         """Test the fit method."""
         self.agent.create_tables()
         original_Q = copy.deepcopy(self.agent.Q)
-        self.agent.fit(n_episodes=10, n_steps=1)
+        self.agent.fit(n_episodes=10, n_steps=1, use_uncertainty=False)
         assert self.agent.Q.shape == original_Q.shape
         assert self.agent.Q != original_Q
