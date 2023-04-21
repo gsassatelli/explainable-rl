@@ -13,14 +13,13 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 class Engine:
     """Responsible for creating the agent and environment instances and running the training loop."""
 
-    def __init__(self, 
-                 dh,
-                 hyperparam_dict):
+    def __init__(self, dh, hyperparam_dict, verbose=False):
         """Initialise engine class.
 
         Args:
             dh (DataHandler): DataHandler to be given to the Environment.
             hyperparam_dict (dict): Dictionary containing all hyperparameters.
+            verbose (bool): Whether print statements about the program flow should be displayed.
         """
         # Save data handler
         self.dh = dh
@@ -55,14 +54,18 @@ class Engine:
         self._eval_state_dims = None
         self._eval_action_dims = None
 
+        self._verbose = verbose
+
     def create_world(self):
         """Create the Agent and MDP instances for the given task."""
         # Create chosen environment
-        print("Initialize environment")
+        if self._verbose:
+            print("Initialize environment")
         self.create_env()
         
         # Create chosen agent
-        print("Initialize agent")
+        if self._verbose:
+            print("Initialize agent")
         self.create_agent()
 
     def create_agent(self):

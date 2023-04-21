@@ -38,7 +38,6 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
 
 
 if __name__ == "__main__":
-
     hyperparam_dict_ds_data_suggest = {
         "dimensions": {'states': {'lead_time': 10,
                                   'length_of_stay': 10,

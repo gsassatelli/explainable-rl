@@ -7,8 +7,10 @@ from src.environments.strategic_pricing import StrategicPricing
 class StrategicPricingSuggestionMDP(StrategicPricing):
     """Environment for Strategic Pricing (suggestion task)."""
 
-    def __init__(self, dh, bins=None):
+    def __init__(self, dh, bins=None, verbose=False):
+        """Initialise Strategic Pricing Environment."""
         super().__init__(dh=dh, bins=bins)
+        self._verbose = verbose
         self.initialise_env()
 
     def _get_counts_and_rewards_per_bin(self, binned):
@@ -36,7 +38,8 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Returns:
             sparse.COO: Binned state-action pairs and their associate average reward.
         """
-        print("Create average rewards matrix")
+        if self._verbose:
+            print("Create average rewards matrix")
 
         # Transform data for efficiency
         self._transform_df_to_numpy()
