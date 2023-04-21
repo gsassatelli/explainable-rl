@@ -156,7 +156,7 @@ class TD(Agent):
             
             # Get weights given population for state-action space
             # N.B. A high value represents a well-known, certain state
-            uncertainty_weights = {key: float(value)/sum(state_action_counts.values())
+            uncertainty_weights = {int(key): float(value)/sum(state_action_counts.values())
                                    for (key, value) in state_action_counts.items()}
 
             if random.random() > epsilon:  # Exploring
@@ -202,7 +202,7 @@ class TD(Agent):
         """
         action = self.uncertainty_informed_policy(self.state,
                                                   epsilon=epsilon,
-                                                  use_uncertainty=use_uncertainty,
+                                                  use_uncertainty=True, # TODO: readd parameter
                                                   q_importance=0.7)
         
         state, next_state, reward, done = self.env.step(self.state, action)
