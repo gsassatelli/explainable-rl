@@ -1,4 +1,6 @@
 from library import *
+from src.environments.strategic_pricing import StrategicPricing
+
 
 class StrategicPricingSuggestionMDP(StrategicPricing):
     """Defines and instantiates the MDP object for Strategic Pricing.
