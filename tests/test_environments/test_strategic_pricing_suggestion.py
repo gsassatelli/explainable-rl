@@ -26,7 +26,9 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         assert result == target
 
     def test_make_rewards_from_data(self):
-        pass
+        """Test make_rewards_from_data method."""
+        result = self.env._make_rewards_from_data()
+        assert isinstance(result, sparse.COO)
 
     def test_step(self):
         state = [1, 2, 3]
@@ -36,6 +38,7 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         assert result == (state, [1, 2, 3], 0.0, True)
 
     def test_find_next_state(self):
+        """Test find_next_state method."""
         state = [1, 2, 3]
         action = 2
         result = self.env._find_next_state(state, action)
