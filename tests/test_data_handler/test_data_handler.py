@@ -17,7 +17,8 @@ class TestDataHandler(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
-        self.dh = DataHandler(hyperparam_dict=hyperparam_dict)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        self.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
         self.dh.prepare_data_for_engine()
         self.target = pd.read_csv('tests/test_env_data.csv').dropna()
 
@@ -25,11 +26,6 @@ class TestDataHandler(unittest.TestCase):
         """Tear down test fixtures, if any."""
         del self.dh
         del self.target
-
-    def test_load_data(self):
-        """Test load_data method."""
-        self.dh.load_data(delimiter=',')
-        assert isinstance(self.dh.dataset, pd.DataFrame)
 
     def test_type_get_actions(self):
         """Test get_actions method."""
