@@ -22,14 +22,6 @@ class PerformanceEvaluator:
         """Initialise a PerformanceEvaluator."""
         # Define the directory containing all the evaluations of this performance evaluator
 
-        d = dir()
-        # You'll need to check for user-defined variables in the directory
-        for obj in d:
-            # checking for built-in variables/functions
-            if not obj.startswith('__') and not obj.startswith("self"):
-                # deleting the said obj, since a user-defined function
-                del globals()[obj]
-
         self.init_time = time.strftime("%Y%m%d-%H:%M:%S")
         os.mkdir(f"src/performance/evaluations/performance-{self.init_time}")
 
