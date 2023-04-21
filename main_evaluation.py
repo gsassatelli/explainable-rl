@@ -6,7 +6,6 @@ if __name__ == "__main__":
         'states': ['lead_time', 'length_of_stay',
                    'competitor_price_difference_bin', 'demand_bin'],
         'actions': ['price'],
-        # TODO: these correspond to the states and actions. Probably should change to a dict.
         'rewards': ['reward'],
         'bins': [10, 10, 4, 4, 10],
         'feature_types': {

@@ -38,18 +38,12 @@ class TestQLearningAgent(TestTD):
 
     def test_step(self):
         """Test the step method."""
-        # TODO: from Giulia, can we remove the print?
-        print("testing test_step")
         epsilon = 0
         lr = 0.1
         self.agent.create_tables()
         self.agent.Q[0, 0, 0, 2] = 1.5
         self.agent.state = [0, 0, 0]
-
         self.agent._step(epsilon, lr)
-
-        print(f"self.agent.Q[0, 0, 0, 2]:{self.agent.Q[0, 0, 0, 2]}")
-
         assert self.agent.state == [0, 0, 0]
         assert self.agent.Q[0, 0, 0, 2] == 1.5 + lr * (0 + 0.9 * 1.5 - 1.5)
 

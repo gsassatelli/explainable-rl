@@ -41,16 +41,6 @@ class TestShapValues(unittest.TestCase):
         """
         assert isinstance(self.shap_values, ShapValues)
 
-    # TODO not possible to add test since the sample may not be visited by the agent (ValueError)
-    # def test_compute_shap_values(self):
-    #     """Test compute_shap_values method.
-    #     """
-    #     shaps, predicted_action = self.shap_values.compute_shap_values()
-    #
-    #     assert isinstance(shaps, dict)
-    #     assert isinstance(predicted_action, float)
-    #     assert len(shaps) == len(self.shap_values.features)
-
     def test_verify_sample_length(self):
         """Test verify_sample_length method.
         """

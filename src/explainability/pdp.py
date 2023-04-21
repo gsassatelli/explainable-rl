@@ -78,7 +78,6 @@ class PDP:
             self._dig_state_actions.append(dig_actions)
             self._dig_state_actions_std.append(dig_actions_std)
             self._dig_state_actions_samples.append(dig_actions_samples)
-            # TODO std no correct because it is not the std of denorm values
 
     def _get_denorm_actions(self):
         """Get actions denormalized values.
