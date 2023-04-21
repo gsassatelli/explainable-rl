@@ -66,8 +66,6 @@ hyperparam_dict = {
     "program_flow": {"verbose": True}
 }
 
-# TODO: change the data handler and engine so they just take the hyperparam dict as an argument
-
 hyperparam_dict_kaggle_data_suggest = {
     'states': ['competitorPrice', 'adFlag', 'availability', 'price'],
     'actions': [price_bin / 10 for price_bin in range(1, 11)],

@@ -9,7 +9,6 @@ from src.environments.strategic_pricing_suggestion import StrategicPricingSugges
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
-# TODO: Ludo thinks we should just pass the Engine the whole hyperparam dictionary and that it should also create the data handler.
 class Engine:
     """Responsible for creating the agent and environment instances and running the training loop."""
 
@@ -130,17 +129,6 @@ class Engine:
                 self.agent.fit(n_eval_steps, self.num_steps, use_uncertainty=False)
                 self.agent_cumrewards.append(self._evaluate_total_agent_reward())
             self.hist_cumrewards = self._evaluate_total_hist_reward()
-
-    def save_parameters(self):
-        """Save the parameters learned during training.
-
-        This could be e.g. the q-values, the policy, or any other learned parameters.
-        """
-        # TODO: Not sure this function is needed, can call directly agent
-        # TODO: Epsilon greedy policy already contains q-values, remove it?
-        # Save parameters of the trained agent to predict
-        self.policy = self.agent.policy
-        self.q_table = self.agent.q_table
 
     def _inverse_scale_feature(self,
                                values,

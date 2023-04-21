@@ -101,7 +101,6 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         coords = np.array(coords).T.tolist()
 
         return sparse.COO(coords, data, shape=tuple(self.bins))
-        # TODO: make the bins dimensions work
 
     def _transform_df_to_numpy(self):
         self._state_mdp_data = self.dh.get_states().to_numpy()

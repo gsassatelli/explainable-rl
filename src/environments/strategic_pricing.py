@@ -34,7 +34,6 @@ class StrategicPricing(MDP):
             self.bins = [10] * (self.state_dim + 1)
         else:
             self.bins = bins
-        # TODO: check this logic
 
     def initialise_env(self):
         """Create the environment given the MDP information."""
