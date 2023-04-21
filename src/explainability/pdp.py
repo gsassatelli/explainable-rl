@@ -11,6 +11,8 @@ class PDP:
         Args:
             engine (Engine): Engine object.
         """
+        self.Q = engine.agent.Q
+        self.Q_num_samples = engine.agent.Q_num_samples
         self._bins = engine.env.bins
         self._minmax_scalars = engine.dh.minmax_scalars
         self._action_labels = engine.dh.action_labels
@@ -23,22 +25,14 @@ class PDP:
         self._bins_per_dim = []
         self._Q_array = []
 
-    def build_data_for_plots(self,
-                             Q,
-                             Q_num_samples):
+    def build_data_for_plots(self):
         """Prepare data to build PDP plots.
-
-        Args:
-            Q (sparse.DOK): Q-table to build plots.
-            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
-        self._get_digitized_pdp(Q, Q_num_samples)
+        self._get_digitized_pdp()
         self._get_denorm_actions()
         self._get_denorm_states()
 
-    def _get_digitized_pdp(self,
-                           Q,
-                           Q_num_samples):
+    def _get_digitized_pdp(self):
         """Compute average Q-value per each state-action pair.
 
         Marginal effect of the state-action pair averaging other state dimensions.
@@ -47,7 +41,7 @@ class PDP:
             Q (sparse.DOK): Q-table to build plots.
             Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
-        Q_array = Q.todense()
+        Q_array = self.Q.todense()
         self._Q_array = Q_array
         shape_Q = Q_array.shape
         num_dims = len(shape_Q)
@@ -55,7 +49,7 @@ class PDP:
         self._bins_per_dim = [shape_Q[i] for i in range(num_dims)]
         set_states = set(list(range(num_states)))
 
-        Q_num_samples_array = Q_num_samples.todense()
+        Q_num_samples_array = self.Q_num_samples.todense()
 
         # For each state dimension
         for dim in range(num_states):
@@ -110,19 +104,15 @@ class PDP:
             self._denorm_states.append(denorm_state)
 
     def plot_pdp(self,
-                 states_names,
                  fig_name,
-                 savefig=True,
-                 all_states=True):
+                 savefig=True):
         """Build PDP plots.
 
         One marginalized plot per each state dimension.
 
         Args:
-            states_names (list): State dimensions column names
             fig_name (str): Name to save plot.
             savefig (bool): Whether to save the plot.
-            all_states (bool): Whether to plot the unvisited states.
         """
         rows = len(self._denorm_actions)
         cols = 1
@@ -132,17 +122,12 @@ class PDP:
         fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True, figsize=figsize)
 
         for a in range(rows):
-            state = states_names[a]
+            state = self._state_labels[a]
             # Plot action-state graph
             axis = [ax[a], ax[a].twinx()]
             actions = self._denorm_actions[a]
             states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
             samples = self._dig_state_actions_samples[a]
-            if not all_states:
-                total_samples = list(samples[:, 1])
-                states = [states[idx] for idx, s in enumerate(total_samples) if s > 0]
-                actions = [actions[idx] for idx, s in enumerate(total_samples) if s > 0]
-                samples = np.array([samples[idx] for idx, s in enumerate(total_samples) if s > 0])
 
             axis[0].grid(zorder=0)
             axis[0].plot(states, actions, marker="o", color='b', zorder=3)

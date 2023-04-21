@@ -1,8 +1,3 @@
-"""
-Todo:
-    * change normalisation to [0, 1]
-    * add flag for next states
-"""
 from library import *
 
 
@@ -10,6 +5,7 @@ class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
     def __init__(self,
+                 dataset,
                  hyperparam_dict):
         """Initialise the DataHandler.
 
@@ -20,17 +16,16 @@ class DataHandler:
             reward_labels (list): List of reward labels.
             n_samples (int): Number of samples to extract from dataset.
         """
+        self.dataset = dataset
         self.hyperparam_dict = hyperparam_dict
         self.data_path = hyperparam_dict['dataset']['data_path']
         self._n_samples = hyperparam_dict['dataset']['n_samples']
-        self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
         self.state_labels = self._get_labels(hyperparam_dict['dimensions']['states'])
         self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
         self.reward_labels = self._get_labels(hyperparam_dict['dimensions']['rewards'])
         self.mdp_data = None
-        self.mdp_data_test = None
 
     def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
@@ -45,31 +40,30 @@ class DataHandler:
                 self.reward_labels))
         if col_delimiter is None:
             col_delimiter = self.hyperparam_dict['dataset']['col_delimiter']
-        self.load_data(delimiter=col_delimiter)
+        # self.load_data(delimiter=col_delimiter)
 
         self.preprocess_data(normalisation=self.hyperparam_dict['dataset']['normalisation'],
                              columns_to_normalise=cols_to_normalise)
 
-    def load_data(self, delimiter=','):
-        """Load data from file.
-
-        Args:
-            delimiter (str): Which separates columns.
-        """
-        file_type = self.data_path.split('.')[-1]
-        if file_type == 'csv':
-            self.dataset = pd.read_csv(self.data_path, sep=delimiter)
-        elif file_type == 'xlsx':
-            self.dataset = pd.read_excel(self.data_path)
-        elif file_type == 'parquet':
-            self.dataset = pd.read_parquet(self.data_path)
-        else:
-            raise ValueError("File type not supported")
+    # def load_data(self, delimiter=','):
+    #     """Load data from file.
+    #
+    #     Args:
+    #         delimiter (str): Which separates columns.
+    #     """
+    #     file_type = self.data_path.split('.')[-1]
+    #     if file_type == 'csv':
+    #         self.dataset = pd.read_csv(self.data_path, sep=delimiter)
+    #     elif file_type == 'xlsx':
+    #         self.dataset = pd.read_excel(self.data_path)
+    #     elif file_type == 'parquet':
+    #         self.dataset = pd.read_parquet(self.data_path)
+    #     else:
+    #         raise ValueError("File type not supported")
 
     def preprocess_data(self,
                         normalisation=True,
-                        columns_to_normalise=None,
-                        train_test_split=0.2):
+                        columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
@@ -100,10 +94,6 @@ class DataHandler:
 
         self.mdp_data = self.mdp_data[:self._n_samples]
 
-        # split into train-test
-        split_indx = int(self._n_samples * train_test_split)
-        self.mdp_data_test = self.mdp_data[:split_indx]
-        self.mdp_data = self.mdp_data[split_indx:]
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -123,7 +113,7 @@ class DataHandler:
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self, split='train'):
+    def get_actions(self):
         """Get the actions taken in the dataset.
 
         Args:
@@ -132,9 +122,7 @@ class DataHandler:
         Returns:
             pd.DataFrame: Actions.
         """
-        if split == 'train':
-            return self.mdp_data['a']
-        return self.mdp_data_test['a']
+        return self.mdp_data['a']
 
     def get_action_labels(self):
         """Get the action labels.
@@ -144,7 +132,7 @@ class DataHandler:
         """
         return self.action_labels
 
-    def get_rewards(self, split='train'):
+    def get_rewards(self):
         """Get the rewards taken in the dataset.
 
         Args:
@@ -153,12 +141,10 @@ class DataHandler:
         Returns:
             pd.DataFrame: The rewards.
         """
-        if split == 'train':
-            return self.mdp_data['r']
-        else:
-            return self.mdp_data_test['r']
+        return self.mdp_data['r']
 
-    def get_states(self, split='train'):
+
+    def get_states(self):
         """Get the states taken in the dataset.
 
         Args:
@@ -167,10 +153,8 @@ class DataHandler:
         Returns:
             pd.DataFrame: The states.
         """
-        if split == 'train':
-            return self.mdp_data['s']
-        else:
-            return self.mdp_data_test['s']
+
+        return self.mdp_data['s']
 
     def _filter_data(self):
         """Filter the dataset."""

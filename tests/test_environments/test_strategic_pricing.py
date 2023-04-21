@@ -1,6 +1,7 @@
 from library import *
 from src.data_handler.data_handler import DataHandler
 from src.environments.strategic_pricing import StrategicPricing
+from tests.test_hyperparams import hyperparam_dict
 
 
 class TestStrategicPricing(unittest.TestCase):
@@ -9,13 +10,9 @@ class TestStrategicPricing(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         """Set up test fixtures, if any."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        cls.dh.prepare_data_for_engine(col_delimiter=',',
-                                       cols_to_normalise=states+actions)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
+        cls.dh.prepare_data_for_engine()
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""

@@ -9,6 +9,7 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from tests.test_hyperparams import hyperparam_dict
 
 
 class TestEngine(unittest.TestCase):
@@ -19,21 +20,14 @@ class TestEngine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the data handler for the tests."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        cls.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        cls.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
+        cls.dh.prepare_data_for_engine()
 
     def setUp(self) -> None:
         """Set up the engine for the tests."""
         self.engine = Engine(self.dh,
-                             agent_type="q_learner",
-                             env_type="strategic_pricing_predict",
-                             bins=[10, 10, 10, 10],
-                             num_episodes=100,
-                             num_steps=1)
+                             hyperparam_dict=hyperparam_dict)
 
     def tearDown(self) -> None:
         """Tear down the engine after the tests."""
@@ -88,29 +82,3 @@ class TestEngine(unittest.TestCase):
         self.engine.train_agent()
         assert self.engine.agent.Q is not None
         assert self.engine.agent.Q is not original_q
-
-    def test_get_results(self):
-        pass
-
-    def test_save_parameters(self):
-        pass
-
-    def test_inverse_scale_features(self):
-        pass
-
-    def test_build_evaluation(self):
-        pass
-
-    def test_evaluate_total_agent_reward(self):
-        pass
-
-    def test_evaluate_total_hist_reward(self):
-        pass
-
-    def test_evaluate_agent(self):
-        pass
-
-    # TODO: from Giulia, do we need to test this?
-
-
-

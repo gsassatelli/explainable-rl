@@ -3,8 +3,7 @@ from library import *
 # Import functions
 from src.data_handler.data_handler import DataHandler
 from sklearn.preprocessing import MinMaxScaler
-pd.options.mode.chained_assignment = None 
-
+from tests.test_hyperparams import hyperparam_dict
 
 
 class TestDataHandler(unittest.TestCase):
@@ -14,23 +13,15 @@ class TestDataHandler(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
-        states = ['competitorPrice', 'adFlag', 'availability']
-        actions = ['price']
-        rewards = ['revenue']
-        n_samples = 50
-        self.dh = DataHandler('tests/test_env_data.csv', states, actions, rewards, n_samples=n_samples)
-        self.dh.prepare_data_for_engine(col_delimiter=',', cols_to_normalise=states + actions)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        self.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
+        self.dh.prepare_data_for_engine()
         self.target = pd.read_csv('tests/test_env_data.csv').dropna()
 
     def tearDown(self) -> None:
         """Tear down test fixtures, if any."""
         del self.dh
         del self.target
-
-    def test_load_data(self):
-        """Test load_data method."""
-        self.dh.load_data(delimiter=',')
-        assert isinstance(self.dh.dataset, pd.DataFrame)
 
     def test_type_get_actions(self):
         """Test get_actions method."""
@@ -82,7 +73,7 @@ class TestDataHandler(unittest.TestCase):
         col_name = 'price'
         scalar = MinMaxScaler()
         target = self.target
-        target[col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
+        target.loc[:,col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
         target = target.round(decimals=2).astype('float64')[col_name]
         self.dh._fit_standard_scalars()
         self.dh._transform_col(col_name='price')

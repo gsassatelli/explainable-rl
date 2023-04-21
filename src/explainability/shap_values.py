@@ -6,14 +6,12 @@ class ShapValues:
 
     def __init__(self,
                  sample,
-                 engine,
-                 number_of_samples=500):
+                 engine):
         """Initialise the ShapValues class.
 
         Args:
             sample (np.array): Sample to explain.
             engine (Engine): Engine object.
-            number_of_samples (int): Number of samples to use.
         """
         self.sample = sample
         self.features = engine.dh.state_labels
@@ -21,10 +19,8 @@ class ShapValues:
         self.Q = engine.agent.Q
         self.minmax_scalars = engine.dh.minmax_scalars
         self.action = engine.dh.action_labels
-        self.number_of_samples = number_of_samples
+        self.number_of_samples = engine.hyperparameters["explainability"]["shap_num_samples"]
         self.binned_sample = None
-
-        # TODO: improve random sampling - time consuming
 
     def compute_shap_values(self):
         """Compute the SHAP values for a given sample.
