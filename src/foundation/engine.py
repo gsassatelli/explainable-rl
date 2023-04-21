@@ -13,7 +13,7 @@ from src.environments.strategic_pricing_prediction import StrategicPricingPredic
 class Engine:
     """Responsible for creating the agent and environment instances and running the training loop."""
 
-    __slots__ = ["dh", "agent_type", "env_type", "agent", "env", "gamma",
+    __slots__ = ["dh", "hyperparameters", "agent_type", "env_type", "agent", "env", "gamma",
                  "episode_flag", "num_episodes", "num_steps", "policy", 
                  "q_table", "bins", "train_test_split", "agent_cumrewards",
                  "hist_cumrewards", "_eval_states", "_eval_actions", "_eval_rewards",
@@ -21,42 +21,31 @@ class Engine:
 
     def __init__(self, 
                  dh,
-                 agent_type,
-                 env_type,
-                 num_episodes,
-                 num_steps,
-                 bins,
-                 gamma=0.9,
-                 verbose=False):
+                 hyperparam_dict):
         """Initialise engine class.
 
         Args:
             dh (DataHandler): DataHandler to be given to the Environment.
-            agent_type (str): Type of agent to initialize.
-            env_type (str): Type of environment to initialize.
-            num_episodes (int): Number of episodes to train the agent for.
-            num_steps (int): Number of steps per episode.
-            bins (list): List of bins per state/action to discretize the state.
-                        space.
-            gamma (float): Discount factor.
+            hyperparam_dict (dict): Dictionary containing all hyperparameters.
         """
         # Save data handler
         self.dh = dh
+        self.hyperparameters = hyperparam_dict
 
         # Hyperparameters
-        self.num_episodes = num_episodes
-        self.num_steps = num_steps
-        self.gamma = gamma
+        self.num_episodes = hyperparam_dict['training']['num_episodes']
+        self.num_steps = hyperparam_dict['training']['num_steps']
+        self.gamma = hyperparam_dict['agent']['gamma']
 
         # Initialize agent
-        self.agent_type = agent_type
+        self.agent_type = hyperparam_dict['agent']['agent_type']
         self.agent = None
 
         # Initialize environment
-        self.env_type = env_type
+        self.env_type = hyperparam_dict['training']['env_type']
         self.env = None
-        self.verbose = verbose
-        self.bins = bins
+        self.verbose = hyperparam_dict['program_flow']['verbose']
+        self.bins = self._get_bins()
 
         # Parameters of the agent
         self.policy = None
@@ -345,3 +334,16 @@ class Engine:
         eval_results['b_actions_agent'] = b_actions_agent
         
         return eval_results
+
+    def _get_bins(self):
+        """Get the bins for the states and actions.
+        """
+        state_labels = self.dh.state_labels
+        action_labels = self.dh.action_labels
+
+        bins = []
+        for label in state_labels:
+            bins.append(self.hyperparameters['dimensions']['states'][label])
+        for label in action_labels:
+            bins.append(self.hyperparameters['dimensions']['actions'][label])
+        return bins

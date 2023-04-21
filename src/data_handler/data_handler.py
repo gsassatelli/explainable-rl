@@ -9,16 +9,12 @@ from library import *
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
-    __slots__ = ["data_path", "dataset", "_normalised_cols", "minmax_scalars",
+    __slots__ = ["hyperparam_dict", "data_path", "dataset", "_normalised_cols", "minmax_scalars",
                  "state_labels", "action_labels", "reward_labels", "mdp_data",
                  "mdp_data_test", "_n_samples"]
 
     def __init__(self,
-                 data_path,
-                 state_labels,
-                 action_labels,
-                 reward_labels,
-                 n_samples):
+                 hyperparam_dict):
         """Initialise the DataHandler.
 
         Args:
@@ -28,26 +24,35 @@ class DataHandler:
             reward_labels (list): List of reward labels.
             n_samples (int): Number of samples to extract from dataset.
         """
-        self.data_path = data_path
-        self._n_samples = n_samples
+        self.hyperparam_dict = hyperparam_dict
+        self.data_path = hyperparam_dict['dataset']['data_path']
+        self._n_samples = hyperparam_dict['dataset']['n_samples']
         self.dataset = None
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self.state_labels = state_labels
-        self.action_labels = action_labels
-        self.reward_labels = reward_labels
+        self.state_labels = self._get_labels(hyperparam_dict['dimensions']['states'])
+        self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
+        self.reward_labels = self._get_labels(hyperparam_dict['dimensions']['rewards'])
         self.mdp_data = None
         self.mdp_data_test = None
 
-    def prepare_data_for_engine(self, col_delimiter=',', cols_to_normalise=None):
+    def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
 
         Args:
             col_delimiter (str): Column delimiter.
             cols_to_normalise (list): List of columns to normalise.
         """
+        if cols_to_normalise is None:
+            cols_to_normalise = list(set(
+                self.state_labels + self.action_labels +
+                self.reward_labels))
+        if col_delimiter is None:
+            col_delimiter = self.hyperparam_dict['dataset']['col_delimiter']
         self.load_data(delimiter=col_delimiter)
-        self.preprocess_data(normalisation=True, columns_to_normalise=cols_to_normalise)
+
+        self.preprocess_data(normalisation=self.hyperparam_dict['dataset']['normalisation'],
+                             columns_to_normalise=cols_to_normalise)
 
     def load_data(self, delimiter=','):
         """Load data from file.
@@ -194,3 +199,17 @@ class DataHandler:
             scalar = MinMaxScaler()
             scalar = scalar.fit(pd.DataFrame(self.dataset[col]))
             self.minmax_scalars[col] = scalar
+
+    def _get_labels(self, label_dict):
+        """Get the labels from the label dictionary.
+
+        Args:
+            label_dict (dict): The label dictionary.
+
+        Returns:
+            list: The labels.
+        """
+        labels = []
+        for key in label_dict:
+            labels.append(key)
+        return labels
