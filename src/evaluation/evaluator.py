@@ -53,8 +53,8 @@ class Evaluator:
         for engine in self.engines:
             eval_dict = {}
             # Save training results
-            eval_dict['agent_cumrewards'] = engine.agent_cumrewards
-            eval_dict['hist_cumrewards'] = engine.hist_cumrewards
+            eval_dict['agent_cumrewards'] = engine.eval_agent_rewards
+            eval_dict['hist_cumrewards'] = engine.eval_hist_rewards
             # Get test data from data handler
             states = engine.dh.get_states(split='test').to_numpy().tolist()
             actions = engine.dh.get_actions(split='test').to_numpy().tolist()
@@ -109,6 +109,7 @@ class Evaluator:
             eval_dict['agent_type'] = engine.dh.hyperparam_dict['agent']['agent_type']
             eval_dict['num_eval_steps'] = engine.dh.hyperparam_dict['training']['num_eval_steps']
             self.eval_results.append(eval_dict)
+
         
 
     def plot_training_curve(self):
