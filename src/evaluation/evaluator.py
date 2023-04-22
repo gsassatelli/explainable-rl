@@ -3,152 +3,133 @@ from library import *
 # Import functions
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
-
+import pickle
 
 class Evaluator:
     """Evaluator to perform several experiments and show evaluation graphs."""
 
     def __init__(self,
-                 hyperparam_dict,
-                 agent_list,
-                 run_path,
-                 n_runs=3):
+                 engine_path):
         """Initialise the Evaluator.
 
         Args:
-            hyperparam_dict (dict): Hyperparameter settings.
-            agent_list (list): Agents to test.
-            n_runs (int): Number of experiments to perform for each agent.
-            run_path (str): Directory to save the results.
+            engine_path (str or List[str]): list of trained engine paths
         """
-        self.hyperparam_dict = hyperparam_dict
-        self.agent_list = agent_list
-        self.n_runs = n_runs
-        self.run_path = run_path
 
-    def train_evaluate_agent(self,
-                             hyperparam_dict,
-                             verbose=True):
-        """Train and evaluate agent specified by hyperparam_dict.
+        self.engine_path = engine_path
+        self.engines = []
+        self.eval_results = []    
+
+        # load engines from path
+        self._load_engines()
+
+        # get evaluation data
+        self._get_evaluation_results()
+    
+    def _load_engines(self):
+        """ Load engines from the specified paths.
+        """
+        if isinstance(self.engine_path, str):
+            self.engine_path = [self.engine_path]
+        
+        for path in self.engine_path:
+            with open(path, 'rb') as f:
+                self.engines.append(pickle.load(f))
+
+    def _get_evaluation_results(self):
+        """Evaluate the learned policy for the test states.
+        Rewards are calculated using the average reward matrix.
 
         Args:
-            hyperparam_dict (dict): hyperparameter settings.
-            verbose (bool): Whether to print descriptive statements.
-
+            epsilon: value of epsilon in the epsilon-greedy policy
+                (default= 0 corresponds to pure exploitation)
         Returns:
-            dict: Containing evaluation results.
+            states (list): list of test states
+            actions (list): list of test actions (historical)
+            rewards_hist (list): list of historical rewards (calculated)
+            actions_agent (list): list of recommended actions
+            rewards_agent (list): list of rewards obtained by agent (calculated)
         """
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        print(f"{timestamp}: Load data")
-        state_labels = hyperparam_dict['states']
-        action_labels = hyperparam_dict['actions']
-        reward_labels = hyperparam_dict['rewards']
-        n_samples = hyperparam_dict['n_samples']
-        n_episodes = hyperparam_dict['num_episodes']
-        shap_num_samples = hyperparam_dict['shap_num_samples']
-        dh = DataHandler(data_path=hyperparam_dict['data_path'],
-                         state_labels=state_labels,
-                         action_labels=action_labels,
-                         reward_labels=reward_labels,
-                         n_samples=n_samples)
+        for engine in self.engines:
+            eval_dict = {}
+            # Save training results
+            eval_dict['agent_cumrewards'] = engine.agent_cumrewards
+            eval_dict['hist_cumrewards'] = engine.hist_cumrewards
+            # Get test data from data handler
+            states = engine.dh.get_states(split='test').to_numpy().tolist()
+            actions = engine.dh.get_actions(split='test').to_numpy().tolist()
+            rewards = engine.dh.get_rewards(split='test').to_numpy().tolist()
 
-        # Preprocess the data
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if verbose:
-            print(f"{timestamp}: Preprocess data")
-        dh.prepare_data_for_engine(col_delimiter=hyperparam_dict['col_delimiter'],
-                                   cols_to_normalise=hyperparam_dict['cols_to_normalise'])
+            # get state and action indexes
+            state_dims = list(range(engine.env.state_dim))
+            action_dims = list(range(engine.env.state_dim, 
+                                    engine.env.state_dim+engine.env.action_dim))
+            # Get the binned states
+            b_states = engine.env.bin_states(states, idxs=state_dims)
+            # Inverse scaling
+            states = engine._inverse_scale_feature(states, engine.dh.state_labels)
 
-        # Create engine
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if verbose:
-            print(f"{timestamp}: Initialize Engine")
-        engine = Engine(dh,
-                        agent_type=hyperparam_dict['agent_type'],
-                        env_type=hyperparam_dict['env_type'],
-                        num_episodes=hyperparam_dict['num_episodes'],
-                        num_steps=hyperparam_dict['num_steps'],
-                        bins=hyperparam_dict['bins'],
-                        train_test_split=hyperparam_dict['train_test_split']
-                        )
-        # Create world
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if verbose:
-            print(f"{timestamp}: Create the world")
-        engine.create_world()
+            # Get the binned actions
+            b_actions = engine.env.bin_states(actions, idxs=action_dims)
 
-        # Train agent
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if verbose:
-            print(f"{timestamp}: Train the agent on {n_samples} samples and {n_episodes} episodes")
-        engine.train_agent(evaluate=True, n_eval_steps=hyperparam_dict['n_eval_steps'])
+            # Get actions corresponding to agent's learned policy
+            try:
+                b_actions_agent = engine.agent.predict_actions(b_states)
+            except:
+                ipdb.set_trace()
 
-        # Evaluate Agent
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        if verbose:
-            print(f"{timestamp}: Evaluate agent")
+            # De-bin the recommended actions
+            actions_agent = engine.env.debin_states(b_actions_agent, idxs=action_dims)
+            # Get reward based on agent policy
+            try:
+                rewards_agent = engine.agent.predict_rewards(b_states, b_actions_agent)
+            except:
+                ipdb.set_trace()
+            # Get reward based on historical policy
+            try:
+                rewards_hist = engine.agent.predict_rewards(b_states, b_actions)
+            except:
+                ipdb.set_trace()
 
-        eval_results = engine.evaluate_agent()
-
-        return eval_results
-
-    def run_all(self, verbose=False):
-        """ Train and evaluate agents for a number of runs."""
-        # Create run directory
-        run_path = self.run_path
-        if not os.path.exists(run_path):
-            os.makedirs(run_path)
-
-        # Perform all the experiments specified in hyperparam_dict
-        for agent in self.agent_list:
-            if verbose:
-                print(f"Testing agent {agent}...")
-            hyperparam_dict = self.hyperparam_dict.copy()
-            hyperparam_dict['agent_type'] = agent
-
-            for run in tqdm(range(self.n_runs)):
-                eval_results = self.train_evaluate_agent(hyperparam_dict, verbose)
-                eval_results['agent'] = agent  # save agent
-                # Save eval results in the experiment dict
-                if verbose:
-                    print('Saving results...')
-                with open(f"{run_path}/{agent}_run_{run}.pkl", 'wb') as f:
-                    pickle.dump(eval_results, f)
-
-    def _get_all_experiments_results(self):
-        """Retrieve all experiment results from run path.
+            #  Apply inverse scaling to actions, states, and rewards
+            eval_dict['states'] = engine._inverse_scale_feature(states,
+                                                engine.dh.state_labels)
+            eval_dict['actions_hist'] = engine._inverse_scale_feature(actions,
+                                                engine.dh.action_labels)
+            eval_dict['actions_agent'] = engine._inverse_scale_feature(actions_agent,
+                                                engine.dh.action_labels)
+            eval_dict['rewards_hist'] = engine._inverse_scale_feature(rewards_hist,
+                                                engine.dh.reward_labels)
+            eval_dict['rewards_agent'] = engine._inverse_scale_feature(rewards_agent,
+                                                engine.dh.reward_labels)
+            
+            # Save additional arrays
+            eval_dict['b_actions'] = b_actions
+            eval_dict['b_actions_agent'] = b_actions_agent
+            eval_dict['agent_type'] = engine.dh.hyperparam_dict['agent']['agent_type']
+            eval_dict['num_eval_steps'] = engine.dh.hyperparam_dict['training']['num_eval_steps']
+            self.eval_results.append(eval_dict)
         
-        Returns:
-            list[dict]: Contains evaluation dict results.
-        """
-        eval_list = []
-        files = os.listdir(self.run_path)
-        for file_path in files:
-            with open(self.run_path + '/' + file_path, 'rb') as f:
-                eval = pickle.load(f)
-                eval_list.append(eval)
-        return eval_list
 
     def plot_training_curve(self):
         """Plot the training reward for a list of runs."""
-        eval_list = self._get_all_experiments_results()
-        n_eval_steps = self.hyperparam_dict['n_eval_steps']
+        n_eval_steps = self.eval_results[0]['num_eval_steps']
         train_agent_reward = []
         train_hist_reward = []
-        for eval_results in eval_list:
-            agent = eval_results['agent']
+        for eval_dict in self.eval_results:
+            agent = eval_dict['agent_type']
             train_agent_reward.extend([
                 [agent,
                  episode * n_eval_steps,
-                 eval_results['agent_cumrewards'][episode]]
-                for episode in range(len(eval_results['agent_cumrewards']))
+                 eval_dict['agent_cumrewards'][episode]]
+                for episode in range(len(eval_dict['agent_cumrewards']))
             ])
 
             train_hist_reward.extend([
                 ['historical',
                  episode * n_eval_steps,
-                 eval_results['hist_cumrewards']]
-                for episode in range(len(eval_results['agent_cumrewards']))
+                 eval_dict['hist_cumrewards']]
+                for episode in range(len(eval_dict['agent_cumrewards']))
             ])
         train_agent_reward_df = pd.DataFrame(
             train_agent_reward,
@@ -173,16 +154,15 @@ class Evaluator:
     def plot_reward_distribution(self):
         """Plot the distribution of rewards on the evaluation set."""
 
-        eval_list = self._get_all_experiments_results()
-        n_eval_steps = self.hyperparam_dict['n_eval_steps']
+        n_eval_steps = self.eval_results[0]['num_eval_steps']
         percentiles = np.linspace(0, 100, 101)
 
         rewards_agent, rewards_hist = [], []
-        for eval_results in eval_list:
-            agent = eval_results['agent']
-            rewards_agent_array = [r[0] for r in eval_results['rewards_agent']]
+        for eval_dict in self.eval_results:
+            agent = eval_dict['agent_type']
+            rewards_agent_array = [r[0] for r in eval_dict['rewards_agent']]
             agent_percentiles = np.percentile(rewards_agent_array, q=percentiles)
-            rewards_hist_array = [r[0] for r in eval_results['rewards_hist']]
+            rewards_hist_array = [r[0] for r in eval_dict['rewards_hist']]
             hist_percentiles = np.percentile(rewards_hist_array, q=percentiles)
             rewards_agent.extend([
                 [agent,
