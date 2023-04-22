@@ -97,7 +97,7 @@ class DataHandler:
         self.mdp_data = self.mdp_data[:self._n_samples]
 
         # Apply preprocessing to test data
-        if self.test_dataset != None:
+        if not self.test_dataset is None:
             test_s = self.test_dataset[self.state_labels]
             test_r = self.test_dataset[self.reward_labels]
             test_a = self.test_dataset[self.action_labels]
@@ -126,7 +126,7 @@ class DataHandler:
             self._inverse_transform_col(col_name=col)
 
     def get_actions(self,
-                    split):
+                    split='train'):
         """Get the actions taken in the dataset.
 
         Args:
@@ -139,8 +139,7 @@ class DataHandler:
             return self.mdp_data['a']
         return self.test_mdp_data['a']
 
-    def get_action_labels(self,
-                          split):
+    def get_action_labels(self):
         """Get the action labels.
 
         Returns:
@@ -149,7 +148,7 @@ class DataHandler:
         return self.action_labels
 
     def get_rewards(self,
-                    split):
+                    split='train'):
         """Get the rewards taken in the dataset.
 
         Args:
@@ -163,7 +162,7 @@ class DataHandler:
         return self.test_mdp_data['r']
 
     def get_states(self,
-                   split):
+                   split='train'):
         """Get the states taken in the dataset.
 
         Args:
