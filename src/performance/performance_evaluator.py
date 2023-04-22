@@ -21,9 +21,11 @@ class PerformanceEvaluator:
     def __init__(self):
         """Initialise a PerformanceEvaluator."""
         # Define the directory containing all the evaluations of this performance evaluator
-
-        self.init_time = time.strftime("%Y%m%d-%H:%M:%S")
-        os.mkdir(f"src/performance/evaluations/performance-{self.init_time}")
+        if not os.path.exists(f"src/performance/evaluations"):
+            os.mkdir(f"src/performance/evaluations")
+        self._init_time = time.strftime("%Y%m%d-%H:%M:%S")
+        self._path = f"src/performance/evaluations/performance-{self._init_time}"
+        os.mkdir(f"{self._path}")
 
         # Benchmark settings
         self.NUM_EP = int(1e+1)
@@ -82,24 +84,10 @@ class PerformanceEvaluator:
         time_summary = f"Time spent (s): {end_time - start_time}"
         space_summary = f"Peak memory usage (MiB): {peak}"
 
-        with open(f"src/performance/evaluations/performance-{self.init_time}/benchmark-report.txt", "w") as report_file:
+        with open(f"{self._path}/benchmark-report.txt", "w") as report_file:
             report_file.write(f'BENCHMARK SETTINGS\nNumber of episodes: {self.NUM_EP}\n'
                               f'Number of bins: {self.NUM_BINS}\nNumber of samples: {self.NUM_SAMPLES}\n\n'
                               f'RESULTS\n{time_summary}\n{space_summary}')
-
-    def _do_pre_benchmark_run_configuration(self):
-        """Prepare the benchmark performance run."""
-        tracemalloc.stop()
-        tracemalloc.start()
-        start_time = time.time()
-        return start_time
-
-    def _get_post_benchmark_run_results(self):
-        """Get the results of the benchmark performance run."""
-        end_time = time.time()
-        _, first_peak = tracemalloc.get_traced_memory()
-        peak = first_peak / (1024 * 1024)
-        return end_time, peak
 
     def get_performance_graphs(self):
         """ Plot performance (time and space) against chosen varying parameters.
@@ -132,6 +120,63 @@ class PerformanceEvaluator:
         num_bin_range = [2, 5, 10, 20, 30, 40, 50]
         times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=num_bin_range)
         self._plot_performance_graph(x_label="bins", x=num_bin_range, times=times, memory=memory)
+
+    def get_time_breakdown_per_function(self):
+        """Get a per-function breakdown of time complexity.
+
+            See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.
+            And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.
+        """
+        if self.verbose:
+            print("\nGETTING TIME BREAKDOWN PER FUNCTION")
+
+        profiler = cProfile.Profile()
+        profiler.enable()
+        self._run_training_loop(num_episodes=self.NUM_EP,
+                                num_bins=self.NUM_BINS,
+                                num_samples=self.NUM_SAMPLES)
+        profiler.disable()
+        stream = io.StringIO()
+        stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime')
+        stats.print_stats()
+
+        with open(f"{self._path}/per_function_time.txt", "w") as outfile:
+            outfile.write(stream.getvalue())
+
+    def get_space_breakdown_per_function(self):
+        """Get a per-function breakdown of space complexity."""
+        if self.verbose:
+            print("\nGETTING SPACE BREAKDOWN PER FUNCTION")
+
+        tracemalloc.start()
+
+        self._run_training_loop(num_episodes=self.NUM_EP,
+                                num_bins=self.NUM_BINS,
+                                num_samples=self.NUM_SAMPLES)
+
+        snapshot = tracemalloc.take_snapshot()
+        top_stats = snapshot.statistics('lineno')
+
+        with open(f"{self._path}/per_function_space.txt", "w") as outfile:
+            outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
+            for stat in top_stats[:self.num_memalloc_lines_to_keep]:
+                outfile.write(f"\n{stat}")
+
+        tracemalloc.stop()
+
+    def _do_pre_benchmark_run_configuration(self):
+        """Prepare the benchmark performance run."""
+        tracemalloc.stop()
+        tracemalloc.start()
+        start_time = time.time()
+        return start_time
+
+    def _get_post_benchmark_run_results(self):
+        """Get the results of the benchmark performance run."""
+        end_time = time.time()
+        _, first_peak = tracemalloc.get_traced_memory()
+        peak = first_peak / (1024 * 1024)
+        return end_time, peak
 
     def _get_times_and_memory_from_parameter_range(self, parameter_name, x):
         """Get time and memory complexities for varying values of an inputted parameter name.
@@ -189,50 +234,7 @@ class PerformanceEvaluator:
         plt.grid()
         plt.tight_layout()
 
-        plt.savefig(f"src/performance/evaluations/performance-{self.init_time}/perf_vs_{x_label}.png")
-
-    def get_time_breakdown_per_function(self):
-        """Get a per-function breakdown of time complexity.
-
-            See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.
-            And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.
-        """
-        if self.verbose:
-            print("\nGETTING TIME BREAKDOWN PER FUNCTION")
-
-        profiler = cProfile.Profile()
-        profiler.enable()
-        self._run_training_loop(num_episodes=self.NUM_EP,
-                                num_bins=self.NUM_BINS,
-                                num_samples=self.NUM_SAMPLES)
-        profiler.disable()
-        stream = io.StringIO()
-        stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime')
-        stats.print_stats()
-
-        with open(f"src/performance/evaluations/performance-{self.init_time}/per_function_time.txt", "w") as outfile:
-            outfile.write(stream.getvalue())
-
-    def get_space_breakdown_per_function(self):
-        """Get a per-function breakdown of space complexity."""
-        if self.verbose:
-            print("\nGETTING SPACE BREAKDOWN PER FUNCTION")
-
-        tracemalloc.start()
-
-        self._run_training_loop(num_episodes=self.NUM_EP,
-                                num_bins=self.NUM_BINS,
-                                num_samples=self.NUM_SAMPLES)
-
-        snapshot = tracemalloc.take_snapshot()
-        top_stats = snapshot.statistics('lineno')
-
-        with open(f"src/performance/evaluations/performance-{self.init_time}/per_function_space.txt", "w") as outfile:
-            outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
-            for stat in top_stats[:self.num_memalloc_lines_to_keep]:
-                outfile.write(f"\n{stat}")
-
-        tracemalloc.stop()
+        plt.savefig(f"{self._path}/perf_vs_{x_label}.png")
 
     def _run_training_loop(self, num_episodes, num_bins, num_samples):
         """Run an example main.py.
@@ -253,7 +255,10 @@ class PerformanceEvaluator:
         # Load data
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
-        dh = DataHandler(hyperparam_dict=hyperparam_dict)
+        dataset = self._load_data(hyperparam_dict['dataset']['data_path'],
+                            delimiter=hyperparam_dict['dataset']['col_delimiter'])
+
+        dh = DataHandler(dataset=dataset, hyperparam_dict=hyperparam_dict)
 
         # Preprocess the data
         timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -273,6 +278,24 @@ class PerformanceEvaluator:
 
         del dh, engine
         gc.collect()
+
+    def _load_data(self, path, delimiter=','):
+        """Load data from file.
+
+        Args:
+            delimiter (str): Which separates columns.
+        """
+        file_type = path.split('.')[-1]
+        if file_type == 'csv':
+            dataset = pd.read_csv(path, sep=delimiter)
+        elif file_type == 'xlsx':
+            dataset = pd.read_excel(path)
+        elif file_type == 'parquet':
+            dataset = pd.read_parquet(path)
+        else:
+            raise ValueError("File type not supported")
+
+        return dataset
 
     def _get_hyperparam_dict_ds_data(self, num_episodes, num_bins, num_samples):
         """Load the hyperparameter dictionaries for the Datasparq data.
@@ -326,5 +349,6 @@ class PerformanceEvaluator:
 
 
 if __name__ == "__main__":
+    # mkdir evaluations folder in performance folder
     performance_evaluator = PerformanceEvaluator()
     performance_evaluator.get_all_performance_evaluations()
