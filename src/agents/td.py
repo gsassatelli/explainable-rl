@@ -21,7 +21,7 @@ class TD(Agent):
         self.Q_num_samples = None
         self.state = None
 
-    def fit(self, agent_hyperparams, training_hyperparams, verbose=False):
+    def fit(self, agent_hyperparams, training_hyperparams, verbose=False, pbar=None):
         """Fit agent to the dataset.
 
         Args:
@@ -40,6 +40,7 @@ class TD(Agent):
                 done = self._step(epsilon=agent_hyperparams['epsilon'], lr=agent_hyperparams['learning_rate'], use_uncertainty=agent_hyperparams['use_uncertainty'])
                 if done:
                     break
+            pbar.update(1)
             lr = decay_param(lr, agent_hyperparams['learning_rate_decay'], agent_hyperparams['learning_rate_minimum'])
             epsilon = decay_param(epsilon, agent_hyperparams['epsilon_decay'], agent_hyperparams['epsilon_minimum'])
 
