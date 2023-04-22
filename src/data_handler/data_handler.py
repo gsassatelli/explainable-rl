@@ -1,5 +1,5 @@
 from library import *
-
+import ipdb
 
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
@@ -83,6 +83,8 @@ class DataHandler:
         np.random.seed = 1
         self._filter_data()
         self.dataset = self.dataset.sample(frac=1)
+        self.test_dataset = self.test_dataset.sample(frac=1)
+
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
@@ -94,7 +96,7 @@ class DataHandler:
         except KeyError:
             self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
 
-        self.mdp_data = self.mdp_data[:self._n_samples]
+        #self.mdp_data = self.mdp_data[:self._n_samples]
 
         # Apply preprocessing to test data
         if not self.test_dataset is None:
@@ -184,6 +186,8 @@ class DataHandler:
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
+        self.test_dataset[col_name] = \
+            scalar.transform(pd.DataFrame(self.test_dataset[col_name])).clip(0,1)
 
     def _inverse_transform_col(self, col_name: str):
         """Reverse the normalisation of one column of the dataset."""
