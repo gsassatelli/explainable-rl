@@ -23,9 +23,9 @@ class PerformanceEvaluator:
         # Define the directory containing all the evaluations of this performance evaluator
         if not os.path.exists(f"src/performance/evaluations"):
             os.mkdir(f"src/performance/evaluations")
-        self.init_time = time.strftime("%Y%m%d-%H:%M:%S")
-        self.path = f"src/performance/evaluations/performance-{self.init_time}"
-        os.mkdir(f"{self.path}")
+        self._init_time = time.strftime("%Y%m%d-%H:%M:%S")
+        self._path = f"src/performance/evaluations/performance-{self._init_time}"
+        os.mkdir(f"{self._path}")
 
         # Benchmark settings
         self.NUM_EP = int(1e+1)
@@ -84,7 +84,7 @@ class PerformanceEvaluator:
         time_summary = f"Time spent (s): {end_time - start_time}"
         space_summary = f"Peak memory usage (MiB): {peak}"
 
-        with open(f"{self.path}/benchmark-report.txt", "w") as report_file:
+        with open(f"{self._path}/benchmark-report.txt", "w") as report_file:
             report_file.write(f'BENCHMARK SETTINGS\nNumber of episodes: {self.NUM_EP}\n'
                               f'Number of bins: {self.NUM_BINS}\nNumber of samples: {self.NUM_SAMPLES}\n\n'
                               f'RESULTS\n{time_summary}\n{space_summary}')
@@ -140,7 +140,7 @@ class PerformanceEvaluator:
         stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime')
         stats.print_stats()
 
-        with open(f"{self.path}/per_function_time.txt", "w") as outfile:
+        with open(f"{self._path}/per_function_time.txt", "w") as outfile:
             outfile.write(stream.getvalue())
 
     def get_space_breakdown_per_function(self):
@@ -157,7 +157,7 @@ class PerformanceEvaluator:
         snapshot = tracemalloc.take_snapshot()
         top_stats = snapshot.statistics('lineno')
 
-        with open(f"{self.path}/per_function_space.txt", "w") as outfile:
+        with open(f"{self._path}/per_function_space.txt", "w") as outfile:
             outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
             for stat in top_stats[:self.num_memalloc_lines_to_keep]:
                 outfile.write(f"\n{stat}")
@@ -234,7 +234,7 @@ class PerformanceEvaluator:
         plt.grid()
         plt.tight_layout()
 
-        plt.savefig(f"{self.path}/perf_vs_{x_label}.png")
+        plt.savefig(f"{self._path}/perf_vs_{x_label}.png")
 
     def _run_training_loop(self, num_episodes, num_bins, num_samples):
         """Run an example main.py.
