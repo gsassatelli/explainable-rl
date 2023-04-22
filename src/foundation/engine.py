@@ -46,6 +46,8 @@ class Engine:
         # Parameters for evaluation        
         self.evaluate = hyperparam_dict['training']['evaluate']
         self.num_eval_steps =hyperparam_dict['training']['num_eval_steps']
+        self.eval_agent_rewards = []
+        self.eval_hist_rewards = None
 
     def create_world(self):
         """Create the Agent and MDP instances for the given task."""
@@ -109,9 +111,11 @@ class Engine:
         """
         # Fit the agent
         if not self.evaluate:
-            self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
-                           training_hyperparams=self.hyperparameters['training'],
-                           verbose=self.verbose)
+            with tqdm(total=self.num_episodes) as pbar:
+                self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
+                            training_hyperparams=self.hyperparameters['training'],
+                            verbose=self.verbose,
+                            pbar=pbar)
         
         self.agent_cumrewards = []
         if self.evaluate:
@@ -123,8 +127,8 @@ class Engine:
                             training_hyperparams=self.hyperparameters['training'],
                             verbose=self.verbose,
                             pbar=pbar)
-                    self.agent_cumrewards.append(self._evaluate_total_agent_reward())
-                self.hist_cumrewards = self._evaluate_total_hist_reward()
+                    self.eval_agent_rewards.append(self._evaluate_total_agent_reward())
+                self.eval_hist_rewards = self._evaluate_total_hist_reward()
 
     def _inverse_scale_feature(self,
                                values,
