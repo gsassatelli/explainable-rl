@@ -5,8 +5,8 @@ class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
     def __init__(self,
-                 dataset,
                  hyperparam_dict,
+                 dataset,
                  test_dataset=None):
         """Initialise the DataHandler.
 
