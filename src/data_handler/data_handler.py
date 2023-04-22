@@ -6,7 +6,8 @@ class DataHandler:
 
     def __init__(self,
                  dataset,
-                 hyperparam_dict):
+                 hyperparam_dict,
+                 test_dataset=None):
         """Initialise the DataHandler.
 
         Args:
@@ -17,6 +18,7 @@ class DataHandler:
             n_samples (int): Number of samples to extract from dataset.
         """
         self.dataset = dataset
+        self.test_dataset = test_dataset
         self.hyperparam_dict = hyperparam_dict
         self.data_path = hyperparam_dict['dataset']['data_path']
         self._n_samples = hyperparam_dict['dataset']['n_samples']
@@ -26,6 +28,7 @@ class DataHandler:
         self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
         self.reward_labels = self._get_labels(hyperparam_dict['dimensions']['rewards'])
         self.mdp_data = None
+        self.test_mdp_data = None
 
     def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
@@ -93,6 +96,16 @@ class DataHandler:
 
         self.mdp_data = self.mdp_data[:self._n_samples]
 
+        # Apply preprocessing to test data
+        if self.test_dataset != None:
+            test_s = self.test_dataset[self.state_labels]
+            test_r = self.test_dataset[self.reward_labels]
+            test_a = self.test_dataset[self.action_labels]
+            self.test_mdp_data = pd.concat(
+                                    {'s': test_s,
+                                     'a': test_a,
+                                     'r': test_r}, axis=1)
+
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -112,7 +125,8 @@ class DataHandler:
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self):
+    def get_actions(self,
+                    split):
         """Get the actions taken in the dataset.
 
         Args:
@@ -121,9 +135,12 @@ class DataHandler:
         Returns:
             pd.DataFrame: Actions.
         """
-        return self.mdp_data['a']
+        if split == 'train':
+            return self.mdp_data['a']
+        return self.test_mdp_data['a']
 
-    def get_action_labels(self):
+    def get_action_labels(self,
+                          split):
         """Get the action labels.
 
         Returns:
@@ -131,7 +148,8 @@ class DataHandler:
         """
         return self.action_labels
 
-    def get_rewards(self):
+    def get_rewards(self,
+                    split):
         """Get the rewards taken in the dataset.
 
         Args:
@@ -139,11 +157,13 @@ class DataHandler:
         
         Returns:
             pd.DataFrame: The rewards.
-        """
-        return self.mdp_data['r']
+        """  
+        if split == 'train':
+            return self.mdp_data['r']
+        return self.test_mdp_data['r']
 
-
-    def get_states(self):
+    def get_states(self,
+                   split):
         """Get the states taken in the dataset.
 
         Args:
@@ -152,8 +172,9 @@ class DataHandler:
         Returns:
             pd.DataFrame: The states.
         """
-
-        return self.mdp_data['s']
+        if split == 'train':
+            return self.mdp_data['s']
+        return self.test_mdp_data['s']
 
     def _filter_data(self):
         """Filter the dataset."""
