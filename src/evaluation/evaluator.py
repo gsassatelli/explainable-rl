@@ -4,6 +4,7 @@ from library import *
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 import pickle
+import numpy as np
 
 class Evaluator:
     """Evaluator to perform several experiments and show evaluation graphs."""
@@ -36,6 +37,26 @@ class Evaluator:
             with open(path, 'rb') as f:
                 self.engines.append(pickle.load(f))
 
+    def hist_cum_rewards(self):
+        rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
+
+        return np.sum(rewards)
+
+    def agent_cum_rewards(self):
+        rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
+
+        return np.sum(rewards)
+
+    def hist_array_rewards(self):
+        rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
+
+        return np.array(rewards)
+
+    def agent_array_rewards(self):
+        rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
+
+        return np.array(rewards)
+    
     def _get_evaluation_results(self):
         """Evaluate the learned policy for the test states.
         Rewards are calculated using the average reward matrix.
