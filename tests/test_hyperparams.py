@@ -10,12 +10,15 @@ hyperparam_dict = {
     "dataset": {'data_path': 'tests/test_env_data.csv',
                 'col_delimiter': ',',
                 'n_samples': 50,
-                'normalisation': True},
+                'normalisation': True,
+                'n_test_samples': 10},
 
     "training": {'env_type': 'strategic_pricing_predict',
                  'num_episodes': 500,
                  'num_steps': 1,
-                 'train_test_split': 0.2},
+                 'train_test_split': 0.2,
+                 'evaluate': False,
+                 'num_eval_steps': 1},
 
     "agent": {'agent_type': 'q_learner',
               "gamma": 0.3,
