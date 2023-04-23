@@ -16,7 +16,7 @@ class TestTD(unittest.TestCase):
     def setUpClass(cls) -> None:
         """Set up the test class."""
         dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
         cls.dh.prepare_data_for_engine()
 
     def setUp(self) -> None:

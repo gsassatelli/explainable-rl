@@ -33,7 +33,8 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
 
-    dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset)
+    dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset,
+                     test_dataset=dataset)
 
     # Preprocess the data
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -89,12 +90,15 @@ if __name__ == "__main__":
         "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
                     'col_delimiter': '|',
                     'n_samples': 1000,
+                    'n_test_samples': 100,
                     'normalisation': True},
 
-        "training": {'env_type': 'strategic_pricing_suggest',
+        "training": {'env_type': 'strategic_pricing_predict',
                      'num_episodes': 500,
                      'num_steps': 1,
-                     'train_test_split': 0.2},
+                     'train_test_split': 0.2,
+                     'evaluate': False,
+                     'num_eval_steps': 1},
 
         "agent": {'agent_type': 'q_learner',
                   "gamma": 0.3,
@@ -105,7 +109,7 @@ if __name__ == "__main__":
                   "learning_rate_decay": 0.1,
                   "learning_rate_minimum": 0.1,
                   "lambda": 0.2,
-                  "use_uncertainty": False,
+                  "use_uncertainty": True,
                   "q_importance": 0.7,
                   },
 

@@ -85,6 +85,7 @@ class StrategicPricing(MDP):
             b_states.append(
                 self.bin_state(state, idxs=idxs)
             )
+            # TODO: Chaange this to a pd lamda function as it is way quicker
         return b_states
 
     def debin_states(self, b_states, idxs=None):

@@ -23,6 +23,7 @@ class DataHandler:
         self.data_path = hyperparam_dict['dataset']['data_path']
         self._n_samples = hyperparam_dict['dataset']['n_samples']
         self._normalised_cols = []
+        self._n_test_samples = hyperparam_dict['dataset']['n_test_samples']
         self.minmax_scalars = {}
         self.state_labels = self._get_labels(hyperparam_dict['dimensions']['states'])
         self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
@@ -82,8 +83,11 @@ class DataHandler:
         """
         np.random.seed = 1
         self._filter_data()
+        self.dataset = self.dataset.head(self._n_samples)
+        self.test_dataset = self.test_dataset.head(self._n_test_samples)
         self.dataset = self.dataset.sample(frac=1)
         self.test_dataset = self.test_dataset.sample(frac=1)
+
 
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
