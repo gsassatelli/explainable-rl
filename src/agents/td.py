@@ -37,7 +37,7 @@ class TD(Agent):
             self.state = self.env.reset()
 
             for i in range(training_hyperparams["num_steps"]):
-                done = self._step(epsilon=agent_hyperparams['epsilon'], lr=agent_hyperparams['learning_rate'], use_uncertainty=agent_hyperparams['use_uncertainty'])
+                done = self._step(epsilon=epsilon, lr=lr, use_uncertainty=agent_hyperparams['use_uncertainty'])
                 if done:
                     break
             pbar.update(1)
