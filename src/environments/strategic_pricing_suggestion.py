@@ -21,7 +21,6 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Returns:
             dict: Counts of datapoints per bin and sums the associated rewards.
         """
-
         bins_dict = {}
         for ix, bin in enumerate(binned):
             state_str = ",".join(str(e) for e in bin.tolist())
@@ -67,7 +66,6 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Returns:
             tuple: Current state, action, next state, done flag.
         """
-        
         index = tuple(list(state)[:-1] + [action])
 
         reward = self._average_rewards[index]
@@ -105,7 +103,6 @@ class StrategicPricingSuggestionMDP(StrategicPricing):
         Returns:
             sparse.COO: Binned state-action pairs and their associated average reward.
         """
-
         coords = []
         data = []
 

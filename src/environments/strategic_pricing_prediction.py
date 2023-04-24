@@ -27,7 +27,6 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         Returns:
             dict: Dictionary of counts of datapoints per bin and sums the associated rewards.
         """
-
         bins_dict = {}
         for ix, bin in enumerate(binned):
             state_str = ",".join(str(e) for e in bin.tolist()[:-1])

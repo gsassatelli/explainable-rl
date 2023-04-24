@@ -49,7 +49,6 @@ class StrategicPricing(MDP):
         Returns:
             list: Group of states and actions per datapoint.
         """
-
         zipped = []
         for i in range(len(self._reward_mdp_data)):
             state_array = self._state_mdp_data[i].tolist()
@@ -85,7 +84,6 @@ class StrategicPricing(MDP):
             b_states.append(
                 self.bin_state(state, idxs=idxs)
             )
-            # TODO: Chaange this to a pd lamda function as it is way quicker
         return b_states
 
     def debin_states(self, b_states, idxs=None):
@@ -150,7 +148,7 @@ class StrategicPricing(MDP):
 
         state = []
         for i, value in zip(idxs, b_state):
-            # append middle point of the state bin
+            # Append middle point of the state bin
             try:
                 state.append((value + 0.5) / self.bins[i])
             except:
@@ -222,4 +220,10 @@ class StrategicPricing(MDP):
         return state_to_action
 
     def step(self, state, action):
+        """Take a step in the environment.
+
+        Args:
+            state (list): Current state values of the agent.
+            action (int): Action for agent to take.
+        """
         raise NotImplementedError
