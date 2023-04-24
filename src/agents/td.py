@@ -42,7 +42,8 @@ class TD(Agent):
                 done = self._step(epsilon=epsilon, lr=lr, use_uncertainty=agent_hyperparams['use_uncertainty'])
                 if done:
                     break
-            pbar.update(1)
+            if pbar is not None:
+                pbar.update(1)
             lr = decay_param(lr, agent_hyperparams['learning_rate_decay'], agent_hyperparams['learning_rate_minimum'])
             epsilon = decay_param(epsilon, agent_hyperparams['epsilon_decay'], agent_hyperparams['epsilon_minimum'])
 
