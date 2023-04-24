@@ -7,7 +7,7 @@ from src.agents.sarsa_lambda import SarsaLambdaAgent
 from src.agents.double_q_learner import DoubleQLearner
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-from tqdm import tqdm
+
 
 class Engine:
     """Responsible for creating the agent and environment instances and running the training loop."""
@@ -45,7 +45,7 @@ class Engine:
 
         # Parameters for evaluation        
         self.evaluate = hyperparam_dict['training']['evaluate']
-        self.num_eval_steps =hyperparam_dict['training']['num_eval_steps']
+        self.num_eval_steps = hyperparam_dict['training']['num_eval_steps']
         self.eval_agent_rewards = []
         self.eval_hist_rewards = None
 
@@ -103,7 +103,7 @@ class Engine:
             raise NotImplementedError
 
     def train_agent(self):
-        """Train the agent for a chosen number of steps and episodes.
+        """Train the agent for a chosen number of steps and episodes.<
         """
         # Fit the agent
         if not self.evaluate:
@@ -126,9 +126,9 @@ class Engine:
                     self.eval_agent_rewards.append(self._evaluate_total_agent_reward())
                 self.eval_hist_rewards = self._evaluate_total_hist_reward()
 
-    def _inverse_scale_feature(self,
-                               values,
-                               labels):
+    def inverse_scale_feature(self,
+                              values,
+                              labels):
         """De-bin and de-normalize feature values.
 
         Args:
@@ -140,15 +140,11 @@ class Engine:
         """
         i_values = []
         for i, label in enumerate(labels):
-            try:
-                scaler = self.dh.minmax_scalars[label]
-            except:
-                ipdb.set_trace()
+            scaler = self.dh.minmax_scalars[label]
             val = np.array([v[i] for v in values])
-            val = scaler.inverse_transform(
-                    val.reshape(-1, 1))
+            val = scaler.inverse_transform(val.reshape(-1, 1))
             i_values.append(val)
-        # transpose and convert to list
+        # Transpose and convert to list
         i_values = np.concatenate(
             [np.expand_dims(v,1) for v in i_values],
             1).squeeze(-1).tolist()
@@ -186,8 +182,8 @@ class Engine:
         rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)
         
         # Inverse scale agent rewards
-        rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh.reward_labels)
+        rewards_agent = self.inverse_scale_feature(rewards_agent,
+                                                   self.dh.reward_labels)
 
         return np.sum(rewards_agent)
     
@@ -198,53 +194,14 @@ class Engine:
             float: Total (not scaled) cumulative based on historical data.
         """
         # Get the binned actions
-        b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
+        b_actions = self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
 
         # Get reward based on historical policy
         rewards_hist = self.agent.predict_rewards(self._eval_b_states, b_actions)
 
         # Inverse scale agent rewards
-        rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh.reward_labels)
-
-        return np.sum(rewards_hist)
-
-    def _evaluate_total_agent_reward(self):
-        """Calculate the total reward obtained on the evaluation states using the agent's policy.
-        
-        Returns:
-            float: Total (not scaled) cumulative reward.
-        """
-        # Get actions corresponding to agent's learned policy
-        b_actions_agent = self.agent.predict_actions(self._eval_b_states)
-
-        # De-bin the recommended actions
-        actions_agent = self.env.debin_states(b_actions_agent, idxs=self._eval_action_dims)
-
-        # Get reward based on agent policy
-        rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)
-        
-        # Inverse scale agent rewards
-        rewards_agent = self._inverse_scale_feature(rewards_agent,
-                                                    self.dh.reward_labels)
-
-        return np.sum(rewards_agent)
-    
-    def _evaluate_total_hist_reward(self):
-        """ Calculate the total reward obtained on the evaluation states using the agent's policy.
-        
-        Returns:
-            cumreward (float): total (not scaled) cumulative based on historical data
-        """
-        # Get the binned actions
-        b_actions =  self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
-
-        # Get reward based on historical policy
-        rewards_hist = self.agent.predict_rewards(self._eval_b_states, b_actions)
-
-        # Inverse scale agent rewards
-        rewards_hist = self._inverse_scale_feature(rewards_hist,
-                                                    self.dh.reward_labels)
+        rewards_hist = self.inverse_scale_feature(rewards_hist,
+                                                  self.dh.reward_labels)
 
         return np.sum(rewards_hist)
 

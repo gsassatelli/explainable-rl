@@ -1,5 +1,3 @@
-from library import *
-
 # Import functions
 from src.foundation.utils import *
 from src.foundation.agent import Agent
@@ -15,6 +13,7 @@ class TD(Agent):
         Args:
             env (MDP): MDP object.
             gamma (float): Discount factor.
+            verbose (bool): Defines whether print statements should be called.
         """
         self.Q = None
         self.state_to_action = None
