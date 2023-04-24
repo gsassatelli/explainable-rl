@@ -22,7 +22,6 @@ class TestEngine(unittest.TestCase):
         """Set up the data handler for the tests."""
         dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
         cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
-        cls.dh.prepare_data_for_engine()
 
     def setUp(self) -> None:
         """Set up the engine for the tests."""

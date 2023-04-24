@@ -104,18 +104,14 @@ class Engine:
 
     def train_agent(self):
         """Train the agent for a chosen number of steps and episodes.
-
-        Args:
-            evaluate (bool): Whether to evaluate agent.
-            n_eval_steps (int): Number of evaluation steps.
         """
         # Fit the agent
         if not self.evaluate:
             with tqdm(total=self.num_episodes) as pbar:
                 self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
-                            training_hyperparams=self.hyperparameters['training'],
-                            verbose=self.verbose,
-                            pbar=pbar)
+                               training_hyperparams=self.hyperparameters['training'],
+                               verbose=self.verbose,
+                               pbar=pbar)
         
         self.agent_cumrewards = []
         if self.evaluate:
@@ -124,9 +120,9 @@ class Engine:
             with tqdm(total=self.num_episodes) as pbar:
                 for i in range(int(self.num_episodes/self.num_eval_steps)):
                     self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
-                            training_hyperparams=self.hyperparameters['training'],
-                            verbose=self.verbose,
-                            pbar=pbar)
+                                   training_hyperparams=self.hyperparameters['training'],
+                                   verbose=self.verbose,
+                                   pbar=pbar)
                     self.eval_agent_rewards.append(self._evaluate_total_agent_reward())
                 self.eval_hist_rewards = self._evaluate_total_hist_reward()
 

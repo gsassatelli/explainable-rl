@@ -51,6 +51,7 @@ class TestQLearningAgent(TestTD):
         """Test the fit method."""
         self.agent.create_tables()
         original_Q = copy.deepcopy(self.agent.Q)
-        self.agent.fit(n_episodes=1, n_steps=1, use_uncertainty=False)
+        self.agent.fit(agent_hyperparams=self.dh.hyperparam_dict["agent"],
+                       training_hyperparams=self.dh.hyperparam_dict["training"])
         assert self.agent.Q.shape == original_Q.shape
         assert self.agent.Q != original_Q

@@ -25,8 +25,10 @@ class TD(Agent):
         """Fit agent to the dataset.
 
         Args:
-            hyperparam_dict (dict): Dictionary of hyperparameters.
+            agent_hyperparams (dict): Dictionary of agent hyperparameters.
+            training_hyperparams (dict): Dictionary of training hyperparameters.
             verbose (bool): Print training information.
+            pbar (tqdm): Progress bar.
         """
         if verbose:
             print("Apply q-learning and update q-table")

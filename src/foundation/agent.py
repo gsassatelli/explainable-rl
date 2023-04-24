@@ -19,15 +19,10 @@ class Agent:
         """Fit agent to the dataset.
 
         Args:
-            n_episodes (int): Number of episodes.
-            n_steps (int): Number of steps per episode.
-            lr (float): Learning rate.
-            lr_decay (float): Learning rate decay.
-            lr_min (float): Minimum learning rate.
-            epsilon (float): Epsilon-greedy policy parameter.
-            epsilon_decay (float): Epsilon decay.
-            epsilon_min (float): Minimum epsilon.
+            agent_hyperparams (dict): Dictionary of agent hyperparameters.
+            training_hyperparams (dict): Dictionary of training hyperparameters.
             verbose (bool): Print training information.
+            pbar (tqdm): Progress bar.
         """
         raise NotImplementedError
 

@@ -16,11 +16,9 @@ class TestShapValues(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Setup PDP class.
-        """
+        """Setup PDP class."""
         dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
         cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
-        cls.dh.prepare_data_for_engine()
         cls.engine = Engine(cls.dh,
                             hyperparam_dict=hyperparam_dict)
         cls.engine.create_world()
