@@ -1,5 +1,5 @@
 from library import *
-import ipdb
+
 
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
@@ -11,11 +11,9 @@ class DataHandler:
         """Initialise the DataHandler.
 
         Args:
-            data_path (str): Path to the data file.
-            state_labels (list): List of state labels.
-            action_labels (list): List of action labels.
-            reward_labels (list): List of reward labels.
-            n_samples (int): Number of samples to extract from dataset.
+            hyperparam_dict (dict): Dictionary of hyperparameters.
+            dataset (pd.DataFrame): Training dataset.
+            test_dataset (pd.DataFrame): Test dataset.
         """
         self.dataset = dataset
         self.test_dataset = test_dataset
@@ -30,13 +28,12 @@ class DataHandler:
         self.mdp_data = None
         self.test_mdp_data = None
 
-        self.prepare_data_for_engine(col_delimiter=hyperparam_dict['dataset']['col_delimiter'])
+        self.prepare_data_for_engine()
 
-    def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
+    def prepare_data_for_engine(self, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
 
         Args:
-            col_delimiter (str): Column delimiter.
             cols_to_normalise (list): List of columns to normalise.
         """
         if cols_to_normalise is None:
@@ -59,9 +56,6 @@ class DataHandler:
             normalisation (bool): True if normalisation is to be applied.
             columns_to_normalise (list): Columns on which to apply
                 normalisation. If left empty all columns will be normalised.
-            train_test_split (float): The fraction of data to be used for
-                training.
-
         """
         np.random.seed = 1
         self._filter_data()
@@ -162,7 +156,11 @@ class DataHandler:
         self.dataset = self.dataset.dropna()
 
     def _transform_col(self, col_name: str):
-        """Normalise one column of the dataset."""
+        """Normalise one column of the dataset.
+
+        Args:
+            col_name (str): The column name.
+        """
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = \
             scalar.transform(pd.DataFrame(self.dataset[col_name]))
@@ -170,7 +168,11 @@ class DataHandler:
             scalar.transform(pd.DataFrame(self.test_dataset[col_name])).clip(0,1)
 
     def _inverse_transform_col(self, col_name: str):
-        """Reverse the normalisation of one column of the dataset."""
+        """Reverse the normalisation of one column of the dataset.
+
+        Args:
+            col_name (str): The column name.
+        """
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
             pd.DataFrame(self.dataset[col_name]))
