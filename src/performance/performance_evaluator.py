@@ -19,8 +19,21 @@ import gc
 class PerformanceEvaluator:
     """Time and Memory Evaluator."""
 
-    def __init__(self, results_path=f"src/performance/evaluations"):
-        """Initialise a PerformanceEvaluator."""
+    def __init__(self,
+                 results_path=f"src/performance/evaluations",
+                 num_sample_range=[int(1e2), int(1e3), int(1e4), int(1e5)],
+                 num_ep_range=[int(1e1), int(1e2), int(1e3), int(1e4)],
+                 num_bin_range=[2, 5, 10, 20, 30, 40, 50],
+                 verbose=False):
+        """Initialise a PerformanceEvaluator.
+
+        Args:
+            results_path (str): Path to store performance results.
+            num_sample_range (list[int]): Range of dataset samples to evaluate performance over.
+            num_ep_range (list[int]): Range of episodes to evaluate performance over.
+            num_bin_range (list[int]): Range of bins to evaluate performance over.
+            verbose (bool): Whether to print statements of flow progression.
+        """
         # Define the directory containing all the evaluations of this performance evaluator
         if not os.path.exists(results_path):
             os.mkdir(results_path)
@@ -33,12 +46,17 @@ class PerformanceEvaluator:
         self.NUM_BINS = 10
         self.NUM_SAMPLES = int(1e+5)
 
+        # Ranges for graphs
+        self.num_sample_range = num_sample_range
+        self.num_ep_range = num_ep_range
+        self.num_bin_range = num_bin_range
+
         # Graph colors
         self.time_color = "cornflowerblue"
         self.space_color = "sienna"
 
         # Print statements
-        self.verbose = True
+        self.verbose = verbose
 
         # How many of the top lines of memory allocation to record
         self.num_memalloc_lines_to_keep = 5000
@@ -104,23 +122,20 @@ class PerformanceEvaluator:
         if self.verbose:
             print("* Plot of performance vs number of samples")
         # Plot of performance vs number of samples
-        num_sample_range = [int(1e2), int(1e3), int(1e4), int(1e5)]
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=num_sample_range)
-        self._plot_performance_graph(x_label="samples", x=num_sample_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=self.num_sample_range)
+        self._plot_performance_graph(x_label="samples", x=self.num_sample_range, times=times, memory=memory)
 
         if self.verbose:
             print("* Plot of performance vs number of episodes")
         # Plot of performance vs number of episodes
-        num_ep_range = [int(1e1), int(1e2), int(1e3), int(1e4)]
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=num_ep_range)
-        self._plot_performance_graph(x_label="episodes", x=num_ep_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=self.num_ep_range)
+        self._plot_performance_graph(x_label="episodes", x=self.num_ep_range, times=times, memory=memory)
 
         if self.verbose:
             print("* Plot of performance vs number of bins")
         # Plot of performance vs number of bins
-        num_bin_range = [2, 5, 10, 20, 30, 40, 50]
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=num_bin_range)
-        self._plot_performance_graph(x_label="bins", x=num_bin_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=self.num_bin_range)
+        self._plot_performance_graph(x_label="bins", x=self.num_bin_range, times=times, memory=memory)
 
     def get_time_breakdown_per_function(self):
         """Get a per-function breakdown of time complexity.
@@ -264,7 +279,7 @@ class PerformanceEvaluator:
 
         engine.train_agent()
 
-        del dh, engine
+        del hyperparam_dict, train_dataset, test_dataset, dataset, dh, engine
         gc.collect()
 
     def _load_data(self, path, delimiter=','):

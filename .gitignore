@@ -19,3 +19,4 @@ data_handler/__pycache__/
 
 pyvenv.cfg
 /src/performance/evaluations/
+/performance-evaluations/
