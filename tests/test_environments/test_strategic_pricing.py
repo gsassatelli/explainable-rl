@@ -1,23 +1,29 @@
 from library import *
+
+# Import functions
 from src.data_handler.data_handler import DataHandler
 from src.environments.strategic_pricing import StrategicPricing
 from tests.test_hyperparams import hyperparam_dict
 
 
 class TestStrategicPricing(unittest.TestCase):
+    """Test StrategicPricing class."""
+
     dh = None
 
     @classmethod
     def setUpClass(cls) -> None:
-        """Set up test fixtures, if any."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        """Set up test class."""
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'],
+                              sep=hyperparam_dict['dataset']['col_delimiter'])
         cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
 
     def setUp(self) -> None:
-        """Set up test fixtures, if any."""
+        """Set up test objects."""
         self.env = StrategicPricing(self.dh)
 
     def tearDown(self) -> None:
+        """Tear down test objects."""
         del self.env
 
     def test_join_state_action(self):
@@ -76,7 +82,7 @@ class TestStrategicPricing(unittest.TestCase):
         assert result in [[1, 2, 4], [5, 6, 7]]
 
     def test_get_state_to_action(self):
-        binned = np.array([[1,2,3,4], [5,6,7,8], [1,2,3,2]])
+        binned = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 3, 2]])
         target = {'1,2,3': {4, 2},
                   '5,6,7': {8}}
         result = self.env._get_state_to_action(binned)

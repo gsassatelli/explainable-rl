@@ -9,11 +9,11 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
     """Test StrategicPricingSuggestionMDP class."""
 
     def setUp(self) -> None:
-        """Set up test fixtures, if any."""
+        """Set up test objects."""
         self.env = StrategicPricingSuggestionMDP(self.dh)
 
     def tearDown(self) -> None:
-        """Tear down test fixtures, if any."""
+        """Tear down test objects."""
         del self.env
 
     def test_get_counts_and_rewards_per_bin(self):
@@ -69,5 +69,4 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         assert np.array_equal(target_states, result_states)
         assert np.array_equal(target_actions, result_actions)
         assert np.array_equal(target_rewards, result_reward)
-
         
