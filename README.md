@@ -15,6 +15,9 @@ The following points describe cases when the codebase has changed and the docs n
 updating.
 
 ### A. The code has changed within existing .py files
+
+https://user-images.githubusercontent.com/72270231/234063465-edac7d65-1c44-4175-9c6a-943421813f1a.mov
+
 If the project structure has not changed (no new files, and files have not moved), then
 the following procedure should be followed to update and access the docs:
 1. In Terminal: ``cd path/to/documentation``. If left unchanged this should amount to 
