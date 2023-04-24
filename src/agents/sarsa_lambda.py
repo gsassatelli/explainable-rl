@@ -41,8 +41,6 @@ class SarsaLambdaAgent(TD):
 
         self.e[index_current] += 1
 
-        indices = self.e.data.keys()
-
-        for index in indices:
+        for index in list(self.e.data):
             self.Q[index] += lr * delta * self.e[index]
             self.e[index] *= self.gamma * self.lambda_
