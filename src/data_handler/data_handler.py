@@ -43,28 +43,9 @@ class DataHandler:
             cols_to_normalise = list(set(
                 self.state_labels + self.action_labels +
                 self.reward_labels))
-        if col_delimiter is None:
-            col_delimiter = self.hyperparam_dict['dataset']['col_delimiter']
-        # self.load_data(delimiter=col_delimiter)
 
         self.preprocess_data(normalisation=self.hyperparam_dict['dataset']['normalisation'],
                              columns_to_normalise=cols_to_normalise)
-
-    # def load_data(self, delimiter=','):
-    #     """Load data from file.
-    #
-    #     Args:
-    #         delimiter (str): Which separates columns.
-    #     """
-    #     file_type = self.data_path.split('.')[-1]
-    #     if file_type == 'csv':
-    #         self.dataset = pd.read_csv(self.data_path, sep=delimiter)
-    #     elif file_type == 'xlsx':
-    #         self.dataset = pd.read_excel(self.data_path)
-    #     elif file_type == 'parquet':
-    #         self.dataset = pd.read_parquet(self.data_path)
-    #     else:
-    #         raise ValueError("File type not supported")
 
     def preprocess_data(self,
                         normalisation=True,
@@ -87,7 +68,6 @@ class DataHandler:
         self.dataset = self.dataset.sample(frac=1)
         self.test_dataset = self.test_dataset.sample(frac=1)
 
-
         if normalisation:
             self.normalise_dataset(cols_to_norm=columns_to_normalise)
 
@@ -99,8 +79,6 @@ class DataHandler:
         except KeyError:
             self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
 
-        #self.mdp_data = self.mdp_data[:self._n_samples]
-
         # Apply preprocessing to test data
         if not self.test_dataset is None:
             test_s = self.test_dataset[self.state_labels]
@@ -110,7 +88,6 @@ class DataHandler:
                                     {'s': test_s,
                                      'a': test_a,
                                      'r': test_r}, axis=1)
-
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
