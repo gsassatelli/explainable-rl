@@ -30,6 +30,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
     # Load data
     dataset = load_data(hyperparam_dict['dataset']['data_path'],
                         delimiter=hyperparam_dict['dataset']['col_delimiter'])
+    dataset=dataset.sample(n=1000)
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     print(f"{timestamp}: Load data")
 
@@ -94,13 +95,13 @@ if __name__ == "__main__":
                     'normalisation': True},
 
         "training": {'env_type': 'strategic_pricing_predict',
-                     'num_episodes': 500,
+                     'num_episodes': 1000,
                      'num_steps': 1,
                      'train_test_split': 0.2,
                      'evaluate': False,
                      'num_eval_steps': 1},
 
-        "agent": {'agent_type': 'q_learner',
+        "agent": {'agent_type': 'sarsa_lambda',
                   "gamma": 0.3,
                   "epsilon": 0.4,
                   "epsilon_decay": 0.1,

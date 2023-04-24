@@ -6,26 +6,9 @@ class SarsaAgent(TD):
     """Sarsa agent."""
 
     def __init__(self, env, gamma, verbose=False):
-        """Initialise the agent class.
-
-        Args:
-            env (MDP): MDP object.
-            gamma (float): Discount factor.
-            verbose (bool): Defines whether print statements should be called.
-
-        """
         super().__init__(env, gamma, verbose)
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
-        """Update the Q table using the Bellman equation and SARSA update.
-
-        Args:
-            state (list): Current state of the agent.
-            action (int): Selected action.
-            next_state (list): Next state of the agent.
-            reward (float): Reward for the selected action.
-            lr (float): Learning rate.
-        """
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]
         next_action = self._epsilon_greedy_policy(next_state, epsilon=epsilon)
