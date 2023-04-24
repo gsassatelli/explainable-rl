@@ -94,8 +94,7 @@ class TestDataHandler(unittest.TestCase):
 
     def test_prepare_data_for_engine(self):
         """Test prepare_data_for_engine method."""
-        self.dh.prepare_data_for_engine(col_delimiter=',',
-                                        cols_to_normalise=['competitorPrice',
+        self.dh.prepare_data_for_engine(cols_to_normalise=['competitorPrice',
                                                            'adFlag',
                                                            'availability',
                                                            'price'])

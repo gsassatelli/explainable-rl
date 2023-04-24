@@ -81,3 +81,11 @@ class TestEngine(unittest.TestCase):
         self.engine.train_agent()
         assert self.engine.agent.Q is not None
         assert self.engine.agent.Q is not original_q
+
+    def test_get_bins(self):
+        """Test the get_bins method."""
+        bins = self.engine._get_bins()
+        target = [10, 2, 2, 5]
+        assert isinstance(bins, list)
+        assert len(bins) == 4
+        assert bins == target
