@@ -52,4 +52,4 @@ the ``.rst`` files are located) and delete the ``.rst`` files corresponding to t
 parents of the undesired files and remove them as needed from the 'toctree' section.
 * The main points of configuration (e.g. the doc style used or the name of the library) for the docs are located
 in the ``conf.py`` file.
-* For further information, see the official Sphinx documentation: https://www.sphinx-doc.org/en/master/
+* For further information, see the official Sphinx documentation: https://www.sphinx-doc.org/en/master/.
