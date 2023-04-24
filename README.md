@@ -1,10 +1,3 @@
-# explainable-RL
-
-- main: merge into this branch after checkpoints with DataSparq
-- dev: merge into this branch after task branch has been approved by peers
-
-Create one branch per Jira task.
-
 ## Quick Guide on using the Sphinx Documentation
 The documentation of the explainable-RL package first release has already been 
 created and resided in ``explainable-RL/documentation/_build/html/<page_name>.html``.
