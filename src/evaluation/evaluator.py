@@ -10,32 +10,18 @@ class Evaluator:
     """Evaluator to perform several experiments and show evaluation graphs."""
 
     def __init__(self,
-                 engine_path):
+                 engines):
         """Initialise the Evaluator.
 
         Args:
-            engine_path (str or List[str]): list of trained engine paths
+            engine (Engine or List[Engine]): one or list of trained engine
         """
 
-        self.engine_path = engine_path
-        self.engines = []
+        self.engines = engines
         self.eval_results = []    
-
-        # load engines from path
-        self._load_engines()
 
         # get evaluation data
         self._get_evaluation_results()
-    
-    def _load_engines(self):
-        """ Load engines from the specified paths.
-        """
-        if isinstance(self.engine_path, str):
-            self.engine_path = [self.engine_path]
-        
-        for path in self.engine_path:
-            with open(path, 'rb') as f:
-                self.engines.append(pickle.load(f))
 
     def hist_cum_rewards(self):
         rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
