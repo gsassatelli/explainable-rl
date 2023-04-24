@@ -5,6 +5,7 @@ def save_engine(engine, path_name=None):
     """ Save engine.
     
     Args:
+        engine (Engine): Engine to save.
         path_name (str): path to save the engine
     """
     engine.dh.dataset = None # remove training set
@@ -27,6 +28,8 @@ def load_data(data_path, n_samples, delimiter=','):
     """Load data from file.
 
     Args:
+        data_path (str): Path to data file.
+        n_samples (int): Number of samples to load.
         delimiter (str): Which separates columns.
     """
     file_type = data_path.split('.')[-1]
@@ -56,6 +59,7 @@ def split_train_test(dataset, train_test_split=0.2):
     dataset = dataset.sample(frac=1)
     split = int(train_test_split*len(dataset))
     return dataset[split:], dataset[:split]
+
 
 def convert_to_string(state):
     """Convert a state to a string.

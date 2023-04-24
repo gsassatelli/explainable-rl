@@ -36,10 +36,6 @@ class PDP:
         """Compute average Q-value per each state-action pair.
 
         Marginal effect of the state-action pair averaging other state dimensions.
-
-        Args:
-            Q (sparse.DOK): Q-table to build plots.
-            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.
         """
         Q_array = self.Q.todense()
         self._Q_array = Q_array

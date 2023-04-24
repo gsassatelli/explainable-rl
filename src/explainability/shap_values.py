@@ -29,7 +29,6 @@ class ShapValues:
             shap_values (dict): Dictionary with the shap values for each feature.
             predicted_action (int): Predicted action.
         """
-
         # Verify if sample length is correct
         print("Verify if sample length is correct")
         if not self.verify_sample_length():
@@ -118,7 +117,6 @@ class ShapValues:
         """
         state_dims = list(range(len(self.features)))
         binned_sample = self.env.bin_state(self.sample, idxs=state_dims)
-        # binned_sample = [i-1 for i in binned_sample]
         return binned_sample
 
     def verify_cell_availability(self, binned_sample):
