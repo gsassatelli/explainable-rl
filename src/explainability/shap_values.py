@@ -2,7 +2,7 @@ from library import *
 
 
 class ShapValues:
-    """SHAP Values Algorithm Manager."""
+    """SHAP Values class."""
 
     def __init__(self,
                  sample,
@@ -64,6 +64,7 @@ class ShapValues:
             action_samples_minus = np.zeros(self.number_of_samples, dtype=int)
             for sample in range(self.number_of_samples):
                 verified_samples = False
+
                 # Sample plus and minus samples
                 while not verified_samples:
                     s_plus, s_minus = self.sample_plus_minus_samples(shap_ft, num_bins_per_shap_ft)
@@ -71,6 +72,7 @@ class ShapValues:
                         verified_samples = False
                     else:
                         verified_samples = True
+
                 # Find best Q values for 2 samples
                 Q_state_plus = np.zeros(self.env.bins[-1])
                 Q_state_minus = np.zeros(self.env.bins[-1])
@@ -189,8 +191,7 @@ class ShapValues:
         if len(self.action) == 1:
             scalar = self.minmax_scalars[self.action[0]]
             for a in actions:
-                # Divide dig actions by # bins of the action dimension
-                # to get a value between 0 and 1
+                # Divide dig actions by # bins of the action dimension to get a value between 0 and 1
                 denorm_a = scalar.inverse_transform(
                     a.reshape(-1, 1) / self.env.bins[-1])
                 denorm_actions.append(denorm_a[0][0])

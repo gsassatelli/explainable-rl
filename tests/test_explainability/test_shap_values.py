@@ -6,6 +6,7 @@ from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
 from tests.test_hyperparams import hyperparam_dict
 
+
 class TestShapValues(unittest.TestCase):
     """Test ShapValues class.
     """
@@ -16,10 +17,12 @@ class TestShapValues(unittest.TestCase):
 
     @classmethod
     def setUpClass(cls):
-        """Setup PDP class."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        """Setup TestShapValues class.
+        """
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'],
+                              sep=hyperparam_dict['dataset']['col_delimiter'])
         cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
-        cls.engine = Engine(cls.dh,
+        cls.engine = Engine(dh=cls.dh,
                             hyperparam_dict=hyperparam_dict)
         cls.engine.create_world()
         cls.engine.train_agent()

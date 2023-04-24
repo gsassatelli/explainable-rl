@@ -5,7 +5,8 @@ from src.foundation.engine import Engine
 
 
 class Evaluator:
-    """Evaluator to perform several experiments and show evaluation graphs."""
+    """Evaluator class which evaluates a list of trained agents
+     and produces RL evaluation graphs."""
 
     def __init__(self,
                  engines):
@@ -22,35 +23,46 @@ class Evaluator:
         self._get_evaluation_results()
 
     def hist_cum_rewards(self):
-        """Get the cumulative historical rewards for all runs."""
+        """Calculate the cumulative historical rewards on test set.
+
+        Returns:
+            hist_cum_rewards (float): total reward on test set using historical policy.
+        """
         rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
         return np.sum(rewards)
 
     def agent_cum_rewards(self):
-        """Get the cumulative agent rewards for all runs."""
+        """Calculate the cumulative agent rewards on test set.
+
+        Returns:
+            agent_cum_rewards (float): total reward on test set using historical policy.
+        """
         rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
         return np.sum(rewards)
 
     def hist_array_rewards(self):
-        """Get the historical rewards for all runs."""
+        """Calculate the individual historical rewards for each test set sample.
+         
+        Returns:
+            hist_array_rewards (List[float]): array of historical rewards on test set.
+        """
         rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
         return np.array(rewards)
 
     def agent_array_rewards(self):
-        """Get the agent rewards for all runs."""
+        """Calculate the individual agent rewards for each test set sample.
+         
+        Returns:
+            agent_array_rewards (List[float]): array of agent rewards on test set.
+        """
         rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
         return np.array(rewards)
     
     def _get_evaluation_results(self):
-        """Evaluate the learned policy for the test states.
-        Rewards are calculated using the average reward matrix.
+        """Evaluate the engines on the test set.
 
-        Returns:
-            states (list): list of test states
-            actions (list): list of test actions (historical)
-            rewards_hist (list): list of historical rewards (calculated)
-            actions_agent (list): list of recommended actions
-            rewards_agent (list): list of rewards obtained by agent (calculated)
+        This method fills in self.eval_results, which is a list of dictionaries
+        containing all the relevant evaluation metrics.        
         """
         for engine in self.engines:
             eval_dict = {}
@@ -105,7 +117,8 @@ class Evaluator:
             self.eval_results.append(eval_dict)
 
     def plot_training_curve(self):
-        """Plot the training reward for a list of runs."""
+        """Plot the training reward for a list of runs.
+        """
         n_eval_steps = self.eval_results[0]['num_eval_steps']
         train_agent_reward = []
         train_hist_reward = []
@@ -142,7 +155,8 @@ class Evaluator:
         plt.savefig('cumulative.png')
 
     def plot_reward_distribution(self):
-        """Plot the distribution of rewards on the evaluation set."""
+        """Plot the distribution of rewards on the evaluation set.
+        """
         percentiles = np.linspace(0, 100, 101)
 
         rewards_agent, rewards_hist = [], []

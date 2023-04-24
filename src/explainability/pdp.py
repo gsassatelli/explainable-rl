@@ -2,14 +2,14 @@ from library import *
 
 
 class PDP:
-    """Partial Dependency Plotting Tool."""
+    """Partial Dependence Plots class."""
 
     def __init__(self,
                  engine):
         """Initialise PDP class.
 
         Args:
-            engine (Engine): Engine object.
+            engine (Engine): Engine object containing the trained agent.
         """
         self.Q = engine.agent.Q
         self.Q_num_samples = engine.agent.Q_num_samples
@@ -34,7 +34,6 @@ class PDP:
 
     def _get_digitized_pdp(self):
         """Compute average Q-value per each state-action pair.
-
         Marginal effect of the state-action pair averaging other state dimensions.
         """
         Q_array = self.Q.todense()
@@ -57,7 +56,7 @@ class PDP:
             dig_actions = np.argmax(Q_avg, axis=-1)
             dig_actions_std = np.array([Q_std[idx][action] for idx, action in enumerate(dig_actions)])
             dig_actions_samples = np.array([Q_num_samples_sum[idx][action] for idx, action in enumerate(dig_actions)])
-            # add the total number of samples per state bin
+            # Add the total number of samples per state bin
             dig_actions_samples = np.concatenate(
                 [np.expand_dims(dig_actions_samples, -1),
                  np.expand_dims(Q_num_samples_sum.sum(-1), -1)],
@@ -74,8 +73,7 @@ class PDP:
             # The action column comes from the dataset
             scaler = self._minmax_scalars[self._action_labels[0]]
             for dig_actions in self._dig_state_actions:
-                # Divide dig actions by # bins of the action dimension
-                # to get a value between 0 and 1
+                # Divide dig actions by # bins of the action dimension to get a value between 0 and 1
                 denorm_action = scaler.inverse_transform(
                     dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
                 self._denorm_actions.append(denorm_action)
@@ -89,11 +87,9 @@ class PDP:
     def _get_denorm_states(self):
         """Get states denormalized values."""
         num_states = len(self._state_labels)
-        # num_states = len(self._denorm_actions)
         for i in range(num_states):
             n_bins = self._bins_per_dim[i]
-            # Divide by number of bins to get a value between [0,1]
-            # which can then be inputted into the scaler
+            # Divide by number of bins to get a value between [0,1] which can then be inputted into the scaler
             dig_values = np.array(list(range(n_bins))) / n_bins
             scaler = self._minmax_scalars[self._state_labels[i]]
             denorm_state = scaler.inverse_transform(dig_values.reshape(-1, 1))
@@ -103,7 +99,6 @@ class PDP:
                  fig_name,
                  savefig=True):
         """Build PDP plots.
-
         One marginalized plot per each state dimension.
 
         Args:
@@ -119,12 +114,12 @@ class PDP:
 
         for a in range(rows):
             state = self._state_labels[a]
+
             # Plot action-state graph
             axis = [ax[a], ax[a].twinx()]
             actions = self._denorm_actions[a]
             states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
             samples = self._dig_state_actions_samples[a]
-
             axis[0].grid(zorder=0)
             axis[0].plot(states, actions, marker="o", color='b', zorder=3)
             axis[0].set(xlabel=f"State dimension {state}", ylabel="Actions")
