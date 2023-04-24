@@ -11,6 +11,7 @@ import matplotlib.pyplot as plt
 
 from src.foundation.engine import Engine
 from src.data_handler.data_handler import DataHandler
+from src.foundation import utils
 
 import gc
 
@@ -252,28 +253,15 @@ class PerformanceEvaluator:
         # Get the hyperparameter dictionary for the specified parameters
         hyperparam_dict = self._get_hyperparam_dict_ds_data(num_episodes, num_bins, num_samples)
 
-        # Load data
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
+        dataset = utils.load_data(hyperparam_dict['dataset']['data_path'], hyperparam_dict['dataset']['n_samples'])
+        train_dataset, test_dataset = utils.split_train_test(dataset)
 
-        dataset = self._load_data(hyperparam_dict['dataset']['data_path'],
-                            delimiter=hyperparam_dict['dataset']['col_delimiter'])
+        dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=train_dataset, test_dataset=test_dataset)
 
-        dh = DataHandler(dataset=dataset, hyperparam_dict=hyperparam_dict)
+        engine = Engine(dh=dh, hyperparam_dict=hyperparam_dict)
 
-        # Preprocess the data
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        dh.prepare_data_for_engine()
-
-        # Create engine
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-        engine = Engine(dh, hyperparam_dict=hyperparam_dict)
-
-        # Create world
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         engine.create_world()
 
-        # Train agent
-        timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
         engine.train_agent()
 
         del dh, engine
@@ -308,44 +296,46 @@ class PerformanceEvaluator:
         Returns:
             dict: Hyperparameter dictionary specific to the Datasparq dataset.
         """
-        hyperparam_dict_ds_data = {
-            "dimensions": {'states': {'lead_time': num_bins,
-                                      'length_of_stay': num_bins,
-                                      'competitor_price_difference_bin': num_bins,
-                                      'demand_bin': num_bins,
-                                      'price': num_bins},
-                           'actions': {'price': num_bins},
+        # TODO: Explain each parameter and when to use what
+        hyperparam_dict = {
+            "dimensions": {'states': {'lead_time': 10,
+                                      'length_of_stay': 10,
+                                      'competitor_price_difference_bin': 4,
+                                      'demand_bin': 4},
+                           'actions': {'price': 10},
                            'rewards': ['reward']
                            },
 
             "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
                         'col_delimiter': '|',
-                        'n_samples': num_samples,
+                        'n_samples': 100000,
                         'normalisation': True},
 
             "training": {'env_type': 'strategic_pricing_predict',
-                         'num_episodes': num_episodes,
+                         'num_episodes': 10,
                          'num_steps': 1,
-                         'train_test_split': 0.2},
+                         'train_test_split': 0.2,
+                         'evaluate': False,
+                         'num_eval_steps': 3000},
 
             "agent": {'agent_type': 'q_learner',
                       "gamma": 0.3,
-                      "epsilon": 0.4,
-                      "epsilon_decay": 0.1,
-                      "epsilon_minimum": 0.1,
+                      "epsilon": 0.1,
+                      "epsilon_decay": 0.05,
+                      "epsilon_minimum": 0.01,
                       "learning_rate": 0.1,
-                      "learning_rate_decay": 0.1,
-                      "learning_rate_minimum": 0.1,
+                      "learning_rate_decay": 0.05,
+                      "learning_rate_minimum": 0.01,
                       "lambda": 0.2,
-                      "use_uncertainty": True,
+                      "use_uncertainty": False,
                       "q_importance": 0.7,
                       },
 
             "explainability": {'shap_num_samples': 1},
 
-            "program_flow": {"verbose": True}
+            "program_flow": {"verbose": False}
         }
-        return hyperparam_dict_ds_data
+        return hyperparam_dict
 
 
 if __name__ == "__main__":
