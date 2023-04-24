@@ -13,7 +13,7 @@ class TestDataHandler(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'])
         self.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
         self.target = pd.read_csv('tests/test_env_data.csv').dropna()
 
