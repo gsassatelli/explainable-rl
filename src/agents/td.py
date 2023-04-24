@@ -82,20 +82,12 @@ class TD(Agent):
     def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
         if state is None:
             state = self.state
-        try:
-            state_str = self._convert_to_string(state)
-            index_no_action = tuple(list(state))
-            possible_actions = self.env.state_to_action[state_str]
-        except KeyError:
-            state_str = self._convert_to_string(state[:-1])
-            index_no_action = tuple(list(state))
-            possible_actions = self.env.state_to_action[state_str]
+        possible_actions = self._get_possible_actions(state)
+        index_no_action = tuple(list(state))
 
         if use_uncertainty:
-
             state_action_counts = {}
             q_values_weights = {}
-
             sum_possible_q = sum(self.Q[index_no_action].todense())
 
             if sum_possible_q == 0:
@@ -114,14 +106,15 @@ class TD(Agent):
             uncertainty_weights = {int(key): float(value)/sum(state_action_counts.values())
                                    for (key, value) in state_action_counts.items()}
 
-            if random.random() > epsilon:
+            if random.random() < epsilon:
                 action = np.random.choice(list(possible_actions))
             else:
+                action_scores = {}
                 for possible_action in possible_actions:
                     score = q_importance * q_values_weights[possible_action] + \
                             (1 - q_importance) * uncertainty_weights[possible_action]
-                    action_scores = {possible_action: score}
-                action = np.argmax(list(action_scores.values()))
+                    action_scores[possible_action] = score
+                action = max(action_scores, key=action_scores.get)
         else:
             action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
 
@@ -167,3 +160,22 @@ class TD(Agent):
             **kwargs (dict): The keyword arguments.
         """
         raise NotImplementedError
+
+    def _get_possible_actions(self, state):
+        """Get the possible actions from a state.
+
+        Args:
+            state (list): current state of the agent.
+
+        Returns:
+            possible_actions (set): the possible actions that the agent can
+                                    take from the state.
+        """
+        try:
+            state_str = self._convert_to_string(state)
+            possible_actions = self.env.state_to_action[state_str]
+        except KeyError:
+            state_str = self._convert_to_string(state[:-1])
+            possible_actions = self.env.state_to_action[state_str]
+
+        return possible_actions
