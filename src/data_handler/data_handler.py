@@ -30,6 +30,8 @@ class DataHandler:
         self.mdp_data = None
         self.test_mdp_data = None
 
+        self.prepare_data_for_engine(col_delimiter=hyperparam_dict['dataset']['col_delimiter'])
+
     def prepare_data_for_engine(self, col_delimiter=None, cols_to_normalise=None):
         """Prepare the data to be given to the engine.
 
