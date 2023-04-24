@@ -41,7 +41,7 @@ deep in the project structure).
 3. From the project root, run the following command: ``sphinx-apidoc -o path/to/documentation .``.
 With this command, sphinx builds the api docs in the documentation folder and documents everything in
 the repository root (hence the final ``.`` in the command).
-4. Then, follow the steps in part A. above. to make and access the docs.
+4. Then, follow the steps in part A. above to make and access the docs.
 
 ### FAQs
 * To ignore particular files/packages, go to the documentation folder (where all
