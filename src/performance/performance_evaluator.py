@@ -19,13 +19,13 @@ import gc
 class PerformanceEvaluator:
     """Time and Memory Evaluator."""
 
-    def __init__(self):
+    def __init__(self, results_path=f"src/performance/evaluations"):
         """Initialise a PerformanceEvaluator."""
         # Define the directory containing all the evaluations of this performance evaluator
-        if not os.path.exists(f"src/performance/evaluations"):
-            os.mkdir(f"src/performance/evaluations")
+        if not os.path.exists(results_path):
+            os.mkdir(results_path)
         self._init_time = time.strftime("%Y%m%d-%H:%M:%S")
-        self._path = f"src/performance/evaluations/performance-{self._init_time}"
+        self._path = f"{results_path}/performance-{self._init_time}"
         os.mkdir(f"{self._path}")
 
         # Benchmark settings
