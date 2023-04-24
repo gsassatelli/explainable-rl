@@ -21,14 +21,6 @@ class TD(Agent):
         self.state = None
 
     def fit(self, agent_hyperparams, training_hyperparams, verbose=False, pbar=None):
-        """Fit agent to the dataset.
-
-        Args:
-            agent_hyperparams (dict): Dictionary of agent hyperparameters.
-            training_hyperparams (dict): Dictionary of training hyperparameters.
-            verbose (bool): Print training information.
-            pbar (tqdm): Progress bar.
-        """
         if verbose:
             print("Apply q-learning and update q-table")
         lr = agent_hyperparams['learning_rate']
@@ -67,16 +59,6 @@ class TD(Agent):
                                state=None,
                                epsilon=0.1,
                                Q=None):
-        """Get the epsilon greedy action.
-
-        Args:
-            state (list): current state of the agent.
-            epsilon (float): the exploration parameter.
-            Q (np.array): q-table.
-
-        Returns:
-            action (int): Selected action.
-        """
         if state is None:
             state = self.state
 
@@ -98,17 +80,6 @@ class TD(Agent):
         return action
     
     def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
-        """Get epsilon greedy policy that favours more densely populated state-action pairs. 
-
-        Args:
-            state (list): Current state of the agent.
-            epsilon (float): The exploration parameter.
-            use_uncertainty (bool): Whether to use uncertainty informed policy.
-            q_importance (float): The importance of the q value in the policy.
-
-        Returns:
-            action (int): selected action.
-        """
         if state is None:
             state = self.state
         try:
@@ -125,9 +96,8 @@ class TD(Agent):
             state_action_counts = {}
             q_values_weights = {}
 
-            # Determine the sum of the q values for the possible actions 
             sum_possible_q = sum(self.Q[index_no_action].todense())
-            
+
             if sum_possible_q == 0:
                 return np.random.choice(list(possible_actions))
 
@@ -138,15 +108,15 @@ class TD(Agent):
                 state_action_counts[str(possible_action)] = counts
                 index_with_action = tuple(state + [possible_action])
                 q_values_weights[possible_action] = self.Q[index_with_action] / sum_possible_q
-            
+
             # Get weights given population for state-action space
             # N.B. A high value represents a well-known, certain state
             uncertainty_weights = {int(key): float(value)/sum(state_action_counts.values())
                                    for (key, value) in state_action_counts.items()}
 
-            if random.random() > epsilon:  # Exploring
+            if random.random() > epsilon:
                 action = np.random.choice(list(possible_actions))
-            else:  # Exploiting
+            else:
                 for possible_action in possible_actions:
                     score = q_importance * q_values_weights[possible_action] + \
                             (1 - q_importance) * uncertainty_weights[possible_action]
@@ -154,25 +124,8 @@ class TD(Agent):
                 action = np.argmax(list(action_scores.values()))
         else:
             action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
-        
+
         return action
-
-    @staticmethod
-    def _convert_to_string(state):
-        """Convert a state to a string.
-
-        Args:
-            state (list): The state to convert.
-
-        Returns:
-            state_str (string): The state as a string.
-        """
-        return ",".join(str(s) for s in state)
-
-    def _init_q_table(self):
-        """Initialize the q-table with zeros."""
-        self.Q = sparse.DOK(self.env.bins)
-        self.Q_num_samples = sparse.DOK(self.env.bins)
 
     def _step(self, epsilon, lr, use_uncertainty):
         """Perform a step in the environment.
@@ -200,7 +153,8 @@ class TD(Agent):
         self.state = next_state
         return done
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(self, state, action, next_state, reward, epsilon, lr,
+                         **kwargs):
         """Update the Q table.
 
         Args:

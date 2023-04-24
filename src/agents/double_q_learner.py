@@ -24,11 +24,6 @@ class DoubleQLearner(TD):
         self.state = None
 
     def create_tables(self, verbose=False):
-        """Create the Q-tables and state_to_action table.
-
-        Args:
-            verbose (bool): Defines whether print statements should be called.
-        """
         self.env.reset()
         if verbose:
             print("Create q-table")
@@ -39,12 +34,6 @@ class DoubleQLearner(TD):
         self.state_to_action = self.env.state_to_action
 
     def _step(self, epsilon, lr, use_uncertainty=False):
-        """Take a step in the environment and update the Q-tables.
-
-        Args:
-            epsilon (float): The epsilon value for the epsilon-greedy policy.
-            lr (float): The learning rate.
-        """
         action_a = self._epsilon_greedy_policy(state=self.state,
                                                epsilon=epsilon, Q=self.Q_a)
         action_b = self._epsilon_greedy_policy(state=self.state,
@@ -77,17 +66,6 @@ class DoubleQLearner(TD):
         self.state = next_state
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
-        """Update the Q-tables.
-
-        Args:
-            state (tuple): The current state.
-            action (int): The action taken.
-            next_state (tuple): The next state.
-            reward (float): The reward received.
-            epsilon (float): The epsilon value for the epsilon-greedy policy.
-            lr (float): The learning rate.
-            **kwargs (dict): The keyword arguments.
-        """
         Q_a = kwargs["Q_a"]
         Q_b = kwargs["Q_b"]
 

@@ -6,22 +6,28 @@ def save_engine(engine, path_name=None):
     
     Args:
         engine (Engine): Engine to save.
-        path_name (str): path to save the engine
+        path_name (str): Path to save the engine.
     """
     engine.dh.dataset = None  # Used to remove training set
     with open(path_name, 'wb') as f:
         pickle.dump(engine, f)
 
 
-def load_engine(path_name=None):
+def load_engine(path_name):
     """ Load engine.
     
     Args:
-        path_name (str): path to save the engine
+        path_name (str or List(str)): Path to save the engine.
     """
-    with open(path_name, 'rb') as f:
-        engine = pickle.load(f)
-    return engine
+    if isinstance(path_name, str): 
+        path_name = [path_name]
+    engines = []
+    for p in path_name:
+        with open(p, 'rb') as f:
+            engines.append(pickle.load(f))
+    if len(engines) == 1:
+        engines = engines[0]
+    return engines
 
 
 def load_data(data_path, n_samples, delimiter=','):

@@ -1,4 +1,6 @@
 from library import *
+
+# Import functions
 from tests.test_environments.test_strategic_pricing import TestStrategicPricing
 from src.environments.strategic_pricing_prediction import \
     StrategicPricingPredictionMDP
@@ -8,11 +10,11 @@ class TestStrategicPricingPredictionMDP(TestStrategicPricing):
     """Test StrategicPricingPredictionMDP class."""
 
     def setUp(self) -> None:
-        """Set up test fixtures, if any."""
+        """Set up test objects."""
         self.env = StrategicPricingPredictionMDP(self.dh)
 
     def tearDown(self) -> None:
-        """Tear down test fixtures, if any."""
+        """Tear down test objects."""
         del self.env
 
     def test_transform_df_to_numpy(self):

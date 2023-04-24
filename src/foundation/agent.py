@@ -1,3 +1,6 @@
+from library import *
+
+
 class Agent:
     """Parent of all child agents (e.g Q-learner, SARSA)."""
 
@@ -75,3 +78,36 @@ class Agent:
             rewards.append([reward[0]])
 
         return rewards
+
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
+        """Get epsilon greedy policy that favours more densely populated state-action pairs.
+
+        Args:
+            state (list): Current state of the agent.
+            epsilon (float): The exploration parameter.
+            use_uncertainty (bool): Whether to use uncertainty informed policy.
+            q_importance (float): The importance of the q value in the policy.
+
+        Returns:
+            action (int): selected action.
+        """
+        raise NotImplementedError
+
+    @staticmethod
+    def _convert_to_string(state):
+        """Convert a state to a string.
+
+        Args:
+            state (list): The state to convert.
+
+        Returns:
+            state_str (string): The state as a string.
+        """
+        return ",".join(str(s) for s in state)
+
+    def _init_q_table(self):
+        """Initialize the q-table with zeros."""
+        self.Q = sparse.DOK(self.env.bins)
+        self.Q_num_samples = sparse.DOK(self.env.bins)
+
+
