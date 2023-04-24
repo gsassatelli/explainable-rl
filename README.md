@@ -29,6 +29,9 @@ following in Terminal: ``open documentation/_build/html/index.html`` to land on 
 docs index page.
 
 ### B. New files have been written or the project structure has changed
+
+https://user-images.githubusercontent.com/72270231/234068283-9435d4a3-64a4-471f-90e6-6589cbc46098.mov
+
 If the project structure has changed (new files have been created and/or files have been)
 moved, then the following procedure should be followed to update and access the docs:
 1. In the documentation folder, delete all the `.rst` files (except the ``index.rst`` file). No other files or directories
