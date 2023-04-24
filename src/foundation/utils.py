@@ -8,8 +8,8 @@ def save_engine(engine, path_name=None):
         engine (Engine): Engine to save.
         path_name (str): path to save the engine
     """
-    engine.dh.dataset = None # remove training set
-    with open(path_name,'wb') as f:
+    engine.dh.dataset = None  # Used to remove training set
+    with open(path_name, 'wb') as f:
         pickle.dump(engine, f)
 
 
@@ -19,7 +19,7 @@ def load_engine(path_name=None):
     Args:
         path_name (str): path to save the engine
     """
-    with open(path_name,'rb') as f:
+    with open(path_name, 'rb') as f:
         engine = pickle.load(f)
     return engine
 
