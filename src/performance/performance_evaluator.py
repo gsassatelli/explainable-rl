@@ -311,7 +311,7 @@ class PerformanceEvaluator:
         Returns:
             dict: Hyperparameter dictionary specific to the Datasparq dataset.
         """
-        # TODO: Explain each parameter and when to use what
+        
         hyperparam_dict = {
             "dimensions": {'states': {'lead_time': 10,
                                       'length_of_stay': 10,
@@ -354,6 +354,5 @@ class PerformanceEvaluator:
 
 
 if __name__ == "__main__":
-    # mkdir evaluations folder in performance folder
     performance_evaluator = PerformanceEvaluator()
     performance_evaluator.get_all_performance_evaluations()

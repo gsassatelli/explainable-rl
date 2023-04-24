@@ -103,7 +103,7 @@ class Engine:
             raise NotImplementedError
 
     def train_agent(self):
-        """Train the agent for a chosen number of steps and episodes.<
+        """Train the agent for a chosen number of steps and episodes.
         """
         # Fit the agent
         if not self.evaluate:
