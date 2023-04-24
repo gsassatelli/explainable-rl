@@ -1,3 +1,40 @@
+from library import *
+
+
+def load_data(data_path, n_samples, delimiter=','):
+    """Load data from file.
+
+    Args:
+        delimiter (str): Which separates columns.
+    """
+    file_type = data_path.split('.')[-1]
+    if file_type == 'csv':
+        dataset = pd.read_csv(data_path, sep=delimiter)
+    elif file_type == 'xlsx':
+        dataset = pd.read_excel(data_path)
+    elif file_type == 'parquet':
+        dataset = pd.read_parquet(data_path)
+    else:
+        raise ValueError("File type not supported")
+    dataset.sample(frac=1)
+    return dataset[:n_samples]
+
+
+def split_train_test(dataset, train_test_split=0.2):
+    """Split dataset into train and test.
+
+    Args:
+        dataset (pd.DataFrame): Dataset.
+        train_test_split (float): Proportion of test data.
+    
+    Returns:
+        train_dataset (pd.DataFrame): Train dataset.
+        test_dataset (pd.DataFrame): Test dataset.
+    """
+    dataset = dataset.sample(frac=1)
+    split = int(train_test_split*len(dataset))
+    return dataset[split:], dataset[:split]
+
 def convert_to_string(state):
     """Convert a state to a string.
 
