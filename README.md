@@ -8,7 +8,9 @@ Create one branch per Jira task.
 ## Quick Guide on using the Sphinx Documentation
 The documentation of the explainable-RL package first release has already been 
 created and resided in ``explainable-RL/documentation/_build/html/<page_name>.html``.
-It was built using the Sphinx documentation generator.
+It was built using the Sphinx documentation generator. Here, ``<page_name>`` refers to
+the name of doc pages (e.g. index, library, src, ...). For an exhaustive list of names,
+navigate to the ``_build/html`` folder and observe files with the ``.html`` extension.
 
 Note:
 * The documentation only tracks .py files in packages. To quickly convert a standard
@@ -50,3 +52,4 @@ the ``.rst`` files are located) and delete the ``.rst`` files corresponding to t
 parents of the undesired files and remove them as needed from the 'toctree' section.
 * The main points of configuration (e.g. the doc style used or the name of the library) for the docs are located
 in the ``conf.py`` file.
+* For further information, see the official Sphinx documentation: https://www.sphinx-doc.org/en/master/
