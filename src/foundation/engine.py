@@ -50,7 +50,8 @@ class Engine:
         self.eval_hist_rewards = None
 
     def create_world(self):
-        """Create the Agent and MDP instances for the given task."""
+        """Create the Agent and MDP instances for the given task.
+        """
         # Create chosen environment
         if self.verbose:
             print("Initialize environment")
@@ -62,7 +63,8 @@ class Engine:
         self.create_agent()
 
     def create_agent(self):
-        """Create an agent and store it in Engine."""
+        """Create an agent and store it in Engine.
+        """
         # Initialize agent
         if self.agent_type == "q_learner":
             self.agent = QLearningAgent(self.env,
@@ -91,7 +93,8 @@ class Engine:
         self.agent.create_tables()
 
     def create_env(self):
-        """Create an env and store it in Engine."""
+        """Create an env and store it in Engine.
+        """
         # Initialize environment
         if self.env_type == "strategic_pricing_predict":
             self.env = StrategicPricingPredictionMDP(self.dh, self.bins)
@@ -150,8 +153,6 @@ class Engine:
             1).squeeze(-1).tolist()
         return i_values
 
-    # TODO: From Giulia, for when we do the clean up, do we need to keep this here or can we put it in the evaluator?
-    # TODO: Since it's part of the evaluation is better maybe
     def build_evaluation(self):
         """Save data for evaluation."""
         # Get test data from data handler
@@ -170,39 +171,30 @@ class Engine:
         """Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
-            float: Total (not scaled) cumulative reward.
+            total_agent_reward (float): Total (not scaled) cumulative reward.
         """
         # Get actions corresponding to agent's learned policy
         b_actions_agent = self.agent.predict_actions(self._eval_b_states)
-
         # De-bin the recommended actions
         actions_agent = self.env.debin_states(b_actions_agent, idxs=self._eval_action_dims)
-
         # Get reward based on agent policy
-        rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)
-        
+        rewards_agent = self.agent.predict_rewards(self._eval_b_states, b_actions_agent)        
         # Inverse scale agent rewards
-        rewards_agent = self.inverse_scale_feature(rewards_agent,
-                                                   self.dh.reward_labels)
-
+        rewards_agent = self.inverse_scale_feature(rewards_agent, self.dh.reward_labels)
         return np.sum(rewards_agent)
     
     def _evaluate_total_hist_reward(self):
         """Calculate the total reward obtained on the evaluation states using the agent's policy.
         
         Returns:
-            float: Total (not scaled) cumulative based on historical data.
+            total_hist_reward (float): Total (not scaled) cumulative based on historical data.
         """
         # Get the binned actions
         b_actions = self.env.bin_states(self._eval_actions, idxs=self._eval_action_dims)
-
         # Get reward based on historical policy
         rewards_hist = self.agent.predict_rewards(self._eval_b_states, b_actions)
-
         # Inverse scale agent rewards
-        rewards_hist = self.inverse_scale_feature(rewards_hist,
-                                                  self.dh.reward_labels)
-
+        rewards_hist = self.inverse_scale_feature(rewards_hist, self.dh.reward_labels)
         return np.sum(rewards_hist)
 
     def _get_bins(self):
