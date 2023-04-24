@@ -105,7 +105,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_b</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span></div>
 
-<div class="viewcode-block" id="DoubleQLearner._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">):</span>
+<div class="viewcode-block" id="DoubleQLearner._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Take a step in the environment and update the Q-tables.</span>
 
 <span class="sd">        Args:</span>
@@ -140,8 +140,6 @@
                                   <span class="n">Q_a</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_b</span><span class="p">,</span>
                                   <span class="n">Q_b</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_b</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span>
-
-        <span class="c1"># Todo: check that this is actually what you&#39;re meant to do with the Q tables</span>
 
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span></div>
 

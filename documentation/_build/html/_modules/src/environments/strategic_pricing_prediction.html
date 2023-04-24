@@ -74,13 +74,15 @@
 <div class="viewcode-block" id="StrategicPricingPredictionMDP"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_prediction.StrategicPricingPredictionMDP">[docs]</a><span class="k">class</span> <span class="nc">StrategicPricingPredictionMDP</span><span class="p">(</span><span class="n">StrategicPricing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment for Strategic Pricing (prediction task).&quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="StrategicPricingPredictionMDP.__init__"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_prediction.StrategicPricingPredictionMDP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="StrategicPricingPredictionMDP.__init__"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_prediction.StrategicPricingPredictionMDP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise Strategic Pricing Environment.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            dh (DataHandler): Data Handler instance.</span>
+<span class="sd">            verbose (bool): Whether print statements about the program flow should be displayed.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dh</span><span class="o">=</span><span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">initialise_env</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="StrategicPricingPredictionMDP._get_counts_and_rewards_per_bin"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_prediction.StrategicPricingPredictionMDP._get_counts_and_rewards_per_bin">[docs]</a>    <span class="k">def</span> <span class="nf">_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned</span><span class="p">):</span>
@@ -110,7 +112,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            sparse.COO: Sparse matrix of binned state-action pairs and their associate average reward.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create average rewards matrix&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create average rewards matrix&quot;</span><span class="p">)</span>
 
         <span class="c1"># Transform data for efficiency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transform_df_to_numpy</span><span class="p">()</span>
@@ -165,7 +168,6 @@
         <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">COO</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">))</span></div>
-        <span class="c1"># TODO: make the bins dimensions work</span>
 
 <div class="viewcode-block" id="StrategicPricingPredictionMDP._transform_df_to_numpy"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_prediction.StrategicPricingPredictionMDP._transform_df_to_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_df_to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>

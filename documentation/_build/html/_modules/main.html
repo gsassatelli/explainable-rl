@@ -74,40 +74,46 @@
 <span class="kn">from</span> <span class="nn">src.explainability.shap_values</span> <span class="kn">import</span> <span class="n">ShapValues</span>
 
 
+<div class="viewcode-block" id="load_data"><a class="viewcode-back" href="../main.html#main.load_data">[docs]</a><span class="k">def</span> <span class="nf">load_data</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s1">&#39;,&#39;</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Load data from file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        delimiter (str): Which separates columns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">file_type</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;.&#39;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;csv&#39;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;xlsx&#39;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s1">&#39;parquet&#39;</span><span class="p">:</span>
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File type not supported&quot;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">dataset</span></div>
+
+
 <div class="viewcode-block" id="run_all"><a class="viewcode-back" href="../main.html#main.run_all">[docs]</a><span class="k">def</span> <span class="nf">run_all</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">show_plots</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
     <span class="c1"># Load data</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">load_data</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;data_path&#39;</span><span class="p">],</span>
+                        <span class="n">delimiter</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;dataset&#39;</span><span class="p">][</span><span class="s1">&#39;col_delimiter&#39;</span><span class="p">])</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Load data&quot;</span><span class="p">)</span>
-    <span class="n">state_labels</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">]</span>
-    <span class="n">action_labels</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">]</span>
-    <span class="n">reward_labels</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]</span>
-    <span class="n">n_samples</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;n_samples&#39;</span><span class="p">]</span>
-    <span class="n">n_episodes</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;num_episodes&#39;</span><span class="p">]</span>
-    <span class="n">shap_num_samples</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;shap_num_samples&#39;</span><span class="p">]</span>
-    <span class="n">dh</span> <span class="o">=</span> <span class="n">DataHandler</span><span class="p">(</span><span class="n">data_path</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;data_path&#39;</span><span class="p">],</span>
-                     <span class="n">state_labels</span><span class="o">=</span><span class="n">state_labels</span><span class="p">,</span>
-                     <span class="n">action_labels</span><span class="o">=</span><span class="n">action_labels</span><span class="p">,</span>
-                     <span class="n">reward_labels</span><span class="o">=</span><span class="n">reward_labels</span><span class="p">,</span>
-                     <span class="n">n_samples</span><span class="o">=</span><span class="n">n_samples</span><span class="p">)</span>
+
+    <span class="n">dh</span> <span class="o">=</span> <span class="n">DataHandler</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">,</span> <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+                     <span class="n">test_dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">)</span>
 
     <span class="c1"># Preprocess the data</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Preprocess data&quot;</span><span class="p">)</span>
-    <span class="n">cols_to_normalise</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">set</span><span class="p">(</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;states&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;actions&#39;</span><span class="p">]</span> <span class="o">+</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;rewards&#39;</span><span class="p">]))</span>
-    <span class="n">dh</span><span class="o">.</span><span class="n">prepare_data_for_engine</span><span class="p">(</span><span class="n">col_delimiter</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;col_delimiter&#39;</span><span class="p">],</span>
-                               <span class="n">cols_to_normalise</span><span class="o">=</span><span class="n">cols_to_normalise</span><span class="p">)</span>
+    <span class="n">dh</span><span class="o">.</span><span class="n">prepare_data_for_engine</span><span class="p">()</span>
 
     <span class="c1"># Create engine</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Initialize Engine&quot;</span><span class="p">)</span>
-    <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span>
-                    <span class="n">agent_type</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;agent_type&#39;</span><span class="p">],</span>
-                    <span class="n">env_type</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;env_type&#39;</span><span class="p">],</span>
-                    <span class="n">num_episodes</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;num_episodes&#39;</span><span class="p">],</span>
-                    <span class="n">num_steps</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;num_steps&#39;</span><span class="p">],</span>
-                    <span class="n">bins</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;bins&#39;</span><span class="p">])</span>
+    <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">dh</span><span class="p">,</span> <span class="n">hyperparam_dict</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">)</span>
 
     <span class="c1"># Create world</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
@@ -118,162 +124,69 @@
     <span class="c1"># Train agent</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Train the agent on </span><span class="si">{</span><span class="n">n_samples</span><span class="si">}</span><span class="s2"> samples and </span><span class="si">{</span><span class="n">n_episodes</span><span class="si">}</span><span class="s2"> episodes&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Train the agent&quot;</span><span class="p">)</span>
     <span class="n">engine</span><span class="o">.</span><span class="n">train_agent</span><span class="p">()</span>
 
-    <span class="c1">###########################################################</span>
-    <span class="c1">################ Evaluate agent ###########################</span>
-    <span class="c1">###########################################################</span>
-
-    <span class="c1"># TODO: denorm states, actions and rewards (using datahandler&#39;s inverse scaling)</span>
-
+    <span class="c1"># PDP plots</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Evaluate agent&quot;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: PDP plots&quot;</span><span class="p">)</span>
+    <span class="n">pdp</span> <span class="o">=</span> <span class="n">PDP</span><span class="p">(</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">pdp</span><span class="o">.</span><span class="n">build_data_for_plots</span><span class="p">()</span>
+    <span class="n">pdp</span><span class="o">.</span><span class="n">plot_pdp</span><span class="p">(</span><span class="n">fig_name</span><span class="o">=</span><span class="s2">&quot;PDP plots&quot;</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 
-    <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">b_actions</span><span class="p">,</span> <span class="n">rewards_hist</span><span class="p">,</span> <span class="n">actions_agent</span><span class="p">,</span> <span class="n">b_actions_agent</span><span class="p">,</span> <span class="n">rewards_agent</span> <span class="o">=</span> \
-        <span class="n">engine</span><span class="o">.</span><span class="n">evaluate_agent</span><span class="p">()</span>
-    <span class="c1"># Sum obtained reward optimal vs historical policy</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Return based on historical data: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_hist</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Return based on agent policy: </span><span class="si">{</span><span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">rewards_agent</span><span class="p">)</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
-
-    <span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">actions</span><span class="p">,</span> <span class="n">actions_agent</span><span class="p">)</span>
-    <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s1">&#39;policy.png&#39;</span><span class="p">)</span>
-
-    <span class="c1">###########################################################</span>
-    <span class="c1">################# End of evaluation #######################</span>
-    <span class="c1">###########################################################</span>
-
-    <span class="c1"># Plot PDPs</span>
+    <span class="c1"># SHAP values</span>
     <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Show PDPs plots&quot;</span><span class="p">)</span>
-    <span class="n">pdp</span> <span class="o">=</span> <span class="n">PDP</span><span class="p">(</span><span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
-    <span class="n">pdp</span><span class="o">.</span><span class="n">build_data_for_plots</span><span class="p">(</span><span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span><span class="p">,</span> <span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q_num_samples</span><span class="p">)</span>
-    <span class="n">type_features</span> <span class="o">=</span> <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s1">&#39;feature_types&#39;</span><span class="p">]</span>
-    <span class="n">fig_name</span> <span class="o">=</span> <span class="s2">&quot;PDP plots - All states&quot;</span>
-    <span class="n">pdp</span><span class="o">.</span><span class="n">plot_pdp</span><span class="p">(</span><span class="n">states_names</span><span class="o">=</span><span class="n">state_labels</span><span class="p">,</span> <span class="n">fig_name</span><span class="o">=</span><span class="n">fig_name</span><span class="p">,</span>
-                 <span class="n">type_features</span><span class="o">=</span><span class="n">type_features</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">all_states</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-
-    <span class="c1"># Compute SHAP values</span>
-    <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Show SHAP values plots&quot;</span><span class="p">)</span>
-    <span class="n">shap_values</span> <span class="o">=</span> <span class="n">ShapValues</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span>
-                             <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">,</span>
-                             <span class="n">number_of_samples</span><span class="o">=</span><span class="n">shap_num_samples</span><span class="p">)</span>
-    <span class="n">shaps</span><span class="p">,</span> <span class="n">predicted_action</span> <span class="o">=</span> <span class="n">shap_values</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">()</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">shaps</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">predicted_action</span><span class="p">)</span></div>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: SHAP values&quot;</span><span class="p">)</span>
+    <span class="n">shap_values</span> <span class="o">=</span> <span class="n">ShapValues</span><span class="p">(</span><span class="n">sample</span><span class="o">=</span><span class="p">[</span><span class="mi">8</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span> <span class="n">engine</span><span class="o">=</span><span class="n">engine</span><span class="p">)</span>
+    <span class="n">shap_values</span><span class="o">.</span><span class="n">compute_shap_values</span><span class="p">()</span></div>
 
 
 <span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
-
-    <span class="c1"># Define hyperparameters</span>
     <span class="n">hyperparam_dict_ds_data_suggest</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">price_bin</span> <span class="o">/</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">price_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)],</span>
-        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;lead_time&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;length_of_stay&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;demand_bin&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;reward&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/ds-data/my_example_data.parquet&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cols_to_normalise&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;agent_type&#39;</span><span class="p">:</span> <span class="s1">&#39;q_learner&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;env_type&#39;</span><span class="p">:</span> <span class="s1">&#39;strategic_pricing_suggest&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;num_episodes&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
-        <span class="s1">&#39;num_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;train_test_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s1">&#39;shap_num_samples&#39;</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;lead_time&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                                  <span class="s1">&#39;length_of_stay&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+                                  <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                                  <span class="s1">&#39;demand_bin&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+                                  <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">4</span><span class="p">},</span>
+                       <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="mi">10</span><span class="p">},</span>
+                       <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">]</span>
+                       <span class="p">},</span>
 
-    <span class="n">hyperparam_dict_kaggle_data_suggest</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">price_bin</span> <span class="o">/</span> <span class="mi">10</span> <span class="k">for</span> <span class="n">price_bin</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">11</span><span class="p">)],</span>
-        <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;revenue&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;competitorPrice&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;adFlag&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;availability&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;revenue&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">2000</span><span class="p">,</span>
-        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/kaggle-dummy-dataset/train.csv&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cols_to_normalise&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;agent_type&#39;</span><span class="p">:</span> <span class="s1">&#39;q_learner&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;env_type&#39;</span><span class="p">:</span> <span class="s1">&#39;strategic_pricing_suggest&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;num_episodes&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="s1">&#39;num_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;train_test_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s1">&#39;shap_num_samples&#39;</span><span class="p">:</span> <span class="mi">1</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;dataset&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/ds-data/my_example_data.parquet&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
+                    <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
+                    <span class="s1">&#39;n_test_samples&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+                    <span class="s1">&#39;normalisation&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">},</span>
 
-    <span class="n">hyperparam_dict_ds_data_predict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>
-                   <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;reward&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;lead_time&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;length_of_stay&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;demand_bin&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;reward&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">100000</span><span class="p">,</span>
-        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/ds-data/my_example_data.parquet&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cols_to_normalise&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;lead_time&#39;</span><span class="p">,</span> <span class="s1">&#39;length_of_stay&#39;</span><span class="p">,</span>
-                              <span class="s1">&#39;competitor_price_difference_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;demand_bin&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">,</span> <span class="s1">&#39;reward&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;agent_type&#39;</span><span class="p">:</span> <span class="s1">&#39;q_learner&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;env_type&#39;</span><span class="p">:</span> <span class="s1">&#39;strategic_pricing_predict&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;num_episodes&#39;</span><span class="p">:</span> <span class="mi">5000</span><span class="p">,</span>
-        <span class="s1">&#39;num_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;train_test_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s1">&#39;shap_num_samples&#39;</span><span class="p">:</span> <span class="mi">10</span>
-    <span class="p">}</span>
+        <span class="s2">&quot;training&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;env_type&#39;</span><span class="p">:</span> <span class="s1">&#39;strategic_pricing_predict&#39;</span><span class="p">,</span>
+                     <span class="s1">&#39;num_episodes&#39;</span><span class="p">:</span> <span class="mi">500</span><span class="p">,</span>
+                     <span class="s1">&#39;num_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                     <span class="s1">&#39;train_test_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                     <span class="s1">&#39;evaluate&#39;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                     <span class="s1">&#39;num_eval_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
 
-    <span class="n">hyperparam_dict_kaggle_data_predict</span> <span class="o">=</span> <span class="p">{</span>
-        <span class="s1">&#39;states&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;actions&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;rewards&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;revenue&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;feature_types&#39;</span><span class="p">:</span> <span class="p">{</span>
-            <span class="s1">&#39;competitorPrice&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;adFlag&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;availability&#39;</span><span class="p">:</span> <span class="s2">&quot;discrete&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;price&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span><span class="p">,</span>
-            <span class="s1">&#39;revenue&#39;</span><span class="p">:</span> <span class="s2">&quot;continuous&quot;</span>
-        <span class="p">},</span>
-        <span class="s1">&#39;bins&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">],</span>
-        <span class="s1">&#39;n_samples&#39;</span><span class="p">:</span> <span class="mi">20000</span><span class="p">,</span>
-        <span class="s1">&#39;data_path&#39;</span><span class="p">:</span> <span class="s1">&#39;data/kaggle-dummy-dataset/train.csv&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;col_delimiter&#39;</span><span class="p">:</span> <span class="s1">&#39;|&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;cols_to_normalise&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;competitorPrice&#39;</span><span class="p">,</span> <span class="s1">&#39;adFlag&#39;</span><span class="p">,</span> <span class="s1">&#39;availability&#39;</span><span class="p">,</span> <span class="s1">&#39;price&#39;</span><span class="p">],</span>
-        <span class="s1">&#39;agent_type&#39;</span><span class="p">:</span> <span class="s1">&#39;q_learner&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;env_type&#39;</span><span class="p">:</span> <span class="s1">&#39;strategic_pricing_predict&#39;</span><span class="p">,</span>
-        <span class="s1">&#39;num_episodes&#39;</span><span class="p">:</span> <span class="mi">1000</span><span class="p">,</span>
-        <span class="s1">&#39;num_steps&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
-        <span class="s1">&#39;train_test_split&#39;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
-        <span class="s1">&#39;shap_num_samples&#39;</span><span class="p">:</span> <span class="mi">1</span>
+        <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;agent_type&#39;</span><span class="p">:</span> <span class="s1">&#39;q_learner&#39;</span><span class="p">,</span>
+                  <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+                  <span class="s2">&quot;epsilon&quot;</span><span class="p">:</span> <span class="mf">0.4</span><span class="p">,</span>
+                  <span class="s2">&quot;epsilon_decay&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                  <span class="s2">&quot;epsilon_minimum&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                  <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                  <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                  <span class="s2">&quot;learning_rate_minimum&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                  <span class="s2">&quot;lambda&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                  <span class="s2">&quot;use_uncertainty&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+                  <span class="s2">&quot;q_importance&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+                  <span class="p">},</span>
+
+        <span class="s2">&quot;explainability&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;shap_num_samples&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+
+        <span class="s2">&quot;program_flow&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">}</span>
     <span class="p">}</span>
 
     <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">):</span>
-        <span class="n">run_all</span><span class="p">(</span><span class="n">hyperparam_dict_ds_data_predict</span><span class="p">)</span>
+        <span class="n">run_all</span><span class="p">(</span><span class="n">hyperparam_dict_ds_data_suggest</span><span class="p">)</span>
         <span class="c1"># Run this 10 times to check everything was fine.</span>
 </pre></div>
 

@@ -101,7 +101,6 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_dim</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">bins</span> <span class="o">=</span> <span class="n">bins</span></div>
-        <span class="c1"># TODO: check this logic</span>
 
 <div class="viewcode-block" id="StrategicPricing.initialise_env"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing.StrategicPricing.initialise_env">[docs]</a>    <span class="k">def</span> <span class="nf">initialise_env</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the environment given the MDP information.&quot;&quot;&quot;</span>
@@ -153,6 +152,7 @@
             <span class="n">b_states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">bin_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">idxs</span><span class="p">)</span>
             <span class="p">)</span>
+            <span class="c1"># TODO: Chaange this to a pd lamda function as it is way quicker</span>
         <span class="k">return</span> <span class="n">b_states</span></div>
 
 <div class="viewcode-block" id="StrategicPricing.debin_states"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing.StrategicPricing.debin_states">[docs]</a>    <span class="k">def</span> <span class="nf">debin_states</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">b_states</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

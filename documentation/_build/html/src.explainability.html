@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>src.explainability package &mdash; Explainable RL  documentation</title>
@@ -103,7 +103,7 @@
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Initialise PDP class.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><p><strong>engine</strong> (<a class="reference internal" href="src.foundation.html#src.foundation.engine.Engine" title="src.foundation.engine.Engine"><em>Engine</em></a>) – Engine object.</p>
 </dd>
 </dl>
@@ -123,45 +123,27 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP._get_digitized_pdp">
-<span class="sig-name descname"><span class="pre">_get_digitized_pdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_num_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP._get_digitized_pdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP._get_digitized_pdp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">_get_digitized_pdp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP._get_digitized_pdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP._get_digitized_pdp" title="Permalink to this definition"></a></dt>
 <dd><p>Compute average Q-value per each state-action pair.</p>
 <p>Marginal effect of the state-action pair averaging other state dimensions.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Q</strong> (<em>sparse.DOK</em>) – Q-table to build plots.</p></li>
-<li><p><strong>Q_num_samples</strong> (<em>sparse.DOK</em>) – Q-table with number of samples per each state-action pair.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP.build_data_for_plots">
-<span class="sig-name descname"><span class="pre">build_data_for_plots</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">Q</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">Q_num_samples</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.build_data_for_plots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.build_data_for_plots" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">build_data_for_plots</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.build_data_for_plots"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.build_data_for_plots" title="Permalink to this definition"></a></dt>
 <dd><p>Prepare data to build PDP plots.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>Q</strong> (<em>sparse.DOK</em>) – Q-table to build plots.</p></li>
-<li><p><strong>Q_num_samples</strong> (<em>sparse.DOK</em>) – Q-table with number of samples per each state-action pair.</p></li>
-</ul>
-</dd>
-</dl>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="src.explainability.pdp.PDP.plot_pdp">
-<span class="sig-name descname"><span class="pre">plot_pdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states_names</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fig_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">all_states</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.plot_pdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.plot_pdp" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">plot_pdp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fig_name</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">savefig</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/src/explainability/pdp.html#PDP.plot_pdp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#src.explainability.pdp.PDP.plot_pdp" title="Permalink to this definition"></a></dt>
 <dd><p>Build PDP plots.</p>
 <p>One marginalized plot per each state dimension.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>states_names</strong> (<em>list</em>) – State dimensions column names</p></li>
 <li><p><strong>fig_name</strong> (<em>str</em>) – Name to save plot.</p></li>
 <li><p><strong>savefig</strong> (<em>bool</em>) – Whether to save the plot.</p></li>
-<li><p><strong>all_states</strong> (<em>bool</em>) – Whether to plot the unvisited states.</p></li>
 </ul>
 </dd>
 </dl>

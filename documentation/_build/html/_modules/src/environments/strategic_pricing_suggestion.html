@@ -74,9 +74,11 @@
 <div class="viewcode-block" id="StrategicPricingSuggestionMDP"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP">[docs]</a><span class="k">class</span> <span class="nc">StrategicPricingSuggestionMDP</span><span class="p">(</span><span class="n">StrategicPricing</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Environment for Strategic Pricing (suggestion task).&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="StrategicPricingSuggestionMDP.__init__"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise Strategic Pricing Environment.&quot;&quot;&quot;</span>
         <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">dh</span><span class="o">=</span><span class="n">dh</span><span class="p">,</span> <span class="n">bins</span><span class="o">=</span><span class="n">bins</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_env</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">initialise_env</span><span class="p">()</span></div>
 
 <div class="viewcode-block" id="StrategicPricingSuggestionMDP._get_counts_and_rewards_per_bin"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._get_counts_and_rewards_per_bin">[docs]</a>    <span class="k">def</span> <span class="nf">_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a dictionary of counts of datapoints per bin and sum the associated rewards.</span>
@@ -103,7 +105,8 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            sparse.COO: Binned state-action pairs and their associate average reward.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create average rewards matrix&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Create average rewards matrix&quot;</span><span class="p">)</span>
 
         <span class="c1"># Transform data for efficiency</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_transform_df_to_numpy</span><span class="p">()</span>
@@ -131,7 +134,7 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            tuple: Current state, action, next state, done flag.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="c1"># TODO: input index to find_next_state</span>
+        
         <span class="n">index</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">)[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="n">action</span><span class="p">])</span>
 
         <span class="n">reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_average_rewards</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
@@ -181,7 +184,6 @@
         <span class="n">coords</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">coords</span><span class="p">)</span><span class="o">.</span><span class="n">T</span><span class="o">.</span><span class="n">tolist</span><span class="p">()</span>
 
         <span class="k">return</span> <span class="n">sparse</span><span class="o">.</span><span class="n">COO</span><span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">data</span><span class="p">,</span> <span class="n">shape</span><span class="o">=</span><span class="nb">tuple</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">bins</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span></div>
-        <span class="c1"># TODO: make the bins dimensions work</span>
 
 <div class="viewcode-block" id="StrategicPricingSuggestionMDP._transform_df_to_numpy"><a class="viewcode-back" href="../../../src.environments.html#src.environments.strategic_pricing_suggestion.StrategicPricingSuggestionMDP._transform_df_to_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">_transform_df_to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_state_mdp_data</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>

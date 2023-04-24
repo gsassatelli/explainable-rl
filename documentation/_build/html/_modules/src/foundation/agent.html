@@ -80,20 +80,14 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
 
-<div class="viewcode-block" id="Agent.fit"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lr_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-            <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="Agent.fit"><a class="viewcode-back" href="../../../src.foundation.html#src.foundation.agent.Agent.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_hyperparams</span><span class="p">,</span> <span class="n">training_hyperparams</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n_episodes (int): Number of episodes.</span>
-<span class="sd">            n_steps (int): Number of steps per episode.</span>
-<span class="sd">            lr (float): Learning rate.</span>
-<span class="sd">            lr_decay (float): Learning rate decay.</span>
-<span class="sd">            lr_min (float): Minimum learning rate.</span>
-<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
-<span class="sd">            epsilon_decay (float): Epsilon decay.</span>
-<span class="sd">            epsilon_min (float): Minimum epsilon.</span>
+<span class="sd">            agent_hyperparams (dict): Dictionary of agent hyperparameters.</span>
+<span class="sd">            training_hyperparams (dict): Dictionary of training hyperparameters.</span>
 <span class="sd">            verbose (bool): Print training information.</span>
+<span class="sd">            pbar (tqdm): Progress bar.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
 

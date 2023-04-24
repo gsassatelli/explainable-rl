@@ -65,9 +65,7 @@
            <div itemprop="articleBody">
              
   <h1>Source code for src.agents.td</h1><div class="highlight"><pre>
-<span></span><span class="kn">from</span> <span class="nn">library</span> <span class="kn">import</span> <span class="o">*</span>
-
-<span class="c1"># Import functions</span>
+<span></span><span class="c1"># Import functions</span>
 <span class="kn">from</span> <span class="nn">src.foundation.utils</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">src.foundation.agent</span> <span class="kn">import</span> <span class="n">Agent</span>
 
@@ -82,49 +80,38 @@
 <span class="sd">        Args:</span>
 <span class="sd">            env (MDP): MDP object.</span>
 <span class="sd">            gamma (float): Discount factor.</span>
+<span class="sd">            verbose (bool): Defines whether print statements should be called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
 
-<div class="viewcode-block" id="TD.fit"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_episodes</span><span class="p">,</span> <span class="n">n_steps</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">lr_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">lr_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span>
-            <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="o">=</span><span class="mf">0.05</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="o">=</span><span class="mf">0.01</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="TD.fit"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_hyperparams</span><span class="p">,</span> <span class="n">training_hyperparams</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            n_episodes (int): Number of episodes.</span>
-<span class="sd">            n_steps (int): Number of steps per episode.</span>
-<span class="sd">            use_uncertainty (bool): Use uncertainty in q-table.</span>
-<span class="sd">            lr (float): Learning rate.</span>
-<span class="sd">            lr_decay (float): Learning rate decay.</span>
-<span class="sd">            lr_min (float): Minimum learning rate.</span>
-<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
-<span class="sd">            epsilon_decay (float): Epsilon decay.</span>
-<span class="sd">            epsilon_min (float): Minimum epsilon.</span>
+<span class="sd">            agent_hyperparams (dict): Dictionary of agent hyperparameters.</span>
+<span class="sd">            training_hyperparams (dict): Dictionary of training hyperparameters.</span>
 <span class="sd">            verbose (bool): Print training information.</span>
+<span class="sd">            pbar (tqdm): Progress bar.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
             <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Apply q-learning and update q-table&quot;</span><span class="p">)</span>
-
-        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_episodes</span><span class="p">):</span>
+        <span class="n">lr</span> <span class="o">=</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;learning_rate&#39;</span><span class="p">]</span>
+        <span class="n">epsilon</span> <span class="o">=</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;epsilon&#39;</span><span class="p">]</span>
+        <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">training_hyperparams</span><span class="p">[</span><span class="s2">&quot;num_episodes&quot;</span><span class="p">]):</span>
 
             <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
 
-            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_steps</span><span class="p">):</span>
-                <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="n">use_uncertainty</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">training_hyperparams</span><span class="p">[</span><span class="s2">&quot;num_steps&quot;</span><span class="p">]):</span>
+                <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_step</span><span class="p">(</span><span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="o">=</span><span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;use_uncertainty&#39;</span><span class="p">])</span>
                 <span class="k">if</span> <span class="n">done</span><span class="p">:</span>
                     <span class="k">break</span>
-            <span class="n">lr</span> <span class="o">=</span> <span class="n">decay_param</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">lr_decay</span><span class="p">,</span> <span class="n">lr_min</span><span class="p">)</span>
-            <span class="n">epsilon</span> <span class="o">=</span> <span class="n">decay_param</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">epsilon_decay</span><span class="p">,</span> <span class="n">epsilon_min</span><span class="p">)</span>
-
-        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="n">timestamp</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;</span><span class="si">%d</span><span class="s2">/%m/%Y %H:%M:%S&quot;</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">timestamp</span><span class="si">}</span><span class="s2">: Finished training :) ! </span><span class="se">\n</span><span class="s2">&quot;</span>
-                  <span class="sa">f</span><span class="s2">&quot;Example Q-table for state &quot;</span>
-                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">9</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
-                  <span class="sa">f</span><span class="s2">&quot;Example Q-table for state &quot;</span>
-                  <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="si">}</span><span class="s2">: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span></div>
+            <span class="k">if</span> <span class="n">pbar</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">pbar</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">lr</span> <span class="o">=</span> <span class="n">decay_param</span><span class="p">(</span><span class="n">lr</span><span class="p">,</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;learning_rate_decay&#39;</span><span class="p">],</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;learning_rate_minimum&#39;</span><span class="p">])</span>
+            <span class="n">epsilon</span> <span class="o">=</span> <span class="n">decay_param</span><span class="p">(</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;epsilon_decay&#39;</span><span class="p">],</span> <span class="n">agent_hyperparams</span><span class="p">[</span><span class="s1">&#39;epsilon_minimum&#39;</span><span class="p">])</span></div>
 
 <div class="viewcode-block" id="TD.create_tables"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the agent.</span>
@@ -267,7 +254,7 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
                                                   <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span>
-                                                  <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="c1"># TODO: readd parameter</span>
+                                                  <span class="n">use_uncertainty</span><span class="o">=</span><span class="n">use_uncertainty</span><span class="p">,</span>
                                                   <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">)</span>
         
         <span class="n">state</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">done</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>

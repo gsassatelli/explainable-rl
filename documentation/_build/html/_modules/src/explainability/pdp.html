@@ -78,6 +78,8 @@
 <span class="sd">        Args:</span>
 <span class="sd">            engine (Engine): Engine object.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q_num_samples</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_bins</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_minmax_scalars</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">minmax_scalars</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_action_labels</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">action_labels</span>
@@ -90,31 +92,19 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_bins_per_dim</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Q_array</span> <span class="o">=</span> <span class="p">[]</span></div>
 
-<div class="viewcode-block" id="PDP.build_data_for_plots"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP.build_data_for_plots">[docs]</a>    <span class="k">def</span> <span class="nf">build_data_for_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                             <span class="n">Q</span><span class="p">,</span>
-                             <span class="n">Q_num_samples</span><span class="p">):</span>
+<div class="viewcode-block" id="PDP.build_data_for_plots"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP.build_data_for_plots">[docs]</a>    <span class="k">def</span> <span class="nf">build_data_for_plots</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare data to build PDP plots.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            Q (sparse.DOK): Q-table to build plots.</span>
-<span class="sd">            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">_get_digitized_pdp</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">Q_num_samples</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_get_digitized_pdp</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_denorm_actions</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_denorm_states</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="PDP._get_digitized_pdp"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP._get_digitized_pdp">[docs]</a>    <span class="k">def</span> <span class="nf">_get_digitized_pdp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                           <span class="n">Q</span><span class="p">,</span>
-                           <span class="n">Q_num_samples</span><span class="p">):</span>
+<div class="viewcode-block" id="PDP._get_digitized_pdp"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP._get_digitized_pdp">[docs]</a>    <span class="k">def</span> <span class="nf">_get_digitized_pdp</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute average Q-value per each state-action pair.</span>
 
 <span class="sd">        Marginal effect of the state-action pair averaging other state dimensions.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            Q (sparse.DOK): Q-table to build plots.</span>
-<span class="sd">            Q_num_samples (sparse.DOK): Q-table with number of samples per each state-action pair.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">Q_array</span> <span class="o">=</span> <span class="n">Q</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+        <span class="n">Q_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_Q_array</span> <span class="o">=</span> <span class="n">Q_array</span>
         <span class="n">shape_Q</span> <span class="o">=</span> <span class="n">Q_array</span><span class="o">.</span><span class="n">shape</span>
         <span class="n">num_dims</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">shape_Q</span><span class="p">)</span>
@@ -122,7 +112,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_bins_per_dim</span> <span class="o">=</span> <span class="p">[</span><span class="n">shape_Q</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_dims</span><span class="p">)]</span>
         <span class="n">set_states</span> <span class="o">=</span> <span class="nb">set</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">)))</span>
 
-        <span class="n">Q_num_samples_array</span> <span class="o">=</span> <span class="n">Q_num_samples</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
+        <span class="n">Q_num_samples_array</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span><span class="o">.</span><span class="n">todense</span><span class="p">()</span>
 
         <span class="c1"># For each state dimension</span>
         <span class="k">for</span> <span class="n">dim</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_states</span><span class="p">):</span>
@@ -177,19 +167,15 @@
             <span class="bp">self</span><span class="o">.</span><span class="n">_denorm_states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">denorm_state</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="PDP.plot_pdp"><a class="viewcode-back" href="../../../src.explainability.html#src.explainability.pdp.PDP.plot_pdp">[docs]</a>    <span class="k">def</span> <span class="nf">plot_pdp</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span>
-                 <span class="n">states_names</span><span class="p">,</span>
                  <span class="n">fig_name</span><span class="p">,</span>
-                 <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
-                 <span class="n">all_states</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
+                 <span class="n">savefig</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Build PDP plots.</span>
 
 <span class="sd">        One marginalized plot per each state dimension.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            states_names (list): State dimensions column names</span>
 <span class="sd">            fig_name (str): Name to save plot.</span>
 <span class="sd">            savefig (bool): Whether to save the plot.</span>
-<span class="sd">            all_states (bool): Whether to plot the unvisited states.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">rows</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_denorm_actions</span><span class="p">)</span>
         <span class="n">cols</span> <span class="o">=</span> <span class="mi">1</span>
@@ -199,17 +185,12 @@
         <span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">(</span><span class="n">rows</span><span class="p">,</span> <span class="n">cols</span><span class="p">,</span> <span class="n">sharex</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">sharey</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">figsize</span><span class="o">=</span><span class="n">figsize</span><span class="p">)</span>
 
         <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">rows</span><span class="p">):</span>
-            <span class="n">state</span> <span class="o">=</span> <span class="n">states_names</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+            <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_state_labels</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
             <span class="c1"># Plot action-state graph</span>
             <span class="n">axis</span> <span class="o">=</span> <span class="p">[</span><span class="n">ax</span><span class="p">[</span><span class="n">a</span><span class="p">],</span> <span class="n">ax</span><span class="p">[</span><span class="n">a</span><span class="p">]</span><span class="o">.</span><span class="n">twinx</span><span class="p">()]</span>
             <span class="n">actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denorm_actions</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
             <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">2</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">_denorm_states</span><span class="p">[</span><span class="n">a</span><span class="p">]]</span>
             <span class="n">samples</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_dig_state_actions_samples</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
-            <span class="k">if</span> <span class="ow">not</span> <span class="n">all_states</span><span class="p">:</span>
-                <span class="n">total_samples</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">samples</span><span class="p">[:,</span> <span class="mi">1</span><span class="p">])</span>
-                <span class="n">states</span> <span class="o">=</span> <span class="p">[</span><span class="n">states</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">total_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
-                <span class="n">actions</span> <span class="o">=</span> <span class="p">[</span><span class="n">actions</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">total_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span>
-                <span class="n">samples</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">samples</span><span class="p">[</span><span class="n">idx</span><span class="p">]</span> <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">s</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">total_samples</span><span class="p">)</span> <span class="k">if</span> <span class="n">s</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
 
             <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
             <span class="n">axis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s2">&quot;o&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">&#39;b&#39;</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
