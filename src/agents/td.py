@@ -47,14 +47,6 @@ class TD(Agent):
             lr = decay_param(lr, agent_hyperparams['learning_rate_decay'], agent_hyperparams['learning_rate_minimum'])
             epsilon = decay_param(epsilon, agent_hyperparams['epsilon_decay'], agent_hyperparams['epsilon_minimum'])
 
-        if verbose:
-            timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
-            print(f"{timestamp}: Finished training :) ! \n"
-                  f"Example Q-table for state "
-                  f"{[1, 9, 0]}: {self.Q[1, 9, 0].todense()}\n"
-                  f"Example Q-table for state "
-                  f"{[1, 0, 0]}: {self.Q[1, 0, 0].todense()}")
-
     def create_tables(self, verbose=False):
         """Initialize the agent.
 
