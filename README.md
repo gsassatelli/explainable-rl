@@ -31,7 +31,7 @@ docs index page.
 ### B. New files have been written or the project structure has changed
 If the project structure has changed (new files have been created and/or files have been)
 moved, then the following procedure should be followed to update and access the docs:
-1. In the documentation folder, delete all the `.rst` files. No other files or directories
+1. In the documentation folder, delete all the `.rst` files (except the ``index.rst`` file). No other files or directories
    (e.g. conf.py, make.bat, Makefile, _build) should be deleted. This would require making
    the documentation from scratch.
 2. In Terminal, go to the root of the repository (e.g. ``cd ../..`` if you are two-levels
