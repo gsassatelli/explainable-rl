@@ -79,41 +79,32 @@ class TD(Agent):
                 action = random.choice(list(self.state_to_action[str(state_str)]))
         return action
     
-    def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
+    def uncertainty_informed_policy(self, state=None, epsilon=0.1,
+                                    use_uncertainty=False, q_importance=0.7):
         if state is None:
             state = self.state
-        possible_actions = self._get_possible_actions(state)
         index_no_action = tuple(list(state))
-
+        possible_actions = self._get_possible_actions(state)
         if use_uncertainty:
-            state_action_counts = {}
-            q_values_weights = {}
             sum_possible_q = sum(self.Q[index_no_action].todense())
-
             if sum_possible_q == 0:
                 return np.random.choice(list(possible_actions))
 
-            for possible_action in possible_actions:
-                possible_state_action_str = self._convert_to_string(state + [possible_action])
-                counts = self.env.bins_dict[possible_state_action_str][0]
-                # Count number of times a state-action pair occurred
-                state_action_counts[str(possible_action)] = counts
-                index_with_action = tuple(state + [possible_action])
-                q_values_weights[possible_action] = self.Q[index_with_action] / sum_possible_q
-
-            # Get weights given population for state-action space
-            # N.B. A high value represents a well-known, certain state
-            uncertainty_weights = {int(key): float(value)/sum(state_action_counts.values())
-                                   for (key, value) in state_action_counts.items()}
-
+            state_action_counts, q_values_weights = \
+                self._get_q_value_weights(sum_possible_q=sum_possible_q,
+                                          state=state,
+                                          possible_actions=possible_actions)
+            uncertainty_weights = \
+                self._get_uncertainty_weights(state_action_counts)
             if random.random() < epsilon:
                 action = np.random.choice(list(possible_actions))
             else:
-                action_scores = {}
-                for possible_action in possible_actions:
-                    score = q_importance * q_values_weights[possible_action] + \
-                            (1 - q_importance) * uncertainty_weights[possible_action]
-                    action_scores[possible_action] = score
+                action_scores = \
+                    self._get_action_scores(possible_actions=possible_actions,
+                                            q_importance=q_importance,
+                                            q_values_weights=q_values_weights,
+                                            uncertainty_weights=
+                                            uncertainty_weights)
                 action = max(action_scores, key=action_scores.get)
         else:
             action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
@@ -179,3 +170,74 @@ class TD(Agent):
             possible_actions = self.env.state_to_action[state_str]
 
         return possible_actions
+
+    def _get_q_value_weights(self, sum_possible_q, state, possible_actions):
+        """Get the q value of each action as a percentage of the total q value.
+
+        Args:
+            sum_possible_q (float): the sum of the q values for the state.
+            state (list): the state of the agent.
+            possible_actions (set): the possible actions that the agent can
+                                    take from the state.
+
+        Returns:
+            state_action_counts (dict): count of how many times a state-action
+                                        pair has appeared.
+            q_values_weights (dict): the q-weight of each state-action pair.
+        """
+        state_action_counts = {}
+        q_values_weights = {}
+
+        for possible_action in possible_actions:
+            possible_state_action_str = self._convert_to_string(
+                state + [possible_action])
+            counts = self.env.bins_dict[possible_state_action_str][0]
+            # Count number of times a state-action pair occurred
+            state_action_counts[str(possible_action)] = counts
+            index_with_action = tuple(state + [possible_action])
+            q_values_weights[possible_action] = self.Q[
+                                                    index_with_action] / sum_possible_q
+
+        return state_action_counts, q_values_weights
+
+    def _get_action_scores(self, possible_actions, q_importance,
+                           q_values_weights, uncertainty_weights):
+        """Get the score for each action from a state.
+
+        Args:
+            possible_actions (set): the possible actions for an agent in a
+                                    state.
+            q_importance (float): the weighting of the q value vs the amount
+                                  a state has been seen.
+            q_values_weights (dict): the q-weight of each state-action pair.
+            uncertainty_weights (dict): the count-weight of each state-action
+                                        pair.
+
+        Returns:
+            action_scores (dict): the weighted score of each possible action
+                                  from the state.
+
+        """
+        action_scores = {}
+        for possible_action in possible_actions:
+            score = q_importance * q_values_weights[possible_action] + \
+                    (1 - q_importance) * uncertainty_weights[possible_action]
+            action_scores[possible_action] = score
+        return action_scores
+
+    @staticmethod
+    def _get_uncertainty_weights(state_action_counts):
+        """Get uncertainty weight of an action from a state.
+
+        This is defined as the proportion of times a state is visited in the
+        historical data vs the total state visits of the possible next states.
+
+        Args:
+            state_action_counts (dict): the number of times a state has been
+                                        visited in the historical data.
+
+        Returns:
+            dict: uncertainty weight of each possible state.
+        """
+        return {int(key): float(value) / sum(state_action_counts.values())
+                for (key, value) in state_action_counts.items()}
