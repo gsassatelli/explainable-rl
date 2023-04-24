@@ -24,6 +24,14 @@ class DoubleQLearner(TD):
         self.state = None
 
     def create_tables(self, verbose=False):
+        """Initialize the agent.
+
+        This resets the environment, creates the q-table and the state to
+        action mapping.
+
+        Args:
+            verbose (bool): Print information.
+        """
         self.env.reset()
         if verbose:
             print("Create q-table")
@@ -34,6 +42,16 @@ class DoubleQLearner(TD):
         self.state_to_action = self.env.state_to_action
 
     def _step(self, epsilon, lr, use_uncertainty=False):
+        """Perform a step in the environment.
+
+        Args:
+            epsilon (float): Epsilon-greedy policy parameter.
+            lr (float): Learning rate.
+            use_uncertainty (bool): Whether to use uncertainty informed policy.
+
+        Returns:
+            bool: Defines whether the episode is finished.
+        """
         action_a = self._epsilon_greedy_policy(state=self.state,
                                                epsilon=epsilon, Q=self.Q_a)
         action_b = self._epsilon_greedy_policy(state=self.state,
@@ -66,6 +84,17 @@ class DoubleQLearner(TD):
         self.state = next_state
 
     def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+        """Update the Q table.
+
+        Args:
+            state (list): Current state of the agent.
+            action (int): Selected action.
+            next_state (list): Next state of the agent.
+            reward (float): Reward for the selected action.
+            epsilon (float): The exploration parameter.
+            lr (float): Learning rate.
+            **kwargs (dict): The keyword arguments.
+        """
         Q_a = kwargs["Q_a"]
         Q_b = kwargs["Q_b"]
 

@@ -21,6 +21,14 @@ class TD(Agent):
         self.state = None
 
     def fit(self, agent_hyperparams, training_hyperparams, verbose=False, pbar=None):
+        """Fit agent to the dataset.
+
+        Args:
+            agent_hyperparams (dict): Dictionary of agent hyperparameters.
+            training_hyperparams (dict): Dictionary of training hyperparameters.
+            verbose (bool): Print training information.
+            pbar (tqdm): Progress bar.
+        """
         if verbose:
             print("Apply q-learning and update q-table")
         lr = agent_hyperparams['learning_rate']
@@ -59,6 +67,13 @@ class TD(Agent):
                                state=None,
                                epsilon=0.1,
                                Q=None):
+        """Epsilon-greedy policy.
+
+        Args:
+            state (int): State.
+            epsilon (float): Epsilon of epsilon-greedy policy.
+                Defaults to 0 for pure exploitation.
+        """
         if state is None:
             state = self.state
 
@@ -81,6 +96,18 @@ class TD(Agent):
     
     def uncertainty_informed_policy(self, state=None, epsilon=0.1,
                                     use_uncertainty=False, q_importance=0.7):
+        """Get epsilon greedy policy that favours more densely populated state-action pairs.
+
+        Args:
+            state (list): Current state of the agent.
+            epsilon (float): The exploration parameter.
+            use_uncertainty (bool): Whether to use uncertainty informed policy.
+            q_importance (float): The importance of the q value in the policy.
+
+        Returns:
+            action (int): selected action.
+        """
+
         if state is None:
             state = self.state
         index_no_action = tuple(list(state))
