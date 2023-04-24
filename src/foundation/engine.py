@@ -121,6 +121,7 @@ class Engine:
             self.build_evaluation()
             self.hyperparameters['training']['num_episodes'] = self.num_eval_steps
             with tqdm(total=self.num_episodes) as pbar:
+                self.eval_agent_rewards.append(self._evaluate_total_agent_reward())
                 for i in range(int(self.num_episodes/self.num_eval_steps)):
                     self.agent.fit(agent_hyperparams=self.hyperparameters['agent'],
                                    training_hyperparams=self.hyperparameters['training'],
