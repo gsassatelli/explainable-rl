@@ -91,10 +91,13 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="DoubleQLearner.create_tables"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner.create_tables">[docs]</a>    <span class="k">def</span> <span class="nf">create_tables</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create the Q-tables and state_to_action table.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the agent.</span>
+
+<span class="sd">        This resets the environment, creates the q-table and the state to</span>
+<span class="sd">        action mapping.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            verbose (bool): Defines whether print statements should be called.</span>
+<span class="sd">            verbose (bool): Print information.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
@@ -106,11 +109,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span></div>
 
 <div class="viewcode-block" id="DoubleQLearner._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Take a step in the environment and update the Q-tables.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a step in the environment.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            epsilon (float): The epsilon value for the epsilon-greedy policy.</span>
-<span class="sd">            lr (float): The learning rate.</span>
+<span class="sd">            epsilon (float): Epsilon-greedy policy parameter.</span>
+<span class="sd">            lr (float): Learning rate.</span>
+<span class="sd">            use_uncertainty (bool): Whether to use uncertainty informed policy.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: Defines whether the episode is finished.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">action_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_greedy_policy</span><span class="p">(</span><span class="n">state</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span>
                                                <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">,</span> <span class="n">Q</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">Q_a</span><span class="p">)</span>
@@ -144,15 +151,15 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span></div>
 
 <div class="viewcode-block" id="DoubleQLearner._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.double_q_learner.DoubleQLearner._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q-tables.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q table.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state (tuple): The current state.</span>
-<span class="sd">            action (int): The action taken.</span>
-<span class="sd">            next_state (tuple): The next state.</span>
-<span class="sd">            reward (float): The reward received.</span>
-<span class="sd">            epsilon (float): The epsilon value for the epsilon-greedy policy.</span>
-<span class="sd">            lr (float): The learning rate.</span>
+<span class="sd">            state (list): Current state of the agent.</span>
+<span class="sd">            action (int): Selected action.</span>
+<span class="sd">            next_state (list): Next state of the agent.</span>
+<span class="sd">            reward (float): Reward for the selected action.</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
+<span class="sd">            lr (float): Learning rate.</span>
 <span class="sd">            **kwargs (dict): The keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">Q_a</span> <span class="o">=</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">&quot;Q_a&quot;</span><span class="p">]</span>

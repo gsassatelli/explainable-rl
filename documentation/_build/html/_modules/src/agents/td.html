@@ -134,15 +134,12 @@
                                <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                                <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
                                <span class="n">Q</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the epsilon greedy action.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Epsilon-greedy policy.</span>
 
 <span class="sd">        Args:</span>
-<span class="sd">            state (list): current state of the agent.</span>
-<span class="sd">            epsilon (float): the exploration parameter.</span>
-<span class="sd">            Q (np.array): q-table.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            action (int): Selected action.</span>
+<span class="sd">            state (int): State.</span>
+<span class="sd">            epsilon (float): Epsilon of epsilon-greedy policy.</span>
+<span class="sd">                Defaults to 0 for pure exploitation.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
@@ -164,8 +161,9 @@
                 <span class="n">action</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">state_str</span><span class="p">)]))</span>
         <span class="k">return</span> <span class="n">action</span></div>
     
-<div class="viewcode-block" id="TD.uncertainty_informed_policy"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.uncertainty_informed_policy">[docs]</a>    <span class="k">def</span> <span class="nf">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get epsilon greedy policy that favours more densely populated state-action pairs. </span>
+<div class="viewcode-block" id="TD.uncertainty_informed_policy"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD.uncertainty_informed_policy">[docs]</a>    <span class="k">def</span> <span class="nf">uncertainty_informed_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                                    <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get epsilon greedy policy that favours more densely populated state-action pairs.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            state (list): Current state of the agent.</span>
@@ -176,70 +174,36 @@
 <span class="sd">        Returns:</span>
 <span class="sd">            action (int): selected action.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
+
         <span class="k">if</span> <span class="n">state</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">state</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">state</span>
-        <span class="k">try</span><span class="p">:</span>
-            <span class="n">state_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
-            <span class="n">index_no_action</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
-            <span class="n">possible_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="n">state_str</span><span class="p">]</span>
-        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
-            <span class="n">state_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
-            <span class="n">index_no_action</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
-            <span class="n">possible_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="n">state_str</span><span class="p">]</span>
-
+        <span class="n">index_no_action</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">state</span><span class="p">))</span>
+        <span class="n">possible_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_possible_actions</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">use_uncertainty</span><span class="p">:</span>
-
-            <span class="n">state_action_counts</span> <span class="o">=</span> <span class="p">{}</span>
-            <span class="n">q_values_weights</span> <span class="o">=</span> <span class="p">{}</span>
-
-            <span class="c1"># Determine the sum of the q values for the possible actions </span>
             <span class="n">sum_possible_q</span> <span class="o">=</span> <span class="nb">sum</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_no_action</span><span class="p">]</span><span class="o">.</span><span class="n">todense</span><span class="p">())</span>
-            
             <span class="k">if</span> <span class="n">sum_possible_q</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
                 <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">possible_actions</span><span class="p">))</span>
 
-            <span class="k">for</span> <span class="n">possible_action</span> <span class="ow">in</span> <span class="n">possible_actions</span><span class="p">:</span>
-                <span class="n">possible_state_action_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span> <span class="o">+</span> <span class="p">[</span><span class="n">possible_action</span><span class="p">])</span>
-                <span class="n">counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins_dict</span><span class="p">[</span><span class="n">possible_state_action_str</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
-                <span class="c1"># Count number of times a state-action pair occurred</span>
-                <span class="n">state_action_counts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">possible_action</span><span class="p">)]</span> <span class="o">=</span> <span class="n">counts</span>
-                <span class="n">index_with_action</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">state</span> <span class="o">+</span> <span class="p">[</span><span class="n">possible_action</span><span class="p">])</span>
-                <span class="n">q_values_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_with_action</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_possible_q</span>
-            
-            <span class="c1"># Get weights given population for state-action space</span>
-            <span class="c1"># N.B. A high value represents a well-known, certain state</span>
-            <span class="n">uncertainty_weights</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">state_action_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-                                   <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state_action_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span>
-
-            <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&gt;</span> <span class="n">epsilon</span><span class="p">:</span>  <span class="c1"># Exploring</span>
+            <span class="n">state_action_counts</span><span class="p">,</span> <span class="n">q_values_weights</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_q_value_weights</span><span class="p">(</span><span class="n">sum_possible_q</span><span class="o">=</span><span class="n">sum_possible_q</span><span class="p">,</span>
+                                          <span class="n">state</span><span class="o">=</span><span class="n">state</span><span class="p">,</span>
+                                          <span class="n">possible_actions</span><span class="o">=</span><span class="n">possible_actions</span><span class="p">)</span>
+            <span class="n">uncertainty_weights</span> <span class="o">=</span> \
+                <span class="bp">self</span><span class="o">.</span><span class="n">_get_uncertainty_weights</span><span class="p">(</span><span class="n">state_action_counts</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="n">epsilon</span><span class="p">:</span>
                 <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">possible_actions</span><span class="p">))</span>
-            <span class="k">else</span><span class="p">:</span>  <span class="c1"># Exploiting</span>
-                <span class="k">for</span> <span class="n">possible_action</span> <span class="ow">in</span> <span class="n">possible_actions</span><span class="p">:</span>
-                    <span class="n">score</span> <span class="o">=</span> <span class="n">q_importance</span> <span class="o">*</span> <span class="n">q_values_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">+</span> \
-                            <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">q_importance</span><span class="p">)</span> <span class="o">*</span> <span class="n">uncertainty_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span>
-                    <span class="n">action_scores</span> <span class="o">=</span> <span class="p">{</span><span class="n">possible_action</span><span class="p">:</span> <span class="n">score</span><span class="p">}</span>
-                <span class="n">action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">action_scores</span><span class="o">.</span><span class="n">values</span><span class="p">()))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">action_scores</span> <span class="o">=</span> \
+                    <span class="bp">self</span><span class="o">.</span><span class="n">_get_action_scores</span><span class="p">(</span><span class="n">possible_actions</span><span class="o">=</span><span class="n">possible_actions</span><span class="p">,</span>
+                                            <span class="n">q_importance</span><span class="o">=</span><span class="n">q_importance</span><span class="p">,</span>
+                                            <span class="n">q_values_weights</span><span class="o">=</span><span class="n">q_values_weights</span><span class="p">,</span>
+                                            <span class="n">uncertainty_weights</span><span class="o">=</span>
+                                            <span class="n">uncertainty_weights</span><span class="p">)</span>
+                <span class="n">action</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">action_scores</span><span class="p">,</span> <span class="n">key</span><span class="o">=</span><span class="n">action_scores</span><span class="o">.</span><span class="n">get</span><span class="p">)</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="n">epsilon</span><span class="p">)</span>
-        
+
         <span class="k">return</span> <span class="n">action</span></div>
-
-<div class="viewcode-block" id="TD._convert_to_string"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._convert_to_string">[docs]</a>    <span class="nd">@staticmethod</span>
-    <span class="k">def</span> <span class="nf">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a state to a string.</span>
-
-<span class="sd">        Args:</span>
-<span class="sd">            state (list): The state to convert.</span>
-
-<span class="sd">        Returns:</span>
-<span class="sd">            state_str (string): The state as a string.</span>
-<span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">)</span></div>
-
-<div class="viewcode-block" id="TD._init_q_table"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._init_q_table">[docs]</a>    <span class="k">def</span> <span class="nf">_init_q_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the q-table with zeros.&quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="TD._step"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._step">[docs]</a>    <span class="k">def</span> <span class="nf">_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform a step in the environment.</span>
@@ -267,7 +231,8 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">state</span> <span class="o">=</span> <span class="n">next_state</span>
         <span class="k">return</span> <span class="n">done</span></div>
 
-<div class="viewcode-block" id="TD._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+<div class="viewcode-block" id="TD._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span>
+                         <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q table.</span>
 
 <span class="sd">        Args:</span>
@@ -279,7 +244,97 @@
 <span class="sd">            lr (float): Learning rate.</span>
 <span class="sd">            **kwargs (dict): The keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div></div>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="TD._get_possible_actions"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._get_possible_actions">[docs]</a>    <span class="k">def</span> <span class="nf">_get_possible_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the possible actions from a state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): current state of the agent.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            possible_actions (set): the possible actions that the agent can</span>
+<span class="sd">                                    take from the state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">state_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">)</span>
+            <span class="n">possible_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="n">state_str</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">KeyError</span><span class="p">:</span>
+            <span class="n">state_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+            <span class="n">possible_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">state_to_action</span><span class="p">[</span><span class="n">state_str</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">possible_actions</span></div>
+
+<div class="viewcode-block" id="TD._get_q_value_weights"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._get_q_value_weights">[docs]</a>    <span class="k">def</span> <span class="nf">_get_q_value_weights</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sum_possible_q</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">possible_actions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the q value of each action as a percentage of the total q value.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sum_possible_q (float): the sum of the q values for the state.</span>
+<span class="sd">            state (list): the state of the agent.</span>
+<span class="sd">            possible_actions (set): the possible actions that the agent can</span>
+<span class="sd">                                    take from the state.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            state_action_counts (dict): count of how many times a state-action</span>
+<span class="sd">            pair has appeared.</span>
+<span class="sd">            q_values_weights (dict): the q-weight of each state-action pair.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_action_counts</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="n">q_values_weights</span> <span class="o">=</span> <span class="p">{}</span>
+
+        <span class="k">for</span> <span class="n">possible_action</span> <span class="ow">in</span> <span class="n">possible_actions</span><span class="p">:</span>
+            <span class="n">possible_state_action_str</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_convert_to_string</span><span class="p">(</span>
+                <span class="n">state</span> <span class="o">+</span> <span class="p">[</span><span class="n">possible_action</span><span class="p">])</span>
+            <span class="n">counts</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins_dict</span><span class="p">[</span><span class="n">possible_state_action_str</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+            <span class="c1"># Count number of times a state-action pair occurred</span>
+            <span class="n">state_action_counts</span><span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">possible_action</span><span class="p">)]</span> <span class="o">=</span> <span class="n">counts</span>
+            <span class="n">index_with_action</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="n">state</span> <span class="o">+</span> <span class="p">[</span><span class="n">possible_action</span><span class="p">])</span>
+            <span class="n">q_values_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span>
+                                                    <span class="n">index_with_action</span><span class="p">]</span> <span class="o">/</span> <span class="n">sum_possible_q</span>
+
+        <span class="k">return</span> <span class="n">state_action_counts</span><span class="p">,</span> <span class="n">q_values_weights</span></div>
+
+<div class="viewcode-block" id="TD._get_action_scores"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._get_action_scores">[docs]</a>    <span class="k">def</span> <span class="nf">_get_action_scores</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">possible_actions</span><span class="p">,</span> <span class="n">q_importance</span><span class="p">,</span>
+                           <span class="n">q_values_weights</span><span class="p">,</span> <span class="n">uncertainty_weights</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the score for each action from a state.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            possible_actions (set): the possible actions for an agent in a</span>
+<span class="sd">                                    state.</span>
+<span class="sd">            q_importance (float): the weighting of the q value vs the amount</span>
+<span class="sd">                                  a state has been seen.</span>
+<span class="sd">            q_values_weights (dict): the q-weight of each state-action pair.</span>
+<span class="sd">            uncertainty_weights (dict): the count-weight of each state-action</span>
+<span class="sd">                                        pair.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            action_scores (dict): the weighted score of each possible action</span>
+<span class="sd">                                  from the state.</span>
+
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">action_scores</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">possible_action</span> <span class="ow">in</span> <span class="n">possible_actions</span><span class="p">:</span>
+            <span class="n">score</span> <span class="o">=</span> <span class="n">q_importance</span> <span class="o">*</span> <span class="n">q_values_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">+</span> \
+                    <span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">q_importance</span><span class="p">)</span> <span class="o">*</span> <span class="n">uncertainty_weights</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span>
+            <span class="n">action_scores</span><span class="p">[</span><span class="n">possible_action</span><span class="p">]</span> <span class="o">=</span> <span class="n">score</span>
+        <span class="k">return</span> <span class="n">action_scores</span></div>
+
+<div class="viewcode-block" id="TD._get_uncertainty_weights"><a class="viewcode-back" href="../../../src.agents.html#src.agents.td.TD._get_uncertainty_weights">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_get_uncertainty_weights</span><span class="p">(</span><span class="n">state_action_counts</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get uncertainty weight of an action from a state.</span>
+
+<span class="sd">        This is defined as the proportion of times a state is visited in the</span>
+<span class="sd">        historical data vs the total state visits of the possible next states.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state_action_counts (dict): the number of times a state has been</span>
+<span class="sd">                                        visited in the historical data.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: uncertainty weight of each possible state.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">key</span><span class="p">):</span> <span class="nb">float</span><span class="p">(</span><span class="n">value</span><span class="p">)</span> <span class="o">/</span> <span class="nb">sum</span><span class="p">(</span><span class="n">state_action_counts</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
+                <span class="k">for</span> <span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span> <span class="ow">in</span> <span class="n">state_action_counts</span><span class="o">.</span><span class="n">items</span><span class="p">()}</span></div></div>
 </pre></div>
 
            </div>

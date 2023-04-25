@@ -74,7 +74,7 @@
 <div class="viewcode-block" id="QLearningAgent"><a class="viewcode-back" href="../../../src.agents.html#src.agents.q_learner.QLearningAgent">[docs]</a><span class="k">class</span> <span class="nc">QLearningAgent</span><span class="p">(</span><span class="n">TD</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Q-Learning agent.&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<div class="viewcode-block" id="QLearningAgent.__init__"><a class="viewcode-back" href="../../../src.agents.html#src.agents.q_learner.QLearningAgent.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the agent class.</span>
 
 <span class="sd">        Args:</span>
@@ -82,17 +82,17 @@
 <span class="sd">            gamma (float): Discount factor.</span>
 <span class="sd">            verbose (bool): Defines whether print statements should be called.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="p">)</span></div>
 
 <div class="viewcode-block" id="QLearningAgent._update_q_values"><a class="viewcode-back" href="../../../src.agents.html#src.agents.q_learner.QLearningAgent._update_q_values">[docs]</a>    <span class="k">def</span> <span class="nf">_update_q_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">,</span> <span class="n">next_state</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">,</span> <span class="n">lr</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q table using the Bellman equation and q_learning update.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Update the Q table.</span>
 
 <span class="sd">        Args:</span>
 <span class="sd">            state (list): Current state of the agent.</span>
 <span class="sd">            action (int): Selected action.</span>
 <span class="sd">            next_state (list): Next state of the agent.</span>
 <span class="sd">            reward (float): Reward for the selected action.</span>
-<span class="sd">            epsilon (float): The exploration parameter</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
 <span class="sd">            lr (float): Learning rate.</span>
 <span class="sd">            **kwargs (dict): The keyword arguments.</span>
 <span class="sd">        &quot;&quot;&quot;</span>

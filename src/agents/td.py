@@ -209,7 +209,7 @@ class TD(Agent):
 
         Returns:
             state_action_counts (dict): count of how many times a state-action
-                                        pair has appeared.
+            pair has appeared.
             q_values_weights (dict): the q-weight of each state-action pair.
         """
         state_action_counts = {}

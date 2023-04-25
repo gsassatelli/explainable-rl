@@ -13,6 +13,17 @@ Subpackages
    tests.test_explainability
    tests.test_foundation
 
+Submodules
+----------
+
+tests.test\_hyperparams module
+------------------------------
+
+.. automodule:: tests.test_hyperparams
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 Module contents
 ---------------
 

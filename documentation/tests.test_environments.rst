@@ -4,6 +4,14 @@ tests.test\_environments package
 Submodules
 ----------
 
+tests.test\_environments.test\_strategic\_pricing module
+--------------------------------------------------------
+
+.. automodule:: tests.test_environments.test_strategic_pricing
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 tests.test\_environments.test\_strategic\_pricing\_prediction module
 --------------------------------------------------------------------
 
