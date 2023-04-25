@@ -28,8 +28,8 @@ class Evaluator:
         Returns:
             hist_cum_rewards (float): total reward on test set using historical policy.
         """
-        rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
-        return np.sum(rewards)
+        rewards = self.hist_array_rewards()
+        return [np.sum(r) for r in rewards]
 
     def agent_cum_rewards(self):
         """Calculate the cumulative agent rewards on test set.
@@ -37,8 +37,8 @@ class Evaluator:
         Returns:
             agent_cum_rewards (float): total reward on test set using historical policy.
         """
-        rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
-        return np.sum(rewards)
+        rewards = self.agent_array_rewards()
+        return [np.sum(r) for r in rewards]
 
     def hist_array_rewards(self):
         """Calculate the individual historical rewards for each test set sample.
@@ -46,8 +46,9 @@ class Evaluator:
         Returns:
             hist_array_rewards (List[float]): array of historical rewards on test set.
         """
-        rewards = [r[0] for r in self.eval_results[0]['rewards_hist']]
-        return np.array(rewards)
+        rewards = [np.array([r[0] for r in eval_dict['rewards_hist']]) \
+                    for eval_dict in self.eval_results]
+        return rewards
 
     def agent_array_rewards(self):
         """Calculate the individual agent rewards for each test set sample.
@@ -55,8 +56,9 @@ class Evaluator:
         Returns:
             agent_array_rewards (List[float]): array of agent rewards on test set.
         """
-        rewards = [r[0] for r in self.eval_results[0]['rewards_agent']]
-        return np.array(rewards)
+        rewards = [np.array([r[0] for r in eval_dict['rewards_agent']]) \
+                    for eval_dict in self.eval_results]
+        return rewards
     
     def _get_evaluation_results(self):
         """Evaluate the engines on the test set.
