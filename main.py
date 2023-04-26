@@ -67,14 +67,20 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
         print(f"{timestamp}: PDP plots")
     pdp = PDP(engine)
     pdp.build_data_for_plots()
-    pdp.plot_pdp(feature="length_of_stay", fig_name="PDP plots", savefig=True)
+    pdp.plot_pdp(feature="lead_time",
+                 fig_name="PDP plots - lead_time", savefig=True)
+    pdp.plot_pdp(feature="length_of_stay",
+                 fig_name="PDP plots - length_of_stay", savefig=True)
+    pdp.plot_pdp(feature="competitor_price_difference_bin",
+                 fig_name="PDP plots - competitor_price_difference_bin", savefig=True)
 
     # SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
     if verbose:
         print(f"{timestamp}: SHAP values")
-    shap_values = ShapValues(sample=[8, 1, 1, 1, 10], engine=engine)
-    shap_values.compute_shap_values()
+    shap_values = ShapValues(engine=engine)
+    shaps, predicted_action = shap_values.compute_shap_values(sample=[8, 1, 1, 1])
+    shap_values.plot_shap_values(shaps, predicted_action, savefig=True, fig_name="SHAP values")
 
 
 if __name__ == "__main__":
@@ -90,12 +96,12 @@ if __name__ == "__main__":
 
         "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
                     'col_delimiter': '|',
-                    'n_samples': 1000,
+                    'n_samples': 100000,
                     'n_test_samples': 100,
                     'normalisation': True},
 
         "training": {'env_type': 'strategic_pricing_predict',
-                     'num_episodes': 100,
+                     'num_episodes': 1000,
                      'num_steps': 1,
                      'train_test_split': 0.2,
                      'evaluate': False,
@@ -110,13 +116,13 @@ if __name__ == "__main__":
                   "learning_rate_decay": 0.1,
                   "learning_rate_minimum": 0.1,
                   "lambda": 0.2,
-                  "use_uncertainty": True,
+                  "use_uncertainty": False,
                   "q_importance": 0.7,
                   },
 
         "explainability": {'shap_num_samples': 1},
 
-        "program_flow": {"verbose": False}
+        "program_flow": {"verbose": True}
     }
 
     for i in range(1):

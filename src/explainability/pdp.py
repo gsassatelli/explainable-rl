@@ -97,7 +97,7 @@ class PDP:
 
     def plot_pdp(self,
                  feature,
-                 fig_name,
+                 fig_name=None,
                  savefig=True):
         """Build PDP plots.
         One marginalized plot per each state dimension.

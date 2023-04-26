@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 from library import *
 
 
@@ -5,15 +7,13 @@ class ShapValues:
     """SHAP Values class."""
 
     def __init__(self,
-                 sample,
                  engine):
         """Initialise the ShapValues class.
 
         Args:
-            sample (np.array): Sample to explain.
             engine (Engine): Engine object.
         """
-        self.sample = sample
+        self.sample = None
         self.features = engine.dh.state_labels
         self.env = engine.env
         self.Q = engine.agent.Q
@@ -21,16 +21,23 @@ class ShapValues:
         self.action = engine.dh.action_labels
         self.number_of_samples = engine.hyperparameters["explainability"]["shap_num_samples"]
         self.binned_sample = None
+        self.verbose = engine.hyperparameters["program_flow"]["verbose"]
 
-    def compute_shap_values(self):
+    def compute_shap_values(self, sample):
         """Compute the SHAP values for a given sample.
+
+        Args:
+            sample (list): List with the sample to compute the SHAP values.
 
         Returns:
             shap_values (dict): Dictionary with the shap values for each feature.
             predicted_action (int): Predicted action.
         """
+        self.sample = sample
+
         # Verify if sample length is correct
-        print("Verify if sample length is correct")
+        if self.verbose:
+            print("Verify if sample length is correct")
         if not self.verify_sample_length():
             raise ValueError("The sample length is not correct.")
 
@@ -41,24 +48,29 @@ class ShapValues:
         self.binned_sample = self.bin_sample()
 
         # Verify if sample is an outlier
-        print("Verify if sample is an outlier")
+        if self.verbose:
+            print("Verify if sample is an outlier")
         if self.verify_outliers(self.binned_sample):
             raise ValueError("The sample is an outlier.")
 
         # Verify if cell has been visited
-        print("Verify if selected cell has been visited")
+        if self.verbose:
+            print("Verify if selected cell has been visited")
         if not self.verify_cell_availability(self.binned_sample):
             raise ValueError("The cell has not been visited by the agent.")
 
         # Predict action
-        print("Predict action")
+        if self.verbose:
+            print("Predict action")
         predicted_action = self.predict_action()
 
         # Loop over all state dimensions
-        print("Compute shap values")
+        if self.verbose:
+            print("Compute shap values")
         shap_values = {}
         for shap_ft in range(len(self.features)):
-            print("Compute shap values for feature: ", self.features[shap_ft])
+            if self.verbose:
+                print("Compute shap values for feature: ", self.features[shap_ft])
             num_bins_per_shap_ft = self.env.bins[shap_ft]
             action_samples_plus = np.zeros(self.number_of_samples, dtype=int)
             action_samples_minus = np.zeros(self.number_of_samples, dtype=int)
@@ -98,6 +110,8 @@ class ShapValues:
 
             # Append shap value for that feature
             shap_values.update({self.features[shap_ft]: mean_difference})
+
+        self.shap_values = shap_values
 
         return shap_values, predicted_action
 
@@ -230,4 +244,39 @@ class ShapValues:
             Q_state[a] = current_q
         binned_action = np.argmax(np.array(current_q))
         action = self.get_denorm_actions([binned_action])
-        return action
+        return round(action[0], 4)
+
+    def plot_shap_values(self,
+                         sample,
+                         shap_values,
+                         predicted_action,
+                         fig_name=None,
+                         savefig=False):
+        """Plot shap values.
+
+        Args:
+            sample (list): Sample.
+            shap_values (dict): Shap values.
+            predicted_action (float): Predicted action.
+            fig_name (str): Figure name.
+            savefig (bool): Whether to save the figure or not.
+        """
+        # Sort values
+        sorted_shap_values = sorted(shap_values.items(), key=lambda x: x[1])
+
+        # Get values
+        features = [i[0] for i in sorted_shap_values]
+        values = [i[1] for i in sorted_shap_values]
+        colors = ['red' if i < 0 else 'green' for i in values]
+
+        # Plot values
+        plt.grid(zorder=0)
+        plt.barh(features, values, color=colors, zorder=3)
+        plt.title(f'Shap values for {sample} - Action: {predicted_action}')
+        plt.tight_layout()
+
+        if savefig:
+            plt.savefig(fig_name, dpi=600)
+
+        plt.show()
+
