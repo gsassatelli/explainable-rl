@@ -21,7 +21,7 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         binned = np.array([[1, 2, 3, 1], [1, 2, 3, 2], [1, 2, 3, 1], [1, 2, 3, 2]])
         self.env._reward_mdp_data = np.array([[1], [2], [1], [2]])
         result = self.env._get_counts_and_rewards_per_bin(binned)
-        target = {'1,2,3,1': [2, 2], '1,2,3,2': [2, 4]}
+        target = {"1,2,3,1": [2, 2], "1,2,3,2": [2, 4]}
         assert isinstance(result, dict)
         assert result == target
 
@@ -49,7 +49,7 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
 
     def test_create_average_reward_matrix(self):
         """Test create_average_reward_matrix method."""
-        counts_rewards = {'1,2,3': [2, 2], '1,2,3': [2, 4]}
+        counts_rewards = {"1,2,3": [2, 2], "1,2,3": [2, 4]}
         result = self.env._create_average_reward_matrix(counts_rewards)
         target = np.zeros((10, 10, 10))
         target[1, 2, 3] = 1.0
@@ -69,4 +69,3 @@ class TestStrategicPricingSuggestionMDP(TestStrategicPricing):
         assert np.array_equal(target_states, result_states)
         assert np.array_equal(target_actions, result_actions)
         assert np.array_equal(target_rewards, result_reward)
-        

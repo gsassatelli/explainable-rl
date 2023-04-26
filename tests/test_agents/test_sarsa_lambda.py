@@ -25,16 +25,20 @@ class TestSarsaLambda(TestTD):
         lr = 0.1
         self.agent.e[0, 0, 0, 2] = 1
 
-        self.agent._update_q_values(state=state,
-                                    action=action,
-                                    next_state=next_state,
-                                    reward=reward,
-                                    epsilon=epsilon,
-                                    lr=lr)
+        self.agent._update_q_values(
+            state=state,
+            action=action,
+            next_state=next_state,
+            reward=reward,
+            epsilon=epsilon,
+            lr=lr,
+        )
         result_Q = self.agent.Q[0, 0, 0, 2]
         result_e = self.agent.e[0, 0, 0, 2]
-        target_Q = [1.5 + lr * (10 + 0.9 * 5 - 1.5) * 2,
-                    1.5 + lr * (10 + 0.9 * 0 - 1.5) * 2]
+        target_Q = [
+            1.5 + lr * (10 + 0.9 * 5 - 1.5) * 2,
+            1.5 + lr * (10 + 0.9 * 0 - 1.5) * 2,
+        ]
         target_e = 0.9 * 0.9 * 2
         assert result_Q in target_Q
         assert result_e == target_e

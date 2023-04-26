@@ -31,9 +31,10 @@ class StrategicPricingPredictionMDP(StrategicPricing):
         for ix, bin in enumerate(binned):
             state_str = ",".join(str(e) for e in bin.tolist()[:-1])
             action = bin[-1]
-            state_action_str = state_str + ',' + str(action)
-            bins_dict[state_action_str][0] = \
+            state_action_str = state_str + "," + str(action)
+            bins_dict[state_action_str][0] = (
                 bins_dict.setdefault(state_action_str, [0, 0])[0] + 1
+            )
             reward = self._reward_mdp_data[ix]
             bins_dict[state_action_str][1] += reward[0]
         return bins_dict

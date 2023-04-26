@@ -24,12 +24,14 @@ class TestSarsa(TestTD):
         reward = 10
         lr = 0.1
 
-        self.agent._update_q_values(state=state,
-                                    action=action,
-                                    next_state=next_state,
-                                    reward=reward,
-                                    epsilon=epsilon,
-                                    lr=lr)
+        self.agent._update_q_values(
+            state=state,
+            action=action,
+            next_state=next_state,
+            reward=reward,
+            epsilon=epsilon,
+            lr=lr,
+        )
         result = self.agent.Q[0, 0, 0, 2]
         target = [1.5 + lr * (10 + 0.9 * 5 - 1.5), 1.5 + lr * (10 + 0.9 * 0 - 1.5)]
         assert result in target
@@ -50,7 +52,9 @@ class TestSarsa(TestTD):
         """Test the fit method."""
         self.agent.create_tables()
         original_Q = copy.deepcopy(self.agent.Q)
-        self.agent.fit(agent_hyperparams=self.dh.hyperparam_dict["agent"],
-                       training_hyperparams=self.dh.hyperparam_dict["training"])
+        self.agent.fit(
+            agent_hyperparams=self.dh.hyperparam_dict["agent"],
+            training_hyperparams=self.dh.hyperparam_dict["training"],
+        )
         assert self.agent.Q.shape == original_Q.shape
         assert self.agent.Q != original_Q

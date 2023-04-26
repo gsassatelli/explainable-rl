@@ -6,8 +6,7 @@ from library import *
 class ShapValues:
     """SHAP Values class."""
 
-    def __init__(self,
-                 engine):
+    def __init__(self, engine):
         """Initialise the ShapValues class.
 
         Args:
@@ -19,7 +18,9 @@ class ShapValues:
         self.Q = engine.agent.Q
         self.minmax_scalars = engine.dh.minmax_scalars
         self.action = engine.dh.action_labels
-        self.number_of_samples = engine.hyperparameters["explainability"]["shap_num_samples"]
+        self.number_of_samples = engine.hyperparameters["explainability"][
+            "shap_num_samples"
+        ]
         self.binned_sample = None
         self.verbose = engine.hyperparameters["program_flow"]["verbose"]
 
@@ -79,8 +80,12 @@ class ShapValues:
 
                 # Sample plus and minus samples
                 while not verified_samples:
-                    s_plus, s_minus = self.sample_plus_minus_samples(shap_ft, num_bins_per_shap_ft)
-                    if not self.verify_cell_availability(s_plus) or not self.verify_cell_availability(s_minus):
+                    s_plus, s_minus = self.sample_plus_minus_samples(
+                        shap_ft, num_bins_per_shap_ft
+                    )
+                    if not self.verify_cell_availability(
+                        s_plus
+                    ) or not self.verify_cell_availability(s_minus):
                         verified_samples = False
                     else:
                         verified_samples = True
@@ -103,7 +108,9 @@ class ShapValues:
             denorm_action_samples_minus = self.get_denorm_actions(action_samples_minus)
 
             # Compute difference between arrays
-            difference = np.array(denorm_action_samples_plus) - np.array(denorm_action_samples_minus)
+            difference = np.array(denorm_action_samples_plus) - np.array(
+                denorm_action_samples_minus
+            )
 
             # Compute mean
             mean_difference = round(np.mean(difference, axis=0), 4)
@@ -207,7 +214,8 @@ class ShapValues:
             for a in actions:
                 # Divide dig actions by # bins of the action dimension to get a value between 0 and 1
                 denorm_a = scalar.inverse_transform(
-                    a.reshape(-1, 1) / self.env.bins[-1])
+                    a.reshape(-1, 1) / self.env.bins[-1]
+                )
                 denorm_actions.append(denorm_a[0][0])
 
         else:
@@ -226,7 +234,9 @@ class ShapValues:
         normalized_sample = []
         for idx, ft in enumerate(self.features):
             scalar = self.minmax_scalars[ft]
-            idx_df = pd.DataFrame(np.array(self.sample[idx]).reshape(-1, 1), columns=[ft])
+            idx_df = pd.DataFrame(
+                np.array(self.sample[idx]).reshape(-1, 1), columns=[ft]
+            )
             norm_ft = scalar.transform(idx_df)
             normalized_sample.append(norm_ft[0][0])
         return normalized_sample
@@ -246,12 +256,9 @@ class ShapValues:
         action = self.get_denorm_actions([binned_action])
         return round(action[0], 4)
 
-    def plot_shap_values(self,
-                         sample,
-                         shap_values,
-                         predicted_action,
-                         fig_name=None,
-                         savefig=False):
+    def plot_shap_values(
+        self, sample, shap_values, predicted_action, fig_name=None, savefig=False
+    ):
         """Plot shap values.
 
         Args:
@@ -267,16 +274,15 @@ class ShapValues:
         # Get values
         features = [i[0] for i in sorted_shap_values]
         values = [i[1] for i in sorted_shap_values]
-        colors = ['red' if i < 0 else 'green' for i in values]
+        colors = ["red" if i < 0 else "green" for i in values]
 
         # Plot values
         plt.grid(zorder=0)
         plt.barh(features, values, color=colors, zorder=3)
-        plt.title(f'Shap values for {sample} - Action: {predicted_action}')
+        plt.title(f"Shap values for {sample} - Action: {predicted_action}")
         plt.tight_layout()
 
         if savefig:
             plt.savefig(fig_name, dpi=600)
 
         plt.show()
-

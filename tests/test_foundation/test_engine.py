@@ -20,13 +20,17 @@ class TestEngine(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Set up the data handler for the tests."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
+        dataset = pd.read_csv(
+            hyperparam_dict["dataset"]["data_path"],
+            sep=hyperparam_dict["dataset"]["col_delimiter"],
+        )
+        cls.dh = DataHandler(
+            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
+        )
 
     def setUp(self) -> None:
         """Set up the engine for the tests."""
-        self.engine = Engine(self.dh,
-                             hyperparam_dict=hyperparam_dict)
+        self.engine = Engine(self.dh, hyperparam_dict=hyperparam_dict)
 
     def tearDown(self) -> None:
         """Tear down the engine after the tests."""
@@ -35,10 +39,12 @@ class TestEngine(unittest.TestCase):
     def test_create_world_agents(self):
         """Test the create_world method with different agent types."""
         types = ["q_learner", "sarsa", "sarsa_lambda", "double_q_learner"]
-        types_dict = {"q_learner": QLearningAgent,
-                        "sarsa": SarsaAgent,
-                        "sarsa_lambda": SarsaLambdaAgent,
-                        "double_q_learner": DoubleQLearner}
+        types_dict = {
+            "q_learner": QLearningAgent,
+            "sarsa": SarsaAgent,
+            "sarsa_lambda": SarsaLambdaAgent,
+            "double_q_learner": DoubleQLearner,
+        }
 
         for agent_type in types:
             self.engine.agent_type = agent_type
@@ -49,10 +55,12 @@ class TestEngine(unittest.TestCase):
     def test_create_agent(self):
         """Test the create_agent method with different agent types."""
         types = ["q_learner", "sarsa", "sarsa_lambda", "double_q_learner"]
-        types_dict = {"q_learner": QLearningAgent,
-                      "sarsa": SarsaAgent,
-                      "sarsa_lambda": SarsaLambdaAgent,
-                      "double_q_learner": DoubleQLearner}
+        types_dict = {
+            "q_learner": QLearningAgent,
+            "sarsa": SarsaAgent,
+            "sarsa_lambda": SarsaLambdaAgent,
+            "double_q_learner": DoubleQLearner,
+        }
 
         for agent_type in types:
             self.engine.agent_type = agent_type
@@ -64,8 +72,10 @@ class TestEngine(unittest.TestCase):
     def test_create_env(self):
         """Test the create_env method with different env types."""
         types = ["strategic_pricing_predict", "strategic_pricing_suggest"]
-        types_dict = {"strategic_pricing_predict": StrategicPricingPredictionMDP,
-                      "strategic_pricing_suggest": StrategicPricingSuggestionMDP}
+        types_dict = {
+            "strategic_pricing_predict": StrategicPricingPredictionMDP,
+            "strategic_pricing_suggest": StrategicPricingSuggestionMDP,
+        }
 
         for env_type in types:
             self.engine.env_type = env_type

@@ -4,10 +4,7 @@ from library import *
 class DataHandler:
     """Data Handler which stores and preprocesses data needed for training."""
 
-    def __init__(self,
-                 hyperparam_dict,
-                 dataset,
-                 test_dataset=None):
+    def __init__(self, hyperparam_dict, dataset, test_dataset=None):
         """Initialise the DataHandler.
 
         Args:
@@ -18,13 +15,13 @@ class DataHandler:
         self.dataset = dataset
         self.test_dataset = test_dataset
         self.hyperparam_dict = hyperparam_dict
-        self.data_path = hyperparam_dict['dataset']['data_path']
-        self._n_samples = hyperparam_dict['dataset']['n_samples']
+        self.data_path = hyperparam_dict["dataset"]["data_path"]
+        self._n_samples = hyperparam_dict["dataset"]["n_samples"]
         self._normalised_cols = []
         self.minmax_scalars = {}
-        self.state_labels = self._get_labels(hyperparam_dict['dimensions']['states'])
-        self.action_labels = self._get_labels(hyperparam_dict['dimensions']['actions'])
-        self.reward_labels = self._get_labels(hyperparam_dict['dimensions']['rewards'])
+        self.state_labels = self._get_labels(hyperparam_dict["dimensions"]["states"])
+        self.action_labels = self._get_labels(hyperparam_dict["dimensions"]["actions"])
+        self.reward_labels = self._get_labels(hyperparam_dict["dimensions"]["rewards"])
         self.mdp_data = None
         self.test_mdp_data = None
 
@@ -37,16 +34,16 @@ class DataHandler:
             cols_to_normalise (list): List of columns to normalise.
         """
         if cols_to_normalise is None:
-            cols_to_normalise = list(set(
-                self.state_labels + self.action_labels +
-                self.reward_labels))
+            cols_to_normalise = list(
+                set(self.state_labels + self.action_labels + self.reward_labels)
+            )
 
-        self.preprocess_data(normalisation=self.hyperparam_dict['dataset']['normalisation'],
-                             columns_to_normalise=cols_to_normalise)
+        self.preprocess_data(
+            normalisation=self.hyperparam_dict["dataset"]["normalisation"],
+            columns_to_normalise=cols_to_normalise,
+        )
 
-    def preprocess_data(self,
-                        normalisation=True,
-                        columns_to_normalise=None):
+    def preprocess_data(self, normalisation=True, columns_to_normalise=None):
         """Preprocess data into state, action and reward spaces.
 
         Preprocessing applies shuffling, normalisation (if selected) and
@@ -69,9 +66,9 @@ class DataHandler:
         r = self.dataset[self.reward_labels]
         try:
             a = self.dataset[self.action_labels]
-            self.mdp_data = pd.concat({'s': s, 'a': a, 'r': r}, axis=1)
+            self.mdp_data = pd.concat({"s": s, "a": a, "r": r}, axis=1)
         except KeyError:
-            self.mdp_data = pd.concat({'s': s, 'r': r}, axis=1)
+            self.mdp_data = pd.concat({"s": s, "r": r}, axis=1)
 
         # Apply preprocessing to test data
         if not self.test_dataset is None:
@@ -79,9 +76,8 @@ class DataHandler:
             test_r = self.test_dataset[self.reward_labels]
             test_a = self.test_dataset[self.action_labels]
             self.test_mdp_data = pd.concat(
-                                    {'s': test_s,
-                                     'a': test_a,
-                                     'r': test_r}, axis=1)
+                {"s": test_s, "a": test_a, "r": test_r}, axis=1
+            )
 
     def normalise_dataset(self, cols_to_norm=None):
         """Normalise the dataset to centre with mean zero and variance one.
@@ -101,8 +97,7 @@ class DataHandler:
         for col in self._normalised_cols:
             self._inverse_transform_col(col_name=col)
 
-    def get_actions(self,
-                    split='train'):
+    def get_actions(self, split="train"):
         """Get the actions taken in the dataset.
 
         Args:
@@ -111,9 +106,9 @@ class DataHandler:
         Returns:
             pd.DataFrame: Actions.
         """
-        if split == 'train':
-            return self.mdp_data['a']
-        return self.test_mdp_data['a']
+        if split == "train":
+            return self.mdp_data["a"]
+        return self.test_mdp_data["a"]
 
     def get_action_labels(self):
         """Get the action labels.
@@ -123,8 +118,7 @@ class DataHandler:
         """
         return self.action_labels
 
-    def get_rewards(self,
-                    split='train'):
+    def get_rewards(self, split="train"):
         """Get the rewards taken in the dataset.
 
         Args:
@@ -132,13 +126,12 @@ class DataHandler:
         
         Returns:
             pd.DataFrame: The rewards.
-        """  
-        if split == 'train':
-            return self.mdp_data['r']
-        return self.test_mdp_data['r']
+        """
+        if split == "train":
+            return self.mdp_data["r"]
+        return self.test_mdp_data["r"]
 
-    def get_states(self,
-                   split='train'):
+    def get_states(self, split="train"):
         """Get the states taken in the dataset.
 
         Args:
@@ -147,9 +140,9 @@ class DataHandler:
         Returns:
             pd.DataFrame: The states.
         """
-        if split == 'train':
-            return self.mdp_data['s']
-        return self.test_mdp_data['s']
+        if split == "train":
+            return self.mdp_data["s"]
+        return self.test_mdp_data["s"]
 
     def _filter_data(self):
         """Filter the dataset."""
@@ -162,10 +155,10 @@ class DataHandler:
             col_name (str): The column name.
         """
         scalar = self.minmax_scalars[col_name]
-        self.dataset[col_name] = \
-            scalar.transform(pd.DataFrame(self.dataset[col_name]))
-        self.test_dataset[col_name] = \
-            scalar.transform(pd.DataFrame(self.test_dataset[col_name])).clip(0,1)
+        self.dataset[col_name] = scalar.transform(pd.DataFrame(self.dataset[col_name]))
+        self.test_dataset[col_name] = scalar.transform(
+            pd.DataFrame(self.test_dataset[col_name])
+        ).clip(0, 1)
 
     def _inverse_transform_col(self, col_name: str):
         """Reverse the normalisation of one column of the dataset.
@@ -175,7 +168,8 @@ class DataHandler:
         """
         scalar = self.minmax_scalars[col_name]
         self.dataset[col_name] = scalar.inverse_transform(
-            pd.DataFrame(self.dataset[col_name]))
+            pd.DataFrame(self.dataset[col_name])
+        )
 
     def _fit_standard_scalars(self):
         """Train the sklearn MinMaxScaler and store one per column."""

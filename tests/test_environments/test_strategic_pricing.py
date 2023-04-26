@@ -14,9 +14,13 @@ class TestStrategicPricing(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         """Set up test class."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'],
-                              sep=hyperparam_dict['dataset']['col_delimiter'])
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
+        dataset = pd.read_csv(
+            hyperparam_dict["dataset"]["data_path"],
+            sep=hyperparam_dict["dataset"]["col_delimiter"],
+        )
+        cls.dh = DataHandler(
+            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
+        )
 
     def setUp(self) -> None:
         """Set up test objects."""
@@ -83,7 +87,6 @@ class TestStrategicPricing(unittest.TestCase):
 
     def test_get_state_to_action(self):
         binned = np.array([[1, 2, 3, 4], [5, 6, 7, 8], [1, 2, 3, 2]])
-        target = {'1,2,3': {4, 2},
-                  '5,6,7': {8}}
+        target = {"1,2,3": {4, 2}, "5,6,7": {8}}
         result = self.env._get_state_to_action(binned)
         assert result == target

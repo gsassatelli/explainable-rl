@@ -19,11 +19,14 @@ class TestPDP(unittest.TestCase):
     def setUpClass(cls):
         """Setup TestPDP class.
         """
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'],
-                              sep=hyperparam_dict['dataset']['col_delimiter'])
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
-        cls.engine = Engine(dh=cls.dh,
-                            hyperparam_dict=hyperparam_dict)
+        dataset = pd.read_csv(
+            hyperparam_dict["dataset"]["data_path"],
+            sep=hyperparam_dict["dataset"]["col_delimiter"],
+        )
+        cls.dh = DataHandler(
+            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
+        )
+        cls.engine = Engine(dh=cls.dh, hyperparam_dict=hyperparam_dict)
         cls.engine.create_world()
         cls.engine.train_agent()
         cls.pdp = PDP(engine=cls.engine)

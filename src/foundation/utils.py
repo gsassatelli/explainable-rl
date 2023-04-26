@@ -9,7 +9,7 @@ def save_engine(engine, path_name=None):
         path_name (str): Path to save the engine.
     """
     engine.dh.dataset = None  # Used to remove training set
-    with open(path_name, 'wb') as f:
+    with open(path_name, "wb") as f:
         pickle.dump(engine, f)
 
 
@@ -19,18 +19,18 @@ def load_engine(path_name):
     Args:
         path_name (str or List(str)): Path to save the engine.
     """
-    if isinstance(path_name, str): 
+    if isinstance(path_name, str):
         path_name = [path_name]
     engines = []
     for p in path_name:
-        with open(p, 'rb') as f:
+        with open(p, "rb") as f:
             engines.append(pickle.load(f))
     if len(engines) == 1:
         engines = engines[0]
     return engines
 
 
-def load_data(data_path, n_samples, delimiter=','):
+def load_data(data_path, n_samples, delimiter=","):
     """Load data from file.
 
     Args:
@@ -38,12 +38,12 @@ def load_data(data_path, n_samples, delimiter=','):
         n_samples (int): Number of samples to load.
         delimiter (str): Which separates columns.
     """
-    file_type = data_path.split('.')[-1]
-    if file_type == 'csv':
+    file_type = data_path.split(".")[-1]
+    if file_type == "csv":
         dataset = pd.read_csv(data_path, sep=delimiter)
-    elif file_type == 'xlsx':
+    elif file_type == "xlsx":
         dataset = pd.read_excel(data_path)
-    elif file_type == 'parquet':
+    elif file_type == "parquet":
         dataset = pd.read_parquet(data_path)
     else:
         raise ValueError("File type not supported")
@@ -63,7 +63,7 @@ def split_train_test(dataset, train_test_split=0.2):
         test_dataset (pd.DataFrame): Test dataset.
     """
     dataset = dataset.sample(frac=1)
-    split = int(train_test_split*len(dataset))
+    split = int(train_test_split * len(dataset))
     return dataset[split:], dataset[:split]
 
 
@@ -91,9 +91,7 @@ def convert_to_list(state_str):
     return [int(s) for s in state_str.split(",")]
 
 
-def decay_param(param,
-                decay,
-                min_param):
+def decay_param(param, decay, min_param):
     """Decay a parameter.
 
     Args:

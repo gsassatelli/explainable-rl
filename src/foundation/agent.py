@@ -37,9 +37,7 @@ class Agent:
         """
         raise NotImplementedError
 
-    def predict_actions(self,
-                        states,
-                        epsilon=0):
+    def predict_actions(self, states, epsilon=0):
         """Predict action for a list of states using epsilon-greedy policy.
 
         Args:
@@ -57,9 +55,7 @@ class Agent:
 
         return actions
 
-    def predict_rewards(self,
-                        states,
-                        actions):
+    def predict_rewards(self, states, actions):
         """Predict reward for a list of state-actions.
 
         This function uses the avg reward matrix (which simulates a real-life scenario).
@@ -79,7 +75,9 @@ class Agent:
 
         return rewards
 
-    def uncertainty_informed_policy(self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7):
+    def uncertainty_informed_policy(
+        self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7
+    ):
         """Get epsilon greedy policy that favours more densely populated state-action pairs.
 
         Args:
@@ -109,5 +107,3 @@ class Agent:
         """Initialize the q-table with zeros."""
         self.Q = sparse.DOK(self.env.bins)
         self.Q_num_samples = sparse.DOK(self.env.bins)
-
-

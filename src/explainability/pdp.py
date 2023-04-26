@@ -4,8 +4,7 @@ from library import *
 class PDP:
     """Partial Dependence Plots class."""
 
-    def __init__(self,
-                 engine):
+    def __init__(self, engine):
         """Initialise PDP class.
 
         Args:
@@ -54,13 +53,22 @@ class PDP:
             Q_num_samples_sum = np.sum(Q_num_samples_array, axis=states_to_avg)
             # Select action with the highest avg Q value
             dig_actions = np.argmax(Q_avg, axis=-1)
-            dig_actions_std = np.array([Q_std[idx][action] for idx, action in enumerate(dig_actions)])
-            dig_actions_samples = np.array([Q_num_samples_sum[idx][action] for idx, action in enumerate(dig_actions)])
+            dig_actions_std = np.array(
+                [Q_std[idx][action] for idx, action in enumerate(dig_actions)]
+            )
+            dig_actions_samples = np.array(
+                [
+                    Q_num_samples_sum[idx][action]
+                    for idx, action in enumerate(dig_actions)
+                ]
+            )
             # Add the total number of samples per state bin
             dig_actions_samples = np.concatenate(
-                [np.expand_dims(dig_actions_samples, -1),
-                 np.expand_dims(Q_num_samples_sum.sum(-1), -1)],
-                axis=-1
+                [
+                    np.expand_dims(dig_actions_samples, -1),
+                    np.expand_dims(Q_num_samples_sum.sum(-1), -1),
+                ],
+                axis=-1,
             )
 
             self._dig_state_actions.append(dig_actions)
@@ -75,7 +83,8 @@ class PDP:
             for dig_actions in self._dig_state_actions:
                 # Divide dig actions by # bins of the action dimension to get a value between 0 and 1
                 denorm_action = scaler.inverse_transform(
-                    dig_actions.reshape(-1, 1) / self._bins_per_dim[-1])
+                    dig_actions.reshape(-1, 1) / self._bins_per_dim[-1]
+                )
                 self._denorm_actions.append(denorm_action)
 
         else:
@@ -95,10 +104,7 @@ class PDP:
             denorm_state = scaler.inverse_transform(dig_values.reshape(-1, 1))
             self._denorm_states.append(denorm_state)
 
-    def plot_pdp(self,
-                 feature,
-                 fig_name=None,
-                 savefig=True):
+    def plot_pdp(self, feature, fig_name=None, savefig=True):
         """Build PDP plots.
         One marginalized plot per each state dimension.
 
@@ -116,15 +122,29 @@ class PDP:
         samples = self._dig_state_actions_samples[ft_index]
         fig, ax1 = plt.subplots()
         plt.grid(zorder=0)
-        ax1.plot(states, actions, marker="o", color='b', zorder=3)
+        ax1.plot(states, actions, marker="o", color="b", zorder=3)
         ax1.set_xlabel(f"State dimension {feature}")
         ax1.set_ylabel("Actions")
 
         # Super-impose number of samples plot
         ax2 = ax1.twinx()
-        ax2.bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b', label='total')
-        ax2.bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
-        ax2.set_ylabel('Num. of samples')
+        ax2.bar(
+            x=states,
+            height=samples[:, 1],
+            zorder=3,
+            alpha=0.25,
+            color="b",
+            label="total",
+        )
+        ax2.bar(
+            x=states,
+            height=samples[:, 0],
+            zorder=3,
+            alpha=0.5,
+            color="b",
+            label="greedy",
+        )
+        ax2.set_ylabel("Num. of samples")
         plt.legend()
 
         if savefig:

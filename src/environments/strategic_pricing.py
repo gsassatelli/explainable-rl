@@ -29,8 +29,10 @@ class StrategicPricing(MDP):
         self.action_dim = len(self.dh.get_action_labels())
 
         if len(bins) != self.state_dim + 1:
-            print("Warning: bins not equal to state_dim + 1. "
-                  "Setting bins to [10] * (state_dim + 1)")
+            print(
+                "Warning: bins not equal to state_dim + 1. "
+                "Setting bins to [10] * (state_dim + 1)"
+            )
             self.bins = [10] * (self.state_dim + 1)
         else:
             self.bins = bins
@@ -81,9 +83,7 @@ class StrategicPricing(MDP):
         """
         b_states = []
         for state in states:
-            b_states.append(
-                self.bin_state(state, idxs=idxs)
-            )
+            b_states.append(self.bin_state(state, idxs=idxs))
         return b_states
 
     def debin_states(self, b_states, idxs=None):
@@ -99,9 +99,7 @@ class StrategicPricing(MDP):
         """
         states = []
         for b_state in b_states:
-            states.append(
-                self._debin_state(b_state, idxs=idxs)
-            )
+            states.append(self._debin_state(b_state, idxs=idxs))
         return states
 
     def bin_state(self, state, idxs=None):
@@ -128,8 +126,10 @@ class StrategicPricing(MDP):
             binned.append(
                 np.digitize(
                     value,
-                    [n / self.bins[i] if n < self.bins[i] else 1.01 \
-                     for n in range(1, self.bins[i] + 1)]
+                    [
+                        n / self.bins[i] if n < self.bins[i] else 1.01
+                        for n in range(1, self.bins[i] + 1)
+                    ],
                 )
             )
         return binned
@@ -209,8 +209,9 @@ class StrategicPricing(MDP):
         binned_df = pd.DataFrame(binned)
         binned_df[final_dim] = binned_df[final_dim].apply(lambda x: [x])
         group_by_inds = [i for i in range(final_dim)]
-        binned_df = binned_df.groupby(group_by_inds).sum(numeric_only=False). \
-            reset_index()
+        binned_df = (
+            binned_df.groupby(group_by_inds).sum(numeric_only=False).reset_index()
+        )
         binned_df[final_dim] = binned_df[final_dim].apply(lambda x: set(x))
         binned = np.array(binned_df)
         for ix, bin in enumerate(binned):

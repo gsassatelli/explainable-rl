@@ -17,7 +17,9 @@ class QLearningAgent(TD):
         """
         super().__init__(env, gamma, verbose)
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(
+        self, state, action, next_state, reward, epsilon, lr, **kwargs
+    ):
         """Update the Q table.
 
         Args:
@@ -33,6 +35,7 @@ class QLearningAgent(TD):
         q_current = self.Q[index_current]
         index_next = tuple(next_state)
         q_next = np.max(self.Q[index_next].todense())
-        self.Q[index_current] = \
-            q_current + lr * (reward + self.gamma * q_next - q_current)
+        self.Q[index_current] = q_current + lr * (
+            reward + self.gamma * q_next - q_current
+        )
         self.Q_num_samples[index_current] += 1

@@ -15,8 +15,13 @@ class TestTD(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
         """Set up the test class."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'], sep=hyperparam_dict['dataset']['col_delimiter'])
-        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
+        dataset = pd.read_csv(
+            hyperparam_dict["dataset"]["data_path"],
+            sep=hyperparam_dict["dataset"]["col_delimiter"],
+        )
+        cls.dh = DataHandler(
+            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
+        )
 
     def setUp(self) -> None:
         """Set up the test class."""
@@ -45,7 +50,7 @@ class TestTD(unittest.TestCase):
         """Test the convert_to_string method."""
         state = [0, 5, 3, 2]
         result = self.agent._convert_to_string(state)
-        target = '0,5,3,2'
+        target = "0,5,3,2"
         assert result == target
 
     def test_epsilon_greedy_policy(self):
@@ -64,10 +69,12 @@ class TestTD(unittest.TestCase):
         state = [0, 0, 0]
         self.agent._init_q_table()
         self.agent.Q[0, 0, 0, 2] = 1.5
-        self.env.bins_dict = {'0,0,0,2': [2, 2]}
-        self.env.state_to_action = {'0,0,0': {2}}
+        self.env.bins_dict = {"0,0,0,2": [2, 2]}
+        self.env.state_to_action = {"0,0,0": {2}}
         self.agent.state = [0, 0, 0]
-        result = self.agent.uncertainty_informed_policy(state=state, epsilon=epsilon, use_uncertainty=True)
+        result = self.agent.uncertainty_informed_policy(
+            state=state, epsilon=epsilon, use_uncertainty=True
+        )
         assert result == 2
 
     def test_create_tables(self):

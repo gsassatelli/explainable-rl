@@ -52,38 +52,44 @@ class DoubleQLearner(TD):
         Returns:
             bool: Defines whether the episode is finished.
         """
-        action_a = self._epsilon_greedy_policy(state=self.state,
-                                               epsilon=epsilon, Q=self.Q_a)
-        action_b = self._epsilon_greedy_policy(state=self.state,
-                                               epsilon=epsilon, Q=self.Q_b)
+        action_a = self._epsilon_greedy_policy(
+            state=self.state, epsilon=epsilon, Q=self.Q_a
+        )
+        action_b = self._epsilon_greedy_policy(
+            state=self.state, epsilon=epsilon, Q=self.Q_b
+        )
         if random.random() <= 0.5:
-            state, next_state, reward, done = self.env.step(self.state,
-                                                            action_a)
-            self._update_q_values(state=state,
-                                  action=action_a,
-                                  next_state=next_state,
-                                  reward=reward,
-                                  lr=lr,
-                                  epsilon=epsilon,
-                                  Q_a=self.Q_a,
-                                  Q_b=self.Q_b)
+            state, next_state, reward, done = self.env.step(self.state, action_a)
+            self._update_q_values(
+                state=state,
+                action=action_a,
+                next_state=next_state,
+                reward=reward,
+                lr=lr,
+                epsilon=epsilon,
+                Q_a=self.Q_a,
+                Q_b=self.Q_b,
+            )
 
         else:
-            state, next_state, reward, done = self.env.step(self.state,
-                                                            action_b)
-            self._update_q_values(state=state,
-                                  action=action_a,
-                                  next_state=next_state,
-                                  reward=reward,
-                                  lr=lr,
-                                  epsilon=epsilon,
-                                  Q_a=self.Q_b,
-                                  Q_b=self.Q_a)
+            state, next_state, reward, done = self.env.step(self.state, action_b)
+            self._update_q_values(
+                state=state,
+                action=action_a,
+                next_state=next_state,
+                reward=reward,
+                lr=lr,
+                epsilon=epsilon,
+                Q_a=self.Q_b,
+                Q_b=self.Q_a,
+            )
         self.Q = (self.Q_a + self.Q_b) / 2
 
         self.state = next_state
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(
+        self, state, action, next_state, reward, epsilon, lr, **kwargs
+    ):
         """Update the Q table.
 
         Args:

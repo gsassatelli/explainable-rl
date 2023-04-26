@@ -31,20 +31,32 @@ class TD(Agent):
         """
         if verbose:
             print("Apply q-learning and update q-table")
-        lr = agent_hyperparams['learning_rate']
-        epsilon = agent_hyperparams['epsilon']
+        lr = agent_hyperparams["learning_rate"]
+        epsilon = agent_hyperparams["epsilon"]
         for _ in range(training_hyperparams["num_episodes"]):
 
             self.state = self.env.reset()
 
             for i in range(training_hyperparams["num_steps"]):
-                done = self._step(epsilon=epsilon, lr=lr, use_uncertainty=agent_hyperparams['use_uncertainty'])
+                done = self._step(
+                    epsilon=epsilon,
+                    lr=lr,
+                    use_uncertainty=agent_hyperparams["use_uncertainty"],
+                )
                 if done:
                     break
             if pbar is not None:
                 pbar.update(1)
-            lr = decay_param(lr, agent_hyperparams['learning_rate_decay'], agent_hyperparams['learning_rate_minimum'])
-            epsilon = decay_param(epsilon, agent_hyperparams['epsilon_decay'], agent_hyperparams['epsilon_minimum'])
+            lr = decay_param(
+                lr,
+                agent_hyperparams["learning_rate_decay"],
+                agent_hyperparams["learning_rate_minimum"],
+            )
+            epsilon = decay_param(
+                epsilon,
+                agent_hyperparams["epsilon_decay"],
+                agent_hyperparams["epsilon_minimum"],
+            )
 
     def create_tables(self, verbose=False):
         """Initialize the agent.
@@ -63,10 +75,7 @@ class TD(Agent):
         self._init_q_table()
         self.state_to_action = self.env.state_to_action
 
-    def _epsilon_greedy_policy(self,
-                               state=None,
-                               epsilon=0.1,
-                               Q=None):
+    def _epsilon_greedy_policy(self, state=None, epsilon=0.1, Q=None):
         """Epsilon-greedy policy.
 
         Args:
@@ -93,9 +102,10 @@ class TD(Agent):
                 state_str = self._convert_to_string(state)
                 action = random.choice(list(self.state_to_action[str(state_str)]))
         return action
-    
-    def uncertainty_informed_policy(self, state=None, epsilon=0.1,
-                                    use_uncertainty=False, q_importance=0.7):
+
+    def uncertainty_informed_policy(
+        self, state=None, epsilon=0.1, use_uncertainty=False, q_importance=0.7
+    ):
         """Get epsilon greedy policy that favours more densely populated state-action pairs.
 
         Args:
@@ -117,21 +127,21 @@ class TD(Agent):
             if sum_possible_q == 0:
                 return np.random.choice(list(possible_actions))
 
-            state_action_counts, q_values_weights = \
-                self._get_q_value_weights(sum_possible_q=sum_possible_q,
-                                          state=state,
-                                          possible_actions=possible_actions)
-            uncertainty_weights = \
-                self._get_uncertainty_weights(state_action_counts)
+            state_action_counts, q_values_weights = self._get_q_value_weights(
+                sum_possible_q=sum_possible_q,
+                state=state,
+                possible_actions=possible_actions,
+            )
+            uncertainty_weights = self._get_uncertainty_weights(state_action_counts)
             if random.random() < epsilon:
                 action = np.random.choice(list(possible_actions))
             else:
-                action_scores = \
-                    self._get_action_scores(possible_actions=possible_actions,
-                                            q_importance=q_importance,
-                                            q_values_weights=q_values_weights,
-                                            uncertainty_weights=
-                                            uncertainty_weights)
+                action_scores = self._get_action_scores(
+                    possible_actions=possible_actions,
+                    q_importance=q_importance,
+                    q_values_weights=q_values_weights,
+                    uncertainty_weights=uncertainty_weights,
+                )
                 action = max(action_scores, key=action_scores.get)
         else:
             action = self._epsilon_greedy_policy(self.state, epsilon=epsilon)
@@ -149,23 +159,28 @@ class TD(Agent):
         Returns:
             bool: Defines whether the episode is finished.
         """
-        action = self.uncertainty_informed_policy(self.state,
-                                                  epsilon=epsilon,
-                                                  use_uncertainty=use_uncertainty,
-                                                  q_importance=0.7)
-        
+        action = self.uncertainty_informed_policy(
+            self.state,
+            epsilon=epsilon,
+            use_uncertainty=use_uncertainty,
+            q_importance=0.7,
+        )
+
         state, next_state, reward, done = self.env.step(self.state, action)
-        self._update_q_values(state=state,
-                              action=action,
-                              next_state=next_state,
-                              reward=reward,
-                              lr=lr,
-                              epsilon=epsilon)
+        self._update_q_values(
+            state=state,
+            action=action,
+            next_state=next_state,
+            reward=reward,
+            lr=lr,
+            epsilon=epsilon,
+        )
         self.state = next_state
         return done
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr,
-                         **kwargs):
+    def _update_q_values(
+        self, state, action, next_state, reward, epsilon, lr, **kwargs
+    ):
         """Update the Q table.
 
         Args:
@@ -217,18 +232,21 @@ class TD(Agent):
 
         for possible_action in possible_actions:
             possible_state_action_str = self._convert_to_string(
-                state + [possible_action])
+                state + [possible_action]
+            )
             counts = self.env.bins_dict[possible_state_action_str][0]
             # Count number of times a state-action pair occurred
             state_action_counts[str(possible_action)] = counts
             index_with_action = tuple(state + [possible_action])
-            q_values_weights[possible_action] = self.Q[
-                                                    index_with_action] / sum_possible_q
+            q_values_weights[possible_action] = (
+                self.Q[index_with_action] / sum_possible_q
+            )
 
         return state_action_counts, q_values_weights
 
-    def _get_action_scores(self, possible_actions, q_importance,
-                           q_values_weights, uncertainty_weights):
+    def _get_action_scores(
+        self, possible_actions, q_importance, q_values_weights, uncertainty_weights
+    ):
         """Get the score for each action from a state.
 
         Args:
@@ -247,8 +265,10 @@ class TD(Agent):
         """
         action_scores = {}
         for possible_action in possible_actions:
-            score = q_importance * q_values_weights[possible_action] + \
-                    (1 - q_importance) * uncertainty_weights[possible_action]
+            score = (
+                q_importance * q_values_weights[possible_action]
+                + (1 - q_importance) * uncertainty_weights[possible_action]
+            )
             action_scores[possible_action] = score
         return action_scores
 
@@ -266,5 +286,7 @@ class TD(Agent):
         Returns:
             dict: uncertainty weight of each possible state.
         """
-        return {int(key): float(value) / sum(state_action_counts.values())
-                for (key, value) in state_action_counts.items()}
+        return {
+            int(key): float(value) / sum(state_action_counts.values())
+            for (key, value) in state_action_counts.items()
+        }

@@ -15,7 +15,9 @@ class SarsaAgent(TD):
         """
         super().__init__(env, gamma, verbose)
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(
+        self, state, action, next_state, reward, epsilon, lr, **kwargs
+    ):
         """Update the Q table.
 
         Args:
@@ -33,7 +35,8 @@ class SarsaAgent(TD):
         index_next = tuple(list(next_state) + [next_action])
         q_next = self.Q[index_next]
 
-        self.Q[index_current] = \
-            q_current + lr * (reward + self.gamma * q_next - q_current)
+        self.Q[index_current] = q_current + lr * (
+            reward + self.gamma * q_next - q_current
+        )
 
         self.Q_num_samples[index_current] += 1

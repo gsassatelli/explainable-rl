@@ -19,12 +19,14 @@ import gc
 class PerformanceEvaluator:
     """Time and Memory Evaluator."""
 
-    def __init__(self,
-                 results_path=f"src/performance/evaluations",
-                 num_sample_range=[int(1e2), int(1e3), int(1e4), int(1e5)],
-                 num_ep_range=[int(1e1), int(1e2), int(1e3), int(1e4)],
-                 num_bin_range=[2, 5, 10, 20, 30, 40, 50],
-                 verbose=False):
+    def __init__(
+        self,
+        results_path=f"src/performance/evaluations",
+        num_sample_range=[int(1e2), int(1e3), int(1e4), int(1e5)],
+        num_ep_range=[int(1e1), int(1e2), int(1e3), int(1e4)],
+        num_bin_range=[2, 5, 10, 20, 30, 40, 50],
+        verbose=False,
+    ):
         """Initialise a PerformanceEvaluator.
 
         Args:
@@ -42,9 +44,9 @@ class PerformanceEvaluator:
         os.mkdir(f"{self._path}")
 
         # Benchmark settings
-        self.NUM_EP = int(1e+1)
+        self.NUM_EP = int(1e1)
         self.NUM_BINS = 10
-        self.NUM_SAMPLES = int(1e+5)
+        self.NUM_SAMPLES = int(1e5)
 
         # Ranges for graphs
         self.num_sample_range = num_sample_range
@@ -86,9 +88,11 @@ class PerformanceEvaluator:
         start_time = time.time()
 
         # Run the code to be evaluated
-        self._run_training_loop(num_episodes=self.NUM_EP,
-                                num_bins=self.NUM_BINS,
-                                num_samples=self.NUM_SAMPLES)
+        self._run_training_loop(
+            num_episodes=self.NUM_EP,
+            num_bins=self.NUM_BINS,
+            num_samples=self.NUM_SAMPLES,
+        )
 
         end_time = time.time()
 
@@ -104,9 +108,11 @@ class PerformanceEvaluator:
         space_summary = f"Peak memory usage (MiB): {peak}"
 
         with open(f"{self._path}/benchmark-report.txt", "w") as report_file:
-            report_file.write(f'BENCHMARK SETTINGS\nNumber of episodes: {self.NUM_EP}\n'
-                              f'Number of bins: {self.NUM_BINS}\nNumber of samples: {self.NUM_SAMPLES}\n\n'
-                              f'RESULTS\n{time_summary}\n{space_summary}')
+            report_file.write(
+                f"BENCHMARK SETTINGS\nNumber of episodes: {self.NUM_EP}\n"
+                f"Number of bins: {self.NUM_BINS}\nNumber of samples: {self.NUM_SAMPLES}\n\n"
+                f"RESULTS\n{time_summary}\n{space_summary}"
+            )
 
     def get_performance_graphs(self):
         """ Plot performance (time and space) against chosen varying parameters.
@@ -122,20 +128,32 @@ class PerformanceEvaluator:
         if self.verbose:
             print("* Plot of performance vs number of samples")
         # Plot of performance vs number of samples
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_samples", x=self.num_sample_range)
-        self._plot_performance_graph(x_label="samples", x=self.num_sample_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(
+            parameter_name="num_samples", x=self.num_sample_range
+        )
+        self._plot_performance_graph(
+            x_label="samples", x=self.num_sample_range, times=times, memory=memory
+        )
 
         if self.verbose:
             print("* Plot of performance vs number of episodes")
         # Plot of performance vs number of episodes
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_episodes", x=self.num_ep_range)
-        self._plot_performance_graph(x_label="episodes", x=self.num_ep_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(
+            parameter_name="num_episodes", x=self.num_ep_range
+        )
+        self._plot_performance_graph(
+            x_label="episodes", x=self.num_ep_range, times=times, memory=memory
+        )
 
         if self.verbose:
             print("* Plot of performance vs number of bins")
         # Plot of performance vs number of bins
-        times, memory = self._get_times_and_memory_from_parameter_range(parameter_name="num_bins", x=self.num_bin_range)
-        self._plot_performance_graph(x_label="bins", x=self.num_bin_range, times=times, memory=memory)
+        times, memory = self._get_times_and_memory_from_parameter_range(
+            parameter_name="num_bins", x=self.num_bin_range
+        )
+        self._plot_performance_graph(
+            x_label="bins", x=self.num_bin_range, times=times, memory=memory
+        )
 
     def get_time_breakdown_per_function(self):
         """Get a per-function breakdown of time complexity.
@@ -148,12 +166,14 @@ class PerformanceEvaluator:
 
         profiler = cProfile.Profile()
         profiler.enable()
-        self._run_training_loop(num_episodes=self.NUM_EP,
-                                num_bins=self.NUM_BINS,
-                                num_samples=self.NUM_SAMPLES)
+        self._run_training_loop(
+            num_episodes=self.NUM_EP,
+            num_bins=self.NUM_BINS,
+            num_samples=self.NUM_SAMPLES,
+        )
         profiler.disable()
         stream = io.StringIO()
-        stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats('cumtime')
+        stats = pstats.Stats(profiler, stream=stream).strip_dirs().sort_stats("cumtime")
         stats.print_stats()
 
         with open(f"{self._path}/per_function_time.txt", "w") as outfile:
@@ -166,16 +186,20 @@ class PerformanceEvaluator:
 
         tracemalloc.start()
 
-        self._run_training_loop(num_episodes=self.NUM_EP,
-                                num_bins=self.NUM_BINS,
-                                num_samples=self.NUM_SAMPLES)
+        self._run_training_loop(
+            num_episodes=self.NUM_EP,
+            num_bins=self.NUM_BINS,
+            num_samples=self.NUM_SAMPLES,
+        )
 
         snapshot = tracemalloc.take_snapshot()
-        top_stats = snapshot.statistics('lineno')
+        top_stats = snapshot.statistics("lineno")
 
         with open(f"{self._path}/per_function_space.txt", "w") as outfile:
-            outfile.write(f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES")
-            for stat in top_stats[:self.num_memalloc_lines_to_keep]:
+            outfile.write(
+                f"TOP {self.num_memalloc_lines_to_keep} MEMORY ALLOCATION LINES"
+            )
+            for stat in top_stats[: self.num_memalloc_lines_to_keep]:
                 outfile.write(f"\n{stat}")
 
         tracemalloc.stop()
@@ -212,13 +236,21 @@ class PerformanceEvaluator:
             start_time = self._do_pre_benchmark_run_configuration()
 
             if parameter_name == "num_samples":
-                self._run_training_loop(num_episodes=self.NUM_EP, num_bins=self.NUM_BINS, num_samples=val)
+                self._run_training_loop(
+                    num_episodes=self.NUM_EP, num_bins=self.NUM_BINS, num_samples=val
+                )
 
             elif parameter_name == "num_bins":
-                self._run_training_loop(num_episodes=self.NUM_EP, num_bins=val, num_samples=self.NUM_SAMPLES)
+                self._run_training_loop(
+                    num_episodes=self.NUM_EP, num_bins=val, num_samples=self.NUM_SAMPLES
+                )
 
             elif parameter_name == "num_episodes":
-                self._run_training_loop(num_episodes=val, num_bins=self.NUM_BINS, num_samples=self.NUM_SAMPLES)
+                self._run_training_loop(
+                    num_episodes=val,
+                    num_bins=self.NUM_BINS,
+                    num_samples=self.NUM_SAMPLES,
+                )
 
             end_time, peak = self._get_post_benchmark_run_results()
 
@@ -263,15 +295,26 @@ class PerformanceEvaluator:
             num_samples (int): Number of datapoint samples used for training.
         """
         if self.verbose:
-            print(f"-> Running training loop for {num_episodes} episodes, {num_bins} bins, {num_samples} samples")
+            print(
+                f"-> Running training loop for {num_episodes} episodes, {num_bins} bins, {num_samples} samples"
+            )
 
         # Get the hyperparameter dictionary for the specified parameters
-        hyperparam_dict = self._get_hyperparam_dict_ds_data(num_episodes, num_bins, num_samples)
+        hyperparam_dict = self._get_hyperparam_dict_ds_data(
+            num_episodes, num_bins, num_samples
+        )
 
-        dataset = utils.load_data(hyperparam_dict['dataset']['data_path'], hyperparam_dict['dataset']['n_samples'])
+        dataset = utils.load_data(
+            hyperparam_dict["dataset"]["data_path"],
+            hyperparam_dict["dataset"]["n_samples"],
+        )
         train_dataset, test_dataset = utils.split_train_test(dataset)
 
-        dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=train_dataset, test_dataset=test_dataset)
+        dh = DataHandler(
+            hyperparam_dict=hyperparam_dict,
+            dataset=train_dataset,
+            test_dataset=test_dataset,
+        )
 
         engine = Engine(dh=dh, hyperparam_dict=hyperparam_dict)
 
@@ -282,18 +325,18 @@ class PerformanceEvaluator:
         del hyperparam_dict, train_dataset, test_dataset, dataset, dh, engine
         gc.collect()
 
-    def _load_data(self, path, delimiter=','):
+    def _load_data(self, path, delimiter=","):
         """Load data from file.
 
         Args:
             delimiter (str): Which separates columns.
         """
-        file_type = path.split('.')[-1]
-        if file_type == 'csv':
+        file_type = path.split(".")[-1]
+        if file_type == "csv":
             dataset = pd.read_csv(path, sep=delimiter)
-        elif file_type == 'xlsx':
+        elif file_type == "xlsx":
             dataset = pd.read_excel(path)
-        elif file_type == 'parquet':
+        elif file_type == "parquet":
             dataset = pd.read_parquet(path)
         else:
             raise ValueError("File type not supported")
@@ -311,44 +354,47 @@ class PerformanceEvaluator:
         Returns:
             dict: Hyperparameter dictionary specific to the Datasparq dataset.
         """
-        
+
         hyperparam_dict = {
-            "dimensions": {'states': {'lead_time': num_bins,
-                                      'length_of_stay': num_bins,
-                                      'competitor_price_difference_bin': num_bins,
-                                      'demand_bin': num_bins},
-                           'actions': {'price': num_bins},
-                           'rewards': ['reward']
-                           },
-
-            "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
-                        'col_delimiter': '|',
-                        'n_samples': num_samples,
-                        'normalisation': True},
-
-            "training": {'env_type': 'strategic_pricing_predict',
-                         'num_episodes': num_episodes,
-                         'num_steps': 1,
-                         'train_test_split': 0.2,
-                         'evaluate': False,
-                         'num_eval_steps': 3000},
-
-            "agent": {'agent_type': 'q_learner',
-                      "gamma": 0.3,
-                      "epsilon": 0.1,
-                      "epsilon_decay": 0.05,
-                      "epsilon_minimum": 0.01,
-                      "learning_rate": 0.1,
-                      "learning_rate_decay": 0.05,
-                      "learning_rate_minimum": 0.01,
-                      "lambda": 0.2,
-                      "use_uncertainty": False,
-                      "q_importance": 0.7,
-                      },
-
-            "explainability": {'shap_num_samples': 1},
-
-            "program_flow": {"verbose": False}
+            "dimensions": {
+                "states": {
+                    "lead_time": num_bins,
+                    "length_of_stay": num_bins,
+                    "competitor_price_difference_bin": num_bins,
+                    "demand_bin": num_bins,
+                },
+                "actions": {"price": num_bins},
+                "rewards": ["reward"],
+            },
+            "dataset": {
+                "data_path": "data/ds-data/my_example_data.parquet",
+                "col_delimiter": "|",
+                "n_samples": num_samples,
+                "normalisation": True,
+            },
+            "training": {
+                "env_type": "strategic_pricing_predict",
+                "num_episodes": num_episodes,
+                "num_steps": 1,
+                "train_test_split": 0.2,
+                "evaluate": False,
+                "num_eval_steps": 3000,
+            },
+            "agent": {
+                "agent_type": "q_learner",
+                "gamma": 0.3,
+                "epsilon": 0.1,
+                "epsilon_decay": 0.05,
+                "epsilon_minimum": 0.01,
+                "learning_rate": 0.1,
+                "learning_rate_decay": 0.05,
+                "learning_rate_minimum": 0.01,
+                "lambda": 0.2,
+                "use_uncertainty": False,
+                "q_importance": 0.7,
+            },
+            "explainability": {"shap_num_samples": 1},
+            "program_flow": {"verbose": False},
         }
         return hyperparam_dict
 

@@ -13,9 +13,11 @@ class TestDataHandler(unittest.TestCase):
 
     def setUp(self) -> None:
         """Set up test fixtures, if any."""
-        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'])
-        self.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
-        self.target = pd.read_csv('tests/test_env_data.csv').dropna()
+        dataset = pd.read_csv(hyperparam_dict["dataset"]["data_path"])
+        self.dh = DataHandler(
+            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
+        )
+        self.target = pd.read_csv("tests/test_env_data.csv").dropna()
 
     def tearDown(self) -> None:
         """Tear down test fixtures, if any."""
@@ -66,25 +68,30 @@ class TestDataHandler(unittest.TestCase):
         """Test filter_data method."""
         self.dh._filter_data()
         assert self.dh.dataset.isnull().values.any() == False
-    
+
     def test_transform_col(self):
         """Test transform_col method."""
-        col_name = 'price'
+        col_name = "price"
         scalar = MinMaxScaler()
         target = self.target
-        target.loc[:,col_name] = scalar.fit_transform(pd.DataFrame(self.target[col_name]))
-        target = target.round(decimals=2).astype('float64')[col_name]
+        target.loc[:, col_name] = scalar.fit_transform(
+            pd.DataFrame(self.target[col_name])
+        )
+        target = target.round(decimals=2).astype("float64")[col_name]
         self.dh._fit_standard_scalars()
-        self.dh._transform_col(col_name='price')
-        result = self.dh.dataset.sort_index().round(decimals=2).astype('float64')[col_name]
+        self.dh._transform_col(col_name="price")
+        result = (
+            self.dh.dataset.sort_index().round(decimals=2).astype("float64")[col_name]
+        )
         assert target.equals(result)
 
     def test_inverse_transform_col(self):
         """Test inverse_transform_col method."""
-        target = self.target['price'].astype('float64')
-        self.dh._inverse_transform_col(col_name='price')
-        result = self.dh.dataset['price'].sort_index().round(
-            decimals=2).astype('float64')
+        target = self.target["price"].astype("float64")
+        self.dh._inverse_transform_col(col_name="price")
+        result = (
+            self.dh.dataset["price"].sort_index().round(decimals=2).astype("float64")
+        )
         assert target.equals(result)
 
     def test_fit_standard_scalars(self):
@@ -94,24 +101,24 @@ class TestDataHandler(unittest.TestCase):
 
     def test_prepare_data_for_engine(self):
         """Test prepare_data_for_engine method."""
-        self.dh.prepare_data_for_engine(cols_to_normalise=['competitorPrice',
-                                                           'adFlag',
-                                                           'availability',
-                                                           'price'])
-        target = self.target[
-            ['competitorPrice', 'adFlag', 'availability', 'price']]
+        self.dh.prepare_data_for_engine(
+            cols_to_normalise=["competitorPrice", "adFlag", "availability", "price"]
+        )
+        target = self.target[["competitorPrice", "adFlag", "availability", "price"]]
         for col in target.columns:
             scalar = MinMaxScaler()
             target[col] = scalar.fit_transform(pd.DataFrame(target[col]))
-        assert self.dh.dataset[['competitorPrice', 'adFlag', 'availability',
-                                'price']].sort_index(). \
-            equals(target.sort_index())
+        assert (
+            self.dh.dataset[["competitorPrice", "adFlag", "availability", "price"]]
+            .sort_index()
+            .equals(target.sort_index())
+        )
         assert len(self.dh.dataset) == 48
         assert len(self.dh.dataset.columns) == 12
 
     def test_reverse_norm(self):
         """Test reverse_norm method."""
-        target = self.target.round(decimals=2).astype('float64')
+        target = self.target.round(decimals=2).astype("float64")
         self.dh.reverse_norm()
-        result = self.dh.dataset.round(decimals=2).astype('float64').sort_index()
+        result = self.dh.dataset.round(decimals=2).astype("float64").sort_index()
         assert result.equals(target)

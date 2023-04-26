@@ -19,7 +19,9 @@ class SarsaLambdaAgent(TD):
         self.e = sparse.DOK(self.env.bins)
         self.lambda_ = lambda_
 
-    def _update_q_values(self, state, action, next_state, reward, epsilon, lr, **kwargs):
+    def _update_q_values(
+        self, state, action, next_state, reward, epsilon, lr, **kwargs
+    ):
         """Update the Q table.
 
         Args:
