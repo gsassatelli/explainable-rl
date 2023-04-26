@@ -67,7 +67,7 @@ def run_all(hyperparam_dict, verbose=True, show_plots=True):
         print(f"{timestamp}: PDP plots")
     pdp = PDP(engine)
     pdp.build_data_for_plots()
-    pdp.plot_pdp(fig_name="PDP plots", savefig=True)
+    pdp.plot_pdp(feature="length_of_stay", fig_name="PDP plots", savefig=True)
 
     # SHAP values
     timestamp = datetime.now().strftime("%d/%m/%Y %H:%M:%S")
@@ -95,7 +95,7 @@ if __name__ == "__main__":
                     'normalisation': True},
 
         "training": {'env_type': 'strategic_pricing_predict',
-                     'num_episodes': 1000,
+                     'num_episodes': 100,
                      'num_steps': 1,
                      'train_test_split': 0.2,
                      'evaluate': False,

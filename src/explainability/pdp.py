@@ -96,41 +96,36 @@ class PDP:
             self._denorm_states.append(denorm_state)
 
     def plot_pdp(self,
+                 feature,
                  fig_name,
                  savefig=True):
         """Build PDP plots.
         One marginalized plot per each state dimension.
 
         Args:
+            feature (str): Feature to plot.
             fig_name (str): Name to save plot.
             savefig (bool): Whether to save the plot.
         """
-        rows = len(self._denorm_actions)
-        cols = 1
-        unit = 1.5
-        figsize = (8, unit * rows)
 
-        fig, ax = plt.subplots(rows, cols, sharex=False, sharey=True, figsize=figsize)
+        ft_index = self._state_labels.index(feature)
 
-        for a in range(rows):
-            state = self._state_labels[a]
+        # Plot action-state graph
+        actions = self._denorm_actions[ft_index]
+        states = [str(round(i[0], 2)) for i in self._denorm_states[ft_index]]
+        samples = self._dig_state_actions_samples[ft_index]
+        fig, ax1 = plt.subplots()
+        plt.grid(zorder=0)
+        ax1.plot(states, actions, marker="o", color='b', zorder=3)
+        ax1.set_xlabel(f"State dimension {feature}")
+        ax1.set_ylabel("Actions")
 
-            # Plot action-state graph
-            axis = [ax[a], ax[a].twinx()]
-            actions = self._denorm_actions[a]
-            states = [str(round(i[0], 2)) for i in self._denorm_states[a]]
-            samples = self._dig_state_actions_samples[a]
-            axis[0].grid(zorder=0)
-            axis[0].plot(states, actions, marker="o", color='b', zorder=3)
-            axis[0].set(xlabel=f"State dimension {state}", ylabel="Actions")
-
-            # Super-impose number of samples plot
-            axis[1].bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b', label='total')
-            axis[1].bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
-            axis[1].set(ylabel='Num. of samples')
-            axis[1].legend()
-
-        plt.subplots_adjust(top=0.99, bottom=0.1, hspace=0.5, wspace=0.4)
+        # Super-impose number of samples plot
+        ax2 = ax1.twinx()
+        ax2.bar(x=states, height=samples[:, 1], zorder=3, alpha=0.25, color='b', label='total')
+        ax2.bar(x=states, height=samples[:, 0], zorder=3, alpha=0.5, color='b', label='greedy')
+        ax2.set_ylabel('Num. of samples')
+        plt.legend()
 
         if savefig:
             plt.savefig(fig_name, dpi=600)
