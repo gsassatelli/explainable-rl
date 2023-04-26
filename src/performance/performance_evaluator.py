@@ -313,21 +313,21 @@ class PerformanceEvaluator:
         """
         
         hyperparam_dict = {
-            "dimensions": {'states': {'lead_time': 10,
-                                      'length_of_stay': 10,
-                                      'competitor_price_difference_bin': 4,
-                                      'demand_bin': 4},
-                           'actions': {'price': 10},
+            "dimensions": {'states': {'lead_time': num_bins,
+                                      'length_of_stay': num_bins,
+                                      'competitor_price_difference_bin': num_bins,
+                                      'demand_bin': num_bins},
+                           'actions': {'price': num_bins},
                            'rewards': ['reward']
                            },
 
             "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
                         'col_delimiter': '|',
-                        'n_samples': 100000,
+                        'n_samples': num_samples,
                         'normalisation': True},
 
             "training": {'env_type': 'strategic_pricing_predict',
-                         'num_episodes': 10,
+                         'num_episodes': num_episodes,
                          'num_steps': 1,
                          'train_test_split': 0.2,
                          'evaluate': False,
