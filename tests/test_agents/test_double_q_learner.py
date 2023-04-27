@@ -1,9 +1,9 @@
-from src.foundation.library import *
+from explainable_RL.foundation.library import *
 
 # Import functions
 from tests.test_agents.test_td import TestTD
-from src.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-from src.agents.double_q_learner import DoubleQLearner
+from explainable_RL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from explainable_RL.agents.double_q_learner import DoubleQLearner
 
 
 class TestDoubleQLearner(TestTD):

@@ -1,5 +1,5 @@
 # Import functions
-from src.foundation.utils import *
+from explainable_RL.foundation.utils import *
 
 
 class TestUtils(unittest.TestCase):

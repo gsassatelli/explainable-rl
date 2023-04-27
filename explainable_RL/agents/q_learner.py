@@ -1,9 +1,11 @@
+from explainable_RL.foundation.library import *
+
 # Import functions
-from src.agents.td import TD
+from explainable_RL.agents.td import TD
 
 
-class SarsaAgent(TD):
-    """Sarsa agent."""
+class QLearningAgent(TD):
+    """Q-Learning agent."""
 
     def __init__(self, env, gamma, verbose=False):
         """Initialise the agent class.
@@ -31,12 +33,9 @@ class SarsaAgent(TD):
         """
         index_current = tuple(list(state) + [action])
         q_current = self.Q[index_current]
-        next_action = self._epsilon_greedy_policy(next_state, epsilon=epsilon)
-        index_next = tuple(list(next_state) + [next_action])
-        q_next = self.Q[index_next]
-
+        index_next = tuple(next_state)
+        q_next = np.max(self.Q[index_next].todense())
         self.Q[index_current] = q_current + lr * (
             reward + self.gamma * q_next - q_current
         )
-
         self.Q_num_samples[index_current] += 1

@@ -1,9 +1,9 @@
-from src.foundation.library import *
+from explainable_RL.foundation.library import *
 
 # Import functions
-from src.explainability.pdp import PDP
-from src.foundation.engine import Engine
-from src.data_handler.data_handler import DataHandler
+from explainable_RL.explainability.pdp import PDP
+from explainable_RL.foundation.engine import Engine
+from explainable_RL.data_handler.data_handler import DataHandler
 from tests.test_hyperparams import hyperparam_dict
 
 
