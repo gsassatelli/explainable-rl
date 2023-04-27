@@ -1,7 +1,7 @@
-from explainable_RL.foundation.library import *
+from explainableRL.foundation.library import *
 from tests.test_agents.test_td import TestTD
-from explainable_RL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-from explainable_RL.agents.sarsa import SarsaAgent
+from explainableRL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from explainableRL.agents.sarsa import SarsaAgent
 
 
 class TestSarsa(TestTD):

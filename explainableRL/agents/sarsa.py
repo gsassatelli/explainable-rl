@@ -1,5 +1,5 @@
 # Import functions
-from explainable_RL.agents.td import TD
+from explainableRL.agents.td import TD
 
 
 class SarsaAgent(TD):

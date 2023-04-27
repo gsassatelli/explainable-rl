@@ -1,7 +1,7 @@
-from explainable_RL.foundation.library import *
+from explainableRL.foundation.library import *
 
 # Import functions
-from explainable_RL.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from explainableRL.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from tests.test_environments.test_strategic_pricing import TestStrategicPricing
 
 

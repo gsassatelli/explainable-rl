@@ -1,7 +1,7 @@
 # Import functions
 from tests.test_agents.test_td import TestTD
-from explainable_RL.agents.sarsa_lambda import SarsaLambdaAgent
-from explainable_RL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from explainableRL.agents.sarsa_lambda import SarsaLambdaAgent
+from explainableRL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
 class TestSarsaLambda(TestTD):

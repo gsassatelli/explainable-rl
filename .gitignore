@@ -10,17 +10,19 @@ data_handler/__pycache__/
 example_data.parquet
 *.pyc
 __pycache__
-explainable_RL/data_handler/__pycache__
-explainable_RL/foundation/__pycache__
+explainableRL/data_handler/__pycache__
+explainableRL/foundation/__pycache__
 PDP plots - All states.png
 PDP plots - Visited states.png
 data_handler/__pycache__/
 *.pyc
 
 pyvenv.cfg
-/explainable_RL/performance/evaluations/
+/explainableRL/performance/evaluations/
 /performance-evaluations/
 
 ExplainableRL.egg-info/
 
 dist/
+
+Explainable_RL.egg-info/

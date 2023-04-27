@@ -1,14 +1,14 @@
-from explainable_RL.foundation.library import *
+from explainableRL.foundation.library import *
 
 # Import functions
-from explainable_RL.foundation.engine import Engine
-from explainable_RL.data_handler.data_handler import DataHandler
-from explainable_RL.agents.q_learner import QLearningAgent
-from explainable_RL.agents.sarsa import SarsaAgent
-from explainable_RL.agents.sarsa_lambda import SarsaLambdaAgent
-from explainable_RL.agents.double_q_learner import DoubleQLearner
-from explainable_RL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
-from explainable_RL.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from explainableRL.foundation.engine import Engine
+from explainableRL.data_handler.data_handler import DataHandler
+from explainableRL.agents.q_learner import QLearningAgent
+from explainableRL.agents.sarsa import SarsaAgent
+from explainableRL.agents.sarsa_lambda import SarsaLambdaAgent
+from explainableRL.agents.double_q_learner import DoubleQLearner
+from explainableRL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from explainableRL.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
 from tests.test_hyperparams import hyperparam_dict
 
 

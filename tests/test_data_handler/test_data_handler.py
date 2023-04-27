@@ -1,7 +1,7 @@
-from explainable_RL.foundation.library import *
+from explainableRL.foundation.library import *
 
 # Import functions
-from explainable_RL.data_handler.data_handler import DataHandler
+from explainableRL.data_handler.data_handler import DataHandler
 from sklearn.preprocessing import MinMaxScaler
 from tests.test_hyperparams import hyperparam_dict
 
