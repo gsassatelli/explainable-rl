@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.test_agents package &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="tests.test_data_handler package" href="tests.test_data_handler.html" />
+    <link rel="prev" title="tests package" href="tests.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">explainable-RL</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="library.html">library module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="main_evaluation.html">main_evaluation module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="parameters.html">parameters module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="src.html">src package</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="tests.html">tests package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="tests.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">tests.test_agents package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_data_handler.html">tests.test_data_handler package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_environments.html">tests.test_environments package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_explainability.html">tests.test_explainability package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="tests.test_foundation.html">tests.test_foundation package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests.test_hyperparams">tests.test_hyperparams module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tests.html#module-tests">Module contents</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">explainable-RL</a></li>
+          <li class="breadcrumb-item"><a href="tests.html">tests package</a></li>
+      <li class="breadcrumb-item active">tests.test_agents package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tests.test_agents.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="tests-test-agents-package">
+<h1>tests.test_agents package<a class="headerlink" href="#tests-test-agents-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-tests.test_agents.test_double_q_learner">
+<span id="tests-test-agents-test-double-q-learner-module"></span><h2>tests.test_agents.test_double_q_learner module<a class="headerlink" href="#module-tests.test_agents.test_double_q_learner" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_agents.test_double_q_learner.TestDoubleQLearner">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestDoubleQLearner</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_double_q_learner.html#TestDoubleQLearner"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_double_q_learner.TestDoubleQLearner" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.test_agents.test_td.TestTD" title="tests.test_agents.test_td.TestTD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestTD</span></code></a></p>
+<p>Test the DoubleQLearner class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_double_q_learner.TestDoubleQLearner.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_double_q_learner.html#TestDoubleQLearner.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_double_q_learner.TestDoubleQLearner.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_fit">
+<span class="sig-name descname"><span class="pre">test_fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_double_q_learner.html#TestDoubleQLearner.test_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Test the fit method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_double_q_learner.html#TestDoubleQLearner.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_step" title="Permalink to this definition"></a></dt>
+<dd><p>Test the step method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_update_q_values">
+<span class="sig-name descname"><span class="pre">test_update_q_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_double_q_learner.html#TestDoubleQLearner.test_update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_double_q_learner.TestDoubleQLearner.test_update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Test the update_q_values method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.test_agents.test_q_learner">
+<span id="tests-test-agents-test-q-learner-module"></span><h2>tests.test_agents.test_q_learner module<a class="headerlink" href="#module-tests.test_agents.test_q_learner" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_agents.test_q_learner.TestQLearningAgent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestQLearningAgent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_q_learner.html#TestQLearningAgent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_q_learner.TestQLearningAgent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.test_agents.test_td.TestTD" title="tests.test_agents.test_td.TestTD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestTD</span></code></a></p>
+<p>Test the QLearningAgent class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_q_learner.TestQLearningAgent.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_q_learner.html#TestQLearningAgent.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_q_learner.TestQLearningAgent.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_q_learner.TestQLearningAgent.test_fit">
+<span class="sig-name descname"><span class="pre">test_fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_q_learner.html#TestQLearningAgent.test_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_q_learner.TestQLearningAgent.test_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Test the fit method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_q_learner.TestQLearningAgent.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_q_learner.html#TestQLearningAgent.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_q_learner.TestQLearningAgent.test_step" title="Permalink to this definition"></a></dt>
+<dd><p>Test the step method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_q_learner.TestQLearningAgent.test_update_q_values">
+<span class="sig-name descname"><span class="pre">test_update_q_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_q_learner.html#TestQLearningAgent.test_update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_q_learner.TestQLearningAgent.test_update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Test the update_q_values method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.test_agents.test_sarsa">
+<span id="tests-test-agents-test-sarsa-module"></span><h2>tests.test_agents.test_sarsa module<a class="headerlink" href="#module-tests.test_agents.test_sarsa" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa.TestSarsa">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestSarsa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa.html#TestSarsa"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa.TestSarsa" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.test_agents.test_td.TestTD" title="tests.test_agents.test_td.TestTD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestTD</span></code></a></p>
+<p>Test the SarsaAgent class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa.TestSarsa.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa.html#TestSarsa.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa.TestSarsa.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa.TestSarsa.test_fit">
+<span class="sig-name descname"><span class="pre">test_fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa.html#TestSarsa.test_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa.TestSarsa.test_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Test the fit method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa.TestSarsa.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa.html#TestSarsa.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa.TestSarsa.test_step" title="Permalink to this definition"></a></dt>
+<dd><p>Test the step method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa.TestSarsa.test_update_q_values">
+<span class="sig-name descname"><span class="pre">test_update_q_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa.html#TestSarsa.test_update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa.TestSarsa.test_update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Test the update_q_values method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.test_agents.test_sarsa_lambda">
+<span id="tests-test-agents-test-sarsa-lambda-module"></span><h2>tests.test_agents.test_sarsa_lambda module<a class="headerlink" href="#module-tests.test_agents.test_sarsa_lambda" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa_lambda.TestSarsaLambda">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestSarsaLambda</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa_lambda.html#TestSarsaLambda"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa_lambda.TestSarsaLambda" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#tests.test_agents.test_td.TestTD" title="tests.test_agents.test_td.TestTD"><code class="xref py py-class docutils literal notranslate"><span class="pre">TestTD</span></code></a></p>
+<p>Test the SarsaLambda class.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa_lambda.TestSarsaLambda.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa_lambda.html#TestSarsaLambda.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa_lambda.TestSarsaLambda.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_sarsa_lambda.TestSarsaLambda.test_update_q_values">
+<span class="sig-name descname"><span class="pre">test_update_q_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_sarsa_lambda.html#TestSarsaLambda.test_update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_sarsa_lambda.TestSarsaLambda.test_update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Test the update_q_values method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.test_agents.test_td">
+<span id="tests-test-agents-test-td-module"></span><h2>tests.test_agents.test_td module<a class="headerlink" href="#module-tests.test_agents.test_td" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">TestTD</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">methodName</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'runTest'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TestCase</span></code></p>
+<p>Test the TD class.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.dh">
+<span class="sig-name descname"><span class="pre">dh</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#tests.test_agents.test_td.TestTD.dh" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.setUp">
+<span class="sig-name descname"><span class="pre">setUp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.setUp"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.setUp" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.setUpClass">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setUpClass</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.setUpClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.setUpClass" title="Permalink to this definition"></a></dt>
+<dd><p>Set up the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.tearDown">
+<span class="sig-name descname"><span class="pre">tearDown</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.tearDown"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.tearDown" title="Permalink to this definition"></a></dt>
+<dd><p>Tear down the test class.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_convert_to_string">
+<span class="sig-name descname"><span class="pre">test_convert_to_string</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_convert_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_convert_to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Test the convert_to_string method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_create_tables">
+<span class="sig-name descname"><span class="pre">test_create_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_create_tables"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_create_tables" title="Permalink to this definition"></a></dt>
+<dd><p>Test the create_tables method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_epsilon_greedy_policy">
+<span class="sig-name descname"><span class="pre">test_epsilon_greedy_policy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_epsilon_greedy_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Test the epsilon_greedy_policy method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_fit">
+<span class="sig-name descname"><span class="pre">test_fit</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_fit" title="Permalink to this definition"></a></dt>
+<dd><p>Implemented in tests for subclasses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_init_q_table">
+<span class="sig-name descname"><span class="pre">test_init_q_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_init_q_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_init_q_table" title="Permalink to this definition"></a></dt>
+<dd><p>Test the init_q_table method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_step">
+<span class="sig-name descname"><span class="pre">test_step</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_step" title="Permalink to this definition"></a></dt>
+<dd><p>Implemented in tests for subclasses.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_uncertainty_informed_policy">
+<span class="sig-name descname"><span class="pre">test_uncertainty_informed_policy</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_uncertainty_informed_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_uncertainty_informed_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Test the uncertainty_informed_policy method.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tests.test_agents.test_td.TestTD.test_update_q_values">
+<span class="sig-name descname"><span class="pre">test_update_q_values</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/tests/test_agents/test_td.html#TestTD.test_update_q_values"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tests.test_agents.test_td.TestTD.test_update_q_values" title="Permalink to this definition"></a></dt>
+<dd><p>Implemented in tests for subclasses.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-tests.test_agents">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-tests.test_agents" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="tests.html" class="btn btn-neutral float-left" title="tests package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="tests.test_data_handler.html" class="btn btn-neutral float-right" title="tests.test_data_handler package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
