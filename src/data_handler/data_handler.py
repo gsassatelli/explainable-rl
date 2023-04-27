@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 
 class DataHandler:

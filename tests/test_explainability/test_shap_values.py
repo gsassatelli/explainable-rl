@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 # Import functions
 from src.explainability.shap_values import ShapValues

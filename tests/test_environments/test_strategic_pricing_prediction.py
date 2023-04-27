@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 # Import functions
 from tests.test_environments.test_strategic_pricing import TestStrategicPricing

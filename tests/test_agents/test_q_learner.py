@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 # Import functions
 from tests.test_agents.test_td import TestTD

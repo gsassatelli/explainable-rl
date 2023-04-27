@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 # Import environment and agent
 from src.agents.q_learner import QLearningAgent

@@ -1,4 +1,4 @@
-from library import *
+from src.foundation.library import *
 
 # Import functions
 from src.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP

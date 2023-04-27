@@ -1,6 +1,3 @@
-from library import *
-
-
 class MDP:
     """Define the MDP super class which all particular MDP should inherit from.
     """
