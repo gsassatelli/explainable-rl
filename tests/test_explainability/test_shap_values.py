@@ -19,17 +19,15 @@ class TestShapValues(unittest.TestCase):
     def setUpClass(cls):
         """Setup TestShapValues class.
         """
-        dataset = pd.read_csv(
-            hyperparam_dict["dataset"]["data_path"],
-            sep=hyperparam_dict["dataset"]["col_delimiter"],
-        )
-        cls.dh = DataHandler(
-            hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset
-        )
-        cls.engine = Engine(dh=cls.dh, hyperparam_dict=hyperparam_dict)
+        dataset = pd.read_csv(hyperparam_dict['dataset']['data_path'],
+                              sep=hyperparam_dict['dataset']['col_delimiter'])
+        cls.dh = DataHandler(hyperparam_dict=hyperparam_dict, dataset=dataset, test_dataset=dataset)
+        cls.engine = Engine(dh=cls.dh,
+                            hyperparam_dict=hyperparam_dict)
         cls.engine.create_world()
         cls.engine.train_agent()
-        cls.shap_values = ShapValues(sample=[9, 1, 1], engine=cls.engine)
+        cls.shap_values = ShapValues(engine=cls.engine)
+        cls.shap_values.sample = [9, 1, 1]
 
     def test_create_shap_values(self):
         """Test creation of ShapValues object.
@@ -63,9 +61,7 @@ class TestShapValues(unittest.TestCase):
         self.shap_values.binned_sample = self.shap_values.bin_sample()
         shap_ft = 0
         num_bins_per_shap_ft = 10
-        result_plus, result_minus = self.shap_values.sample_plus_minus_samples(
-            shap_ft, num_bins_per_shap_ft
-        )
+        result_plus, result_minus = self.shap_values.sample_plus_minus_samples(shap_ft, num_bins_per_shap_ft)
         assert isinstance(result_plus, list)
         assert isinstance(result_minus, list)
         assert len(result_plus) == len(result_minus)
@@ -92,8 +88,7 @@ class TestShapValues(unittest.TestCase):
         self.shap_values.sample = self.shap_values.normalize_sample()
         self.shap_values.binned_sample = self.shap_values.bin_sample()
         result = self.shap_values.predict_action()
-        assert isinstance(result, list)
-        assert isinstance(result[0], float)
+        assert isinstance(result, float)
 
     def test_verify_outliers(self):
         """Test verify_outliers method.
