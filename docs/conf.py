@@ -1,14 +1,14 @@
-# Configuration file for the Sphinx documentation builder.
+# Configuration file for the Sphinx docs builder.
 #
 # This file only contains a selection of the most common options. For a full
-# list see the documentation:
+# list see the docs:
 # https://www.sphinx-doc.org/en/master/usage/configuration.html
 
 # -- Path setup --------------------------------------------------------------
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
-# documentation root, use os.path.abspath to make it absolute, like shown here.
+# docs root, use os.path.abspath to make it absolute, like shown here.
 #
 import os
 import sys
@@ -40,7 +40,7 @@ exclude_patterns = ['_build', 'Thumbs.db', '.DS_Store']
 
 # -- Options for HTML output -------------------------------------------------
 
-# The theme to use for HTML and HTML Help pages.  See the documentation for
+# The theme to use for HTML and HTML Help pages.  See the docs for
 # a list of builtin themes.
 #
 html_theme = 'sphinx_rtd_theme'
