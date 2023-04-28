@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explainableRL.foundation.agent &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">explainableRL.foundation.agent</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for explainableRL.foundation.agent</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">explainableRL.foundation.library</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="Agent"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent">[docs]</a><span class="k">class</span> <span class="nc">Agent</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Parent of all child agents (e.g Q-learner, SARSA).&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Agent.__init__"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">env</span><span class="p">,</span> <span class="n">gamma</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the agent.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            env (Environment): Environment object.</span>
+<span class="sd">            gamma (float): Discount factor.</span>
+<span class="sd">            verbose (bool): Print training information.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">gamma</span> <span class="o">=</span> <span class="n">gamma</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span></div>
+
+<div class="viewcode-block" id="Agent.fit"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent.fit">[docs]</a>    <span class="k">def</span> <span class="nf">fit</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">agent_hyperparams</span><span class="p">,</span> <span class="n">training_hyperparams</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">pbar</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Fit agent to the dataset.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            agent_hyperparams (dict): Dictionary of agent hyperparameters.</span>
+<span class="sd">            training_hyperparams (dict): Dictionary of training hyperparameters.</span>
+<span class="sd">            verbose (bool): Print training information.</span>
+<span class="sd">            pbar (tqdm): Progress bar.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Agent._epsilon_greedy_policy"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent._epsilon_greedy_policy">[docs]</a>    <span class="k">def</span> <span class="nf">_epsilon_greedy_policy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Epsilon-greedy policy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (int): State.</span>
+<span class="sd">            epsilon (float): Epsilon of epsilon-greedy policy.</span>
+<span class="sd">                Defaults to 0 for pure exploitation.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Agent.predict_actions"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent.predict_actions">[docs]</a>    <span class="k">def</span> <span class="nf">predict_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict action for a list of states using epsilon-greedy policy.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            states (list): States (binned).</span>
+<span class="sd">            epsilon (float): Epsilon of epsilon-greedy policy.</span>
+<span class="sd">                Defaults to 0 for pure exploitation.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of recommended actions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">state</span> <span class="ow">in</span> <span class="n">states</span><span class="p">:</span>
+            <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_epsilon_greedy_policy</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">epsilon</span><span class="p">)</span>
+            <span class="n">actions</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">action</span><span class="p">])</span>
+
+        <span class="k">return</span> <span class="n">actions</span></div>
+
+<div class="viewcode-block" id="Agent.predict_rewards"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent.predict_rewards">[docs]</a>    <span class="k">def</span> <span class="nf">predict_rewards</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict reward for a list of state-actions.</span>
+
+<span class="sd">        This function uses the avg reward matrix (which simulates a real-life scenario).</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            states (list): States (binned).</span>
+<span class="sd">            actions (list): Actions (binned).</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list: List of recommended actions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">rewards</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">state</span><span class="p">,</span> <span class="n">action</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">actions</span><span class="p">):</span>
+            <span class="n">_</span><span class="p">,</span> <span class="n">_</span><span class="p">,</span> <span class="n">reward</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+            <span class="n">rewards</span><span class="o">.</span><span class="n">append</span><span class="p">([</span><span class="n">reward</span><span class="p">[</span><span class="mi">0</span><span class="p">]])</span>
+
+        <span class="k">return</span> <span class="n">rewards</span></div>
+
+<div class="viewcode-block" id="Agent.uncertainty_informed_policy"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent.uncertainty_informed_policy">[docs]</a>    <span class="k">def</span> <span class="nf">uncertainty_informed_policy</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">epsilon</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span> <span class="n">use_uncertainty</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">q_importance</span><span class="o">=</span><span class="mf">0.7</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get epsilon greedy policy that favours more densely populated state-action pairs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): Current state of the agent.</span>
+<span class="sd">            epsilon (float): The exploration parameter.</span>
+<span class="sd">            use_uncertainty (bool): Whether to use uncertainty informed policy.</span>
+<span class="sd">            q_importance (float): The importance of the q value in the policy.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            action (int): selected action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">raise</span> <span class="ne">NotImplementedError</span></div>
+
+<div class="viewcode-block" id="Agent._convert_to_string"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent._convert_to_string">[docs]</a>    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">_convert_to_string</span><span class="p">(</span><span class="n">state</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Convert a state to a string.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            state (list): The state to convert.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            state_str (string): The state as a string.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="s2">&quot;,&quot;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="k">for</span> <span class="n">s</span> <span class="ow">in</span> <span class="n">state</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="Agent._init_q_table"><a class="viewcode-back" href="../../../explainableRL.foundation.html#explainableRL.foundation.agent.Agent._init_q_table">[docs]</a>    <span class="k">def</span> <span class="nf">_init_q_table</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialize the q-table with zeros.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q_num_samples</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">DOK</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
