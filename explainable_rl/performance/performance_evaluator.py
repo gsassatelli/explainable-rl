@@ -1,4 +1,4 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 import cProfile
 import io
@@ -9,9 +9,9 @@ import tracemalloc
 
 import matplotlib.pyplot as plt
 
-from explainableRL.foundation.engine import Engine
-from explainableRL.data_handler.data_handler import DataHandler
-from explainableRL.foundation import utils
+from explainable_rl.foundation.engine import Engine
+from explainable_rl.data_handler.data_handler import DataHandler
+from explainable_rl.foundation import utils
 
 import gc
 

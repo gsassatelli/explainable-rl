@@ -1,4 +1,4 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 
 def save_engine(engine, path_name=None):

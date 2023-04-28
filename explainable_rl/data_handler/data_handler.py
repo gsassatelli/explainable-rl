@@ -1,4 +1,4 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 
 class DataHandler:

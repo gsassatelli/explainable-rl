@@ -1,7 +1,7 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 # Import functions
-from explainableRL.agents.td import TD
+from explainable_rl.agents.td import TD
 
 
 class DoubleQLearner(TD):

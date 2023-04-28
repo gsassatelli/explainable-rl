@@ -1,12 +1,12 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 # Import environment and agent
-from explainableRL.agents.q_learner import QLearningAgent
-from explainableRL.agents.sarsa import SarsaAgent
-from explainableRL.agents.sarsa_lambda import SarsaLambdaAgent
-from explainableRL.agents.double_q_learner import DoubleQLearner
-from explainableRL.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
-from explainableRL.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
+from explainable_rl.agents.q_learner import QLearningAgent
+from explainable_rl.agents.sarsa import SarsaAgent
+from explainable_rl.agents.sarsa_lambda import SarsaLambdaAgent
+from explainable_rl.agents.double_q_learner import DoubleQLearner
+from explainable_rl.environments.strategic_pricing_suggestion import StrategicPricingSuggestionMDP
+from explainable_rl.environments.strategic_pricing_prediction import StrategicPricingPredictionMDP
 
 
 class Engine:

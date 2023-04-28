@@ -1,7 +1,7 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 # Import functions
-from explainableRL.foundation.engine import Engine
+from explainable_rl.foundation.engine import Engine
 
 
 class Evaluator:

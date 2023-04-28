@@ -1,7 +1,7 @@
-from explainableRL.foundation.library import *
+from explainable_rl.foundation.library import *
 
 # Import functions
-from explainableRL.foundation.environment import MDP
+from explainable_rl.foundation.environment import MDP
 
 
 class StrategicPricing(MDP):

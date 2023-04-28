@@ -1,6 +1,6 @@
 # Import functions
-from explainableRL.foundation.utils import *
-from explainableRL.foundation.agent import Agent
+from explainable_rl.foundation.utils import *
+from explainable_rl.foundation.agent import Agent
 
 
 class TD(Agent):
