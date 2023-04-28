@@ -8,7 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
   <!--[if lt IE 9]>
-    <script explainableRL="_static/js/html5shiv.min.js"></script>
+    <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
@@ -19,7 +19,7 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="library module" href="library.html" />
+    <link rel="next" title="explainableRL package" href="explainableRL.html" />
     <link rel="prev" title="Welcome to Explainable RL’s documentation!" href="index.html" /> 
 </head>
 
@@ -41,11 +41,7 @@
               <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">explainable-RL</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="library.html">library module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="main.html">main module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="main_evaluation.html">main_evaluation module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="parameters.html">parameters module</a></li>
-<li class="toctree-l2"><a class="reference internal" href="src.html">src package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explainableRL.html">explainableRL package</a></li>
 <li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
 </ul>
 </li>
@@ -79,61 +75,64 @@
 <h1>explainable-RL<a class="headerlink" href="#explainable-rl" title="Permalink to this heading"></a></h1>
 <div class="toctree-wrapper compound">
 <ul>
-<li class="toctree-l1"><a class="reference internal" href="library.html">library module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main.html">main module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="main_evaluation.html">main_evaluation module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="parameters.html">parameters module</a></li>
-<li class="toctree-l1"><a class="reference internal" href="src.html">src package</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="src.html#subpackages">Subpackages</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="src.agents.html">src.agents package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents.double_q_learner">src.agents.double_q_learner module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents.q_learner">src.agents.q_learner module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents.sarsa">src.agents.sarsa module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents.sarsa_lambda">src.agents.sarsa_lambda module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents.td">src.agents.td module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.agents.html#module-src.agents">Module contents</a></li>
+<li class="toctree-l1"><a class="reference internal" href="explainableRL.html">explainableRL package</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="explainableRL.html#subpackages">Subpackages</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.agents.html">explainableRL.agents package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents.double_q_learner">explainableRL.agents.double_q_learner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents.q_learner">explainableRL.agents.q_learner module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents.sarsa">explainableRL.agents.sarsa module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents.sarsa_lambda">explainableRL.agents.sarsa_lambda module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents.td">explainableRL.agents.td module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.agents.html#module-explainableRL.agents">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.data_handler.html">src.data_handler package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.data_handler.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.data_handler.html#module-src.data_handler.data_handler">src.data_handler.data_handler module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.data_handler.html#module-src.data_handler">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.data_handler.html">explainableRL.data_handler package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.data_handler.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.data_handler.html#module-explainableRL.data_handler.data_handler">explainableRL.data_handler.data_handler module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.data_handler.html#module-explainableRL.data_handler">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.environments.html">src.environments package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.environments.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.environments.html#module-src.environments.strategic_pricing">src.environments.strategic_pricing module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.environments.html#module-src.environments.strategic_pricing_prediction">src.environments.strategic_pricing_prediction module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.environments.html#module-src.environments.strategic_pricing_suggestion">src.environments.strategic_pricing_suggestion module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.environments.html#module-src.environments">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.environments.html">explainableRL.environments package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.environments.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.environments.html#module-explainableRL.environments.strategic_pricing">explainableRL.environments.strategic_pricing module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.environments.html#module-explainableRL.environments.strategic_pricing_prediction">explainableRL.environments.strategic_pricing_prediction module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.environments.html#module-explainableRL.environments.strategic_pricing_suggestion">explainableRL.environments.strategic_pricing_suggestion module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.environments.html#module-explainableRL.environments">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.explainability.html">src.explainability package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.explainability.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.explainability.html#module-src.explainability.pdp">src.explainability.pdp module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.explainability.html#module-src.explainability.shap_values">src.explainability.shap_values module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.explainability.html#module-src.explainability">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.evaluation.html">explainableRL.evaluation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.evaluation.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.evaluation.html#module-explainableRL.evaluation.evaluator">explainableRL.evaluation.evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.evaluation.html#module-explainableRL.evaluation">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.foundation.html">src.foundation package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#module-src.foundation.agent">src.foundation.agent module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#module-src.foundation.engine">src.foundation.engine module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#module-src.foundation.environment">src.foundation.environment module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#module-src.foundation.utils">src.foundation.utils module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.foundation.html#module-src.foundation">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.explainability.html">explainableRL.explainability package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.explainability.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.explainability.html#module-explainableRL.explainability.pdp">explainableRL.explainability.pdp module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.explainability.html#module-explainableRL.explainability.shap_values">explainableRL.explainability.shap_values module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.explainability.html#module-explainableRL.explainability">Module contents</a></li>
 </ul>
 </li>
-<li class="toctree-l3"><a class="reference internal" href="src.performance.html">src.performance package</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="src.performance.html#submodules">Submodules</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.performance.html#module-src.performance.performance_evaluator">src.performance.performance_evaluator module</a></li>
-<li class="toctree-l4"><a class="reference internal" href="src.performance.html#module-src.performance">Module contents</a></li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.foundation.html">explainableRL.foundation package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation.agent">explainableRL.foundation.agent module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation.engine">explainableRL.foundation.engine module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation.environment">explainableRL.foundation.environment module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation.library">explainableRL.foundation.library module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation.utils">explainableRL.foundation.utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.foundation.html#module-explainableRL.foundation">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="explainableRL.performance.html">explainableRL.performance package</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.performance.html#submodules">Submodules</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.performance.html#module-explainableRL.performance.performance_evaluator">explainableRL.performance.performance_evaluator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainableRL.performance.html#module-explainableRL.performance">Module contents</a></li>
 </ul>
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="src.html#module-src">Module contents</a></li>
+<li class="toctree-l2"><a class="reference internal" href="explainableRL.html#module-explainableRL">Module contents</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="tests.html">tests package</a><ul>
@@ -192,7 +191,7 @@
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="index.html" class="btn btn-neutral float-left" title="Welcome to Explainable RL’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="library.html" class="btn btn-neutral float-right" title="library module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="explainableRL.html" class="btn btn-neutral float-right" title="explainableRL package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
