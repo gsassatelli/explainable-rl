@@ -1,8 +1,8 @@
-from src.foundation.library import *
+from explainable_rl.foundation.library import *
 
 # Import functions
-from src.data_handler.data_handler import DataHandler
-from src.environments.strategic_pricing import StrategicPricing
+from explainable_rl.data_handler.data_handler import DataHandler
+from explainable_rl.environments.strategic_pricing import StrategicPricing
 from tests.test_hyperparams import hyperparam_dict
 
 

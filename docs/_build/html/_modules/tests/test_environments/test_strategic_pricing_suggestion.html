@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tests.test_environments.test_strategic_pricing_suggestion &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">tests.test_environments.test_strategic_pricing_suggestion</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for tests.test_environments.test_strategic_pricing_suggestion</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">explainableRL.foundation.library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="c1"># Import functions</span>
+<span class="kn">from</span> <span class="nn">explainableRL.environments.strategic_pricing_suggestion</span> <span class="kn">import</span> <span class="n">StrategicPricingSuggestionMDP</span>
+<span class="kn">from</span> <span class="nn">tests.test_environments.test_strategic_pricing</span> <span class="kn">import</span> <span class="n">TestStrategicPricing</span>
+
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP">[docs]</a><span class="k">class</span> <span class="nc">TestStrategicPricingSuggestionMDP</span><span class="p">(</span><span class="n">TestStrategicPricing</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Test StrategicPricingSuggestionMDP class.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.setUp"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.setUp">[docs]</a>    <span class="k">def</span> <span class="nf">setUp</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Set up test objects.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">StrategicPricingSuggestionMDP</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.tearDown"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.tearDown">[docs]</a>    <span class="k">def</span> <span class="nf">tearDown</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Tear down test objects.&quot;&quot;&quot;</span>
+        <span class="k">del</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_get_counts_and_rewards_per_bin"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_get_counts_and_rewards_per_bin">[docs]</a>    <span class="k">def</span> <span class="nf">test_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test get_counts_and_rewards_per_bin method.&quot;&quot;&quot;</span>
+        <span class="n">binned</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">]])</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_reward_mdp_data</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="p">[</span><span class="mi">2</span><span class="p">]])</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_get_counts_and_rewards_per_bin</span><span class="p">(</span><span class="n">binned</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1,2,3,1&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;1,2,3,2&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="nb">dict</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">target</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_make_rewards_from_data"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_make_rewards_from_data">[docs]</a>    <span class="k">def</span> <span class="nf">test_make_rewards_from_data</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test make_rewards_from_data method.&quot;&quot;&quot;</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_make_rewards_from_data</span><span class="p">()</span>
+        <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">sparse</span><span class="o">.</span><span class="n">COO</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_step"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_step">[docs]</a>    <span class="k">def</span> <span class="nf">test_step</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test step method.&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">step</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">4</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="mf">0.0</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_find_next_state"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_find_next_state">[docs]</a>    <span class="k">def</span> <span class="nf">test_find_next_state</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test find_next_state method.&quot;&quot;&quot;</span>
+        <span class="n">state</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="mi">2</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_find_next_state</span><span class="p">(</span><span class="n">state</span><span class="p">,</span> <span class="n">action</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">result</span><span class="p">)</span> <span class="o">==</span> <span class="mi">2</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span>
+        <span class="k">assert</span> <span class="n">result</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">==</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_create_average_reward_matrix"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_create_average_reward_matrix">[docs]</a>    <span class="k">def</span> <span class="nf">test_create_average_reward_matrix</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test create_average_reward_matrix method.&quot;&quot;&quot;</span>
+        <span class="n">counts_rewards</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;1,2,3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span> <span class="s2">&quot;1,2,3&quot;</span><span class="p">:</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]}</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_create_average_reward_matrix</span><span class="p">(</span><span class="n">counts_rewards</span><span class="p">)</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">10</span><span class="p">))</span>
+        <span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.0</span>
+        <span class="n">target</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">=</span> <span class="mf">2.0</span>
+        <span class="n">target</span> <span class="o">=</span> <span class="n">sparse</span><span class="o">.</span><span class="n">COO</span><span class="p">(</span><span class="n">target</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">result</span> <span class="o">==</span> <span class="n">target</span></div>
+
+<div class="viewcode-block" id="TestStrategicPricingSuggestionMDP.test_transform_df_to_numpy"><a class="viewcode-back" href="../../../tests.test_environments.html#tests.test_environments.test_strategic_pricing_suggestion.TestStrategicPricingSuggestionMDP.test_transform_df_to_numpy">[docs]</a>    <span class="k">def</span> <span class="nf">test_transform_df_to_numpy</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Test transform_df_to_numpy method.&quot;&quot;&quot;</span>
+        <span class="n">target_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_states</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="n">target_actions</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_action_labels</span><span class="p">())</span>
+        <span class="n">target_rewards</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">get_rewards</span><span class="p">()</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_transform_df_to_numpy</span><span class="p">()</span>
+        <span class="n">result_states</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_state_mdp_data</span>
+        <span class="n">result_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_action_mdp_data</span>
+        <span class="n">result_reward</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">_reward_mdp_data</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">target_states</span><span class="p">,</span> <span class="n">result_states</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">target_actions</span><span class="p">,</span> <span class="n">result_actions</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">np</span><span class="o">.</span><span class="n">array_equal</span><span class="p">(</span><span class="n">target_rewards</span><span class="p">,</span> <span class="n">result_reward</span><span class="p">)</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
