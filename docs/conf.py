@@ -18,8 +18,10 @@ sys.path.insert(0, os.path.abspath('..'))
 # -- Project information -----------------------------------------------------
 
 project = 'Explainable RL'
-copyright = '2023, MSc AI Group 6'
-author = 'MSc AI Group 6'
+copyright = '2023, Ludovico Buizza, Teresa Delgado de las Heras, Mireia Hernandez Caralt, Matteo Gabriel Mecattaf, ' \
+         'Giulia Sassatelli'
+author = 'Ludovico Buizza, Teresa Delgado de las Heras, Mireia Hernandez Caralt, Matteo Gabriel Mecattaf, ' \
+         'Giulia Sassatelli'
 
 
 # -- General configuration ---------------------------------------------------
