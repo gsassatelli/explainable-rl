@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explainable_rl.explainability.shap_values &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">explainable_rl.explainability.shap_values</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for explainable_rl.explainability.shap_values</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">explainable_rl.foundation.library</span> <span class="kn">import</span> <span class="o">*</span>
+
+
+<div class="viewcode-block" id="ShapValues"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues">[docs]</a><span class="k">class</span> <span class="nc">ShapValues</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;SHAP Values class.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="ShapValues.__init__"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">engine</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise the ShapValues class.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            engine (Engine): Engine object.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">features</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">state_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">env</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">env</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">Q</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">agent</span><span class="o">.</span><span class="n">Q</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">minmax_scalars</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">dh</span><span class="o">.</span><span class="n">action_labels</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">number_of_samples</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;explainability&quot;</span><span class="p">][</span>
+            <span class="s2">&quot;shap_num_samples&quot;</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">engine</span><span class="o">.</span><span class="n">hyperparameters</span><span class="p">[</span><span class="s2">&quot;program_flow&quot;</span><span class="p">][</span><span class="s2">&quot;verbose&quot;</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="ShapValues.compute_shap_values"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.compute_shap_values">[docs]</a>    <span class="k">def</span> <span class="nf">compute_shap_values</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Compute the SHAP values for a given sample.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sample (list): List with the sample to compute the SHAP values.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            shap_values (dict): Dictionary with the shap values for each feature.</span>
+<span class="sd">            predicted_action (int): Predicted action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="n">sample</span>
+
+        <span class="c1"># Verify if sample length is correct</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Verify if sample length is correct&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_sample_length</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The sample length is not correct.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Normalize sample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">normalize_sample</span><span class="p">()</span>
+
+        <span class="c1"># Bin sample</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">bin_sample</span><span class="p">()</span>
+
+        <span class="c1"># Verify if sample is an outlier</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Verify if sample is an outlier&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_outliers</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The sample is an outlier.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Verify if cell has been visited</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Verify if selected cell has been visited&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_cell_availability</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span><span class="p">):</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;The cell has not been visited by the agent.&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Predict action</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Predict action&quot;</span><span class="p">)</span>
+        <span class="n">predicted_action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">predict_action</span><span class="p">()</span>
+
+        <span class="c1"># Loop over all state dimensions</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compute shap values&quot;</span><span class="p">)</span>
+        <span class="n">shap_values</span> <span class="o">=</span> <span class="p">{}</span>
+        <span class="k">for</span> <span class="n">shap_ft</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+                <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Compute shap values for feature: &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">])</span>
+            <span class="n">num_bins_per_shap_ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">]</span>
+            <span class="n">action_samples_plus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="n">action_samples_minus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_samples</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">sample</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">number_of_samples</span><span class="p">):</span>
+                <span class="n">verified_samples</span> <span class="o">=</span> <span class="kc">False</span>
+
+                <span class="c1"># Sample plus and minus samples</span>
+                <span class="k">while</span> <span class="ow">not</span> <span class="n">verified_samples</span><span class="p">:</span>
+                    <span class="n">s_plus</span><span class="p">,</span> <span class="n">s_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">sample_plus_minus_samples</span><span class="p">(</span>
+                        <span class="n">shap_ft</span><span class="p">,</span> <span class="n">num_bins_per_shap_ft</span>
+                    <span class="p">)</span>
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_cell_availability</span><span class="p">(</span>
+                        <span class="n">s_plus</span>
+                    <span class="p">)</span> <span class="ow">or</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">verify_cell_availability</span><span class="p">(</span><span class="n">s_minus</span><span class="p">):</span>
+                        <span class="n">verified_samples</span> <span class="o">=</span> <span class="kc">False</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">verified_samples</span> <span class="o">=</span> <span class="kc">True</span>
+
+                <span class="c1"># Find best Q values for 2 samples</span>
+                <span class="n">Q_state_plus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="n">Q_state_minus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+                <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+                    <span class="n">index_plus</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s_plus</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="n">current_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_plus</span><span class="p">]</span>
+                    <span class="n">Q_state_plus</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_plus</span>
+                    <span class="n">index_minus</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">s_minus</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+                    <span class="n">current_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_minus</span><span class="p">]</span>
+                    <span class="n">Q_state_minus</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_minus</span>
+                <span class="n">action_samples_plus</span><span class="p">[</span><span class="n">sample</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Q_state_plus</span><span class="p">))</span>
+                <span class="n">action_samples_minus</span><span class="p">[</span><span class="n">sample</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">Q_state_minus</span><span class="p">))</span>
+
+            <span class="c1"># Denorm actions</span>
+            <span class="n">denorm_action_samples_plus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_denorm_actions</span><span class="p">(</span><span class="n">action_samples_plus</span><span class="p">)</span>
+            <span class="n">denorm_action_samples_minus</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_denorm_actions</span><span class="p">(</span><span class="n">action_samples_minus</span><span class="p">)</span>
+
+            <span class="c1"># Compute difference between arrays</span>
+            <span class="n">difference</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">denorm_action_samples_plus</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span>
+                <span class="n">denorm_action_samples_minus</span>
+            <span class="p">)</span>
+
+            <span class="c1"># Compute mean</span>
+            <span class="n">mean_difference</span> <span class="o">=</span> <span class="nb">round</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">difference</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">),</span> <span class="mi">4</span><span class="p">)</span>
+
+            <span class="c1"># Append shap value for that feature</span>
+            <span class="n">shap_values</span><span class="o">.</span><span class="n">update</span><span class="p">({</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">]:</span> <span class="n">mean_difference</span><span class="p">})</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">shap_values</span> <span class="o">=</span> <span class="n">shap_values</span>
+
+        <span class="k">return</span> <span class="n">shap_values</span><span class="p">,</span> <span class="n">predicted_action</span></div>
+
+<div class="viewcode-block" id="ShapValues.verify_sample_length"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.verify_sample_length">[docs]</a>    <span class="k">def</span> <span class="nf">verify_sample_length</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify whether the sample length is correct.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the sample length is correct, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">):</span>
+            <span class="k">return</span> <span class="kc">False</span>
+        <span class="k">return</span> <span class="kc">True</span></div>
+
+<div class="viewcode-block" id="ShapValues.bin_sample"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.bin_sample">[docs]</a>    <span class="k">def</span> <span class="nf">bin_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Bin the samples.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            binned_sample (np.array): Binned sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">state_dims</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">)))</span>
+        <span class="n">binned_sample</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bin_state</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">,</span> <span class="n">idxs</span><span class="o">=</span><span class="n">state_dims</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">binned_sample</span></div>
+
+<div class="viewcode-block" id="ShapValues.verify_cell_availability"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.verify_cell_availability">[docs]</a>    <span class="k">def</span> <span class="nf">verify_cell_availability</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned_sample</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify whether the cell has been visited.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            binned_sample (np.array): Binned sample.</span>
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the cell has been visited, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">num_actions</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># The last element in the bins list is the number of actions</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_actions</span><span class="p">):</span>
+            <span class="n">index_current</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="n">binned_sample</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index_current</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="c1"># At least one action has been visited for this state has been visited</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ShapValues.verify_outliers"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.verify_outliers">[docs]</a>    <span class="k">def</span> <span class="nf">verify_outliers</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">binned_sample</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Verify whether the sample is an outlier.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            binned_sample (np.array): Binned sample.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the sample is an outlier, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">binned_sample</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span> <span class="ow">or</span> <span class="n">binned_sample</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">True</span>
+        <span class="k">return</span> <span class="kc">False</span></div>
+
+<div class="viewcode-block" id="ShapValues.sample_plus_minus_samples"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.sample_plus_minus_samples">[docs]</a>    <span class="k">def</span> <span class="nf">sample_plus_minus_samples</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">shap_ft</span><span class="p">,</span> <span class="n">num_bins_per_shap_ft</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Sample the plus and minus samples.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            shap_ft (int): Feature to explain.</span>
+<span class="sd">            num_bins_per_shap_ft (int): Number of bins for the feature to explain.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            s_plus (np.array): Plus sample.</span>
+<span class="sd">            s_minus (np.array): Minus sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">shap_ft_random</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">num_bins_per_shap_ft</span><span class="p">)</span>
+        <span class="n">s_plus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">))</span>
+        <span class="n">s_minus</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">))</span>
+        <span class="n">s_plus</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">]</span>
+        <span class="n">s_minus</span><span class="p">[</span><span class="n">shap_ft</span><span class="p">]</span> <span class="o">=</span> <span class="n">shap_ft_random</span>
+        <span class="k">for</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">)):</span>
+            <span class="k">if</span> <span class="n">shap_ft</span> <span class="o">!=</span> <span class="n">ft</span><span class="p">:</span>
+                <span class="n">num_bins_ft</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+                <span class="n">ft_random</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randrange</span><span class="p">(</span><span class="n">num_bins_ft</span><span class="p">)</span>
+                <span class="n">s_plus</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span> <span class="o">=</span> <span class="n">ft_random</span>
+                <span class="n">s_minus</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span> <span class="o">=</span> <span class="n">ft_random</span>
+        <span class="n">s_plus</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s_plus</span><span class="p">]</span>
+        <span class="n">s_minus</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">s_minus</span><span class="p">]</span>
+        <span class="k">return</span> <span class="n">s_plus</span><span class="p">,</span> <span class="n">s_minus</span></div>
+
+<div class="viewcode-block" id="ShapValues.get_denorm_actions"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.get_denorm_actions">[docs]</a>    <span class="k">def</span> <span class="nf">get_denorm_actions</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">actions</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get actions denormalized values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            actions (list): List of actions.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            denorm_actions (list): List of denormalized actions.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">denorm_actions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">[</span><span class="mi">0</span><span class="p">]]</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                <span class="c1"># Divide dig actions by # bins of the action dimension to get a value between 0 and 1</span>
+                <span class="n">denorm_a</span> <span class="o">=</span> <span class="n">scalar</span><span class="o">.</span><span class="n">inverse_transform</span><span class="p">(</span>
+                    <span class="n">a</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="n">denorm_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">denorm_a</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="n">actions</span><span class="p">:</span>
+                <span class="n">denorm_a</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">[</span><span class="n">a</span><span class="p">]</span>
+                <span class="n">denorm_actions</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">denorm_a</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">denorm_actions</span></div>
+
+<div class="viewcode-block" id="ShapValues.normalize_sample"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.normalize_sample">[docs]</a>    <span class="k">def</span> <span class="nf">normalize_sample</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Normalize sample.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            normalized_sample (list): Normalized sample.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">normalized_sample</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="k">for</span> <span class="n">idx</span><span class="p">,</span> <span class="n">ft</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">features</span><span class="p">):</span>
+            <span class="n">scalar</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">minmax_scalars</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+            <span class="n">idx_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span>
+                <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">sample</span><span class="p">[</span><span class="n">idx</span><span class="p">])</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="p">[</span><span class="n">ft</span><span class="p">]</span>
+            <span class="p">)</span>
+            <span class="n">norm_ft</span> <span class="o">=</span> <span class="n">scalar</span><span class="o">.</span><span class="n">transform</span><span class="p">(</span><span class="n">idx_df</span><span class="p">)</span>
+            <span class="n">normalized_sample</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">norm_ft</span><span class="p">[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">])</span>
+        <span class="k">return</span> <span class="n">normalized_sample</span></div>
+
+<div class="viewcode-block" id="ShapValues.predict_action"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.predict_action">[docs]</a>    <span class="k">def</span> <span class="nf">predict_action</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Predict action.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            action (list): Predicted action.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">Q_state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">env</span><span class="o">.</span><span class="n">bins</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">tuple</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">binned_sample</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">a</span><span class="p">])</span>
+            <span class="n">current_q</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">Q</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+            <span class="n">Q_state</span><span class="p">[</span><span class="n">a</span><span class="p">]</span> <span class="o">=</span> <span class="n">current_q</span>
+        <span class="n">binned_action</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">current_q</span><span class="p">))</span>
+        <span class="n">action</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">get_denorm_actions</span><span class="p">([</span><span class="n">binned_action</span><span class="p">])</span>
+        <span class="k">return</span> <span class="nb">round</span><span class="p">(</span><span class="n">action</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="mi">4</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="ShapValues.plot_shap_values"><a class="viewcode-back" href="../../../explainable_rl.explainability.html#explainable_rl.explainability.shap_values.ShapValues.plot_shap_values">[docs]</a>    <span class="k">def</span> <span class="nf">plot_shap_values</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span> <span class="n">sample</span><span class="p">,</span> <span class="n">shap_values</span><span class="p">,</span> <span class="n">predicted_action</span><span class="p">,</span> <span class="n">fig_name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">savefig</span><span class="o">=</span><span class="kc">False</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot shap values.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            sample (list): Sample.</span>
+<span class="sd">            shap_values (dict): Shap values.</span>
+<span class="sd">            predicted_action (float): Predicted action.</span>
+<span class="sd">            fig_name (str): Figure name.</span>
+<span class="sd">            savefig (bool): Whether to save the figure or not.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Sort values</span>
+        <span class="n">sorted_shap_values</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">shap_values</span><span class="o">.</span><span class="n">items</span><span class="p">(),</span> <span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span>
+
+        <span class="c1"># Get values</span>
+        <span class="n">features</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_shap_values</span><span class="p">]</span>
+        <span class="n">values</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">sorted_shap_values</span><span class="p">]</span>
+        <span class="n">colors</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;red&quot;</span> <span class="k">if</span> <span class="n">i</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">else</span> <span class="s2">&quot;green&quot;</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">values</span><span class="p">]</span>
+
+        <span class="c1"># Plot values</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">(</span><span class="n">zorder</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">barh</span><span class="p">(</span><span class="n">features</span><span class="p">,</span> <span class="n">values</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="n">colors</span><span class="p">,</span> <span class="n">zorder</span><span class="o">=</span><span class="mi">3</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Shap values for </span><span class="si">{</span><span class="n">sample</span><span class="si">}</span><span class="s2"> - Action: </span><span class="si">{</span><span class="n">predicted_action</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="k">if</span> <span class="n">savefig</span><span class="p">:</span>
+            <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="n">fig_name</span><span class="p">,</span> <span class="n">dpi</span><span class="o">=</span><span class="mi">600</span><span class="p">)</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span></div></div>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

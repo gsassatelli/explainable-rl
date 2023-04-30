@@ -2,7 +2,7 @@
  * doctools.js
  * ~~~~~~~~~~~
  *
- * Base JavaScript utilities for all Sphinx HTML docs.
+ * Base JavaScript utilities for all Sphinx HTML documentation.
  *
  * :copyright: Copyright 2007-2022 by the Sphinx team, see AUTHORS.
  * :license: BSD, see LICENSE for details.
@@ -80,7 +80,7 @@ const _highlightText = (thisNode, text, className) => {
 };
 
 /**
- * Small JavaScript module for the docs.
+ * Small JavaScript module for the documentation.
  */
 const Documentation = {
   init: () => {
