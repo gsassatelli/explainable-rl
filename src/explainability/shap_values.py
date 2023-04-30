@@ -252,7 +252,7 @@ class ShapValues:
             index = tuple(list(self.binned_sample) + [a])
             current_q = self.Q[index]
             Q_state[a] = current_q
-        binned_action = np.argmax(np.array(current_q))
+        binned_action = np.argmax(np.array(Q_state))
         action = self.get_denorm_actions([binned_action])
         return round(action[0], 4)
 
