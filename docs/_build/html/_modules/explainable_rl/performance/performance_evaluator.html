@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explainable_rl.performance.performance_evaluator &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">explainable-RL</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="../../index.html">Module code</a></li>
+      <li class="breadcrumb-item active">explainable_rl.performance.performance_evaluator</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for explainable_rl.performance.performance_evaluator</h1><div class="highlight"><pre>
+<span></span><span class="kn">from</span> <span class="nn">explainable_rl.foundation.library</span> <span class="kn">import</span> <span class="o">*</span>
+
+<span class="kn">import</span> <span class="nn">cProfile</span>
+<span class="kn">import</span> <span class="nn">io</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pstats</span>
+<span class="kn">import</span> <span class="nn">time</span>
+<span class="kn">import</span> <span class="nn">tracemalloc</span>
+
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+
+<span class="kn">from</span> <span class="nn">explainable_rl.foundation.engine</span> <span class="kn">import</span> <span class="n">Engine</span>
+<span class="kn">from</span> <span class="nn">explainable_rl.data_handler.data_handler</span> <span class="kn">import</span> <span class="n">DataHandler</span>
+<span class="kn">from</span> <span class="nn">explainable_rl.foundation</span> <span class="kn">import</span> <span class="n">utils</span>
+
+<span class="kn">import</span> <span class="nn">gc</span>
+
+
+<div class="viewcode-block" id="PerformanceEvaluator"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator">[docs]</a><span class="k">class</span> <span class="nc">PerformanceEvaluator</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Time and Memory Evaluator.&quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="PerformanceEvaluator.__init__"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
+        <span class="bp">self</span><span class="p">,</span>
+        <span class="n">results_path</span><span class="o">=</span><span class="sa">f</span><span class="s2">&quot;src/performance/evaluations&quot;</span><span class="p">,</span>
+        <span class="n">num_sample_range</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)],</span>
+        <span class="n">num_ep_range</span><span class="o">=</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="mf">1e1</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e2</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e3</span><span class="p">),</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e4</span><span class="p">)],</span>
+        <span class="n">num_bin_range</span><span class="o">=</span><span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">50</span><span class="p">],</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Initialise a PerformanceEvaluator.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            results_path (str): Path to store performance results.</span>
+<span class="sd">            num_sample_range (list[int]): Range of dataset samples to evaluate performance over.</span>
+<span class="sd">            num_ep_range (list[int]): Range of episodes to evaluate performance over.</span>
+<span class="sd">            num_bin_range (list[int]): Range of bins to evaluate performance over.</span>
+<span class="sd">            verbose (bool): Whether to print statements of flow progression.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Define the directory containing all the evaluations of this performance evaluator</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">results_path</span><span class="p">):</span>
+            <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="n">results_path</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_init_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">&quot;%Y%m</span><span class="si">%d</span><span class="s2">-%H:%M:%S&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_path</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">results_path</span><span class="si">}</span><span class="s2">/performance-</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_init_time</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">mkdir</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Benchmark settings</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e1</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span> <span class="o">=</span> <span class="mi">10</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mf">1e5</span><span class="p">)</span>
+
+        <span class="c1"># Ranges for graphs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_sample_range</span> <span class="o">=</span> <span class="n">num_sample_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_ep_range</span> <span class="o">=</span> <span class="n">num_ep_range</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_bin_range</span> <span class="o">=</span> <span class="n">num_bin_range</span>
+
+        <span class="c1"># Graph colors</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">time_color</span> <span class="o">=</span> <span class="s2">&quot;cornflowerblue&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">space_color</span> <span class="o">=</span> <span class="s2">&quot;sienna&quot;</span>
+
+        <span class="c1"># Print statements</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+
+        <span class="c1"># How many of the top lines of memory allocation to record</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">num_memalloc_lines_to_keep</span> <span class="o">=</span> <span class="mi">5000</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator.get_all_performance_evaluations"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.get_all_performance_evaluations">[docs]</a>    <span class="k">def</span> <span class="nf">get_all_performance_evaluations</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Perform and save all desired performance evaluations.&quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_benchmark_performance</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_performance_graphs</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_time_breakdown_per_function</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">get_space_breakdown_per_function</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator.get_benchmark_performance"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.get_benchmark_performance">[docs]</a>    <span class="k">def</span> <span class="nf">get_benchmark_performance</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get performance (space and time) for constant benchmark settings.</span>
+
+<span class="sd">        Note, the reason the timeit module is not used is because the piece of code being profiled</span>
+<span class="sd">        is lengthy (whole training flow); timeit is designed to test small snippets of code</span>
+<span class="sd">        by running them many times.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING BENCHMARK PERFORMANCE&quot;</span><span class="p">)</span>
+        <span class="c1"># Halt any ongoing memory tracing not to get memory results from previous code runs</span>
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="c1"># Start memory tracing</span>
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># Run the code to be evaluated</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+            <span class="n">num_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="p">,</span>
+            <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="p">,</span>
+            <span class="n">num_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="c1"># Memory usage results returned in bytes (num. Bytes / 1024 = num. KiB ; num. KiB / 1024 = num. MiB)</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">first_peak</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="o">.</span><span class="n">get_traced_memory</span><span class="p">()</span>
+
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+
+        <span class="c1"># Peak in MiB</span>
+        <span class="n">peak</span> <span class="o">=</span> <span class="n">first_peak</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+
+        <span class="n">time_summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Time spent (s): </span><span class="si">{</span><span class="n">end_time</span><span class="w"> </span><span class="o">-</span><span class="w"> </span><span class="n">start_time</span><span class="si">}</span><span class="s2">&quot;</span>
+        <span class="n">space_summary</span> <span class="o">=</span> <span class="sa">f</span><span class="s2">&quot;Peak memory usage (MiB): </span><span class="si">{</span><span class="n">peak</span><span class="si">}</span><span class="s2">&quot;</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/benchmark-report.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">report_file</span><span class="p">:</span>
+            <span class="n">report_file</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;BENCHMARK SETTINGS</span><span class="se">\n</span><span class="s2">Number of episodes: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="si">}</span><span class="se">\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;Number of bins: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="si">}</span><span class="se">\n</span><span class="s2">Number of samples: </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span><span class="si">}</span><span class="se">\n\n</span><span class="s2">&quot;</span>
+                <span class="sa">f</span><span class="s2">&quot;RESULTS</span><span class="se">\n</span><span class="si">{</span><span class="n">time_summary</span><span class="si">}</span><span class="se">\n</span><span class="si">{</span><span class="n">space_summary</span><span class="si">}</span><span class="s2">&quot;</span>
+            <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator.get_performance_graphs"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.get_performance_graphs">[docs]</a>    <span class="k">def</span> <span class="nf">get_performance_graphs</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot; Plot performance (time and space) against chosen varying parameters.</span>
+
+<span class="sd">            Parameters:</span>
+<span class="sd">            - Number of samples</span>
+<span class="sd">            - Number of episodes</span>
+<span class="sd">            - Number of bins (held constant for all dimensions)</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING PERFORMANCE GRAPHS&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* Plot of performance vs number of samples&quot;</span><span class="p">)</span>
+        <span class="c1"># Plot of performance vs number of samples</span>
+        <span class="n">times</span><span class="p">,</span> <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_times_and_memory_from_parameter_range</span><span class="p">(</span>
+            <span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;num_samples&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sample_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_performance_graph</span><span class="p">(</span>
+            <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;samples&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_sample_range</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">memory</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* Plot of performance vs number of episodes&quot;</span><span class="p">)</span>
+        <span class="c1"># Plot of performance vs number of episodes</span>
+        <span class="n">times</span><span class="p">,</span> <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_times_and_memory_from_parameter_range</span><span class="p">(</span>
+            <span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;num_episodes&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_ep_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_performance_graph</span><span class="p">(</span>
+            <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;episodes&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_ep_range</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">memory</span>
+        <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;* Plot of performance vs number of bins&quot;</span><span class="p">)</span>
+        <span class="c1"># Plot of performance vs number of bins</span>
+        <span class="n">times</span><span class="p">,</span> <span class="n">memory</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_times_and_memory_from_parameter_range</span><span class="p">(</span>
+            <span class="n">parameter_name</span><span class="o">=</span><span class="s2">&quot;num_bins&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_range</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_plot_performance_graph</span><span class="p">(</span>
+            <span class="n">x_label</span><span class="o">=</span><span class="s2">&quot;bins&quot;</span><span class="p">,</span> <span class="n">x</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">num_bin_range</span><span class="p">,</span> <span class="n">times</span><span class="o">=</span><span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="o">=</span><span class="n">memory</span>
+        <span class="p">)</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator.get_time_breakdown_per_function"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.get_time_breakdown_per_function">[docs]</a>    <span class="k">def</span> <span class="nf">get_time_breakdown_per_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a per-function breakdown of time complexity.</span>
+
+<span class="sd">            See: https://www.machinelearningplus.com/python/cprofile-how-to-profile-your-python-code/.</span>
+<span class="sd">            And: https://stackoverflow.com/questions/51536411/saving-cprofile-results-to-readable-external-file.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING TIME BREAKDOWN PER FUNCTION&quot;</span><span class="p">)</span>
+
+        <span class="n">profiler</span> <span class="o">=</span> <span class="n">cProfile</span><span class="o">.</span><span class="n">Profile</span><span class="p">()</span>
+        <span class="n">profiler</span><span class="o">.</span><span class="n">enable</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+            <span class="n">num_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="p">,</span>
+            <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="p">,</span>
+            <span class="n">num_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">profiler</span><span class="o">.</span><span class="n">disable</span><span class="p">()</span>
+        <span class="n">stream</span> <span class="o">=</span> <span class="n">io</span><span class="o">.</span><span class="n">StringIO</span><span class="p">()</span>
+        <span class="n">stats</span> <span class="o">=</span> <span class="n">pstats</span><span class="o">.</span><span class="n">Stats</span><span class="p">(</span><span class="n">profiler</span><span class="p">,</span> <span class="n">stream</span><span class="o">=</span><span class="n">stream</span><span class="p">)</span><span class="o">.</span><span class="n">strip_dirs</span><span class="p">()</span><span class="o">.</span><span class="n">sort_stats</span><span class="p">(</span><span class="s2">&quot;cumtime&quot;</span><span class="p">)</span>
+        <span class="n">stats</span><span class="o">.</span><span class="n">print_stats</span><span class="p">()</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/per_function_time.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">stream</span><span class="o">.</span><span class="n">getvalue</span><span class="p">())</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator.get_space_breakdown_per_function"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator.get_space_breakdown_per_function">[docs]</a>    <span class="k">def</span> <span class="nf">get_space_breakdown_per_function</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get a per-function breakdown of space complexity.&quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">GETTING SPACE BREAKDOWN PER FUNCTION&quot;</span><span class="p">)</span>
+
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+            <span class="n">num_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="p">,</span>
+            <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="p">,</span>
+            <span class="n">num_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">snapshot</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="o">.</span><span class="n">take_snapshot</span><span class="p">()</span>
+        <span class="n">top_stats</span> <span class="o">=</span> <span class="n">snapshot</span><span class="o">.</span><span class="n">statistics</span><span class="p">(</span><span class="s2">&quot;lineno&quot;</span><span class="p">)</span>
+
+        <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/per_function_space.txt&quot;</span><span class="p">,</span> <span class="s2">&quot;w&quot;</span><span class="p">)</span> <span class="k">as</span> <span class="n">outfile</span><span class="p">:</span>
+            <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;TOP </span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">num_memalloc_lines_to_keep</span><span class="si">}</span><span class="s2"> MEMORY ALLOCATION LINES&quot;</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">stat</span> <span class="ow">in</span> <span class="n">top_stats</span><span class="p">[:</span> <span class="bp">self</span><span class="o">.</span><span class="n">num_memalloc_lines_to_keep</span><span class="p">]:</span>
+                <span class="n">outfile</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="se">\n</span><span class="si">{</span><span class="n">stat</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._do_pre_benchmark_run_configuration"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._do_pre_benchmark_run_configuration">[docs]</a>    <span class="k">def</span> <span class="nf">_do_pre_benchmark_run_configuration</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Prepare the benchmark performance run.&quot;&quot;&quot;</span>
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">stop</span><span class="p">()</span>
+        <span class="n">tracemalloc</span><span class="o">.</span><span class="n">start</span><span class="p">()</span>
+        <span class="n">start_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="k">return</span> <span class="n">start_time</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._get_post_benchmark_run_results"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._get_post_benchmark_run_results">[docs]</a>    <span class="k">def</span> <span class="nf">_get_post_benchmark_run_results</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get the results of the benchmark performance run.&quot;&quot;&quot;</span>
+        <span class="n">end_time</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        <span class="n">_</span><span class="p">,</span> <span class="n">first_peak</span> <span class="o">=</span> <span class="n">tracemalloc</span><span class="o">.</span><span class="n">get_traced_memory</span><span class="p">()</span>
+        <span class="n">peak</span> <span class="o">=</span> <span class="n">first_peak</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span> <span class="o">*</span> <span class="mi">1024</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">end_time</span><span class="p">,</span> <span class="n">peak</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._get_times_and_memory_from_parameter_range"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._get_times_and_memory_from_parameter_range">[docs]</a>    <span class="k">def</span> <span class="nf">_get_times_and_memory_from_parameter_range</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">parameter_name</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Get time and memory complexities for varying values of an inputted parameter name.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            parameter_name (str): Name of the parameter against which time and memory complexities are recorded.</span>
+<span class="sd">            x (list[int]): Range of values to vary the parameter.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            list[float], list[float]: Time and memory recordings for the different parameter values in x.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">times</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">memory</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">val</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span>
+
+            <span class="n">start_time</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_do_pre_benchmark_run_configuration</span><span class="p">()</span>
+
+            <span class="k">if</span> <span class="n">parameter_name</span> <span class="o">==</span> <span class="s2">&quot;num_samples&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+                    <span class="n">num_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="p">,</span> <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="n">val</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">parameter_name</span> <span class="o">==</span> <span class="s2">&quot;num_bins&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+                    <span class="n">num_episodes</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_EP</span><span class="p">,</span> <span class="n">num_bins</span><span class="o">=</span><span class="n">val</span><span class="p">,</span> <span class="n">num_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span>
+                <span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">parameter_name</span> <span class="o">==</span> <span class="s2">&quot;num_episodes&quot;</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">_run_training_loop</span><span class="p">(</span>
+                    <span class="n">num_episodes</span><span class="o">=</span><span class="n">val</span><span class="p">,</span>
+                    <span class="n">num_bins</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_BINS</span><span class="p">,</span>
+                    <span class="n">num_samples</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">NUM_SAMPLES</span><span class="p">,</span>
+                <span class="p">)</span>
+
+            <span class="n">end_time</span><span class="p">,</span> <span class="n">peak</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_post_benchmark_run_results</span><span class="p">()</span>
+
+            <span class="n">times</span> <span class="o">+=</span> <span class="p">[</span><span class="n">end_time</span> <span class="o">-</span> <span class="n">start_time</span><span class="p">]</span>
+            <span class="n">memory</span> <span class="o">+=</span> <span class="p">[</span><span class="n">peak</span><span class="p">]</span>
+
+        <span class="k">return</span> <span class="n">times</span><span class="p">,</span> <span class="n">memory</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._plot_performance_graph"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._plot_performance_graph">[docs]</a>    <span class="k">def</span> <span class="nf">_plot_performance_graph</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x_label</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">memory</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Plot and save a performance graph.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            x_label (str): Label of the horizontal axis (e.g. &quot;episodes&quot;, &quot;samples&quot;, or &quot;bins&quot;).</span>
+<span class="sd">            x (list[int]): Range of the x parameter across which time and memory have been recorded.</span>
+<span class="sd">            times (list[int]): Results of time complexity recording for different values of x.</span>
+<span class="sd">            memory (list[int]): Results of memory complexity recording for different values of x.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">style</span><span class="o">.</span><span class="n">use</span><span class="p">(</span><span class="s2">&quot;seaborn-v0_8-darkgrid&quot;</span><span class="p">)</span>
+
+        <span class="n">fig</span><span class="p">,</span> <span class="n">ax1</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+        <span class="n">ax1</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">times</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+        <span class="n">ax2</span> <span class="o">=</span> <span class="n">ax1</span><span class="o">.</span><span class="n">twinx</span><span class="p">()</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">memory</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">space_color</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.6</span><span class="p">)</span>
+
+        <span class="n">ax1</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Time (s)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">time_color</span><span class="p">)</span>
+        <span class="n">ax2</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;Space (MiB)&quot;</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">space_color</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">xlabel</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Number of </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">title</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Time and space complexities vs number of </span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">grid</span><span class="p">()</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">tight_layout</span><span class="p">()</span>
+
+        <span class="n">plt</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="bp">self</span><span class="o">.</span><span class="n">_path</span><span class="si">}</span><span class="s2">/perf_vs_</span><span class="si">{</span><span class="n">x_label</span><span class="si">}</span><span class="s2">.png&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._run_training_loop"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._run_training_loop">[docs]</a>    <span class="k">def</span> <span class="nf">_run_training_loop</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">num_bins</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Run an example main.py.</span>
+
+<span class="sd">        Eventually, may load the hyperparameter data from a user-facing file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_episodes (int): Number of episodes in the training loop.</span>
+<span class="sd">            num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).</span>
+<span class="sd">            num_samples (int): Number of datapoint samples used for training.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">&quot;-&gt; Running training loop for </span><span class="si">{</span><span class="n">num_episodes</span><span class="si">}</span><span class="s2"> episodes, </span><span class="si">{</span><span class="n">num_bins</span><span class="si">}</span><span class="s2"> bins, </span><span class="si">{</span><span class="n">num_samples</span><span class="si">}</span><span class="s2"> samples&quot;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Get the hyperparameter dictionary for the specified parameters</span>
+        <span class="n">hyperparam_dict</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_hyperparam_dict_ds_data</span><span class="p">(</span>
+            <span class="n">num_episodes</span><span class="p">,</span> <span class="n">num_bins</span><span class="p">,</span> <span class="n">num_samples</span>
+        <span class="p">)</span>
+
+        <span class="n">dataset</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">load_data</span><span class="p">(</span>
+            <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;data_path&quot;</span><span class="p">],</span>
+            <span class="n">hyperparam_dict</span><span class="p">[</span><span class="s2">&quot;dataset&quot;</span><span class="p">][</span><span class="s2">&quot;n_samples&quot;</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">split_train_test</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+
+        <span class="n">dh</span> <span class="o">=</span> <span class="n">DataHandler</span><span class="p">(</span>
+            <span class="n">hyperparam_dict</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">,</span>
+            <span class="n">dataset</span><span class="o">=</span><span class="n">train_dataset</span><span class="p">,</span>
+            <span class="n">test_dataset</span><span class="o">=</span><span class="n">test_dataset</span><span class="p">,</span>
+        <span class="p">)</span>
+
+        <span class="n">engine</span> <span class="o">=</span> <span class="n">Engine</span><span class="p">(</span><span class="n">dh</span><span class="o">=</span><span class="n">dh</span><span class="p">,</span> <span class="n">hyperparam_dict</span><span class="o">=</span><span class="n">hyperparam_dict</span><span class="p">)</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">create_world</span><span class="p">()</span>
+
+        <span class="n">engine</span><span class="o">.</span><span class="n">train_agent</span><span class="p">()</span>
+
+        <span class="k">del</span> <span class="n">hyperparam_dict</span><span class="p">,</span> <span class="n">train_dataset</span><span class="p">,</span> <span class="n">test_dataset</span><span class="p">,</span> <span class="n">dataset</span><span class="p">,</span> <span class="n">dh</span><span class="p">,</span> <span class="n">engine</span>
+        <span class="n">gc</span><span class="o">.</span><span class="n">collect</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._load_data"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._load_data">[docs]</a>    <span class="k">def</span> <span class="nf">_load_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">path</span><span class="p">,</span> <span class="n">delimiter</span><span class="o">=</span><span class="s2">&quot;,&quot;</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load data from file.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            delimiter (str): Which separates columns.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">file_type</span> <span class="o">=</span> <span class="n">path</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;.&quot;</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;csv&quot;</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="n">delimiter</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;xlsx&quot;</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_excel</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">file_type</span> <span class="o">==</span> <span class="s2">&quot;parquet&quot;</span><span class="p">:</span>
+            <span class="n">dataset</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_parquet</span><span class="p">(</span><span class="n">path</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;File type not supported&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">dataset</span></div>
+
+<div class="viewcode-block" id="PerformanceEvaluator._get_hyperparam_dict_ds_data"><a class="viewcode-back" href="../../../explainable_rl.performance.html#explainable_rl.performance.performance_evaluator.PerformanceEvaluator._get_hyperparam_dict_ds_data">[docs]</a>    <span class="k">def</span> <span class="nf">_get_hyperparam_dict_ds_data</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">num_episodes</span><span class="p">,</span> <span class="n">num_bins</span><span class="p">,</span> <span class="n">num_samples</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Load the hyperparameter dictionaries for the Datasparq data.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            num_episodes (int): Number of episodes in the training loop.</span>
+<span class="sd">            num_bins (int): Number of bins used for digitisation (equal number of bins for all dimensions).</span>
+<span class="sd">            num_samples (int): Number of datapoint samples used for training.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            dict: Hyperparameter dictionary specific to the Datasparq dataset.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="n">hyperparam_dict</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;dimensions&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;states&quot;</span><span class="p">:</span> <span class="p">{</span>
+                    <span class="s2">&quot;lead_time&quot;</span><span class="p">:</span> <span class="n">num_bins</span><span class="p">,</span>
+                    <span class="s2">&quot;length_of_stay&quot;</span><span class="p">:</span> <span class="n">num_bins</span><span class="p">,</span>
+                    <span class="s2">&quot;competitor_price_difference_bin&quot;</span><span class="p">:</span> <span class="n">num_bins</span><span class="p">,</span>
+                    <span class="s2">&quot;demand_bin&quot;</span><span class="p">:</span> <span class="n">num_bins</span><span class="p">,</span>
+                <span class="p">},</span>
+                <span class="s2">&quot;actions&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;price&quot;</span><span class="p">:</span> <span class="n">num_bins</span><span class="p">},</span>
+                <span class="s2">&quot;rewards&quot;</span><span class="p">:</span> <span class="p">[</span><span class="s2">&quot;reward&quot;</span><span class="p">],</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;dataset&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;data_path&quot;</span><span class="p">:</span> <span class="s2">&quot;data/ds-data/my_example_data.parquet&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;col_delimiter&quot;</span><span class="p">:</span> <span class="s2">&quot;|&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;n_samples&quot;</span><span class="p">:</span> <span class="n">num_samples</span><span class="p">,</span>
+                <span class="s2">&quot;normalisation&quot;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;training&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;env_type&quot;</span><span class="p">:</span> <span class="s2">&quot;strategic_pricing_predict&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;num_episodes&quot;</span><span class="p">:</span> <span class="n">num_episodes</span><span class="p">,</span>
+                <span class="s2">&quot;num_steps&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                <span class="s2">&quot;train_test_split&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                <span class="s2">&quot;evaluate&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;num_eval_steps&quot;</span><span class="p">:</span> <span class="mi">3000</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;agent&quot;</span><span class="p">:</span> <span class="p">{</span>
+                <span class="s2">&quot;agent_type&quot;</span><span class="p">:</span> <span class="s2">&quot;q_learner&quot;</span><span class="p">,</span>
+                <span class="s2">&quot;gamma&quot;</span><span class="p">:</span> <span class="mf">0.3</span><span class="p">,</span>
+                <span class="s2">&quot;epsilon&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="s2">&quot;epsilon_decay&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+                <span class="s2">&quot;epsilon_minimum&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+                <span class="s2">&quot;learning_rate&quot;</span><span class="p">:</span> <span class="mf">0.1</span><span class="p">,</span>
+                <span class="s2">&quot;learning_rate_decay&quot;</span><span class="p">:</span> <span class="mf">0.05</span><span class="p">,</span>
+                <span class="s2">&quot;learning_rate_minimum&quot;</span><span class="p">:</span> <span class="mf">0.01</span><span class="p">,</span>
+                <span class="s2">&quot;lambda&quot;</span><span class="p">:</span> <span class="mf">0.2</span><span class="p">,</span>
+                <span class="s2">&quot;use_uncertainty&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+                <span class="s2">&quot;q_importance&quot;</span><span class="p">:</span> <span class="mf">0.7</span><span class="p">,</span>
+            <span class="p">},</span>
+            <span class="s2">&quot;explainability&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;shap_num_samples&quot;</span><span class="p">:</span> <span class="mi">1</span><span class="p">},</span>
+            <span class="s2">&quot;program_flow&quot;</span><span class="p">:</span> <span class="p">{</span><span class="s2">&quot;verbose&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">},</span>
+        <span class="p">}</span>
+        <span class="k">return</span> <span class="n">hyperparam_dict</span></div></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">performance_evaluator</span> <span class="o">=</span> <span class="n">PerformanceEvaluator</span><span class="p">()</span>
+    <span class="n">performance_evaluator</span><span class="o">.</span><span class="n">get_all_performance_evaluations</span><span class="p">()</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
