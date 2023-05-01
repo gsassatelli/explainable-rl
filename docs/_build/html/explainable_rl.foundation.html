@@ -1,0 +1,566 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>explainable_rl.foundation package &mdash; Explainable RL  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="explainable_rl.performance package" href="explainable_rl.performance.html" />
+    <link rel="prev" title="explainable_rl.explainability package" href="explainable_rl.explainability.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> Explainable RL
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">explainable-RL</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="explainable_rl.html">explainable_rl package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="explainable_rl.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.agents.html">explainable_rl.agents package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.data_handler.html">explainable_rl.data_handler package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.environments.html">explainable_rl.environments package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.evaluation.html">explainable_rl.evaluation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.explainability.html">explainable_rl.explainability package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">explainable_rl.foundation package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="explainable_rl.performance.html">explainable_rl.performance package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="explainable_rl.html#module-explainable_rl">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="tests.html">tests package</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">Explainable RL</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">explainable-RL</a></li>
+          <li class="breadcrumb-item"><a href="explainable_rl.html">explainable_rl package</a></li>
+      <li class="breadcrumb-item active">explainable_rl.foundation package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/explainable_rl.foundation.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="explainable-rl-foundation-package">
+<h1>explainable_rl.foundation package<a class="headerlink" href="#explainable-rl-foundation-package" title="Permalink to this heading"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-explainable_rl.foundation.agent">
+<span id="explainable-rl-foundation-agent-module"></span><h2>explainable_rl.foundation.agent module<a class="headerlink" href="#module-explainable_rl.foundation.agent" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Agent</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Parent of all child agents (e.g Q-learner, SARSA).</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">env</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gamma</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the agent.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>env</strong> (<em>Environment</em>) – Environment object.</p></li>
+<li><p><strong>gamma</strong> (<em>float</em>) – Discount factor.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Print training information.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent._convert_to_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">_convert_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent._convert_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent._convert_to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a state to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<em>list</em>) – The state to convert.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The state as a string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>state_str (string)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent._epsilon_greedy_policy">
+<span class="sig-name descname"><span class="pre">_epsilon_greedy_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent._epsilon_greedy_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent._epsilon_greedy_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Epsilon-greedy policy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>int</em>) – State.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon of epsilon-greedy policy.
+Defaults to 0 for pure exploitation.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent._init_q_table">
+<span class="sig-name descname"><span class="pre">_init_q_table</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent._init_q_table"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent._init_q_table" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize the q-table with zeros.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent.fit">
+<span class="sig-name descname"><span class="pre">fit</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">agent_hyperparams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">training_hyperparams</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pbar</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent.fit"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent.fit" title="Permalink to this definition"></a></dt>
+<dd><p>Fit agent to the dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>agent_hyperparams</strong> (<em>dict</em>) – Dictionary of agent hyperparameters.</p></li>
+<li><p><strong>training_hyperparams</strong> (<em>dict</em>) – Dictionary of training hyperparameters.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Print training information.</p></li>
+<li><p><strong>pbar</strong> (<em>tqdm</em>) – Progress bar.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent.predict_actions">
+<span class="sig-name descname"><span class="pre">predict_actions</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent.predict_actions"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent.predict_actions" title="Permalink to this definition"></a></dt>
+<dd><p>Predict action for a list of states using epsilon-greedy policy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>states</strong> (<em>list</em>) – States (binned).</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – Epsilon of epsilon-greedy policy.
+Defaults to 0 for pure exploitation.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of recommended actions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent.predict_rewards">
+<span class="sig-name descname"><span class="pre">predict_rewards</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">states</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">actions</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent.predict_rewards"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent.predict_rewards" title="Permalink to this definition"></a></dt>
+<dd><p>Predict reward for a list of state-actions.</p>
+<p>This function uses the avg reward matrix (which simulates a real-life scenario).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>states</strong> (<em>list</em>) – States (binned).</p></li>
+<li><p><strong>actions</strong> (<em>list</em>) – Actions (binned).</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of recommended actions.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.agent.Agent.uncertainty_informed_policy">
+<span class="sig-name descname"><span class="pre">uncertainty_informed_policy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">epsilon</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">use_uncertainty</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_importance</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.7</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/agent.html#Agent.uncertainty_informed_policy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.agent.Agent.uncertainty_informed_policy" title="Permalink to this definition"></a></dt>
+<dd><p>Get epsilon greedy policy that favours more densely populated state-action pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – Current state of the agent.</p></li>
+<li><p><strong>epsilon</strong> (<em>float</em>) – The exploration parameter.</p></li>
+<li><p><strong>use_uncertainty</strong> (<em>bool</em>) – Whether to use uncertainty informed policy.</p></li>
+<li><p><strong>q_importance</strong> (<em>float</em>) – The importance of the q value in the policy.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>selected action.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>action (int)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-explainable_rl.foundation.engine">
+<span id="explainable-rl-foundation-engine-module"></span><h2>explainable_rl.foundation.engine module<a class="headerlink" href="#module-explainable_rl.foundation.engine" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">Engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparam_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Responsible for creating the agent and environment instances and running the training loop.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hyperparam_dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise engine class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dh</strong> (<a class="reference internal" href="explainable_rl.data_handler.html#explainable_rl.data_handler.data_handler.DataHandler" title="explainable_rl.data_handler.data_handler.DataHandler"><em>DataHandler</em></a>) – DataHandler to be given to the Environment.</p></li>
+<li><p><strong>hyperparam_dict</strong> (<em>dict</em>) – Dictionary containing all hyperparameters.</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – Whether print statements about the program flow should be displayed.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine._evaluate_total_agent_reward">
+<span class="sig-name descname"><span class="pre">_evaluate_total_agent_reward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine._evaluate_total_agent_reward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine._evaluate_total_agent_reward" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the total reward obtained on the evaluation states using the agent’s policy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Total (not scaled) cumulative reward.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>total_agent_reward (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine._evaluate_total_hist_reward">
+<span class="sig-name descname"><span class="pre">_evaluate_total_hist_reward</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine._evaluate_total_hist_reward"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine._evaluate_total_hist_reward" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the total reward obtained on the evaluation states using the agent’s policy.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Total (not scaled) cumulative based on historical data.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>total_hist_reward (float)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine._get_bins">
+<span class="sig-name descname"><span class="pre">_get_bins</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine._get_bins"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine._get_bins" title="Permalink to this definition"></a></dt>
+<dd><p>Get the bins for the states and actions.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.build_evaluation">
+<span class="sig-name descname"><span class="pre">build_evaluation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.build_evaluation"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.build_evaluation" title="Permalink to this definition"></a></dt>
+<dd><p>Save data for evaluation.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.create_agent">
+<span class="sig-name descname"><span class="pre">create_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.create_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.create_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Create an agent and store it in Engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.create_env">
+<span class="sig-name descname"><span class="pre">create_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.create_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.create_env" title="Permalink to this definition"></a></dt>
+<dd><p>Create an env and store it in Engine.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.create_world">
+<span class="sig-name descname"><span class="pre">create_world</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.create_world"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.create_world" title="Permalink to this definition"></a></dt>
+<dd><p>Create the Agent and MDP instances for the given task.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.inverse_scale_feature">
+<span class="sig-name descname"><span class="pre">inverse_scale_feature</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">values</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.inverse_scale_feature"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.inverse_scale_feature" title="Permalink to this definition"></a></dt>
+<dd><p>De-bin and de-normalize feature values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>labels</strong> (<em>list</em>) – list of feature labels.</p></li>
+<li><p><strong>values</strong> (<em>list</em>) – list of (scaled) feature values.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Inverse transformation coefficient for all feature labels.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.engine.Engine.train_agent">
+<span class="sig-name descname"><span class="pre">train_agent</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/engine.html#Engine.train_agent"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.engine.Engine.train_agent" title="Permalink to this definition"></a></dt>
+<dd><p>Train the agent for a chosen number of steps and episodes.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-explainable_rl.foundation.environment">
+<span id="explainable-rl-foundation-environment-module"></span><h2>explainable_rl.foundation.environment module<a class="headerlink" href="#module-explainable_rl.foundation.environment" title="Permalink to this heading"></a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="explainable_rl.foundation.environment.MDP">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">MDP</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/environment.html#MDP"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.environment.MDP" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Define the MDP super class which all particular MDP should inherit from.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.environment.MDP.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dh</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/environment.html#MDP.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.environment.MDP.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialise the Strategic Pricing MDP class.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>dh</strong> (<a class="reference internal" href="explainable_rl.data_handler.html#explainable_rl.data_handler.data_handler.DataHandler" title="explainable_rl.data_handler.data_handler.DataHandler"><em>DataHandler</em></a>) – Data handler object.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.environment.MDP.initialise_env">
+<span class="sig-name descname"><span class="pre">initialise_env</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/environment.html#MDP.initialise_env"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.environment.MDP.initialise_env" title="Permalink to this definition"></a></dt>
+<dd><p>Create the environment given the MDP information.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.environment.MDP.reset">
+<span class="sig-name descname"><span class="pre">reset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/environment.html#MDP.reset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.environment.MDP.reset" title="Permalink to this definition"></a></dt>
+<dd><p>Reset environment.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Randomised initial state.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="explainable_rl.foundation.environment.MDP.step">
+<span class="sig-name descname"><span class="pre">step</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/environment.html#MDP.step"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.environment.MDP.step" title="Permalink to this definition"></a></dt>
+<dd><p>Take a step in the environment.</p>
+<p>A True done flag indicates that the environment terminated.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>state</strong> (<em>list</em>) – Current state values of agent.</p></li>
+<li><p><strong>action</strong> (<em>int</em>) – Action for agent to take.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>current state, action, next state, done flag.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-explainable_rl.foundation.library">
+<span id="explainable-rl-foundation-library-module"></span><h2>explainable_rl.foundation.library module<a class="headerlink" href="#module-explainable_rl.foundation.library" title="Permalink to this heading"></a></h2>
+</section>
+<section id="module-explainable_rl.foundation.utils">
+<span id="explainable-rl-foundation-utils-module"></span><h2>explainable_rl.foundation.utils module<a class="headerlink" href="#module-explainable_rl.foundation.utils" title="Permalink to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.convert_to_list">
+<span class="sig-name descname"><span class="pre">convert_to_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state_str</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#convert_to_list"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.convert_to_list" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a state string to a list.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state_str</strong> (<em>str</em>) – State as a string.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>State as a list.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.convert_to_string">
+<span class="sig-name descname"><span class="pre">convert_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">state</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#convert_to_string"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.convert_to_string" title="Permalink to this definition"></a></dt>
+<dd><p>Convert a state to a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>state</strong> (<em>list</em>) – State to convert.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>State as a string.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.decay_param">
+<span class="sig-name descname"><span class="pre">decay_param</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">param</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">decay</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_param</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#decay_param"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.decay_param" title="Permalink to this definition"></a></dt>
+<dd><p>Decay a parameter.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>param</strong> (<em>float</em>) – Parameter to decay.</p></li>
+<li><p><strong>decay</strong> (<em>float</em>) – Decay rate.</p></li>
+<li><p><strong>min_param</strong> (<em>float</em>) – Minimum value of the parameter.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Updated parameter.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.load_data">
+<span class="sig-name descname"><span class="pre">load_data</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_path</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n_samples</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">delimiter</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">','</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#load_data"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.load_data" title="Permalink to this definition"></a></dt>
+<dd><p>Load data from file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_path</strong> (<em>str</em>) – Path to data file.</p></li>
+<li><p><strong>n_samples</strong> (<em>int</em>) – Number of samples to load.</p></li>
+<li><p><strong>delimiter</strong> (<em>str</em>) – Which separates columns.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.load_engine">
+<span class="sig-name descname"><span class="pre">load_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_name</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#load_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.load_engine" title="Permalink to this definition"></a></dt>
+<dd><p>Load engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>path_name</strong> (<em>str</em><em> or </em><em>List</em><em>(</em><em>str</em><em>)</em>) – Path to save the engine.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.save_engine">
+<span class="sig-name descname"><span class="pre">save_engine</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">engine</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">path_name</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#save_engine"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.save_engine" title="Permalink to this definition"></a></dt>
+<dd><p>Save engine.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>engine</strong> (<a class="reference internal" href="#explainable_rl.foundation.engine.Engine" title="explainable_rl.foundation.engine.Engine"><em>Engine</em></a>) – Engine to save.</p></li>
+<li><p><strong>path_name</strong> (<em>str</em>) – Path to save the engine.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="explainable_rl.foundation.utils.split_train_test">
+<span class="sig-name descname"><span class="pre">split_train_test</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataset</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">train_test_split</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.2</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/explainable_rl/foundation/utils.html#split_train_test"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#explainable_rl.foundation.utils.split_train_test" title="Permalink to this definition"></a></dt>
+<dd><p>Split dataset into train and test.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dataset</strong> (<em>pd.DataFrame</em>) – Dataset.</p></li>
+<li><p><strong>train_test_split</strong> (<em>float</em>) – Proportion of test data.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Train dataset.
+test_dataset (pd.DataFrame): Test dataset.</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>train_dataset (pd.DataFrame)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-explainable_rl.foundation">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-explainable_rl.foundation" title="Permalink to this heading"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="explainable_rl.explainability.html" class="btn btn-neutral float-left" title="explainable_rl.explainability package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="explainable_rl.performance.html" class="btn btn-neutral float-right" title="explainable_rl.performance package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2023, MSc AI Group 6.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

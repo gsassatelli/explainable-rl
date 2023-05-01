@@ -4,5 +4,5 @@ explainable-RL
 .. toctree::
    :maxdepth: 4
 
-   explainableRL
+   explainable_rl
    tests
