@@ -279,7 +279,8 @@ class ShapValues:
         # Plot values
         plt.grid(zorder=0)
         plt.barh(features, values, color=colors, zorder=3)
-        plt.title(f"Shap values for {sample} - Action: {predicted_action}")
+        plt.title(f"SHAP values for {sample} - Action: {predicted_action}")
+        plt.xlabel("SHAP values")
         plt.tight_layout()
 
         if savefig:
