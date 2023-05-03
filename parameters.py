@@ -9,11 +9,11 @@ hyperparam_dict_ds_data_predict = {
 
     "dataset": {'data_path': 'data/ds-data/my_example_data.parquet',
                 'col_delimiter': '|',
-                'n_samples': 200000,
+                'n_samples': 100000,
                 'normalisation': True},
 
     "training": {'env_type': 'strategic_pricing_predict',
-                    'num_episodes': 60000,
+                    'num_episodes': 10000,
                     'num_steps': 1,
                     'train_test_split': 0.2,
                     'evaluate': False,
