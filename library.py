@@ -15,7 +15,7 @@ from tqdm import tqdm
 import unittest
 import pickle
 import warnings
-from parameters import hyperparam_dict_ds_data_predict
+from parameters import hyperparam_dict_ds_data_predict as hyperparam_dict
 from explainable_rl.foundation import utils
 from explainable_rl.data_handler.data_handler import DataHandler
 from explainable_rl.foundation.engine import Engine
